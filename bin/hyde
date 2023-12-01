@@ -15,3 +15,14 @@
 
 // Define working directory
 define('HYDE_WORKING_DIR', getcwd());
+
+// Determine the mode to run in
+define('HYDE_MODE', (function () {
+    // If the current directory contains a Hyde binary, run in proxy mode
+    if (file_exists(HYDE_WORKING_DIR . '/hyde')) {
+        return 'proxy';
+    }
+
+    // Otherwise, run in anonymous mode
+    return 'anonymous';
+})());
