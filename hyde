@@ -1,53 +1,66 @@
 #!/usr/bin/env php
 <?php
 
-define('LARAVEL_START', microtime(true));
+/**
+ * This is the main entry point for the global Hyde binary,
+ * and is what runs when you run `hyde` from the command line.
+ *
+ * The binary can be used in three ways:
+ * - Installation mode: Allows new Hyde projects to be created
+ * - Anonymous mode: Uses the built-in scaffolding to allow Hyde to be used
+ *                   without installation in a directory with just source files.
+ *                   It includes the installation mode.
+ * - Proxy mode: Defers to the Hyde installation in the current directory.
+ */
 
-/*
-|--------------------------------------------------------------------------
-| Register The Auto Loader
-|--------------------------------------------------------------------------
-|
-| Composer provides a convenient, automatically generated class loader
-| for our application. We just need to utilize it! We'll require it
-| into the script here so that we do not have to worry about the
-| loading of our classes manually. It feels great to relax.
-|
-*/
+// Define working directory
+define('HYDE_WORKING_DIR', getcwd());
 
-$autoloader = require file_exists(__DIR__.'/vendor/autoload.php') ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../../autoload.php';
+// Determine the mode to run in
+define('HYDE_MODE', (function () {
+    // If the current directory contains a Hyde binary, run in proxy mode
+    if (file_exists(HYDE_WORKING_DIR . '/hyde')) {
+        return 'proxy';
+    }
 
-$app = require_once __DIR__.'/app/bootstrap.php';
+    // Otherwise, run in anonymous mode
+    return 'anonymous';
+})());
 
-/*
-|--------------------------------------------------------------------------
-| Run The HydeCLI Application
-|--------------------------------------------------------------------------
-|
-| When we run the console application, the current CLI command will be
-| executed in this console and the response sent back to a terminal
-| or another output device for the developers. Here goes nothing!
-|
-*/
+return match (HYDE_MODE) {
+    'proxy' => require HYDE_WORKING_DIR . '/hyde',
+    'anonymous' => (function() {
+        // Bootstrap the Phar application
 
-$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+        // As the Phar archive is readonly, we define a temporary directory
+        // that Laravel can use to store the compiled views, cache files,
+        // and config files, all to allow the binary to run anywhere,
+        define('HYDE_TEMP_DIR', sprintf('%s/hyde-%s', sys_get_temp_dir(), md5(HYDE_WORKING_DIR)));
 
-$status = $kernel->handle(
-    $input = new Symfony\Component\Console\Input\ArgvInput,
-    new Symfony\Component\Console\Output\ConsoleOutput
-);
+        // Create and set up the temporary directory if it doesn't exist
+        if (! is_dir(HYDE_TEMP_DIR)) {
+            mkdir(HYDE_TEMP_DIR . '/config', recursive: true);
+            mkdir(HYDE_TEMP_DIR . '/app/storage/framework/cache', recursive: true);
+            copy(__DIR__ . '/app/config.php', HYDE_TEMP_DIR . '/config/app.php');
+        }
 
-/*
-|--------------------------------------------------------------------------
-| Shutdown The Application
-|--------------------------------------------------------------------------
-|
-| Once the HydeCLI has finished running, we will fire off the shutdown events
-| so that any final work may be done by the application before we shut
-| down the process. This is the last thing to happen to the request.
-|
-*/
+        // Register the autoloader
+        $autoloader = require file_exists(__DIR__.'/vendor/autoload.php') ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../autoload.php';
 
-$kernel->terminate($input, $status);
+        // Create the application
+        $app = require_once __DIR__.'/app/anonymous-bootstrap.php';
 
-exit($status);
+        // Run the application
+        $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+        $status = $kernel->handle(
+            $input = new Symfony\Component\Console\Input\ArgvInput,
+            new Symfony\Component\Console\Output\ConsoleOutput
+        );
+
+        // Shutdown the application
+
+        $kernel->terminate($input, $status);
+        exit($status);
+    })(),
+};
