@@ -11,9 +11,13 @@
 |
 */
 
-$app = new \Hyde\Foundation\Application(
-    dirname(__DIR__)
-);
+$app = new class(HYDE_WORKING_DIR) extends \Hyde\Foundation\Application {
+    public function getCachedPackagesPath(): string
+    {
+        // Since we have a custom path for the cache directory, we need to return it here.
+        return HYDE_TEMP_DIR . '/app/storage/framework/cache/packages.php';
+    }
+};
 
 /*
 |--------------------------------------------------------------------------
