@@ -13,9 +13,9 @@ try {
     // Load the Composer autoloader from the Phar archive
     Phar::loadPhar(PHAR_PATH, 'hyde.phar');
 
-    require_once 'phar://hyde.phar/vendor/autoload.php';
-
     define('HYDE_BOOTSTRAP_PATH', 'phar://hyde.phar/app/anonymous-bootstrap.php');
+
+    require_once 'phar://hyde.phar/vendor/autoload.php';
 
     try {
         $app = \Desilva\Microserve\Microserve::boot(\Hyde\RealtimeCompiler\Http\HttpKernel::class);
