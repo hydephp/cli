@@ -1,4 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-//
+/**
+ * This is the main entry point for the global Hyde binary,
+ * and is what runs when you run `hyde` from the command line.
+ *
+ * The binary can be used in three ways:
+ * - Installation mode: Allows new Hyde projects to be created
+ * - Anonymous mode: Uses the built-in scaffolding to allow Hyde to be used
+ *                   without installation in a directory with just source files.
+ * - Proxy mode: Defers to the Hyde installation in the current directory.
+ */
