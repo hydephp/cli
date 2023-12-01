@@ -1,7 +1,7 @@
 <?php
 
 try {
-    define('BASE_PATH', realpath(getcwd()));
+    define('BASE_PATH', __DIR__.'/..');
     define('HYDE_START', microtime(true));
 
     require_once BASE_PATH.'/vendor/autoload.php';
