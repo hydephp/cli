@@ -6,7 +6,7 @@
  */
 
 try {
-    define('BASE_PATH', __DIR__.'/..');
+    define('BASE_PATH', realpath(getcwd()));
     define('HYDE_START', microtime(true));
 
     $autoloader = is_dir(BASE_PATH . '/vendor/autoload.php')
