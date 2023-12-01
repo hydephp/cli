@@ -7,6 +7,7 @@ namespace App\Commands;
 use Throwable;
 use LaravelZero\Framework\Commands\Command;
 use LaravelZero\Framework\Commands\BuildCommand;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @internal Wrapper for {@see \LaravelZero\Framework\Commands\BuildCommand}
@@ -21,6 +22,9 @@ class BuildApplicationBinaryCommand extends Command
         $this->setBuildEnvironment();
 
         try {
+            // Convert output implementation to type the build command expects
+            $this->output = new ConsoleOutput();
+
             return $this->call(BuildCommand::class);
         } catch (Throwable $exception) {
             $this->resetBuildEnvironment();
