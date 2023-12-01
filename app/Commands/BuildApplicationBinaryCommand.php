@@ -19,7 +19,7 @@ class BuildApplicationBinaryCommand extends Command
 
     public function handle(): int
     {
-        $this->setBuildEnvironment();
+        $this->setupBuildEnvironment();
 
         try {
             // Convert output implementation to type the build command expects
@@ -35,7 +35,7 @@ class BuildApplicationBinaryCommand extends Command
         }
     }
 
-    protected function setBuildEnvironment(): void
+    protected function setupBuildEnvironment(): void
     {
         copy(__DIR__ . '/../config.php', __DIR__ . '/../../config/app.php');
     }
