@@ -35,5 +35,8 @@ return match (HYDE_MODE) {
         // To allow the binary to run anywhere, we define a temporary directory
         // that Laravel can use to store the compiled views and other cache files.
         define('HYDE_TEMP_DIR', sprintf('%s/hyde-%s', sys_get_temp_dir(), md5(HYDE_WORKING_DIR)));
+
+        // Register the autoloader
+        $autoloader = require file_exists(__DIR__.'/../vendor/autoload.php') ?  __DIR__.'/../vendor/autoload.php' : __DIR__.'/../../autoload.php';
     })(),
 };
