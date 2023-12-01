@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * This file is based on server.php from the realtime-compiler package,
+ * but here modified to work from within the standalone Phar archive.
+ */
+
 try {
     define('BASE_PATH', __DIR__.'/..');
     define('HYDE_START', microtime(true));
