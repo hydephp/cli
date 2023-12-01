@@ -3,7 +3,8 @@
   "directories": [
     "app",
     "config",
-    "vendor"
+    "vendor",
+    "bin"
   ],
   "files": [
     "composer.json"
