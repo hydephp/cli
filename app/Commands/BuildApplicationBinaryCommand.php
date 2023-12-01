@@ -38,10 +38,12 @@ class BuildApplicationBinaryCommand extends Command
     protected function setupBuildEnvironment(): void
     {
         copy(__DIR__ . '/../config.php', __DIR__ . '/../../config/app.php');
+        copy(__DIR__ . '/../../box.json', __DIR__ . '/../../box.json.bak');
     }
 
     protected function resetBuildEnvironment(): void
     {
         unlink(__DIR__ . '/../../config/app.php');
+        rename(__DIR__ . '/../../box.json.bak', __DIR__ . '/../../box.json');
     }
 }
