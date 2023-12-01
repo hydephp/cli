@@ -29,9 +29,9 @@ class BuildApplicationBinaryCommand extends Command
                 '--build-version' => $this->getApplication()->getVersion(),
             ]);
         } catch (Throwable $exception) {
-            $this->resetBuildEnvironment();
-
             throw $exception;
+        } finally {
+            $this->resetBuildEnvironment();
         }
     }
 
