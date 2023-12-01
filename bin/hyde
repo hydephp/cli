@@ -53,5 +53,6 @@ return match (HYDE_MODE) {
         // Shutdown the application
 
         $kernel->terminate($input, $status);
+        exit($status);
     })(),
 };
