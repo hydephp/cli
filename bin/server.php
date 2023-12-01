@@ -9,7 +9,9 @@ try {
     define('BASE_PATH', __DIR__.'/..');
     define('HYDE_START', microtime(true));
 
-    require_once BASE_PATH.'/vendor/autoload.php';
+    $autoloader = is_dir(BASE_PATH . '/vendor/autoload.php')
+        ? require_once BASE_PATH . '/vendor/autoload.php'
+        : require_once __DIR__ . '/../vendor/autoload.php';
 
     try {
         $app = \Desilva\Microserve\Microserve::boot(\Hyde\RealtimeCompiler\Http\HttpKernel::class);
