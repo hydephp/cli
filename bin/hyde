@@ -9,6 +9,7 @@
  * - Installation mode: Allows new Hyde projects to be created
  * - Anonymous mode: Uses the built-in scaffolding to allow Hyde to be used
  *                   without installation in a directory with just source files.
+ *                   It includes the installation mode.
  * - Proxy mode: Defers to the Hyde installation in the current directory.
  */
 
