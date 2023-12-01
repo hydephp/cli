@@ -19,7 +19,7 @@ define('HYDE_WORKING_DIR', getcwd());
 // Determine the mode to run in
 define('HYDE_MODE', (function () {
     // If this is being run from the source code, run in artisan mode
-    if (HYDE_WORKING_DIR === __DIR__) {
+    if (HYDE_WORKING_DIR === __DIR__ || HYDE_WORKING_DIR === __FILE__) {
         return 'artisan';
     }
 
@@ -50,7 +50,7 @@ return match (HYDE_MODE) {
         }
 
         // Register the autoloader
-        $autoloader = require file_exists(__DIR__.'/vendor/autoload.php') ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../autoload.php';
+        $autoloader = require_once file_exists(__DIR__.'/vendor/autoload.php') ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../autoload.php';
 
         // Create the application
         $app = require_once __DIR__.'/app/anonymous-bootstrap.php';
@@ -68,5 +68,5 @@ return match (HYDE_MODE) {
         $kernel->terminate($input, $status);
         exit($status);
     })(),
-    'artisan' => require __DIR__ . '/bin/hyde'
+    'artisan' => require_once __DIR__ . '/bin/hyde'
 };
