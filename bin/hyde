@@ -41,5 +41,13 @@ return match (HYDE_MODE) {
 
         // Create the application
         $app = require_once __DIR__.'/../app/anonymous-bootstrap.php';
+
+        // Run the application
+        $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+        $status = $kernel->handle(
+            $input = new Symfony\Component\Console\Input\ArgvInput,
+            new Symfony\Component\Console\Output\ConsoleOutput
+        );
     })(),
 };
