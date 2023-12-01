@@ -11,3 +11,6 @@
  *                   without installation in a directory with just source files.
  * - Proxy mode: Defers to the Hyde installation in the current directory.
  */
+
+// Define working directory
+define('HYDE_WORKING_DIR', getcwd());
