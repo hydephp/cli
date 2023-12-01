@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56d5b55b4793468a6b2f8077e8b266c1",
+    "content-hash": "a15dd9def9375d379c969fe6051822c6",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,55 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "desilva/microserve",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caendesilva/microserve.git",
+                "reference": "2a55037f67578c2c9a30108a7b68051236a6b2d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caendesilva/microserve/zipball/2a55037f67578c2c9a30108a7b68051236a6b2d6",
+                "reference": "2a55037f67578c2c9a30108a7b68051236a6b2d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Desilva\\Microserve\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caen De Silva",
+                    "email": "caen@desilva.se",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Lightweight API for creating PHP application servers",
+            "homepage": "https://github.com/caendesilva/microserve",
+            "keywords": [
+                "desilva",
+                "microserve"
+            ],
+            "support": {
+                "issues": "https://github.com/caendesilva/microserve/issues",
+                "source": "https://github.com/caendesilva/microserve/tree/v1.0.0"
+            },
+            "time": "2022-06-04T12:07:54+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -956,6 +1005,59 @@
                 }
             ],
             "time": "2023-12-01T15:20:34+00:00"
+        },
+        {
+            "name": "hyde/realtime-compiler",
+            "version": "v3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hydephp/realtime-compiler.git",
+                "reference": "90fece255a2df48d64a64b03569249776ea06e7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/90fece255a2df48d64a64b03569249776ea06e7c",
+                "reference": "90fece255a2df48d64a64b03569249776ea06e7c",
+                "shasum": ""
+            },
+            "require": {
+                "desilva/microserve": "^1.0",
+                "hyde/framework": "*"
+            },
+            "suggest": {
+                "hyde/framework": "This package requires Hyde Framework version v1.0.0 or higher."
+            },
+            "bin": [
+                "bin/server.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hyde\\RealtimeCompiler\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caen De Silva",
+                    "email": "caen@desilva.se"
+                }
+            ],
+            "description": "HydePHP Realtime Compiler Server",
+            "support": {
+                "issues": "https://github.com/hydephp/realtime-compiler/issues",
+                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://www.buymeacoffee.com/caen",
+                    "type": "custom"
+                }
+            ],
+            "time": "2023-10-28T14:08:37+00:00"
         },
         {
             "name": "illuminate/bus",
@@ -6301,110 +6403,7 @@
             "time": "2022-06-03T18:03:27+00:00"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "desilva/microserve",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/caendesilva/microserve.git",
-                "reference": "2a55037f67578c2c9a30108a7b68051236a6b2d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/caendesilva/microserve/zipball/2a55037f67578c2c9a30108a7b68051236a6b2d6",
-                "reference": "2a55037f67578c2c9a30108a7b68051236a6b2d6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^9.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Desilva\\Microserve\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Caen De Silva",
-                    "email": "caen@desilva.se",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Lightweight API for creating PHP application servers",
-            "homepage": "https://github.com/caendesilva/microserve",
-            "keywords": [
-                "desilva",
-                "microserve"
-            ],
-            "support": {
-                "issues": "https://github.com/caendesilva/microserve/issues",
-                "source": "https://github.com/caendesilva/microserve/tree/v1.0.0"
-            },
-            "time": "2022-06-04T12:07:54+00:00"
-        },
-        {
-            "name": "hyde/realtime-compiler",
-            "version": "v3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hydephp/realtime-compiler.git",
-                "reference": "90fece255a2df48d64a64b03569249776ea06e7c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/90fece255a2df48d64a64b03569249776ea06e7c",
-                "reference": "90fece255a2df48d64a64b03569249776ea06e7c",
-                "shasum": ""
-            },
-            "require": {
-                "desilva/microserve": "^1.0",
-                "hyde/framework": "*"
-            },
-            "suggest": {
-                "hyde/framework": "This package requires Hyde Framework version v1.0.0 or higher."
-            },
-            "bin": [
-                "bin/server.php"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Hyde\\RealtimeCompiler\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Caen De Silva",
-                    "email": "caen@desilva.se"
-                }
-            ],
-            "description": "HydePHP Realtime Compiler Server",
-            "support": {
-                "issues": "https://github.com/hydephp/realtime-compiler/issues",
-                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.1.0"
-            },
-            "funding": [
-                {
-                    "url": "https://www.buymeacoffee.com/caen",
-                    "type": "custom"
-                }
-            ],
-            "time": "2023-10-28T14:08:37+00:00"
-        }
-    ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {

@@ -26,10 +26,8 @@
     "require": {
         "php": "^8.1",
         "hyde/framework": "dev-develop",
+        "hyde/realtime-compiler": "^3.1",
         "laravel-zero/framework": "^10.0"
-    },
-    "require-dev": {
-        "hyde/realtime-compiler": "^3.1"
     },
     "autoload": {
         "psr-4": {
