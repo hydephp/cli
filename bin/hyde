@@ -27,6 +27,6 @@ define('HYDE_MODE', (function () {
     return 'anonymous';
 })());
 
-if (HYDE_MODE === 'proxy') {
-    return require HYDE_WORKING_DIR . '/hyde';
-}
+return match (HYDE_MODE) {
+    'proxy' => require HYDE_WORKING_DIR . '/hyde',
+};
