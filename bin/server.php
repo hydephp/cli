@@ -15,7 +15,7 @@ try {
 
     define('HYDE_BOOTSTRAP_PATH', 'phar://hyde.phar/app/anonymous-bootstrap.php');
 
-    // Define stuff from the hyde binary
+    // Define stuff from the hyde binary (todo we can remove this if we normalize the bootstrapper)
     define('HYDE_WORKING_DIR', getcwd());
     define('HYDE_TEMP_DIR', sprintf('%s/hyde-%s', sys_get_temp_dir(), md5(HYDE_WORKING_DIR)));
 
