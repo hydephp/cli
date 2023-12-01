@@ -58,9 +58,6 @@ $app->beforeBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, fun
 $app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
     // Set the cache path for the compiled views
     $app['config']->set('view.compiled', HYDE_TEMP_DIR . '/views');
-
-    // Set the realtime compiler server executable path to the Phar file (which is bin/server.php, relative to the Phar source root)
-    $app['config']->set('hyde.server.executable_path', HYDE_TEMP_DIR . '/server.php');
 });
 
 /*
