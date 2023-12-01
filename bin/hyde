@@ -29,4 +29,7 @@ define('HYDE_MODE', (function () {
 
 return match (HYDE_MODE) {
     'proxy' => require HYDE_WORKING_DIR . '/hyde',
+    'anonymous' => (function() {
+        // Bootstrap the Phar application
+    })(),
 };
