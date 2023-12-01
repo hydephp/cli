@@ -49,5 +49,9 @@ return match (HYDE_MODE) {
             $input = new Symfony\Component\Console\Input\ArgvInput,
             new Symfony\Component\Console\Output\ConsoleOutput
         );
+
+        // Shutdown the application
+
+        $kernel->terminate($input, $status);
     })(),
 };
