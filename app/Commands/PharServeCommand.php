@@ -53,16 +53,19 @@ class PharServeCommand extends ServeCommand
         ]));
     }
 
+    /** @internal */
     protected function getPharUrl(): string
     {
         return \Phar::running();
     }
 
+    /** @internal */
     protected function getPharPath(): string
     {
         return \Phar::running(false);
     }
 
+    /** @internal */
     protected function isPharRunning(): bool
     {
         return $this->getPharUrl() !== '';
