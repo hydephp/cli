@@ -14,7 +14,7 @@ class PharServeCommand extends ServeCommand
 {
     protected function getExecutablePath(): string
     {
-        if (! \Phar::running()) {
+        if (! $this->isPharRunning()) {
             // We're running from the source code, so we need to use the server.php file
             return __DIR__.'/../../bin/test-server.php';
         }
@@ -37,7 +37,7 @@ class PharServeCommand extends ServeCommand
             return $path;
         }
 
-        $phar = \Phar::running();
+        $phar = $this->getPharUrl();
         $phar = new \Phar($phar);
         $phar->extractTo(HYDE_TEMP_DIR, 'bin/server.php');
 
@@ -47,10 +47,25 @@ class PharServeCommand extends ServeCommand
     protected function getEnvironmentVariables(): array
     {
         return Arr::whereNotNull(array_merge(parent::getEnvironmentVariables(), [
-            'HYDE_PHAR_PATH' => \Phar::running(false) ?: 'false',
-            'HYDE_BOOTSTRAP_PATH' => \Phar::running() ? 'phar://hyde.phar/app/anonymous-bootstrap.php' : realpath(__DIR__.'/../anonymous-bootstrap.php'),
+            'HYDE_PHAR_PATH' => $this->getPharPath() ?: 'false',
+            'HYDE_BOOTSTRAP_PATH' => $this->isPharRunning() ? 'phar://hyde.phar/app/anonymous-bootstrap.php' : realpath(__DIR__.'/../anonymous-bootstrap.php'),
             'HYDE_WORKING_DIR' => HYDE_WORKING_DIR,
             'HYDE_TEMP_DIR' => HYDE_TEMP_DIR,
         ]));
+    }
+
+    protected function getPharUrl(): string
+    {
+        return \Phar::running();
+    }
+
+    protected function getPharPath(): string
+    {
+        return \Phar::running(false);
+    }
+
+    protected function isPharRunning(): bool
+    {
+        return $this->getPharUrl() !== '';
     }
 }
