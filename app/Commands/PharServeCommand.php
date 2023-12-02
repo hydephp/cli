@@ -12,4 +12,13 @@ use Hyde\Console\Commands\ServeCommand;
 class PharServeCommand extends ServeCommand
 {
     //
+
+    protected function getEnvironmentVariables(): array
+    {
+        return array_merge(parent::getEnvironmentVariables(), [
+            'HYDE_PHAR_PATH' => \Phar::running(false) ?: 'false',
+            'HYDE_WORKING_DIR' => HYDE_WORKING_DIR,
+            'HYDE_TEMP_DIR' => HYDE_TEMP_DIR,
+        ]);
+    }
 }
