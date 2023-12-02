@@ -59,6 +59,7 @@
         "hyde"
     ],
     "require-dev": {
+        "mockery/mockery": "^1.6",
         "pestphp/pest": "^2.26"
     }
 }
