@@ -67,6 +67,7 @@ class PharServeCommand extends ServeCommand
         return $this->getPharUrl() !== '';
     }
 
+    /** @codeCoverageIgnore as tests are run from source code */
     protected function extractServerFromPhar(): void
     {
         $phar = $this->getPharUrl();
