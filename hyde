@@ -47,7 +47,6 @@ return match (HYDE_MODE) {
             mkdir(HYDE_TEMP_DIR . '/config', recursive: true);
             mkdir(HYDE_TEMP_DIR . '/app/storage/framework/cache', recursive: true);
             copy(__DIR__ . '/app/config.php', HYDE_TEMP_DIR . '/config/app.php');
-            copy(__DIR__ . '/bin/server.php', HYDE_TEMP_DIR . '/server.php');
         }
 
         // Register the autoloader
