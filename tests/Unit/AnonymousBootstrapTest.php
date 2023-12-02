@@ -53,3 +53,10 @@ it('sets Hyde kernel path', function () {
 it('sets the cached packages path', function () {
     expect($this->app->getCachedPackagesPath())->toBe('/path/to/temp/dir/app/storage/framework/cache/packages.php');
 });
+
+it('binds the temporary directory config path', function () {
+    $callback = $this->app['events']->getListeners('bootstrapping: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0];
+    $callback($this->app, []);
+
+    expect($this->app->configPath())->toBe('/path/to/temp/dir/config');
+});
