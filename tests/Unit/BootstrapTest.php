@@ -7,44 +7,43 @@ use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
-$app = require __DIR__ . '/../../app/bootstrap.php';
-
-beforeAll(function () {
+beforeEach(function () {
    HydeKernel::setInstance(new HydeKernel());
+   $this->app = require __DIR__ . '/../../app/bootstrap.php';
 });
 
-test('bootstrapper returns application', function () use ($app) {
-    expect($app)->toBeInstanceOf(Application::class);
+test('bootstrapper returns application', function () {
+    expect($this->app)->toBeInstanceOf(Application::class);
 });
 
-it('has correct base path', function () use ($app) {
-    expect($app->basePath())->toBe(realpath(__DIR__ . '/../../'));
+it('has correct base path', function () {
+    expect($this->app->basePath())->toBe(realpath(__DIR__ . '/../../'));
 });
 
-it('has correct config path', function () use ($app) {
-    expect($app->configPath())->toBe(realpath(__DIR__ . '/../../config'));
+it('has correct config path', function () {
+    expect($this->app->configPath())->toBe(realpath(__DIR__ . '/../../config'));
 });
 
-it('binds console kernel', function () use ($app) {
-    expect($app->make(Kernel::class))->toBeInstanceOf(ConsoleKernel::class);
+it('binds console kernel', function () {
+    expect($this->app->make(Kernel::class))->toBeInstanceOf(ConsoleKernel::class);
 });
 
-it('binds exception handler', function () use ($app) {
-    expect($app->make(ExceptionHandler::class))->toBeInstanceOf(Handler::class);
+it('binds exception handler', function () {
+    expect($this->app->make(ExceptionHandler::class))->toBeInstanceOf(Handler::class);
 });
 
-it('binds Hyde kernel', function () use ($app) {
-    expect($app->make(HydeKernel::class))->toBeInstanceOf(HydeKernel::class);
+it('binds Hyde kernel', function () {
+    expect($this->app->make(HydeKernel::class))->toBeInstanceOf(HydeKernel::class);
 });
 
-it('binds Hyde kernel as singleton', function () use ($app) {
-    expect($app->make(HydeKernel::class))->toBe($app->make(HydeKernel::class));
+it('binds Hyde kernel as singleton', function () {
+    expect($this->app->make(HydeKernel::class))->toBe($this->app->make(HydeKernel::class));
 });
 
-it('sets Hyde kernel instance', function () use ($app) {
-    expect(HydeKernel::getInstance())->toBe($app->make(HydeKernel::class));
+it('sets Hyde kernel instance', function () {
+    expect(HydeKernel::getInstance())->toBe($this->app->make(HydeKernel::class));
 });
 
-it('sets Hyde kernel path', function () use ($app) {
+it('sets Hyde kernel path', function () {
     expect(HydeKernel::getInstance()->path())->toBe(realpath(__DIR__ . '/../../'));
 });
