@@ -11,7 +11,6 @@ try {
     define('HYDE_PHAR_PATH', getenv('HYDE_PHAR_PATH'));
     define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR'));
     define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR'));
-    define('HYDE_BOOTSTRAP_PATH', 'phar://hyde.phar/app/anonymous-bootstrap.php');
 
     // Load the Composer autoloader from the Phar archive
     Phar::loadPhar(HYDE_PHAR_PATH, 'hyde.phar');
