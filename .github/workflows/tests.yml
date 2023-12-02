@@ -137,30 +137,28 @@ jobs:
           extensions: fileinfo
 
       - name: Download executable
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: hyde
-          path: ${{ runner.temp }}/hyde
+          path: .
 
       - name: Move download to system path (Linux and macOS)
         if: ${{ matrix.os != 'windows-latest' }}
-        run: sudo mv ${{ runner.temp }}/hyde/hyde /usr/local/bin/hyde
+        run: sudo mv hyde /usr/local/bin/hyde
 
       - name: Move download to system path (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
-        run: move ${{ runner.temp }}/hyde/hyde C:\Windows\System32\hyde.phar
+        run: move hyde C:\Windows\System32\hyde.phar
 
-      - name: Make executable (Linux and macOS)
+      - name: Make standalone executable (Linux and macOS)
         if: ${{ matrix.os != 'windows-latest' }}
-        run: chmod +x ${{ runner.temp }}/hyde/hyde
+        run: chmod +x /usr/local/bin/hyde
 
-      - name: Make executable (Windows)
+      - name: Make standalone executable (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-#         // Creates a wrapper script for the Phar executable
-          echo @php "%~dp0hyde.phar" %* > ${{ runner.temp }}/hyde/hyde.cmd
-#         // Adds the wrapper script to the system path
-          move ${{ runner.temp }}/hyde/hyde.cmd C:\Windows\System32\hyde.cmd
+          echo '@php "%~dp0hyde.phar" %*' > hyde.cmd
+          move hyde.cmd C:\Windows\System32\hyde.cmd
 
       - name: Verify executable
         run: hyde --version
