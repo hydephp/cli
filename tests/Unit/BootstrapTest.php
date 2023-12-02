@@ -8,7 +8,6 @@ use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
 beforeEach(function () {
-    HydeKernel::setInstance(new HydeKernel());
     $this->app = require __DIR__ . '/../../app/bootstrap.php';
 });
 
