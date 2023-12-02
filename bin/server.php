@@ -8,16 +8,13 @@
 try {
     define('HYDE_START', microtime(true));
     define('BASE_PATH', realpath(getcwd()));
-    define('PHAR_PATH', \Phar::running(false));
-
-    // Load the Composer autoloader from the Phar archive
-    Phar::loadPhar(PHAR_PATH, 'hyde.phar');
-
+    define('HYDE_PHAR_PATH', getenv('HYDE_PHAR_PATH'));
+    define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR'));
+    define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR'));
     define('HYDE_BOOTSTRAP_PATH', 'phar://hyde.phar/app/anonymous-bootstrap.php');
 
-    // Define stuff from the hyde binary (todo we can remove this if we normalize the bootstrapper)
-    define('HYDE_WORKING_DIR', getcwd());
-    define('HYDE_TEMP_DIR', sprintf('%s/hyde-%s', sys_get_temp_dir(), md5(HYDE_WORKING_DIR)));
+    // Load the Composer autoloader from the Phar archive
+    Phar::loadPhar(HYDE_PHAR_PATH, 'hyde.phar');
 
     require_once 'phar://hyde.phar/vendor/autoload.php';
 
