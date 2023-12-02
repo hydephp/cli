@@ -6,10 +6,10 @@ use App\Providers\AppServiceProvider;
 use Illuminate\Console\Application as Artisan;
 
 it('registers commands', function () {
-    $app = new Application();
-
-    $app->register(AppServiceProvider::class);
-    $app->boot();
+    $app = tap(new Application(), function (Application $app) {
+        $app->register(AppServiceProvider::class);
+        $app->boot();
+    });
 
     Artisan::starting(function (Artisan $artisan) {
         expect($artisan->all())->toHaveKey('serve')
