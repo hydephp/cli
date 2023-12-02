@@ -123,12 +123,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
-        php: [ 8.1 ]
-#        php: [ 8.1, 8.2, 8.3 ]
-#        type: [ anonymous, full ]
+        php: [ 8.1, 8.2, 8.3 ]
+        type: [ anonymous, full ]
 
     runs-on: ${{ matrix.os }}
-    name: Test executable - ${{ matrix.os }} ${{ matrix.php }}
+    name: Test executable - ${{ matrix.os }} ${{ matrix.php }} (${{ matrix.type }})
 
     steps:
       - uses: shivammathur/setup-php@v2
@@ -162,3 +161,37 @@ jobs:
 
       - name: Verify executable
         run: hyde --version
+
+      # Uses the same test files as the GitHub Action, for now
+
+      - name: Set up project files (full project)
+        if: ${{ matrix.type == 'full' }}
+        run: |
+          # First clone base project
+          git clone https://github.com/hydephp/hyde.git . --depth=1
+          
+          # Then clone test project files into base project
+          git clone https://github.com/hyde-staging/github-action-test-project-1.git ../temp --depth=1
+          mv ../temp/verify.php ./verify.php
+          
+          # Next, since the Hyde binary should proxy this folder, we need to install dependencies
+          composer install --no-interaction --no-progress --no-suggest --prefer-dist
+
+      - name: Set up project files (anonymous project)
+        if: ${{ matrix.type == 'anonymous' }}
+        run: git clone https://github.com/hyde-staging/github-action-test-project-2.git . --depth=1
+
+      - name: Run Hyde
+        run: hyde
+
+      - name: Run build
+        run: hyde build
+
+      - name: Rename build folder # required for verify.php
+        run: mv _site build
+
+      - name: Download test case
+        run: curl -L https://raw.githubusercontent.com/hydephp/action/master/tests/TestCase.php -o TestCase.php
+
+      - name: Verify results
+        run: php verify.php
