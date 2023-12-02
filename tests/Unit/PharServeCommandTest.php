@@ -8,6 +8,20 @@ use Symfony\Component\Console\Output\BufferedOutput;
 const HYDE_WORKING_DIR= '/path/to/working/dir';
 const HYDE_TEMP_DIR= '/path/to/temp/dir';
 
+test('getExecutablePath method returns live server path when not running in Phar', function () {
+    HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
+
+    $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
+
+    $command->shouldAllowMockingProtectedMethods();
+    $command->shouldReceive('isPharRunning')->once()->andReturnFalse();
+
+    $path = realpath($command->getExecutablePath());
+
+    expect($path)->not()->toBeFalse()
+        ->and($path)->toBe(realpath(__DIR__ . '/../../bin/test-server.php'));
+});
+
 test('getExecutablePath method extracts server executable when running in Phar', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
 
