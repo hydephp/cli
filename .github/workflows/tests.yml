@@ -7,7 +7,31 @@ on:
     branches: [ "master", "develop" ]
 
 jobs:
-  run-tests:
+  coverage-tests:
+    runs-on: ubuntu-latest
+    name: Run tests with coverage
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          coverage: xdebug
+          extensions:
+            fileinfo
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
+
+      - name: Execute tests (Unit and Feature tests) via Pest
+        run: vendor/bin/pest --coverage-clover ./coverage.xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  matrix-tests:
     strategy:
       fail-fast: false
       matrix:
