@@ -57,5 +57,8 @@
     "prefer-stable": true,
     "bin": [
         "hyde"
-    ]
+    ],
+    "require-dev": {
+        "pestphp/pest": "^2.26"
+    }
 }
