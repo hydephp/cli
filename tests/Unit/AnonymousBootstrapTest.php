@@ -49,3 +49,7 @@ it('sets Hyde kernel instance', function () {
 it('sets Hyde kernel path', function () {
     expect(HydeKernel::getInstance()->path())->toBe('/path/to/working/dir');
 });
+
+it('sets the cached packages path', function () {
+    expect($this->app->getCachedPackagesPath())->toBe('/path/to/temp/dir/app/storage/framework/cache/packages.php');
+});
