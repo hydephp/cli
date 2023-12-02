@@ -13,15 +13,10 @@ try {
     define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR'));
     define('HYDE_BOOTSTRAP_PATH', 'phar://hyde.phar/app/anonymous-bootstrap.php');
 
-    if (! HYDE_PHAR_PATH) {
-        // We're running from the source code, so we need to load the Composer autoloader
-        require_once __DIR__ . '/../vendor/autoload.php';
-    } else {
-        // Load the Composer autoloader from the Phar archive
-        Phar::loadPhar(HYDE_PHAR_PATH, 'hyde.phar');
+    // Load the Composer autoloader from the Phar archive
+    Phar::loadPhar(HYDE_PHAR_PATH, 'hyde.phar');
 
-        require_once 'phar://hyde.phar/vendor/autoload.php';
-    }
+    require_once 'phar://hyde.phar/vendor/autoload.php';
 
     try {
         $app = \Desilva\Microserve\Microserve::boot(\Hyde\RealtimeCompiler\Http\HttpKernel::class);
