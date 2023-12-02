@@ -70,8 +70,7 @@ class PharServeCommand extends ServeCommand
     /** @codeCoverageIgnore as tests are run from source code */
     protected function extractServerFromPhar(): void
     {
-        $phar = $this->getPharUrl();
-        $phar = new \Phar($phar);
+        $phar = new \Phar($this->getPharUrl());
         $phar->extractTo(HYDE_TEMP_DIR, 'bin/server.php');
     }
 }
