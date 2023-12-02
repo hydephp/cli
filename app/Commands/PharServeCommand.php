@@ -23,6 +23,31 @@ class PharServeCommand extends ServeCommand
         return $this->createPharServer();
     }
 
+    protected function createPharServer(): string
+    {
+        // Create a temporary (cached) file to store the extracted server.php file
+        $path = HYDE_TEMP_DIR . '/bin/server.php';
+
+        if (file_exists($path)) {
+            return $path;
+        }
+
+        if (\Phar::running()) {
+            $phar = \Phar::running();
+            $phar = new \Phar($phar);
+            $phar->extractTo(HYDE_TEMP_DIR, 'bin/server.php');
+        } else {
+            // We're running from the source code, so we need just copy the server.php file,
+            // but transformed to inline the required constant definitions.
+            file_put_contents($path, str_replace(
+                "define('PHAR_PATH', \Phar::running(false));",
+                "// For testing only:\n    define('PHAR_PATH', '".__DIR__."/../../builds/hyde');",
+                file_get_contents(__DIR__ . '/../../bin/server.php')));
+        }
+
+        return $path;
+    }
+
     protected function getEnvironmentVariables(): array
     {
         return Arr::whereNotNull(array_merge(parent::getEnvironmentVariables(), [
