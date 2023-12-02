@@ -12,7 +12,16 @@ use Hyde\Console\Commands\ServeCommand;
  */
 class PharServeCommand extends ServeCommand
 {
-    //
+    protected function getExecutablePath(): string
+    {
+        $default = parent::getExecutablePath();
+
+        if (file_exists($default)) {
+            return $default;
+        }
+
+        return $this->createPharServer();
+    }
 
     protected function getEnvironmentVariables(): array
     {
