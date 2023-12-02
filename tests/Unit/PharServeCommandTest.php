@@ -1,11 +1,24 @@
 <?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
+use Hyde\Foundation\HydeKernel;
 use App\Commands\PharServeCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 const HYDE_WORKING_DIR= '/path/to/working/dir';
 const HYDE_TEMP_DIR= '/path/to/temp/dir';
+
+test('getExecutablePath method extracts server executable when running in Phar', function () {
+    HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
+
+    $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
+
+    $command->shouldAllowMockingProtectedMethods();
+    $command->shouldReceive('isPharRunning')->once()->andReturnTrue();
+    $command->shouldReceive('extractServerFromPhar')->once();
+
+    expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
+});
 
 it('merges in environment variables', function () {
     expect((new TestablePharServeCommand())->getEnvironmentVariables())->toBe([
