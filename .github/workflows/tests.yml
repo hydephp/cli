@@ -99,7 +99,9 @@ jobs:
 
       - name: Get build version
         id: build-version
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "Version: ${{ steps.build-version.outputs.sha_short }}"
 
       - name: Build executable
         run: php hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
