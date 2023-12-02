@@ -20,6 +20,15 @@ jobs:
             fileinfo
       - uses: actions/checkout@v3
 
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
 
@@ -48,6 +57,15 @@ jobs:
           extensions: fileinfo
 
       - uses: actions/checkout@v3
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
