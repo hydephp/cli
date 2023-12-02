@@ -36,6 +36,20 @@ test('getExecutablePath method extracts server executable when running in Phar',
     expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
 });
 
+test('getExecutablePath method uses existing default executable when available', function () {
+    HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
+    File::shouldReceive('exists')->once()->andReturnTrue();
+
+    $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
+
+    $command->shouldAllowMockingProtectedMethods();
+
+    $command->shouldReceive('isPharRunning')->once()->andReturnTrue();
+    $command->shouldNotReceive('extractServerFromPhar');
+
+    expect($command->getExecutablePath())->toBe('/path/to/working/dir/vendor/hyde/realtime-compiler/bin/server.php');
+});
+
 test('getExecutablePath method uses cached extracted executable when available', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
     File::shouldReceive('exists')->once()->andReturnFalse();
