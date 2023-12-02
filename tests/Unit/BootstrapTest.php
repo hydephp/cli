@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
 use Hyde\Foundation\HydeKernel;
 use Hyde\Foundation\Application;
