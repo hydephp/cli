@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a15dd9def9375d379c969fe6051822c6",
+    "content-hash": "3abdf9811955bb452ad4fe51cbb3fd61",
     "packages": [
         {
             "name": "brick/math",
@@ -1008,16 +1008,16 @@
         },
         {
             "name": "hyde/realtime-compiler",
-            "version": "v3.1.0",
+            "version": "dev-improve-portability",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/realtime-compiler.git",
-                "reference": "90fece255a2df48d64a64b03569249776ea06e7c"
+                "reference": "87adb5cb93e012ee331c447a48d8703998a562c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/90fece255a2df48d64a64b03569249776ea06e7c",
-                "reference": "90fece255a2df48d64a64b03569249776ea06e7c",
+                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/87adb5cb93e012ee331c447a48d8703998a562c3",
+                "reference": "87adb5cb93e012ee331c447a48d8703998a562c3",
                 "shasum": ""
             },
             "require": {
@@ -1049,7 +1049,7 @@
             "description": "HydePHP Realtime Compiler Server",
             "support": {
                 "issues": "https://github.com/hydephp/realtime-compiler/issues",
-                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.1.0"
+                "source": "https://github.com/hydephp/realtime-compiler/tree/improve-portability"
             },
             "funding": [
                 {
@@ -1057,7 +1057,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-10-28T14:08:37+00:00"
+            "time": "2023-12-02T11:33:26+00:00"
         },
         {
             "name": "illuminate/bus",
@@ -6407,7 +6407,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "hyde/framework": 20
+        "hyde/framework": 20,
+        "hyde/realtime-compiler": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
