@@ -14,7 +14,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  */
 class BuildApplicationBinaryCommand extends Command
 {
-    protected $signature = 'standalone:build';
+    protected $signature = 'standalone:build
+                            {--build-version= : The build version, if not provided the application version will be used}';
+
     protected $description = 'Build the standalone executable';
 
     public function handle(): int
@@ -26,7 +28,7 @@ class BuildApplicationBinaryCommand extends Command
             $this->output = new ConsoleOutput();
 
             return $this->call(BuildCommand::class, [
-                '--build-version' => $this->getApplication()->getVersion(),
+                '--build-version' => $this->option('build-version') ?? $this->getApplication()->getVersion(),
             ]);
         } catch (Throwable $exception) {
             throw $exception;
