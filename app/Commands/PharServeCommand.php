@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
+use Illuminate\Support\Facades\File;
 use Hyde\Console\Commands\ServeCommand;
 use Illuminate\Support\Arr;
 
@@ -21,7 +22,7 @@ class PharServeCommand extends ServeCommand
 
         $default = parent::getExecutablePath();
 
-        if (file_exists($default)) {
+        if (File::exists($default)) {
             return $default;
         }
 
@@ -33,7 +34,7 @@ class PharServeCommand extends ServeCommand
         // Create a temporary (cached) file to store the extracted server.php file
         $path = HYDE_TEMP_DIR.'/bin/server.php';
 
-        if (file_exists($path)) {
+        if (File::exists($path)) {
             return $path;
         }
 

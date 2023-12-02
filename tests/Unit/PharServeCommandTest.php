@@ -2,6 +2,7 @@
 
 use Hyde\Foundation\HydeKernel;
 use App\Commands\PharServeCommand;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
@@ -24,6 +25,7 @@ test('getExecutablePath method returns live server path when not running in Phar
 
 test('getExecutablePath method extracts server executable when running in Phar', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
+    File::shouldReceive('exists')->twice()->andReturnFalse();
 
     $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
 
