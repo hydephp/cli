@@ -2,6 +2,7 @@
 
 use Hyde\Foundation\HydeKernel;
 use Hyde\Foundation\Application;
+use Illuminate\Config\Repository;
 use Hyde\Foundation\ConsoleKernel;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Exceptions\Handler;
@@ -61,7 +62,7 @@ it('binds the temporary directory config path', function () {
 });
 
 it('sets the cache path for the compiled views', function () {
-    $this->app['config'] = new \Illuminate\Config\Repository([]);
+    $this->app['config'] = new Repository([]);
 
     ($this->app['events']->getListeners('bootstrapped: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
 
