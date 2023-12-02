@@ -59,3 +59,11 @@ it('binds the temporary directory config path', function () {
 
     expect($this->app->configPath())->toBe('/path/to/temp/dir/config');
 });
+
+it('sets the cache path for the compiled views', function () {
+    $this->app['config'] = new \Illuminate\Config\Repository([]);
+
+    ($this->app['events']->getListeners('bootstrapped: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
+
+    expect($this->app['config']->get('view.compiled'))->toBe('/path/to/temp/dir/views');
+});
