@@ -13,7 +13,7 @@
         <include>
             <directory suffix=".php">./app</directory>
             <directory suffix=".php">./src</directory>
-            <file>./hyde</file>
+            <!-- <file>./hyde</file> -->
         </include>
         <exclude>
             <directory suffix=".php">./app/storage</directory>
