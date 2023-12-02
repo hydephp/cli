@@ -104,6 +104,9 @@ jobs:
       - name: Build executable
         run: php hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
 
+      - name: Verify executable
+        run: php builds/hyde --version
+
       - name: Upload executable
         uses: actions/upload-artifact@v3
         with:
