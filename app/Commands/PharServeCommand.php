@@ -37,9 +37,7 @@ class PharServeCommand extends ServeCommand
             return $path;
         }
 
-        $phar = $this->getPharUrl();
-        $phar = new \Phar($phar);
-        $phar->extractTo(HYDE_TEMP_DIR, 'bin/server.php');
+        $this->extractServerFromPhar();
 
         return $path;
     }
@@ -67,5 +65,12 @@ class PharServeCommand extends ServeCommand
     protected function isPharRunning(): bool
     {
         return $this->getPharUrl() !== '';
+    }
+
+    protected function extractServerFromPhar(): void
+    {
+        $phar = $this->getPharUrl();
+        $phar = new \Phar($phar);
+        $phar->extractTo(HYDE_TEMP_DIR, 'bin/server.php');
     }
 }
