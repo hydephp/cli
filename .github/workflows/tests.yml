@@ -42,6 +42,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   matrix-tests:
+    if: contains(github.event.pull_request.labels.*.name, 'halt-matrix-tests') != true
     strategy:
       fail-fast: false
       matrix:
