@@ -23,8 +23,6 @@ class NewProjectCommand extends Command
     {
         $name = $this->argument('name');
 
-        $this->info("Creating new Hyde project: {$name}");
-
         Process::command($this->getCommand($name))
             ->run(output: $this->bufferedOutput());
     }
