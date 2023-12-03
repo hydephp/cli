@@ -24,9 +24,14 @@ class NewProjectCommand extends Command
 
         $this->info("Creating new Hyde project: {$name}");
 
-        Process::command("composer create-project hyde/hyde {$name} --prefer-dist")
+        Process::command($this->getCommand($name))
             ->run(output: function ($type, $buffer) {
                 $this->output->write($buffer);
             });
+    }
+
+    protected function getCommand(string $name): string
+    {
+        return "composer create-project hyde/hyde {$name} --prefer-dist";
     }
 }
