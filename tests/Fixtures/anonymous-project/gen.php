@@ -3,6 +3,7 @@
 # Generate test files
 
 $files = [
+    '_media/app.css',
     '_docs/index.md',
     '_posts/hello-world.md',
     '_pages/about.md',
@@ -18,5 +19,5 @@ foreach ($files as $file) {
     }
 
     $title = ucwords(trim(str_replace('/', ' - ', str_replace(['_', '-', '.md', '.html', '.blade.php'], [' ', ' ', '', '', ''], $file))));
-    file_put_contents($file, sprintf("%s\n\n%s\n", str_ends_with($file, '.md') ? sprintf('# %s', $title) : sprintf('<h1>%s</h1>', $title), $file));
+    file_put_contents($file, str_ends_with($file, '.css') ? "/** CSS */\n" : sprintf("%s\n\n%s\n", str_ends_with($file, '.md') ? sprintf('# %s', $title) : sprintf('<h1>%s</h1>', $title), $file));
 }

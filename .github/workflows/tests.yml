@@ -163,6 +163,7 @@ jobs:
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/search.html')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/search.json')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/index.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/media/app.css')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/sitemap.xml')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/index.html')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/about.html')"
