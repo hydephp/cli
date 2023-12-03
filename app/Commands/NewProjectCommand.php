@@ -25,6 +25,9 @@ class NewProjectCommand extends Command
 
         Process::command($this->getCommand($name))
             ->run(output: $this->bufferedOutput());
+
+        $this->newLine();
+        $this->info('Project created successfully. Build something awesome!');
     }
 
     protected function getCommand(string $name): string
