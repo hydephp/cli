@@ -60,6 +60,10 @@ class NewProjectCommand extends Command
             }
         })::getLogo());
 
+        if ($this->argument('name')) {
+            return $logo;
+        }
+
         return substr($logo, 0, strrpos($logo, "\n", -2));
     }
 }
