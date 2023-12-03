@@ -115,7 +115,6 @@ jobs:
           name: hyde
           path: builds/hyde
 
-  # Todo if not on master we just run on Ubuntu?
   test-executable:
     needs: build-executable
 
