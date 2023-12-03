@@ -22,7 +22,7 @@ class NewProjectCommand extends Command
 
     public function handle(): void
     {
-        $name = $this->argument('name') ?? text('What is the name of your project?');
+        $name = $this->argument('name') ?? text('What is the name of your project?', required: 'Please provide a name for your project.');
 
         Process::command($this->getCommand($name))
             ->run(null, $this->bufferedOutput());
