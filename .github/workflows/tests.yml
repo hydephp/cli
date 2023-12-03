@@ -182,8 +182,7 @@ jobs:
 
   matrix-test-executable:
     needs: build-executable
-    # if: todo if branch is master?
-    if: false == true # Disable for testing
+    if: startsWith(github.ref, 'refs/heads/master') || startsWith(github.ref, 'refs/heads/release')
 
     strategy:
       fail-fast: false
