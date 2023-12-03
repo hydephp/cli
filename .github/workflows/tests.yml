@@ -77,3 +77,121 @@ jobs:
 
       - name: Execute tests (Unit and Feature tests) via Pest
         run: vendor/bin/pest
+
+  build-executable:
+    runs-on: ubuntu-latest
+    name: Build executable
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
+
+      - name: Get build version
+        id: build-version
+        run: |
+          echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "Version: ${{ steps.build-version.outputs.sha_short }}"
+
+      - name: Build executable
+        run: php hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
+
+      - name: Verify executable
+        run: php builds/hyde --version
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: hyde
+          path: builds/hyde
+
+  test-executable:
+    needs: build-executable
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        php: [ 8.1, 8.2, 8.3 ]
+
+    runs-on: ${{ matrix.os }}
+    name: Test executable - ${{ matrix.os }} ${{ matrix.php }}
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: fileinfo
+
+      - uses: actions/checkout@v3
+        with:
+          path: ./source
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: .
+
+      - name: Install standalone executable (Linux and macOS)
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: |
+          sudo mv hyde /usr/local/bin/hyde
+          chmod +x /usr/local/bin/hyde
+
+      - name: Install standalone executable (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          move hyde C:\Windows\System32\hyde.phar
+          echo '@php "%~dp0hyde.phar" %*' > hyde.cmd
+          move hyde.cmd C:\Windows\System32\hyde.cmd
+
+      - name: Verify executable is installed
+        run: hyde
+
+      - name: Test can run standalone
+        run: |
+          php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version --no-ansi'), 'HydePHP')"
+          php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
+          php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --no-ansi'), 'USAGE:  <command> [options] [arguments]')"
+        # TODO: Assert the new command is present, after we add it
+
+      - name: Test can run in anonymous project
+        run: |
+          cd ./source/tests/Fixtures/anonymous-project
+          php generate.php
+
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
+          php ../../System/bin/Assert.php "str_contains_all(shell_exec('hyde route:list'), ['_pages/demo.html', '_pages/index.blade.php', '_pages/about.md', '_posts/hello-world.md', '_docs/index.md'])"
+
+      - name: Test can build anonymous project
+        run: |
+          cd ./source/tests/Fixtures/anonymous-project
+          
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde build'), 'Your static site has been built!')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/posts/hello-world.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/search.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/search.json')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/index.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/media/app.css')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/sitemap.xml')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/index.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/about.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/demo.html')"
+          php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/feed.xml')"
+
+      - name: Test standalone proxies full project file
+        run: |
+          cd ./source/tests/Fixtures/full-project
+          php ../../System/bin/Assert.php "! str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'Mode: proxy')"

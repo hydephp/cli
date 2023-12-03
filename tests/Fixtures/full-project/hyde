@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+
+/** The presence of this file means that the standalone should proxy this file */
+
+echo "File proxied by standalone\n";
+echo "Mode: " . HYDE_MODE . "\n";
