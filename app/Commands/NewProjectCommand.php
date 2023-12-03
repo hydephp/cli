@@ -11,5 +11,9 @@ use Illuminate\Console\Command;
  */
 class NewProjectCommand extends Command
 {
-    //
+    /** @var string */
+    protected $signature = 'new {name : The name of the project}';
+
+    /** @var string */
+    protected $description = 'Create a new Hyde project.';
 }
