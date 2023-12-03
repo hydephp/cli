@@ -122,6 +122,11 @@ jobs:
     name: Smoke test executable
 
     steps:
+      # Checkout source to parent directory
+      - uses: actions/checkout@v3
+        with:
+          path: ./source
+
       - uses: actions/download-artifact@v3
         with:
           name: hyde
@@ -134,7 +139,16 @@ jobs:
         run: chmod +x /usr/local/bin/hyde
 
       - name: Verify executable
-        run: hyde --version
+        run: hyde
+
+      - name: Assert can run hyde
+        run: |
+          php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version --no-ansi'), 'HydePHP')"
+          php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
+          php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --no-ansi'), 'USAGE:  <command> [options] [arguments]')"
+
+      - name: Run build
+        run: hyde build
 
   matrix-test-executable:
     needs: build-executable
