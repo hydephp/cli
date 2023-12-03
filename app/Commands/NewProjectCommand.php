@@ -7,6 +7,7 @@ namespace App\Commands;
 use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use Hyde\Console\ConsoleServiceProvider;
 use function Laravel\Prompts\text;
 
 /**
@@ -22,6 +23,8 @@ class NewProjectCommand extends Command
 
     public function handle(): void
     {
+        $this->output->write($this->getLogo());
+
         $name = $this->argument('name') ?? text('What is the name of your project?', required: 'Please provide a name for your project.');
 
         Process::command($this->getCommand($name))
@@ -46,5 +49,15 @@ class NewProjectCommand extends Command
         return function (string $type, string $buffer): void {
             $this->output->write($buffer);
         };
+    }
+
+    private function getLogo(): string
+    {
+        return trim((new class(app()) extends ConsoleServiceProvider {
+            public static function getLogo(): string
+            {
+                return self::logo();
+            }
+        })::getLogo());
     }
 }
