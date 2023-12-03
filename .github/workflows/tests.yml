@@ -41,7 +41,7 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-  matrix-tests:
+  run-tests:
     needs: coverage-tests
 
     if: contains(github.event.pull_request.labels.*.name, 'halt-matrix-tests') != true
@@ -82,7 +82,7 @@ jobs:
 
   build-executable:
     runs-on: ubuntu-latest
-    name: Build executable
+    name: Build standalone executable
 
     steps:
       - uses: actions/checkout@v3
