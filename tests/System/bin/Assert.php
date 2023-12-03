@@ -38,3 +38,8 @@ function str_contains_all(string $haystack, array $needles): bool
 
     return true;
 }
+
+function file_exists_and_is_not_empty(string $path): bool
+{
+    return file_exists($path) && filesize($path) > 0;
+}
