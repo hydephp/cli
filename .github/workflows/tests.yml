@@ -143,25 +143,20 @@ jobs:
           name: hyde
           path: .
 
-      - name: Move download to system path (Linux and macOS)
+      - name: Install standalone executable (Linux and macOS)
         if: ${{ matrix.os != 'windows-latest' }}
-        run: sudo mv hyde /usr/local/bin/hyde
+        run: | 
+          sudo mv hyde /usr/local/bin/hyde
+          chmod +x /usr/local/bin/hyde
 
-      - name: Make standalone executable (Linux and macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: chmod +x /usr/local/bin/hyde
-
-      - name: Move download to system path (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: move hyde C:\Windows\System32\hyde.phar
-
-      - name: Make standalone executable (Windows)
+      - name: Install standalone executable (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
+          move hyde C:\Windows\System32\hyde.phar
           echo '@php "%~dp0hyde.phar" %*' > hyde.cmd
           move hyde.cmd C:\Windows\System32\hyde.cmd
 
-      - name: Verify executable
+      - name: Verify executable is installed
         run: hyde
 
       - name: Test can run standalone
