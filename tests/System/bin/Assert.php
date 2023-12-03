@@ -25,3 +25,16 @@ foreach ($assertions as $assertion) {
 }
 
 exit(0);
+
+// Helper functions
+
+function str_contains_all(string $haystack, array $needles): bool
+{
+    foreach ($needles as $needle) {
+        if (!str_contains($haystack, $needle)) {
+            return false;
+        }
+    }
+
+    return true;
+}
