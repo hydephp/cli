@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
+use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 
@@ -25,9 +26,7 @@ class NewProjectCommand extends Command
         $this->info("Creating new Hyde project: {$name}");
 
         Process::command($this->getCommand($name))
-            ->run(output: function ($type, $buffer) {
-                $this->output->write($buffer);
-            });
+            ->run(output: $this->bufferedOutput());
     }
 
     protected function getCommand(string $name): string
@@ -38,5 +37,12 @@ class NewProjectCommand extends Command
     protected function withAnsi(): bool
     {
         return ! $this->option('no-ansi') || $this->option('ansi');
+    }
+
+    protected function bufferedOutput(): Closure
+    {
+        return function (string $type, string $buffer): void {
+            $this->output->write($buffer);
+        };
     }
 }
