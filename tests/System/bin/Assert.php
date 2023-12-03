@@ -11,15 +11,15 @@
 $assertions = array_slice($argv, 1);
 
 if (empty($assertions)) {
-    echo 'No assertions provided' . PHP_EOL;
-    exit(1);
+    echo '⚠  No assertions provided' . PHP_EOL;
+    exit(2);
 }
 
 foreach ($assertions as $assertion) {
     if (eval("return $assertion;")) {
-        echo "Assertion passed: $assertion" . PHP_EOL;
+        echo "✔  Assertion passed: $assertion" . PHP_EOL;
     } else {
-        echo "Assertion failed: $assertion" . PHP_EOL;
+        echo "❌ Assertion failed: $assertion" . PHP_EOL;
         exit(1);
     }
 }
