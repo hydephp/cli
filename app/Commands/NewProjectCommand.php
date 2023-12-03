@@ -32,7 +32,7 @@ class NewProjectCommand extends Command
 
     protected function getCommand(string $name): string
     {
-        return sprintf("composer create-project hyde/hyde %s --prefer-dist%s", $name, $this->withAnsi() ? ' --ansi' : ' --no-ansi');
+        return trim(sprintf('composer create-project hyde/hyde %s --prefer-dist %s', $name, $this->withAnsi() ? '--ansi' : '--no-ansi'));
     }
 
     protected function withAnsi(): bool
