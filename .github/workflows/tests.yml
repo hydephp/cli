@@ -115,14 +115,25 @@ jobs:
           name: hyde
           path: builds/hyde
 
-  # if not master we run simpler tests within one job
-  smoke-test-executable:
+  # Todo if not on master we just run on Ubuntu?
+  test-executable:
     needs: build-executable
-    runs-on: ubuntu-latest
-    name: Smoke test executable
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        php: [ 8.1, 8.2, 8.3 ]
+
+    runs-on: ${{ matrix.os }}
+    name: Test executable - ${{ matrix.os }} ${{ matrix.php }}
 
     steps:
-      # Checkout source to parent directory
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: fileinfo
+
       - uses: actions/checkout@v3
         with:
           path: ./source
@@ -132,11 +143,23 @@ jobs:
           name: hyde
           path: .
 
-      - name: Move download to system path
+      - name: Move download to system path (Linux and macOS)
+        if: ${{ matrix.os != 'windows-latest' }}
         run: sudo mv hyde /usr/local/bin/hyde
 
-      - name: Make standalone executable
+      - name: Make standalone executable (Linux and macOS)
+        if: ${{ matrix.os != 'windows-latest' }}
         run: chmod +x /usr/local/bin/hyde
+
+      - name: Move download to system path (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: move hyde C:\Windows\System32\hyde.phar
+
+      - name: Make standalone executable (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          echo '@php "%~dp0hyde.phar" %*' > hyde.cmd
+          move hyde.cmd C:\Windows\System32\hyde.cmd
 
       - name: Verify executable
         run: hyde
@@ -178,85 +201,3 @@ jobs:
           php ../../System/bin/Assert.php "! str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'Mode: proxy')"
-
-
-  matrix-test-executable:
-    needs: build-executable
-    if: startsWith(github.ref, 'refs/heads/master') || startsWith(github.ref, 'refs/heads/release')
-
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        php: [ 8.1, 8.2, 8.3 ]
-        type: [ anonymous, full ]
-
-    runs-on: ${{ matrix.os }}
-    name: Test executable - ${{ matrix.os }} ${{ matrix.php }} (${{ matrix.type }})
-
-    steps:
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: fileinfo
-
-      - name: Download executable
-        uses: actions/download-artifact@v3
-        with:
-          name: hyde
-          path: .
-
-      - name: Move download to system path (Linux and macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: sudo mv hyde /usr/local/bin/hyde
-
-      - name: Move download to system path (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: move hyde C:\Windows\System32\hyde.phar
-
-      - name: Make standalone executable (Linux and macOS)
-        if: ${{ matrix.os != 'windows-latest' }}
-        run: chmod +x /usr/local/bin/hyde
-
-      - name: Make standalone executable (Windows)
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          echo '@php "%~dp0hyde.phar" %*' > hyde.cmd
-          move hyde.cmd C:\Windows\System32\hyde.cmd
-
-      - name: Verify executable
-        run: hyde --version
-
-      # Uses the same test files as the GitHub Action, for now
-
-      - name: Set up project files (full project)
-        if: ${{ matrix.type == 'full' }}
-        run: |
-          # First clone base project
-          git clone https://github.com/hydephp/hyde.git . --depth=1
-          
-          # Then clone test project files into base project
-          git clone https://github.com/hyde-staging/github-action-test-project-1.git ../temp --depth=1
-          mv ../temp/verify.php ./verify.php
-          
-          # Next, since the Hyde binary should proxy this folder, we need to install dependencies
-          composer install --no-interaction --no-progress --no-suggest --prefer-dist
-
-      - name: Set up project files (anonymous project)
-        if: ${{ matrix.type == 'anonymous' }}
-        run: git clone https://github.com/hyde-staging/github-action-test-project-2.git . --depth=1
-
-      - name: Run Hyde
-        run: hyde
-
-      - name: Run build
-        run: hyde build
-
-      - name: Rename build folder # required for verify.php
-        run: mv _site build
-
-      - name: Download test case
-        run: curl -L https://raw.githubusercontent.com/hydephp/action/master/tests/TestCase.php -o TestCase.php
-
-      - name: Verify results
-        run: php verify.php
