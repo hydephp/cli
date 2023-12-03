@@ -60,10 +60,11 @@ class NewProjectCommand extends Command
             }
         })::getLogo());
 
-        if ($this->argument('name')) {
-            return $logo;
+        if (! $this->argument('name')) {
+            // If we need to prompt for the name, we trim the empty lines from the logo, so it lays flat.
+            return substr($logo, 0, strrpos($logo, "\n", -2));
         }
 
-        return substr($logo, 0, strrpos($logo, "\n", -2));
+        return $logo;
     }
 }
