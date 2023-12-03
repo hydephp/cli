@@ -154,8 +154,16 @@ jobs:
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ../../System/bin/Assert.php "str_contains_all(shell_exec('hyde route:list'), ['_pages/demo.html', '_pages/index.blade.php', '_pages/about.md', '_posts/hello-world.md', '_docs/index.md'])"
 
-      - name: Run build
-        run: hyde build
+      - name: Test can build anonymous project
+        run: |
+          cd ./source/tests/Fixtures/anonymous-project
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde build'), 'Your static site has been built!')"
+          php ../../System/bin/Assert.php "file_exists('_site/posts/hello-world.html')"
+          php ../../System/bin/Assert.php "file_exists('_site/docs/index.html')"
+          php ../../System/bin/Assert.php "file_exists('_site/index.html')"
+          php ../../System/bin/Assert.php "file_exists('_site/about.html')"
+          php ../../System/bin/Assert.php "file_exists('_site/demo.html')"
+          
 
   matrix-test-executable:
     needs: build-executable
