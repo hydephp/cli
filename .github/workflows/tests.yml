@@ -115,7 +115,7 @@ jobs:
           name: hyde
           path: builds/hyde
 
-    # if not master we run simpler tests within one job
+  # if not master we run simpler tests within one job
   smoke-test-executable:
     needs: build-executable
     runs-on: ubuntu-latest
