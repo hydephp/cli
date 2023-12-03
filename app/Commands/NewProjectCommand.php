@@ -7,6 +7,7 @@ namespace App\Commands;
 use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use function Laravel\Prompts\text;
 
 /**
  * Creates a new Hyde project.
@@ -14,14 +15,14 @@ use Illuminate\Support\Facades\Process;
 class NewProjectCommand extends Command
 {
     /** @var string */
-    protected $signature = 'new {name : The name of the project}';
+    protected $signature = 'new {name? : The name of the project}';
 
     /** @var string */
     protected $description = 'Create a new Hyde project.';
 
     public function handle(): void
     {
-        $name = $this->argument('name');
+        $name = $this->argument('name') ?? text('What is the name of your project?');
 
         Process::command($this->getCommand($name))
             ->run(null, $this->bufferedOutput());
