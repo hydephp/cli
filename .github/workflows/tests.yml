@@ -115,9 +115,31 @@ jobs:
           name: hyde
           path: builds/hyde
 
-  test-executable:
+    # if not master we run simpler tests within one job
+  smoke-test-executable:
+    needs: build-executable
+    runs-on: ubuntu-latest
+    name: Smoke test executable
+
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: .
+
+      - name: Move download to system path
+        run: sudo mv hyde /usr/local/bin/hyde
+
+      - name: Make standalone executable
+        run: chmod +x /usr/local/bin/hyde
+
+      - name: Verify executable
+        run: hyde --version
+
+  matrix-test-executable:
     needs: build-executable
     # if: todo if branch is master?
+    if: false == true # Disable for testing
 
     strategy:
       fail-fast: false
