@@ -141,17 +141,18 @@ jobs:
       - name: Verify executable
         run: hyde
 
-      - name: Assert can run hyde
+      - name: Test can run standalone
         run: |
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version --no-ansi'), 'HydePHP')"
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --no-ansi'), 'USAGE:  <command> [options] [arguments]')"
           # TODO: Assert the new command is present, after we add it
           
-      - name: Assert can run in anonymous project
+      - name: Test can run in anonymous project
         run: |
           cd ./source/tests/Fixtures/anonymous-project
-          php ../../System/bin/Assert.php  "str_contains_all(shell_exec('hyde route:list'), ['_pages/demo.html', '_pages/index.blade.php', '_pages/about.md', '_posts/hello-world.md', '_docs/index.md'])"
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
+          php ../../System/bin/Assert.php "str_contains_all(shell_exec('hyde route:list'), ['_pages/demo.html', '_pages/index.blade.php', '_pages/about.md', '_posts/hello-world.md', '_docs/index.md'])"
 
       - name: Run build
         run: hyde build
