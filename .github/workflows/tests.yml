@@ -169,7 +169,14 @@ jobs:
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/about.html')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/demo.html')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/feed.xml')"
-          
+
+      - name: Test standalone proxies full project file
+        run: |
+          cd ./source/tests/Fixtures/full-project
+          php ../../System/bin/Assert.php "! str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
+          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'Mode: proxy')"
+
 
   matrix-test-executable:
     needs: build-executable
