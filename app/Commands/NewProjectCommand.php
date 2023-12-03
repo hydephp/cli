@@ -53,11 +53,13 @@ class NewProjectCommand extends Command
 
     private function getLogo(): string
     {
-        return trim((new class(app()) extends ConsoleServiceProvider {
+        $logo = trim((new class(app()) extends ConsoleServiceProvider {
             public static function getLogo(): string
             {
                 return self::logo();
             }
         })::getLogo());
+
+        return substr($logo, 0, strrpos($logo, "\n", -2));
     }
 }
