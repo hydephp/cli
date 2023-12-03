@@ -23,7 +23,7 @@ class NewProjectCommand extends Command
 
     public function handle(): void
     {
-        $this->output->write($this->getLogo());
+        $this->output->write($this->withAnsi() ? $this->getLogo() : 'Welcome to HydePHP!');
 
         $name = $this->argument('name') ?? text('What is the name of your project?', required: 'Please provide a name for your project.');
 
