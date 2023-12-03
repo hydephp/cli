@@ -16,12 +16,10 @@ if (empty($assertions)) {
 }
 
 foreach ($assertions as $assertion) {
-    $eval = eval("return $assertion;");
-    if ($eval) {
+    if (eval("return $assertion;")) {
         echo "✔  Assertion passed: $assertion" . PHP_EOL;
     } else {
         echo "❌ Assertion failed: $assertion" . PHP_EOL;
-        echo 'Context:' . $eval . PHP_EOL;
         exit(1);
     }
 }
