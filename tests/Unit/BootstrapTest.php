@@ -8,7 +8,7 @@ use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
 beforeEach(function () {
-    $this->app = require __DIR__ . '/../../app/bootstrap.php';
+    $this->app = require __DIR__ . '/../../bin/bootstrap.php';
 });
 
 test('bootstrapper returns application', function () {
