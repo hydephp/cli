@@ -5,26 +5,19 @@
  * This is the main entry point for the global Hyde binary,
  * and is what runs when you run `hyde` from the command line.
  *
- * The binary can be used in three ways:
- * - Installation mode: Allows new Hyde projects to be created
+ * The binary can be used in two ways:
  * - Anonymous mode: Uses the built-in scaffolding to allow Hyde to be used
  *                   without installation in a directory with just source files.
- *                   It includes the installation mode.
  * - Proxy mode: Defers to the Hyde installation in the current directory.
  */
-
-// If this is being run from the source code, run in artisan mode
-if (getcwd() === __DIR__ || getcwd() === __FILE__) {
-    return require_once __DIR__ . '/bin/hyde';
-}
 
 // Define working directory
 define('HYDE_WORKING_DIR', getcwd());
 
 // Determine the mode to run in
 define('HYDE_MODE', (function () {
-    // If the current directory contains a Hyde binary, run in proxy mode
-    if (file_exists(HYDE_WORKING_DIR . '/hyde')) {
+    // If the current directory contains a Hyde binary (that is not this file), run in proxy mode
+    if (file_exists(HYDE_WORKING_DIR . '/hyde') && realpath(HYDE_WORKING_DIR . '/hyde') !== realpath(__FILE__)) {
         return 'proxy';
     }
 
@@ -33,7 +26,7 @@ define('HYDE_MODE', (function () {
 })());
 
 return match (HYDE_MODE) {
-    'proxy' => require HYDE_WORKING_DIR . '/hyde',
+    'proxy' => require_once HYDE_WORKING_DIR . '/hyde',
     'anonymous' => (function() {
         // Bootstrap the Phar application
 

@@ -106,7 +106,7 @@ jobs:
           echo "Version: ${{ steps.build-version.outputs.sha_short }}"
 
       - name: Build executable
-        run: php hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
+        run: php ./bin/hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
 
       - name: Verify executable
         run: php builds/hyde --version
