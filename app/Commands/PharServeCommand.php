@@ -57,7 +57,7 @@ class PharServeCommand extends ServeCommand
     /** @internal */
     protected function getPharPath(): string
     {
-        return \Phar::running(false) ?: realpath(__DIR__.'/../../builds/hyde');
+        return \Phar::running(false) ?: realpath(__DIR__.'/../../builds/hyde') ?: 'false';
     }
 
     /** @internal */
