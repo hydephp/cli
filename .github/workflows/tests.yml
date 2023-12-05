@@ -198,11 +198,11 @@ jobs:
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'Mode: proxy')"
 
-  test-executable-server:
+  test-realtime-compiler:
     needs: build-executable
 
     runs-on: ubuntu-latest
-    name: Test executable (Realtime compiler)
+    name: Test realtime compiler through executable
     steps:
       - uses: shivammathur/setup-php@v2
         with:
