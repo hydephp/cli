@@ -44,7 +44,7 @@ return match (HYDE_MODE) {
         }
 
         // Register the autoloader
-        $autoloader = require_once file_exists(__DIR__.'/vendor/autoload.php') ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../autoload.php';
+        $autoloader = require_once __DIR__.'/vendor/autoload.php';
 
         // Create the application
         $app = require_once __DIR__.'/app/bootstrap.php';
