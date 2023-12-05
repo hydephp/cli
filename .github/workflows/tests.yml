@@ -221,7 +221,7 @@ jobs:
         run: mkdir _pages && echo "Hello World" > _pages/index.md
 
       - name: Start server
-        run: hyde serve
+        run: hyde serve &
 
       - name: Verify server is running
         run: curl -sS localhost:8080 | grep -q "Hello World"
