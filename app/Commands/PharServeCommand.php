@@ -54,13 +54,11 @@ class PharServeCommand extends ServeCommand
         return $this->isPharRunning() ? 'phar://hyde.phar/app/bootstrap.php' : realpath(__DIR__ . '/../bootstrap.php');
     }
 
-    /** @internal */
     protected function getPharPath(): string
     {
         return Phar::running(false) ?: realpath(__DIR__.'/../../builds/hyde') ?: 'false';
     }
 
-    /** @internal */
     protected function isPharRunning(): bool
     {
         return Phar::running() !== '';
