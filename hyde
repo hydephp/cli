@@ -39,6 +39,7 @@ return match (HYDE_MODE) {
         if (! is_dir(HYDE_TEMP_DIR)) {
             mkdir(HYDE_TEMP_DIR . '/config', recursive: true);
             mkdir(HYDE_TEMP_DIR . '/app/storage/framework/cache', recursive: true);
+            // Todo: See if we can do without this
             copy(__DIR__ . '/app/config.php', HYDE_TEMP_DIR . '/config/app.php');
         }
 
