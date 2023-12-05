@@ -21,19 +21,19 @@ class PharServeCommand extends ServeCommand
             return $default;
         }
 
-        return $this->createPharServer();
+        return $this->proxyPharServer();
     }
 
-    protected function createPharServer(): string
+    protected function proxyPharServer(): string
     {
-        // Create a temporary (cached) file to store the extracted server.php file
+        // Create a temporary (cached) file to store the server executable
         $path = HYDE_TEMP_DIR.'/bin/server.php';
 
         if (File::exists($path)) {
             return $path;
         }
 
-        $this->extractServerFromPhar();
+        $this->createServer($path);
 
         return $path;
     }
@@ -57,7 +57,7 @@ class PharServeCommand extends ServeCommand
     /** @internal */
     protected function getPharPath(): string
     {
-        return \Phar::running(false);
+        return \Phar::running(false) ?: realpath(__DIR__.'/../../builds/hyde');
     }
 
     /** @internal */
@@ -66,10 +66,23 @@ class PharServeCommand extends ServeCommand
         return $this->getPharUrl() !== '';
     }
 
-    /** @codeCoverageIgnore as tests are run from source code */
-    protected function extractServerFromPhar(): void
+    protected function createServer(string $path): void
     {
-        $phar = new \Phar($this->getPharUrl());
-        $phar->extractTo(HYDE_TEMP_DIR, 'bin/server.php');
+        File::ensureDirectoryExists(dirname($path));
+        File::put($path, $this->getServerStub($this->getPharPath()));
+    }
+
+    protected function getServerStub(string $phar): string
+    {
+        return <<<PHP
+        <?php
+        // Proxies the realtime compiler server from the Phar archive
+        
+        Phar::loadPhar('$phar', 'hyde.phar');
+        
+        putenv('HYDE_AUTOLOAD_PATH=phar://hyde.phar/vendor/autoload.php');
+        
+        return require 'phar://hyde.phar/vendor/hyde/realtime-compiler/bin/server.php';
+        PHP;
     }
 }

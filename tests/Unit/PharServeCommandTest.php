@@ -9,15 +9,19 @@ use Symfony\Component\Console\Output\BufferedOutput;
 const HYDE_WORKING_DIR= '/path/to/working/dir';
 const HYDE_TEMP_DIR= '/path/to/temp/dir';
 
-test('getExecutablePath method extracts server executable when running in Phar', function () {
+test('getExecutablePath method proxies server executable', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
     File::shouldReceive('exists')->twice()->andReturnFalse();
+    File::shouldReceive('ensureDirectoryExists')->once()->with('/path/to/temp/dir/bin');
+    File::shouldReceive('put')->once()->withArgs(function ($path, $contents) {
+        expect($path)->toBe('/path/to/temp/dir/bin/server.php')
+            ->and($contents)->toContain("putenv('HYDE_AUTOLOAD_PATH=phar://hyde.phar/vendor/autoload.php')");
+
+        return true;
+    });
 
     $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
-
     $command->shouldAllowMockingProtectedMethods();
-    $command->shouldReceive('isPharRunning')->once()->andReturnTrue();
-    $command->shouldReceive('extractServerFromPhar')->once();
 
     expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
 });
@@ -30,13 +34,12 @@ test('getExecutablePath method uses existing default executable when available',
 
     $command->shouldAllowMockingProtectedMethods();
 
-    $command->shouldReceive('isPharRunning')->once()->andReturnTrue();
-    $command->shouldNotReceive('extractServerFromPhar');
+    $command->shouldNotReceive('proxyPharServer');
 
     expect($command->getExecutablePath())->toBe('/path/to/working/dir/vendor/hyde/realtime-compiler/bin/server.php');
 });
 
-test('getExecutablePath method uses cached extracted executable when available', function () {
+test('getExecutablePath method uses cached executable proxy when available', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
     File::shouldReceive('exists')->once()->andReturnFalse();
     File::shouldReceive('exists')->once()->andReturnTrue();
@@ -45,16 +48,13 @@ test('getExecutablePath method uses cached extracted executable when available',
 
     $command->shouldAllowMockingProtectedMethods();
 
-    $command->shouldReceive('isPharRunning')->once()->andReturnTrue();
-    $command->shouldNotReceive('extractServerFromPhar');
-
     expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
 });
 
 it('merges in environment variables', function () {
     expect((new TestablePharServeCommand())->getEnvironmentVariables())->toBe([
         'HYDE_SERVER_REQUEST_OUTPUT' => false,
-        'HYDE_PHAR_PATH' => 'false',
+        'HYDE_PHAR_PATH' => realpath(__DIR__ . '/../../builds/hyde'),
         'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__ . '/../../app/bootstrap.php'),
         'HYDE_WORKING_DIR' => '/path/to/working/dir',
         'HYDE_TEMP_DIR' => '/path/to/temp/dir',
