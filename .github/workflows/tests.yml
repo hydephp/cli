@@ -196,3 +196,31 @@ jobs:
           cd ./source/tests/Fixtures/full-project
           php ../../System/bin/Assert.php "! str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
+  
+  test-realtime-compiler:
+    needs: build-executable
+
+    runs-on: ubuntu-latest
+    name: Test realtime compiler through executable
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: fileinfo
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: .
+
+      - name: Install standalone executable
+        run: sudo mv hyde /usr/local/bin/hyde && chmod +x /usr/local/bin/hyde
+
+      - name: Set up project
+        run: mkdir _pages && echo "Hello World" > _pages/index.md
+
+      - name: Start server
+        run: hyde serve &
+
+      - name: Verify server is running
+        run: curl -sS localhost:8080 | grep -q "Hello World"
