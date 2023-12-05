@@ -7,7 +7,6 @@ namespace App\Commands;
 use Phar;
 use Illuminate\Support\Facades\File;
 use Hyde\Console\Commands\ServeCommand;
-use Illuminate\Support\Arr;
 
 /**
  * Extended serve command that can run from the standalone executable.
@@ -41,12 +40,12 @@ class PharServeCommand extends ServeCommand
 
     protected function getEnvironmentVariables(): array
     {
-        return Arr::whereNotNull(array_merge(parent::getEnvironmentVariables(), [
+        return array_merge(parent::getEnvironmentVariables(), [
             'HYDE_PHAR_PATH' => $this->getPharPath() ?: 'false',
             'HYDE_BOOTSTRAP_PATH' => $this->getBootstrapPath(),
             'HYDE_WORKING_DIR' => HYDE_WORKING_DIR,
             'HYDE_TEMP_DIR' => HYDE_TEMP_DIR,
-        ]));
+        ]);
     }
 
     protected function getBootstrapPath(): string
