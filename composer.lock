@@ -1012,12 +1012,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/realtime-compiler.git",
-                "reference": "87adb5cb93e012ee331c447a48d8703998a562c3"
+                "reference": "c1031a266759b068bdbcbc6fd02c4a94018496bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/87adb5cb93e012ee331c447a48d8703998a562c3",
-                "reference": "87adb5cb93e012ee331c447a48d8703998a562c3",
+                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/c1031a266759b068bdbcbc6fd02c4a94018496bb",
+                "reference": "c1031a266759b068bdbcbc6fd02c4a94018496bb",
                 "shasum": ""
             },
             "require": {
@@ -1057,7 +1057,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-12-02T11:33:26+00:00"
+            "time": "2023-12-05T12:22:45+00:00"
         },
         {
             "name": "illuminate/bus",
