@@ -15,11 +15,6 @@ class PharServeCommand extends ServeCommand
 {
     protected function getExecutablePath(): string
     {
-        if (! $this->isPharRunning()) {
-            // We're running from the source code, so we need to use the server.php file
-            return __DIR__.'/../../bin/test-server.php';
-        }
-
         $default = parent::getExecutablePath();
 
         if (File::exists($default)) {
