@@ -46,7 +46,7 @@ return match (HYDE_MODE) {
         $autoloader = require_once file_exists(__DIR__.'/vendor/autoload.php') ?  __DIR__.'/vendor/autoload.php' : __DIR__.'/../autoload.php';
 
         // Create the application
-        $app = require_once __DIR__.'/app/anonymous-bootstrap.php';
+        $app = require_once __DIR__.'/app/bootstrap.php';
 
         // Run the application
         $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);

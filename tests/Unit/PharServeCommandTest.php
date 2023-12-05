@@ -69,7 +69,7 @@ it('merges in environment variables', function () {
     expect((new TestablePharServeCommand())->getEnvironmentVariables())->toBe([
         'HYDE_SERVER_REQUEST_OUTPUT' => false,
         'HYDE_PHAR_PATH' => 'false',
-        'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__ . '/../../app/anonymous-bootstrap.php'),
+        'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__ . '/../../app/bootstrap.php'),
         'HYDE_WORKING_DIR' => '/path/to/working/dir',
         'HYDE_TEMP_DIR' => '/path/to/temp/dir',
     ]);

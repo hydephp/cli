@@ -47,7 +47,7 @@ class PharServeCommand extends ServeCommand
     {
         return Arr::whereNotNull(array_merge(parent::getEnvironmentVariables(), [
             'HYDE_PHAR_PATH' => $this->getPharPath() ?: 'false',
-            'HYDE_BOOTSTRAP_PATH' => $this->isPharRunning() ? 'phar://hyde.phar/app/anonymous-bootstrap.php' : realpath(__DIR__.'/../anonymous-bootstrap.php'),
+            'HYDE_BOOTSTRAP_PATH' => $this->isPharRunning() ? 'phar://hyde.phar/app/bootstrap.php' : realpath(__DIR__.'/../bootstrap.php'),
             'HYDE_WORKING_DIR' => HYDE_WORKING_DIR,
             'HYDE_TEMP_DIR' => HYDE_TEMP_DIR,
         ]));

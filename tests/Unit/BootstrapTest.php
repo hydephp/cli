@@ -12,7 +12,7 @@ putenv('HYDE_WORKING_DIR=/path/to/working/dir');
 putenv('HYDE_TEMP_DIR=/path/to/temp/dir');
 
 beforeEach(function () {
-    $this->app = require __DIR__ . '/../../app/anonymous-bootstrap.php';
+    $this->app = require __DIR__ . '/../../app/bootstrap.php';
 });
 
 test('anonymous bootstrapper returns application', function () {
