@@ -166,6 +166,7 @@ jobs:
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --no-ansi'), 'USAGE:  <command> [options] [arguments]')"
           php ./source/tests/System/bin/Assert.php "str_contains_all(shell_exec('hyde --no-ansi'), ['new', 'Create a new Hyde project.'])"
+          php ./source/tests/System/bin/Assert.php "! str_contains(shell_exec('hyde --no-ansi'), 'Build the standalone executable')"
 
       - name: Test can run in anonymous project
         run: |
