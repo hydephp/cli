@@ -244,3 +244,16 @@ jobs:
 
       - name: Install standalone executable
         run: sudo mv hyde /usr/local/bin/hyde && chmod +x /usr/local/bin/hyde
+
+      - name: Checkout Assert.php
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/bin/Assert.php
+          sparse-checkout-cone-mode: false
+
+      - name: Set up assertion helper
+        run: sudo mv tests/System/bin/Assert.php /usr/local/bin/assert && sudo chmod +x /usr/local/bin/assert
+
+      - name: Test assertion helper
+        run: assert "str_contains('Hello World', 'Hello')"
