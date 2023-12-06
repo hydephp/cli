@@ -9,7 +9,13 @@
  * @example php Assert.php 'file_exists("composer.json")' 'is_dir("vendor")'
  */
 
-$assertions = array_slice($argv, 1);
+// Check if --literal flag is set
+if (in_array('--literal', $argv, true)) {
+    // Treat everything after --literal as a single string
+    $assertions = [implode(' ', array_slice($argv, array_search('--literal', $argv, true) + 1))];
+} else {
+    $assertions = array_slice($argv, 1);
+}
 
 if (empty($assertions)) {
     echo '⚠  No assertions provided' . PHP_EOL;
