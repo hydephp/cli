@@ -47,5 +47,5 @@ function file_exists_and_is_not_empty(string $path): bool
 
 function command_outputs(string $command, ?string ...$expectedOutputs): bool
 {
-    return str_contains_all(shell_exec(sprintf('hyde %s', $command)), $expectedOutputs);
+    return str_contains_all(shell_exec(sprintf('hyde %s --no-interaction', $command)), $expectedOutputs);
 }
