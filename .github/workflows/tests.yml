@@ -274,5 +274,5 @@ jobs:
       - name: Test can scaffold pages
         run: |
           assert "command_outputs('make:page &qt;My documentation page&qt; --type=docs', 'Creating a new Docs page with title: My documentation page')"
-          assert "file_exists_and_is_not_empty('_pages/docs/my-documentation-page.md')"
-          assert "file_contains('_pages/docs/my-documentation-page.md', '# My documentation page')"
+          assert "file_exists_and_is_not_empty('_docs/my-documentation-page.md')"
+          assert "file_contains('_docs/my-documentation-page.md', '# My documentation page')"
