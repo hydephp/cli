@@ -282,3 +282,10 @@ jobs:
           assert "command_outputs('make:post -n', 'Creating a new post!', 'Post created! File is saved to _posts/my-new-post.md')"
           assert "file_exists_and_is_not_empty('_posts/my-new-post.md')"
           assert "file_contains('_posts/my-new-post.md', &qt;title: 'My New Post'&qt;, '## Write something awesome.')"
+
+      - name: Test can build site
+        run: |
+          assert "command_outputs('build', 'Your static site has been built!')"
+          assert "file_exists_and_is_not_empty('_site/index.html')"
+          assert "file_exists_and_is_not_empty('_site/posts/my-new-post.html')"
+          assert "file_exists_and_is_not_empty('_site/docs/my-documentation-page.html')"
