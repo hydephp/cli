@@ -52,5 +52,10 @@ function file_contains(string $path, string ...$needles): bool
 
 function command_outputs(string $command, string ...$expectedOutputs): bool
 {
-    return str_contains_all(shell_exec(sprintf('hyde %s --no-interaction', $command)), $expectedOutputs);
+    $command = sprintf('hyde %s --no-interaction', $command);
+    $output = shell_exec($command);
+
+    echo sprintf("\$ %s \n\n%s\n", $command, $output);
+
+    return str_contains_all($output, $expectedOutputs);
 }
