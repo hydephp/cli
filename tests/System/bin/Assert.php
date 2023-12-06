@@ -23,6 +23,7 @@ if (empty($assertions)) {
 }
 
 foreach ($assertions as $assertion) {
+    $assertion = str_replace('&qt;', '"', $assertion);
     if (eval("return $assertion;")) {
         echo "✔  Assertion passed: $assertion" . PHP_EOL;
     } else {
