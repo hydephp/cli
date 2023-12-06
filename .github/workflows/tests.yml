@@ -225,3 +225,22 @@ jobs:
 
       - name: Verify server is running
         run: curl -sS localhost:8080 | grep -q "Hello World"
+
+  standalone-integration-tests:
+    needs: build-executable
+
+    runs-on: ubuntu-latest
+    name: High-level integration tests through executable
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: fileinfo
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: .
+
+      - name: Install standalone executable
+        run: sudo mv hyde /usr/local/bin/hyde && chmod +x /usr/local/bin/hyde
