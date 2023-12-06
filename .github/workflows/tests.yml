@@ -258,3 +258,6 @@ jobs:
 
       - name: Test assertion helper
         run: assert "str_contains('Hello World', 'Hello')"
+
+      - name: Test can run Hyde
+        run: assert command_outputs('', 'Experimental Standalone')
