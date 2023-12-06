@@ -12,12 +12,11 @@
     <source>
         <include>
             <directory suffix=".php">./app</directory>
-            <directory suffix=".php">./src</directory>
             <!-- <file>./hyde</file> -->
         </include>
         <exclude>
-            <directory suffix=".php">./app/storage</directory>
-            <file>./app/Commands/BuildApplicationBinaryCommand.php</file>
+            <directory>./app/storage</directory>
+            <file>./app/Commands/Internal/BuildApplicationBinaryCommand.php</file>
             <file>./app/config.php</file>
         </exclude>
     </source>
