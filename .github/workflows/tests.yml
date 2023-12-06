@@ -276,3 +276,9 @@ jobs:
           assert "command_outputs('make:page &qt;My documentation page&qt; --type=docs', 'Creating a new Docs page with title: My documentation page')"
           assert "file_exists_and_is_not_empty('_docs/my-documentation-page.md')"
           assert "file_contains('_docs/my-documentation-page.md', '# My documentation page')"
+
+      - name: Test can scaffold posts
+        run: |
+          assert "command_outputs('make:post -n', 'Creating a new post!', 'Post created! File is saved to _posts/my-new-post.md')"
+          assert "file_exists_and_is_not_empty('_posts/my-new-post.md')"
+          assert "file_contains('_posts/my-new-post.md', &qt;title: 'My New Post'&qt;, '## Write something awesome.')"
