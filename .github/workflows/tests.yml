@@ -270,3 +270,9 @@ jobs:
           echo "Latest Posts" > _pages/index.blade.php
           # assert "command_outputs('publish:homepage posts', 'Published page [posts]')"
           assert "file_contains('_pages/index.blade.php', 'Latest Posts')"
+
+      - name: Test can scaffold pages
+        run: |
+          assert "command_outputs('make:page "My documentation page" --type=docs', 'Creating a new Docs page with title: My documentation page')"
+          assert "file_exists_and_is_not_empty('_pages/docs/my-documentation-page.md')"
+          assert "file_contains('_pages/docs/my-documentation-page.md', '# My documentation page')"
