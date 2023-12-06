@@ -230,7 +230,7 @@ jobs:
     needs: build-executable
 
     runs-on: ubuntu-latest
-    name: High-level integration tests through executable
+    name: High-level integration tests
     steps:
       - uses: shivammathur/setup-php@v2
         with:
