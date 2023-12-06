@@ -16,8 +16,7 @@ jobs:
         with:
           php-version: "8.1"
           coverage: xdebug
-          extensions:
-            fileinfo
+          extensions: fileinfo, :php-psr
 
       - uses: actions/checkout@v3
 
@@ -58,7 +57,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: fileinfo
+          extensions: fileinfo, :php-psr
 
       - uses: actions/checkout@v3
 
@@ -134,7 +133,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: fileinfo
+          extensions: fileinfo, :php-psr
 
       - uses: actions/checkout@v3
         with:
@@ -208,7 +207,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          extensions: fileinfo
+          extensions: fileinfo, :php-psr
 
       - uses: actions/download-artifact@v3
         with:
@@ -236,7 +235,7 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          extensions: fileinfo
+          extensions: fileinfo, :php-psr
 
       - uses: actions/download-artifact@v3
         with:
