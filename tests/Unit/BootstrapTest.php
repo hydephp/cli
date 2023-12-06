@@ -2,25 +2,29 @@
 
 use Hyde\Foundation\HydeKernel;
 use Hyde\Foundation\Application;
+use Illuminate\Config\Repository;
 use Hyde\Foundation\ConsoleKernel;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 
+putenv('HYDE_WORKING_DIR=/path/to/working/dir');
+putenv('HYDE_TEMP_DIR=/path/to/temp/dir');
+
 beforeEach(function () {
     $this->app = require __DIR__ . '/../../app/bootstrap.php';
 });
 
-test('bootstrapper returns application', function () {
+test('anonymous bootstrapper returns application', function () {
     expect($this->app)->toBeInstanceOf(Application::class);
 });
 
 it('has correct base path', function () {
-    expect($this->app->basePath())->toBe(realpath(__DIR__ . '/../../'));
+    expect($this->app->basePath())->toBe('/path/to/working/dir');
 });
 
 it('has correct config path', function () {
-    expect($this->app->configPath())->toBe(realpath(__DIR__ . '/../../config'));
+    expect($this->app->configPath())->toBe('/path/to/working/dir'.DIRECTORY_SEPARATOR.'config');
 });
 
 it('binds console kernel', function () {
@@ -44,5 +48,23 @@ it('sets Hyde kernel instance', function () {
 });
 
 it('sets Hyde kernel path', function () {
-    expect(HydeKernel::getInstance()->path())->toBe(realpath(__DIR__ . '/../../'));
+    expect(HydeKernel::getInstance()->path())->toBe('/path/to/working/dir');
+});
+
+it('sets the cached packages path', function () {
+    expect($this->app->getCachedPackagesPath())->toBe('/path/to/temp/dir/app/storage/framework/cache/packages.php');
+});
+
+it('binds the temporary directory config path', function () {
+    ($this->app['events']->getListeners('bootstrapping: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
+
+    expect($this->app->configPath())->toBe('/path/to/temp/dir/config');
+});
+
+it('sets the cache path for the compiled views', function () {
+    $this->app['config'] = new Repository([]);
+
+    ($this->app['events']->getListeners('bootstrapped: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
+
+    expect($this->app['config']->get('view.compiled'))->toBe('/path/to/temp/dir/views');
 });

@@ -106,7 +106,7 @@ jobs:
           echo "Version: ${{ steps.build-version.outputs.sha_short }}"
 
       - name: Build executable
-        run: php hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
+        run: php ./bin/hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
 
       - name: Verify executable
         run: php builds/hyde --version
@@ -166,6 +166,7 @@ jobs:
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ./source/tests/System/bin/Assert.php "str_contains(shell_exec('hyde --no-ansi'), 'USAGE:  <command> [options] [arguments]')"
           php ./source/tests/System/bin/Assert.php "str_contains_all(shell_exec('hyde --no-ansi'), ['new', 'Create a new Hyde project.'])"
+          php ./source/tests/System/bin/Assert.php "! str_contains(shell_exec('hyde --no-ansi'), 'Build the standalone executable')"
 
       - name: Test can run in anonymous project
         run: |
@@ -196,8 +197,7 @@ jobs:
           cd ./source/tests/Fixtures/full-project
           php ../../System/bin/Assert.php "! str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
-          php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'Mode: proxy')"
-
+  
   test-realtime-compiler:
     needs: build-executable
 

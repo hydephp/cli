@@ -1,15 +1,5 @@
 <?php
 
-// Todo: These are needed for now until we normalize bootstrappers
-
-if (! defined('HYDE_WORKING_DIR')) {
-    define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR'));
-}
-
-if (! defined('HYDE_TEMP_DIR')) {
-    define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR'));
-}
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -21,23 +11,9 @@ if (! defined('HYDE_TEMP_DIR')) {
 |
 */
 
-$app = new class(HYDE_WORKING_DIR) extends \Hyde\Foundation\Application {
-    public function getCachedPackagesPath(): string
-    {
-        // Since we have a custom path for the cache directory, we need to return it here.
-        return HYDE_TEMP_DIR . '/app/storage/framework/cache/packages.php';
-    }
-
-    public function getNamespace()
-    {
-        if (file_exists($this->basePath('composer.json'))) {
-            return parent::getNamespace();
-        }
-
-        // Adds a fallback so that the application can still run without a composer.json file
-        return 'App';
-    }
-};
+$app = new \Hyde\Foundation\Application(
+    dirname(__DIR__)
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -62,26 +38,6 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
-| Bind Phar helpers
-|--------------------------------------------------------------------------
-|
-| Next, we need to bind some important locations into the container so
-| that the application can properly run inside the Phar archive.
-|
-*/
-
-$app->beforeBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
-    // Bind the temporary directory config path
-    $app->useConfigPath(HYDE_TEMP_DIR . '/config');
-});
-
-$app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
-    // Set the cache path for the compiled views
-    $app['config']->set('view.compiled', HYDE_TEMP_DIR . '/views');
-});
-
-/*
-|--------------------------------------------------------------------------
 | Set Important Hyde Configurations
 |--------------------------------------------------------------------------
 |
@@ -92,7 +48,7 @@ $app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, func
 */
 
 $hyde = new \Hyde\Foundation\HydeKernel(
-    HYDE_WORKING_DIR
+    dirname(__DIR__)
 );
 
 $app->singleton(

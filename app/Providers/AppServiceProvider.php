@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Commands\ServeCommand;
+use App\Commands\NewProjectCommand;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->commands([
-            \App\Commands\NewProjectCommand::class,
+            NewProjectCommand::class,
         ]);
     }
 
@@ -21,12 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // We need to register the PharServeCommand command here,
+        // We need to register the ServeCommand command here,
         // since we are overriding the default serve command in
         // when the default Hyde service provider registers.
 
         $this->commands([
-            \App\Commands\PharServeCommand::class,
+            ServeCommand::class,
         ]);
     }
 }

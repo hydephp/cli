@@ -3,11 +3,13 @@
   "directories": [
     "app",
     "config",
-    "vendor",
-    "bin"
+    "vendor"
   ],
   "files": [
     "composer.json"
+  ],
+  "blacklist": [
+    "app/Commands/Internal"
   ],
   "exclude-composer-files": false,
   "compression": "GZ",
