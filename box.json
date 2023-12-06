@@ -8,6 +8,9 @@
   "files": [
     "composer.json"
   ],
+  "blacklist": [
+    "app/Commands/Internal"
+  ],
   "exclude-composer-files": false,
   "compression": "GZ",
   "compactors": [
