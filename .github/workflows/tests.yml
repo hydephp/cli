@@ -120,6 +120,7 @@ jobs:
   test-executable:
     needs: build-executable
 
+    if: contains(github.event.pull_request.labels.*.name, 'halt-matrix-tests') != true
     strategy:
       fail-fast: false
       matrix:
