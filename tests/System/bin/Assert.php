@@ -45,7 +45,7 @@ function file_exists_and_is_not_empty(string $path): bool
     return file_exists($path) && filesize($path) > 0;
 }
 
-function command_outputs(string $command, string $expectedOutput, ...$moreExpectedOutputs): bool
+function command_outputs(string $command, ?string ...$expectedOutputs): bool
 {
-    return str_contains_all(shell_exec(sprintf('hyde %s', $command)), array_merge([$expectedOutput], $moreExpectedOutputs));
+    return str_contains_all(shell_exec(sprintf('hyde %s', $command)), $expectedOutputs);
 }
