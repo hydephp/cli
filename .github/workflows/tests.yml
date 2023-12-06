@@ -261,3 +261,9 @@ jobs:
 
       - name: Test can run Hyde
         run: assert "command_outputs('', 'Experimental Standalone')"
+
+      - name: Test can publish homepage
+        run: |
+          assert "command_outputs('publish:homepage posts', 'Published page [posts]')"
+          assert "file_exists_and_is_not_empty('_site/posts/hello-world.html')"
+          assert "file_contains('_pages/index.blade.php', 'Latest Posts')"
