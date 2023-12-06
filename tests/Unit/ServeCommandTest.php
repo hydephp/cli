@@ -1,7 +1,7 @@
 <?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 use Hyde\Foundation\HydeKernel;
-use App\Commands\PharServeCommand;
+use App\Commands\ServeCommand;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -20,7 +20,7 @@ test('getExecutablePath method proxies server executable', function () {
         return true;
     });
 
-    $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
+    $command = Mockery::mock(TestableServeCommand::class)->makePartial();
     $command->shouldAllowMockingProtectedMethods();
 
     expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
@@ -30,7 +30,7 @@ test('getExecutablePath method uses existing default executable when available',
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
     File::shouldReceive('exists')->once()->andReturnTrue();
 
-    $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
+    $command = Mockery::mock(TestableServeCommand::class)->makePartial();
 
     $command->shouldAllowMockingProtectedMethods();
 
@@ -44,7 +44,7 @@ test('getExecutablePath method uses cached executable proxy when available', fun
     File::shouldReceive('exists')->once()->andReturnFalse();
     File::shouldReceive('exists')->once()->andReturnTrue();
 
-    $command = Mockery::mock(TestablePharServeCommand::class)->makePartial();
+    $command = Mockery::mock(TestableServeCommand::class)->makePartial();
 
     $command->shouldAllowMockingProtectedMethods();
 
@@ -52,7 +52,7 @@ test('getExecutablePath method uses cached executable proxy when available', fun
 });
 
 it('merges in environment variables', function () {
-    expect((new TestablePharServeCommand())->getEnvironmentVariables())->toBe([
+    expect((new TestableServeCommand())->getEnvironmentVariables())->toBe([
         'HYDE_SERVER_REQUEST_OUTPUT' => false,
         'HYDE_PHAR_PATH' => realpath(__DIR__ . '/../../builds/hyde') ?: 'false',
         'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__ . '/../../app/bootstrap.php'),
@@ -61,7 +61,7 @@ it('merges in environment variables', function () {
     ]);
 });
 
-class TestablePharServeCommand extends PharServeCommand
+class TestableServeCommand extends ServeCommand
 {
     public function __construct()
     {

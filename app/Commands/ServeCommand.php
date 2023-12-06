@@ -6,12 +6,12 @@ namespace App\Commands;
 
 use Phar;
 use Illuminate\Support\Facades\File;
-use Hyde\Console\Commands\ServeCommand;
+use Hyde\Console\Commands\ServeCommand as BaseServeCommand;
 
 /**
  * Extended serve command that can run from the standalone executable.
  */
-class PharServeCommand extends ServeCommand
+class ServeCommand extends BaseServeCommand
 {
     protected function getExecutablePath(): string
     {
