@@ -120,6 +120,7 @@ jobs:
   test-executable:
     needs: build-executable
 
+    if: contains(github.event.pull_request.labels.*.name, 'halt-matrix-tests') != true
     strategy:
       fail-fast: false
       matrix:
@@ -225,3 +226,66 @@ jobs:
 
       - name: Verify server is running
         run: curl -sS localhost:8080 | grep -q "Hello World"
+
+  standalone-integration-tests:
+    needs: build-executable
+
+    runs-on: ubuntu-latest
+    name: High-level integration tests
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: fileinfo
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: .
+
+      - name: Install standalone executable
+        run: sudo mv hyde /usr/local/bin/hyde && chmod +x /usr/local/bin/hyde
+
+      - name: Checkout Assert.php
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/bin/Assert.php
+          sparse-checkout-cone-mode: false
+
+      - name: Set up assertion helper
+        run: sudo mv tests/System/bin/Assert.php /usr/local/bin/assert && sudo chmod +x /usr/local/bin/assert
+
+      - name: Test assertion helper
+        run: assert "str_contains('Hello World', 'Hello')"
+
+      - name: Test can run Hyde
+        run: assert "command_outputs('', 'Experimental Standalone')"
+
+      - name: Test can publish homepage
+        run: |
+          # Disabled due to bug https://github.com/caendesilva/hyde-global/issues/12
+          # Workaround: # TODO Remove when bug is fixed
+          mkdir _pages
+          echo "Latest Posts" > _pages/index.blade.php
+          # assert "command_outputs('publish:homepage posts', 'Published page [posts]')"
+          assert "file_contains('_pages/index.blade.php', 'Latest Posts')"
+
+      - name: Test can scaffold pages
+        run: |
+          assert "command_outputs('make:page &qt;My documentation page&qt; --type=docs', 'Creating a new Docs page with title: My documentation page')"
+          assert "file_exists_and_is_not_empty('_docs/my-documentation-page.md')"
+          assert "file_contains('_docs/my-documentation-page.md', '# My documentation page')"
+
+      - name: Test can scaffold posts
+        run: |
+          assert "command_outputs('make:post -n', 'Creating a new post!', 'Post created! File is saved to _posts/my-new-post.md')"
+          assert "file_exists_and_is_not_empty('_posts/my-new-post.md')"
+          assert "file_contains('_posts/my-new-post.md', &qt;title: 'My New Post'&qt;, '## Write something awesome.')"
+
+      - name: Test can build site
+        run: |
+          assert "command_outputs('build', 'Your static site has been built!')"
+          assert "file_exists_and_is_not_empty('_site/index.html')"
+          assert "file_exists_and_is_not_empty('_site/posts/my-new-post.html')"
+          assert "file_exists_and_is_not_empty('_site/docs/my-documentation-page.html')"

@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 /**
@@ -8,7 +9,13 @@
  * @example php Assert.php 'file_exists("composer.json")' 'is_dir("vendor")'
  */
 
-$assertions = array_slice($argv, 1);
+// Check if --literal flag is set
+if (in_array('--literal', $argv, true)) {
+    // Treat everything after --literal as a single string
+    $assertions = [implode(' ', array_slice($argv, array_search('--literal', $argv, true) + 1))];
+} else {
+    $assertions = array_slice($argv, 1);
+}
 
 if (empty($assertions)) {
     echo '⚠  No assertions provided' . PHP_EOL;
@@ -16,6 +23,7 @@ if (empty($assertions)) {
 }
 
 foreach ($assertions as $assertion) {
+    $assertion = str_replace('&qt;', '"', $assertion);
     if (eval("return $assertion;")) {
         echo "✔  Assertion passed: $assertion" . PHP_EOL;
     } else {
@@ -42,4 +50,19 @@ function str_contains_all(string $haystack, array $needles): bool
 function file_exists_and_is_not_empty(string $path): bool
 {
     return file_exists($path) && filesize($path) > 0;
+}
+
+function file_contains(string $path, string ...$needles): bool
+{
+    return file_exists_and_is_not_empty($path) && str_contains_all(file_get_contents($path), $needles);
+}
+
+function command_outputs(string $command, string ...$expectedOutputs): bool
+{
+    $command = sprintf('hyde %s --no-interaction', $command);
+    $output = shell_exec($command);
+
+    echo sprintf("\$ %s \n\n%s\n", $command, $output);
+
+    return str_contains_all($output, $expectedOutputs);
 }
