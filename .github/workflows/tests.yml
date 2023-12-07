@@ -265,7 +265,7 @@ jobs:
       - name: Test can publish homepage
         run: |
           assert "command_outputs('publish:homepage posts', 'Published page [posts]')"
-          assert "file_exists_and_is_not_empty('_site/posts/hello-world.html')"
+          assert "file_exists_and_is_not_empty('_pages/index.blade.php')"
           assert "file_contains('_pages/index.blade.php', 'Latest Posts')"
 
       - name: Test can scaffold pages
