@@ -9,6 +9,9 @@ it('registers commands', function () {
     $app = tap(new Application(), function (Application $app) {
         $app->register(AppServiceProvider::class);
         $app->boot();
+
+        // Bind files to the container, as publish command constructor requires it.
+        $app->instance('files', new \Illuminate\Filesystem\Filesystem());
     });
 
     Artisan::starting(function (Artisan $artisan) {
