@@ -264,11 +264,8 @@ jobs:
 
       - name: Test can publish homepage
         run: |
-          # Disabled due to bug https://github.com/caendesilva/hyde-global/issues/12
-          # Workaround: # TODO Remove when bug is fixed
-          mkdir _pages
-          echo "Latest Posts" > _pages/index.blade.php
-          # assert "command_outputs('publish:homepage posts', 'Published page [posts]')"
+          assert "command_outputs('publish:homepage posts', 'Published page [posts]')"
+          assert "file_exists_and_is_not_empty('_pages/index.blade.php')"
           assert "file_contains('_pages/index.blade.php', 'Latest Posts')"
 
       - name: Test can scaffold pages
