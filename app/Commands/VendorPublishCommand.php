@@ -12,6 +12,7 @@ use function Hyde\normalize_slashes;
 /** @internal Provides Phar support */
 class VendorPublishCommand extends BaseVendorPublishCommand
 {
+    /** @codeCoverageIgnore */
     protected function publishItem($from, $to): void
     {
         parent::publishItem($this->normalizePath($from), $to);
