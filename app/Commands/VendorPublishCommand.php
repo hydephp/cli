@@ -9,15 +9,16 @@ use Hyde\Foundation\PharSupport;
 use Illuminate\Foundation\Console\VendorPublishCommand as BaseVendorPublishCommand;
 use function Hyde\normalize_slashes;
 
-/** @experimental */
+/** @internal Provides Phar support */
 class VendorPublishCommand extends BaseVendorPublishCommand
 {
-    /** @internal Provides Phar support */
     protected function publishItem($from, $to): void
     {
-        $from = Str::after(normalize_slashes($from), 'vendor/hyde/framework/');
-        $from = PharSupport::vendorPath($from);
+        parent::publishItem($this->normalizePath($from), $to);
+    }
 
-        parent::publishItem($from, $to);
+    protected function normalizePath(string $from): string
+    {
+        return PharSupport::vendorPath(Str::after(normalize_slashes($from), 'vendor/hyde/framework/'));
     }
 }
