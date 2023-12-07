@@ -3,6 +3,7 @@
 use Hyde\Foundation\Application;
 use App\Commands\ServeCommand;
 use App\Providers\AppServiceProvider;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\Application as Artisan;
 
 it('registers commands', function () {
@@ -11,7 +12,7 @@ it('registers commands', function () {
         $app->boot();
 
         // Bind files to the container, as publish command constructor requires it.
-        $app->instance('files', new \Illuminate\Filesystem\Filesystem());
+        $app->instance('files', new Filesystem());
     });
 
     Artisan::starting(function (Artisan $artisan) {
