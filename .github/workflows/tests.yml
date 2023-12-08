@@ -279,6 +279,9 @@ jobs:
       - name: Test returned output
         run: assert "command_outputs('', 'Hello World')"
 
+      - name: Test output contains no errors
+        run: assert "! str_contains(shell_exec('hyde'), 'error') && ! str_contains(shell_exec('hyde'), 'exception') && ! str_contains(shell_exec('hyde'), 'warning')"
+
   standalone-integration-tests:
     needs: build-executable
 
