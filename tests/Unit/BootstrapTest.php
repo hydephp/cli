@@ -1,18 +1,18 @@
 <?php /** @noinspection PhpPossiblePolymorphicInvocationInspection */
 
-use Hyde\Foundation\HydeKernel;
 use Hyde\Foundation\Application;
-use Illuminate\Config\Repository;
 use Hyde\Foundation\ConsoleKernel;
+use Hyde\Foundation\HydeKernel;
+use Illuminate\Config\Repository;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Exceptions\Handler;
 
 putenv('HYDE_WORKING_DIR=/path/to/working/dir');
 putenv('HYDE_TEMP_DIR=/path/to/temp/dir');
 
 beforeEach(function () {
-    $this->app = require __DIR__ . '/../../app/bootstrap.php';
+    $this->app = require __DIR__.'/../../app/bootstrap.php';
 });
 
 test('anonymous bootstrapper returns application', function () {

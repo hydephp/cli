@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Commands;
 
 use Closure;
+use Hyde\Console\ConsoleServiceProvider;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
-use Hyde\Console\ConsoleServiceProvider;
+
 use function Laravel\Prompts\text;
 
 /**
@@ -53,7 +54,8 @@ class NewProjectCommand extends Command
 
     private function getLogo(): string
     {
-        $logo = trim((new class(app()) extends ConsoleServiceProvider {
+        $logo = trim((new class(app()) extends ConsoleServiceProvider
+        {
             public static function getLogo(): string
             {
                 return self::logo();

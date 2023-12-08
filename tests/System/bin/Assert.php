@@ -18,16 +18,16 @@ if (in_array('--literal', $argv, true)) {
 }
 
 if (empty($assertions)) {
-    echo '⚠  No assertions provided' . PHP_EOL;
+    echo '⚠  No assertions provided'.PHP_EOL;
     exit(2);
 }
 
 foreach ($assertions as $assertion) {
     $assertion = str_replace('&qt;', '"', $assertion);
     if (eval("return $assertion;")) {
-        echo "✔  Assertion passed: $assertion" . PHP_EOL;
+        echo "✔  Assertion passed: $assertion".PHP_EOL;
     } else {
-        echo "❌ Assertion failed: $assertion" . PHP_EOL;
+        echo "❌ Assertion failed: $assertion".PHP_EOL;
         exit(1);
     }
 }
@@ -39,7 +39,7 @@ exit(0);
 function str_contains_all(string $haystack, array $needles): bool
 {
     foreach ($needles as $needle) {
-        if (!str_contains($haystack, $needle)) {
+        if (! str_contains($haystack, $needle)) {
             return false;
         }
     }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Commands\Internal;
 
-use Throwable;
-use LaravelZero\Framework\Commands\Command;
 use LaravelZero\Framework\Commands\BuildCommand;
+use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Throwable;
 
 /**
  * @internal Wrapper for {@see \LaravelZero\Framework\Commands\BuildCommand}
@@ -28,7 +28,7 @@ class BuildApplicationBinaryCommand extends Command
             $this->output = new ConsoleOutput();
 
             return $this->call(BuildCommand::class, [
-                '--build-version' => ($this->getApplication()->getVersion() . ($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '')),
+                '--build-version' => ($this->getApplication()->getVersion().($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '')),
             ]);
         } catch (Throwable $exception) {
             throw $exception;
@@ -39,13 +39,13 @@ class BuildApplicationBinaryCommand extends Command
 
     protected function setupBuildEnvironment(): void
     {
-        copy(__DIR__ . '/../../config.php', __DIR__ . '/../../../config/app.php');
-        copy(__DIR__ . '/../../../box.json', __DIR__ . '/../../../box.json.bak');
+        copy(__DIR__.'/../../config.php', __DIR__.'/../../../config/app.php');
+        copy(__DIR__.'/../../../box.json', __DIR__.'/../../../box.json.bak');
     }
 
     protected function resetBuildEnvironment(): void
     {
-        unlink(__DIR__ . '/../../../config/app.php');
-        rename(__DIR__ . '/../../../box.json.bak', __DIR__ . '/../../../box.json');
+        unlink(__DIR__.'/../../../config/app.php');
+        rename(__DIR__.'/../../../box.json.bak', __DIR__.'/../../../box.json');
     }
 }

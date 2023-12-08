@@ -1,13 +1,13 @@
 <?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
-use Hyde\Foundation\HydeKernel;
 use App\Commands\ServeCommand;
+use Hyde\Foundation\HydeKernel;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-const HYDE_WORKING_DIR= '/path/to/working/dir';
-const HYDE_TEMP_DIR= '/path/to/temp/dir';
+const HYDE_WORKING_DIR = '/path/to/working/dir';
+const HYDE_TEMP_DIR = '/path/to/temp/dir';
 
 test('getExecutablePath method proxies server executable', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
@@ -54,8 +54,8 @@ test('getExecutablePath method uses cached executable proxy when available', fun
 it('merges in environment variables', function () {
     expect((new TestableServeCommand())->getEnvironmentVariables())->toBe([
         'HYDE_SERVER_REQUEST_OUTPUT' => false,
-        'HYDE_PHAR_PATH' => realpath(__DIR__ . '/../../builds/hyde') ?: 'false',
-        'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__ . '/../../app/bootstrap.php'),
+        'HYDE_PHAR_PATH' => realpath(__DIR__.'/../../builds/hyde') ?: 'false',
+        'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__.'/../../app/bootstrap.php'),
         'HYDE_WORKING_DIR' => '/path/to/working/dir',
         'HYDE_TEMP_DIR' => '/path/to/temp/dir',
     ]);

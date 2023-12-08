@@ -1,6 +1,6 @@
 <?php
 
-# Generate test files
+// Generate test files
 
 $files = [
     '_media/app.css',
@@ -14,7 +14,7 @@ $files = [
 foreach ($files as $file) {
     $dir = dirname($file);
 
-    if (!is_dir($dir)) {
+    if (! is_dir($dir)) {
         mkdir($dir);
     }
 
