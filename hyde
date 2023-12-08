@@ -17,14 +17,14 @@ define('HYDE_WORKING_DIR', getcwd());
 // Determine the mode to run in
 
 // If the current directory contains a Hyde binary (that is not this file), run in proxy mode
-if (file_exists(HYDE_WORKING_DIR . '/hyde') && realpath(HYDE_WORKING_DIR . '/hyde') !== realpath(__FILE__)) {
-    return require_once HYDE_WORKING_DIR . '/hyde';
+if (file_exists(HYDE_WORKING_DIR.'/hyde') && realpath(HYDE_WORKING_DIR.'/hyde') !== realpath(__FILE__)) {
+    return require_once HYDE_WORKING_DIR.'/hyde';
 }
 
 // Otherwise, run in anonymous mode
 return (function () {
     // Register the autoloader
-    $autoloader = require_once __DIR__ . '/vendor/autoload.php';
+    $autoloader = require_once __DIR__.'/vendor/autoload.php';
 
     // Bootstrap the Phar application
 
@@ -36,15 +36,15 @@ return (function () {
     ));
 
     // Create and set up the temporary directory if it doesn't exist
-    if (!is_dir(HYDE_TEMP_DIR)) {
-        mkdir(HYDE_TEMP_DIR . '/config', recursive: true);
-        mkdir(HYDE_TEMP_DIR . '/app/storage/framework/cache', recursive: true);
+    if (! is_dir(HYDE_TEMP_DIR)) {
+        mkdir(HYDE_TEMP_DIR.'/config', recursive: true);
+        mkdir(HYDE_TEMP_DIR.'/app/storage/framework/cache', recursive: true);
         // Todo: See if we can do without this
-        copy(__DIR__ . '/app/config.php', HYDE_TEMP_DIR . '/config/app.php');
+        copy(__DIR__.'/app/config.php', HYDE_TEMP_DIR.'/config/app.php');
     }
 
     // Create the application
-    $app = require_once __DIR__ . '/app/bootstrap.php';
+    $app = require_once __DIR__.'/app/bootstrap.php';
 
     // Run the application
     $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
