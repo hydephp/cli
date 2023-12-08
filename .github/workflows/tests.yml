@@ -236,7 +236,7 @@ jobs:
         branch: [ master, develop ]
 
     runs-on: ubuntu-latest
-    name: Test live executable proxying (${{ matrix.branch }})
+    name: Test live executable proxying (hyde@${{ matrix.branch }})
 
     steps:
       - uses: shivammathur/setup-php@v2
