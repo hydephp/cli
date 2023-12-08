@@ -268,7 +268,7 @@ jobs:
       - name: Set up mock support files
         run: |
           # Create fake composer vendor autoload file
-          mkdir vendor && echo "<?php set_error_handler(function($errno,$errstr,$errfile,$errline){throw new \ErrorException($errstr,0,$errno,$errfile,$errline);});return[];" > vendor/autoload.php
+          mkdir vendor && echo '<?php set_error_handler(function($errno,$errstr,$errfile,$errline){throw new \ErrorException($errstr,0,$errno,$errfile,$errline);});return[];' > vendor/autoload.php
           
           # Create fake app bootstrap file
           mkdir app && echo "<?php namespace{echo 'Hello World'.PHP_EOL;return new class{public function make(){return new class{public function handle(){return 0;}public function terminate(){return 0;}};}};}namespace Symfony\Component\Console\Input{class ArgvInput{}}namespace Symfony\Component\Console\Output{class ConsoleOutput{}}" > app/bootstrap.php
