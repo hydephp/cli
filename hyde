@@ -23,6 +23,9 @@ if (file_exists(HYDE_WORKING_DIR . '/hyde') && realpath(HYDE_WORKING_DIR . '/hyd
 
 // Otherwise, run in anonymous mode
 return (function () {
+    // Register the autoloader
+    $autoloader = require_once __DIR__ . '/vendor/autoload.php';
+
     // Bootstrap the Phar application
 
     // As the Phar archive is readonly, we define a temporary directory
@@ -41,9 +44,6 @@ return (function () {
         // Todo: See if we can do without this
         copy(__DIR__ . '/app/config.php', HYDE_TEMP_DIR . '/config/app.php');
     }
-
-    // Register the autoloader
-    $autoloader = require_once __DIR__ . '/vendor/autoload.php';
 
     // Create the application
     $app = require_once __DIR__ . '/app/bootstrap.php';
