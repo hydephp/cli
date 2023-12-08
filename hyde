@@ -11,9 +11,6 @@
  * - Proxy mode: Defers to the Hyde installation in the current directory.
  */
 
-// Define working directory
-define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR') ?: getcwd());
-
 // Determine the mode to run in
 
 // If the current directory contains a Hyde binary (that is not this file), run in proxy mode

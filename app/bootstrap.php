@@ -2,6 +2,9 @@
 
 // Bootstrap the Phar application
 
+// Define working directory
+define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR') ?: getcwd());
+
 // As the Phar archive is readonly, we define a temporary directory
 // that Laravel can use to store the compiled views, cache files,
 // and config files, all to allow the binary to run anywhere,
