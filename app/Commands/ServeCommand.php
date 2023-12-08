@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
-use Phar;
-use Illuminate\Support\Facades\File;
 use Hyde\Console\Commands\ServeCommand as BaseServeCommand;
+use Illuminate\Support\Facades\File;
+use Phar;
 
 /**
  * Extended serve command that can run from the standalone executable.
@@ -50,7 +50,7 @@ class ServeCommand extends BaseServeCommand
 
     protected function getBootstrapPath(): string
     {
-        return $this->isPharRunning() ? 'phar://hyde.phar/app/bootstrap.php' : realpath(__DIR__ . '/../bootstrap.php');
+        return $this->isPharRunning() ? 'phar://hyde.phar/app/bootstrap.php' : realpath(__DIR__.'/../bootstrap.php');
     }
 
     protected function getPharPath(): string

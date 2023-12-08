@@ -11,7 +11,7 @@ test('custom application extends Hyde application', function () {
 });
 
 it('uses custom cached packages path', function () {
-    expect((new Application())->getCachedPackagesPath())->toBe(HYDE_TEMP_DIR . '/app/storage/framework/cache/packages.php');
+    expect((new Application())->getCachedPackagesPath())->toBe(HYDE_TEMP_DIR.'/app/storage/framework/cache/packages.php');
 });
 
 it('uses custom namespace', function () {

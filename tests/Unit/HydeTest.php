@@ -1,7 +1,7 @@
 <?php
 
 test('hyde runs', function () {
-    $hyde = __DIR__ . '/../../hyde';
+    $hyde = __DIR__.'/../../hyde';
 
     $output = shell_exec("php $hyde");
 

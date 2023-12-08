@@ -9,7 +9,7 @@ class Application extends \Hyde\Foundation\Application
     public function getCachedPackagesPath(): string
     {
         // Since we have a custom path for the cache directory, we need to return it here.
-        return HYDE_TEMP_DIR . '/app/storage/framework/cache/packages.php';
+        return HYDE_TEMP_DIR.'/app/storage/framework/cache/packages.php';
     }
 
     public function getNamespace(): string

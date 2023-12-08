@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Commands\ServeCommand;
 use App\Commands\NewProjectCommand;
+use App\Commands\ServeCommand;
 use App\Commands\VendorPublishCommand;
 use Illuminate\Support\ServiceProvider;
 

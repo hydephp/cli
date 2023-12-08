@@ -56,12 +56,12 @@ $app->singleton(
 
 $app->beforeBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
     // Bind the temporary directory config path
-    $app->useConfigPath(HYDE_TEMP_DIR . '/config');
+    $app->useConfigPath(HYDE_TEMP_DIR.'/config');
 });
 
 $app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
     // Set the cache path for the compiled views
-    $app['config']->set('view.compiled', HYDE_TEMP_DIR . '/views');
+    $app['config']->set('view.compiled', HYDE_TEMP_DIR.'/views');
 });
 
 /*
@@ -80,7 +80,7 @@ $hyde = new \Hyde\Foundation\HydeKernel(
 );
 
 $app->singleton(
-    \Hyde\Foundation\HydeKernel::class, function (): \Hyde\Foundation\HydeKernel {
+    \Hyde\Foundation\HydeKernel::class, function (): Hyde\Foundation\HydeKernel {
         return \Hyde\Foundation\HydeKernel::getInstance();
     }
 );
