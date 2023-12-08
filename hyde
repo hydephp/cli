@@ -16,16 +16,13 @@ define('HYDE_WORKING_DIR', getcwd());
 
 // Determine the mode to run in
 
-return match ((function () {
-    // If the current directory contains a Hyde binary (that is not this file), run in proxy mode
-    if (file_exists(HYDE_WORKING_DIR . '/hyde') && realpath(HYDE_WORKING_DIR . '/hyde') !== realpath(__FILE__)) {
-        return 'proxy';
-    }
+// If the current directory contains a Hyde binary (that is not this file), run in proxy mode
+if (file_exists(HYDE_WORKING_DIR . '/hyde') && realpath(HYDE_WORKING_DIR . '/hyde') !== realpath(__FILE__)) {
+    return require_once HYDE_WORKING_DIR . '/hyde';
+}
 
-    // Otherwise, run in anonymous mode
-    return 'anonymous';
-})()) {
-    'proxy' => require_once HYDE_WORKING_DIR . '/hyde',
+// Otherwise, run in anonymous mode
+return match ('anonymous') {
     'anonymous' => (function() {
         // Bootstrap the Phar application
 
