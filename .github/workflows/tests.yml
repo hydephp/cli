@@ -274,6 +274,9 @@ jobs:
           mkdir app && echo "<?php namespace{echo 'Hello World'.PHP_EOL;return new class{public function make(){return new class{public function handle(){return 0;}public function terminate(){return 0;}};}};}namespace Symfony\Component\Console\Input{class ArgvInput{}}namespace Symfony\Component\Console\Output{class ConsoleOutput{}}" > app/bootstrap.php
 
       - name: Test can run Hyde
+        run: hyde
+
+      - name: Test returned output
         run: assert "command_outputs('', 'Hello World')"
 
   standalone-integration-tests:
