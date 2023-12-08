@@ -32,9 +32,7 @@ return (function () {
     // that Laravel can use to store the compiled views, cache files,
     // and config files, all to allow the binary to run anywhere,
     define('HYDE_TEMP_DIR', sprintf('%s/hyde/%s',
-        // Todo: Include the application version in the hash string
-        //       to force regeneration when updating the binary.
-        sys_get_temp_dir(), md5(HYDE_WORKING_DIR)
+        sys_get_temp_dir(), md5(HYDE_WORKING_DIR.Hyde\Foundation\HydeKernel::VERSION)
     ));
 
     // Create and set up the temporary directory if it doesn't exist
