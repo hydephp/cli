@@ -3,9 +3,6 @@
 use App\Application;
 use Hyde\Foundation\Application as HydeApplication;
 
-const HYDE_WORKING_DIR = '/path/to/working/dir';
-const HYDE_TEMP_DIR = '/path/to/temp/dir';
-
 test('custom application extends Hyde application', function () {
     expect(new Application())->toBeInstanceOf(HydeApplication::class);
 });

@@ -8,9 +8,6 @@ use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
 
-putenv('HYDE_WORKING_DIR=/path/to/working/dir');
-putenv('HYDE_TEMP_DIR=/path/to/temp/dir');
-
 beforeEach(function () {
     $this->app = require __DIR__.'/../../app/bootstrap.php';
 });
