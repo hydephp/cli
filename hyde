@@ -19,23 +19,22 @@ if (file_exists(getcwd().'/hyde') && realpath(getcwd().'/hyde') !== realpath(__F
 }
 
 // Otherwise, run in anonymous mode
-return (function () {
-    // Register the autoloader
-    $autoloader = require_once __DIR__.'/vendor/autoload.php';
 
-    // Create the application
-    $app = require_once __DIR__.'/app/bootstrap.php';
+// Register the autoloader
+$autoloader = require_once __DIR__.'/vendor/autoload.php';
 
-    // Run the application
-    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+// Create the application
+$app = require_once __DIR__.'/app/bootstrap.php';
 
-    $status = $kernel->handle(
-        $input = new Symfony\Component\Console\Input\ArgvInput,
-        new Symfony\Component\Console\Output\ConsoleOutput
-    );
+// Run the application
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
-    // Shutdown the application
+$status = $kernel->handle(
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+);
 
-    $kernel->terminate($input, $status);
-    exit($status);
-})();
+// Shutdown the application
+
+$kernel->terminate($input, $status);
+exit($status);
