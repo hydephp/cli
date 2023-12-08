@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Process;
 
 function bootstrap(): Application
 {
-    $app = require __DIR__.'/../../bin/bootstrap.php';
+    $app = require __DIR__.'/../../app/bootstrap.php';
 
     $app->make(Kernel::class)->bootstrap();
 
