@@ -3,6 +3,21 @@
 
 define('LARAVEL_START', microtime(true));
 
+/*
+|--------------------------------------------------------------------------
+| The Standalone HydeCLI Application
+|--------------------------------------------------------------------------
+|
+| This file is the entry point for the standalone HydeCLI application.
+| When called from a project directory already containing a HydePHP
+| installation, it will proxy the call to that `Hyde` binary.
+|
+| When running in a directory with just source files, the HydeCLI
+| standalone will use its internal project files to run HydePHP
+| using the source files allowing for a portable project.
+|
+*/
+
 // If the current directory contains a Hyde binary (that is not this file), run in proxy mode
 if (file_exists(getcwd().'/hyde') && realpath(getcwd().'/hyde') !== realpath(__FILE__)) {
     return require_once getcwd().'/hyde';
