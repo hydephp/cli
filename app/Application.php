@@ -12,7 +12,7 @@ class Application extends \Hyde\Foundation\Application
         return HYDE_TEMP_DIR . '/app/storage/framework/cache/packages.php';
     }
 
-    public function getNamespace()
+    public function getNamespace(): string
     {
         if (file_exists($this->basePath('composer.json'))) {
             return parent::getNamespace();
