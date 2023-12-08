@@ -1,15 +1,5 @@
 <?php
 
-// Todo: These are needed for now until we normalize bootstrappers
-
-if (! defined('HYDE_WORKING_DIR')) {
-    define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR'));
-}
-
-if (! defined('HYDE_TEMP_DIR')) {
-    define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR'));
-}
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
