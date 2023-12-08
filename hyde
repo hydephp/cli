@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-define('LARAVEL_START', microtime(true));
-
 /*
 |--------------------------------------------------------------------------
 | The Standalone HydeCLI Application
@@ -22,6 +20,8 @@ define('LARAVEL_START', microtime(true));
 if (file_exists(getcwd().'/hyde') && realpath(getcwd().'/hyde') !== realpath(__FILE__)) {
     return require_once getcwd().'/hyde';
 }
+
+define('LARAVEL_START', microtime(true));
 
 /*
 |--------------------------------------------------------------------------
