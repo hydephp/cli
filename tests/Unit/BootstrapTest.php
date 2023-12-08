@@ -16,7 +16,8 @@ beforeEach(function () {
 });
 
 test('anonymous bootstrapper returns application', function () {
-    expect($this->app)->toBeInstanceOf(Application::class);
+    expect($this->app)->toBeInstanceOf(\App\Application::class)
+        ->and($this->app)->toBeInstanceOf(Application::class);
 });
 
 it('has correct base path', function () {
