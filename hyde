@@ -37,4 +37,5 @@ $status = $kernel->handle(
 // Shutdown the application
 
 $kernel->terminate($input, $status);
+
 exit($status);
