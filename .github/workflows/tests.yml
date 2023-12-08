@@ -273,6 +273,9 @@ jobs:
           # Create fake app bootstrap file
           mkdir app && echo "<?php namespace{echo 'Hello World'.PHP_EOL;return new class{public function make(){return new class{public function handle(){return 0;}public function terminate(){return 0;}};}};}namespace Symfony\Component\Console\Input{class ArgvInput{}}namespace Symfony\Component\Console\Output{class ConsoleOutput{}}" > app/bootstrap.php
 
+      - name: Configure PHP to convert warnings to exceptions
+        run: echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT & ~E_NOTICE & ~E_WARNING" >> ${{ env.INI_FILE }}
+
       - name: Test can run Hyde
         run: assert "command_outputs('', 'Hello World')"
 
