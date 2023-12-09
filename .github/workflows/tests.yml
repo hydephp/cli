@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
+        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist --ignore-platform-req=ext-fileinfo
 
       - name: Execute tests (Unit and Feature tests) via Pest
         run: vendor/bin/pest
