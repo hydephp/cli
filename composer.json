@@ -54,7 +54,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "bin": [
-        "hyde"
+        "builds/hyde"
     ],
     "require-dev": {
         "hyde/framework": "dev-develop",
