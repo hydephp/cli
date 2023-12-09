@@ -1,20 +1,16 @@
 <?php
 
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Application;
+use App\Application;
+use Illuminate\Process\Factory;
+use Illuminate\Console\OutputStyle;
+use App\Commands\NewProjectCommand;
 use Illuminate\Support\Facades\Process;
-
-function bootstrap(): Application
-{
-    $app = require __DIR__.'/../../bin/bootstrap.php';
-
-    $app->make(Kernel::class)->bootstrap();
-
-    return $app;
-}
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 test('can create new project', function () {
-    $app = bootstrap();
+    Process::swap(new Factory());
 
     Process::preventStrayProcesses();
 
@@ -22,5 +18,31 @@ test('can create new project', function () {
 
     Process::shouldReceive('run')->once()->withArgs([null, Mockery::type(Closure::class)])->andReturnSelf();
 
-    $app->make(Kernel::class)->call('new', ['name' => 'test-project']);
+    $command = configureMocks(new NewProjectCommand());
+
+    $command->handle();
 });
+
+function configureMocks(NewProjectCommand $command): NewProjectCommand
+{
+    $app = Mockery::mock(Application::class)->makePartial();
+    $input = Mockery::mock(InputInterface::class);
+    $input->makePartial();
+    $input->shouldReceive('getOption')->andReturn(false);
+    $input->shouldReceive('getArgument')->andReturn('test-project');
+    $formatter = Mockery::mock(OutputFormatterInterface::class);
+    $formatter->shouldReceive('setDecorated');
+    $outputInterface = Mockery::mock(OutputInterface::class);
+    $outputInterface->shouldReceive('getVerbosity')->andReturn(0);
+    $outputInterface->shouldReceive('write');
+    $outputInterface->shouldReceive('writeln');
+    $outputInterface->shouldReceive('getFormatter')->andReturn($formatter);
+
+    $output = Mockery::mock(OutputStyle::class, [$input, $outputInterface])->makePartial();
+
+    $command->setLaravel($app);
+    $command->setOutput($output);
+    $command->setInput($input);
+
+    return $command;
+}

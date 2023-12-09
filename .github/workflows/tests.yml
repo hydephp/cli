@@ -106,7 +106,7 @@ jobs:
           echo "Version: ${{ steps.build-version.outputs.sha_short }}"
 
       - name: Build executable
-        run: php ./bin/hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
+        run: php hyde standalone:build --build-version-suffix ${{ steps.build-version.outputs.sha_short }}
 
       - name: Verify executable
         run: php builds/hyde --version
@@ -226,6 +226,64 @@ jobs:
 
       - name: Verify server is running
         run: curl -sS localhost:8080 | grep -q "Hello World"
+
+  test-live-executable-proxying:
+    needs: build-executable
+
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: [ master, develop ]
+
+    runs-on: ubuntu-latest
+    name: Test live executable proxying (hyde@${{ matrix.branch }})
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: fileinfo
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: .
+
+      - name: Install standalone executable
+        run: sudo mv hyde /usr/local/bin/hyde && chmod +x /usr/local/bin/hyde
+
+      - name: Checkout Assert.php
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/bin/Assert.php
+          sparse-checkout-cone-mode: false
+
+      - name: Set up assertion helper
+        run: sudo mv tests/System/bin/Assert.php /usr/local/bin/assert && sudo chmod +x /usr/local/bin/assert
+
+      - name: Download executable proxy
+        run: curl -sS https://raw.githubusercontent.com/hydephp/hyde/${{ matrix.branch }}/hyde > hyde && chmod +x hyde
+
+      - name: Set up mock support files
+        run: |
+          # Create fake composer vendor autoload file
+          mkdir vendor && echo '<?php set_error_handler(function($errno,$errstr,$errfile,$errline){throw new \ErrorException($errstr,0,$errno,$errfile,$errline);});return[];' > vendor/autoload.php
+          
+          # Create fake app bootstrap file
+          mkdir app && echo "<?php namespace{echo 'Hello World'.PHP_EOL;return new class{public function make(){return new class{public function handle(){return 0;}public function terminate(){return 0;}};}};}namespace Symfony\Component\Console\Input{class ArgvInput{}}namespace Symfony\Component\Console\Output{class ConsoleOutput{}}" > app/bootstrap.php
+
+      - name: Test can run Hyde
+        run: hyde |& tee output.txt
+
+      - name: Test returned output
+        run: assert "str_contains(file_get_contents('output.txt'), 'Hello World')"
+
+      - name: Test output contains no errors
+        run: |
+          assert "! str_contains(file_get_contents('output.txt'), 'Error')"
+          assert "! str_contains(file_get_contents('output.txt'), 'Warning')"
+          assert "! str_contains(file_get_contents('output.txt'), 'Notice')"
 
   standalone-integration-tests:
     needs: build-executable

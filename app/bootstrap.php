@@ -1,13 +1,23 @@
 <?php
 
-// Todo: These are needed for now until we normalize bootstrappers
+// Bootstrap the Phar application
 
-if (! defined('HYDE_WORKING_DIR')) {
-    define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR'));
-}
+// Define working directory
+define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR') ?: getcwd());
 
-if (! defined('HYDE_TEMP_DIR')) {
-    define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR'));
+// As the Phar archive is readonly, we define a temporary directory
+// that Laravel can use to store the compiled views, cache files,
+// and config files, all to allow the binary to run anywhere,
+define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR') ?: sprintf('%s/hyde/%s', sys_get_temp_dir(),
+    md5(sprintf('%s-%s', HYDE_WORKING_DIR, Hyde\Foundation\HydeKernel::VERSION))
+));
+
+// Create and set up the temporary directory if it doesn't exist
+if (! is_dir(HYDE_TEMP_DIR)) {
+    mkdir(HYDE_TEMP_DIR.'/config', recursive: true);
+    mkdir(HYDE_TEMP_DIR.'/app/storage/framework/cache', recursive: true);
+    // Todo: See if we can do without this
+    copy(__DIR__.'/config.php', HYDE_TEMP_DIR.'/config/app.php');
 }
 
 /*

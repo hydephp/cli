@@ -1,68 +1,73 @@
 #!/usr/bin/env php
 <?php
 
-/**
- * This is the main entry point for the global Hyde binary,
- * and is what runs when you run `hyde` from the command line.
- *
- * The binary can be used in two ways:
- * - Anonymous mode: Uses the built-in scaffolding to allow Hyde to be used
- *                   without installation in a directory with just source files.
- * - Proxy mode: Defers to the Hyde installation in the current directory.
- */
+/*
+|--------------------------------------------------------------------------
+| The Standalone HydeCLI Application
+|--------------------------------------------------------------------------
+|
+| This file is the entry point for the standalone HydeCLI application.
+| When called from a project directory already containing a HydePHP
+| installation, it will proxy the call to that `Hyde` binary.
+|
+| When running in a directory with just source files, the HydeCLI
+| standalone will use its internal project files to run HydePHP
+| using the source files allowing for a portable project.
+|
+*/
 
-// Define working directory
-define('HYDE_WORKING_DIR', getcwd());
+// If the current directory contains a Hyde binary (that is not this file), run in proxy mode
+if (file_exists(getcwd().'/hyde') && realpath(getcwd().'/hyde') !== realpath(__FILE__)) {
+    return require_once getcwd().'/hyde';
+}
 
-// Determine the mode to run in
+define('LARAVEL_START', microtime(true));
 
-return match ((function () {
-    // If the current directory contains a Hyde binary (that is not this file), run in proxy mode
-    if (file_exists(HYDE_WORKING_DIR . '/hyde') && realpath(HYDE_WORKING_DIR . '/hyde') !== realpath(__FILE__)) {
-        return 'proxy';
-    }
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader
+| for our application. We just need to utilize it! We'll require it
+| into the script here so that we do not have to worry about the
+| loading of our classes manually. It feels great to relax.
+|
+*/
 
-    // Otherwise, run in anonymous mode
-    return 'anonymous';
-})()) {
-    'proxy' => require_once HYDE_WORKING_DIR . '/hyde',
-    'anonymous' => (function() {
-        // Bootstrap the Phar application
+$autoloader = require_once __DIR__.'/vendor/autoload.php';
 
-        // As the Phar archive is readonly, we define a temporary directory
-        // that Laravel can use to store the compiled views, cache files,
-        // and config files, all to allow the binary to run anywhere,
-        define('HYDE_TEMP_DIR', sprintf('%s/hyde/%s',
-            // Todo: Include the application version in the hash string
-            //       to force regeneration when updating the binary.
-            sys_get_temp_dir(), md5(HYDE_WORKING_DIR)
-        ));
+$app = require_once __DIR__.'/app/bootstrap.php';
 
-        // Create and set up the temporary directory if it doesn't exist
-        if (! is_dir(HYDE_TEMP_DIR)) {
-            mkdir(HYDE_TEMP_DIR . '/config', recursive: true);
-            mkdir(HYDE_TEMP_DIR . '/app/storage/framework/cache', recursive: true);
-            // Todo: See if we can do without this
-            copy(__DIR__ . '/app/config.php', HYDE_TEMP_DIR . '/config/app.php');
-        }
+/*
+|--------------------------------------------------------------------------
+| Run The HydeCLI Application
+|--------------------------------------------------------------------------
+|
+| When we run the console application, the current CLI command will be
+| executed in this console and the response sent back to a terminal
+| or another output device for the developers. Here goes nothing!
+|
+*/
 
-        // Register the autoloader
-        $autoloader = require_once __DIR__.'/vendor/autoload.php';
+$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
-        // Create the application
-        $app = require_once __DIR__.'/app/bootstrap.php';
+$status = $kernel->handle(
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+);
 
-        // Run the application
-        $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+/*
+|--------------------------------------------------------------------------
+| Shutdown The Application
+|--------------------------------------------------------------------------
+|
+| Once the HydeCLI has finished running, we will fire off the shutdown events
+| so that any final work may be done by the application before we shut
+| down the process. This is the last thing to happen to the request.
+|
+*/
 
-        $status = $kernel->handle(
-            $input = new Symfony\Component\Console\Input\ArgvInput,
-            new Symfony\Component\Console\Output\ConsoleOutput
-        );
+$kernel->terminate($input, $status);
 
-        // Shutdown the application
-
-        $kernel->terminate($input, $status);
-        exit($status);
-    })(),
-};
+exit($status);
