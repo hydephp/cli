@@ -27,8 +27,10 @@ class BuildApplicationBinaryCommand extends Command
             // Convert output implementation to type the build command expects
             $this->output = new ConsoleOutput();
 
+            $version = $this->getApplication()->getVersion() . ($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '');
+
             return $this->call(BuildCommand::class, [
-                '--build-version' => ($this->getApplication()->getVersion().($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '')),
+                '--build-version' => $version,
             ]);
         } catch (Throwable $exception) {
             throw $exception;
