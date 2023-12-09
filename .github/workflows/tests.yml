@@ -109,6 +109,9 @@ jobs:
         run: php hyde standalone:build --build-version-suffix="${{ steps.build-version.outputs.sha_short }}"
 
       - name: Verify executable
+        run: php builds/hyde
+
+      - name: Verify executable version
         run: php builds/hyde --version
 
       - name: Upload executable
