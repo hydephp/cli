@@ -53,12 +53,6 @@ it('sets the cached packages path', function () {
     expect($this->app->getCachedPackagesPath())->toBe('/path/to/temp/dir/app/storage/framework/cache/packages.php');
 });
 
-it('binds the temporary directory config path', function () {
-    ($this->app['events']->getListeners('bootstrapping: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
-
-    expect($this->app->configPath())->toBe('/path/to/temp/dir/config');
-});
-
 it('sets the cache path for the compiled views', function () {
     $this->app['config'] = new Repository([]);
 

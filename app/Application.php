@@ -12,6 +12,13 @@ class Application extends \Hyde\Foundation\Application
         return HYDE_TEMP_DIR.'/app/storage/framework/cache/packages.php';
     }
 
+    public function getCachedConfigPath(): string
+    {
+        // Since we cache the app configuration within the Phar archive
+        // we need to return the path to the cached config file here.
+        return __DIR__.'/../app/storage/framework/cache/config.php';
+    }
+
     public function getNamespace(): string
     {
         if (file_exists($this->basePath('composer.json'))) {

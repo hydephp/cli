@@ -16,8 +16,6 @@ define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR') ?: sprintf('%s/hyde/%s', sys_get
 if (! is_dir(HYDE_TEMP_DIR)) {
     mkdir(HYDE_TEMP_DIR.'/config', recursive: true);
     mkdir(HYDE_TEMP_DIR.'/app/storage/framework/cache', recursive: true);
-    // Todo: See if we can do without this
-    copy(__DIR__.'/config.php', HYDE_TEMP_DIR.'/config/app.php');
 }
 
 /*
@@ -63,11 +61,6 @@ $app->singleton(
 | that the application can properly run inside the Phar archive.
 |
 */
-
-$app->beforeBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
-    // Bind the temporary directory config path
-    $app->useConfigPath(HYDE_TEMP_DIR.'/config');
-});
 
 $app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
     // Set the cache path for the compiled views
