@@ -59,6 +59,7 @@ class BuildApplicationBinaryCommand extends Command
         $configFile = __DIR__ . '/../../../config/app.php';
         $config = include $configFile;
         $config['version'] = $version;
+        $config['standalone_version'] = $version;
         File::put($configFile, '<?php return '.var_export($config, true).';'.PHP_EOL);
     }
 }
