@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Commands\Internal;
 
+use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\BuildCommand;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -29,6 +30,8 @@ class BuildApplicationBinaryCommand extends Command
 
             $version = $this->getApplication()->getVersion() . ($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '');
 
+            $this->configureVersion($version);
+
             return $this->call(BuildCommand::class, [
                 '--build-version' => $version,
             ]);
@@ -49,5 +52,13 @@ class BuildApplicationBinaryCommand extends Command
     {
         unlink(__DIR__.'/../../../config/app.php');
         rename(__DIR__.'/../../../box.json.bak', __DIR__.'/../../../box.json');
+    }
+
+    protected function configureVersion(string $version): void
+    {
+        $configFile = __DIR__ . '/../../../config/app.php';
+        $config = include $configFile;
+        $config['version'] = $version;
+        File::put($configFile, '<?php return '.var_export($config, true).';'.PHP_EOL);
     }
 }
