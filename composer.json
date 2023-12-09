@@ -1,11 +1,12 @@
 {
-    "name": "hyde/hyde",
-    "description": "Static Site Generator to rapidly create Blogs, Documentation Sites, and more, using Markdown and Blade.",
+    "name": "hyde/cli",
+    "description": "Experimental Standalone Version of HydePHP - The Static Site Generator You've Been Waiting For",
     "keywords": [
         "framework",
         "hyde",
         "hyde framework",
         "hydephp",
+        "hydecli",
         "static site generator",
         "static site framework",
         "ssg"
@@ -14,8 +15,8 @@
     "type": "project",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/hydephp/hyde/issues",
-        "source": "https://github.com/hydephp/hyde"
+        "issues": "https://github.com/hydephp/cli/issues",
+        "source": "https://github.com/hydephp/cli"
     },
     "authors": [
         {
