@@ -4,7 +4,7 @@
 
 This is an experimental standalone executable for the static site generator HydePHP.
 
-With this global binary, you can use the HydePHP HydeCLI to generate quality static sites faster than ever before!
+With this global binary, you can use the HydePHP CLI to generate quality static sites faster than ever before!
 
 ## Installation
 
