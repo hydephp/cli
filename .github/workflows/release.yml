@@ -1,0 +1,123 @@
+name: Build and release binary
+
+on:
+  push:
+    branches: [ "stable" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build standalone executable
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
+
+      - name: Get build version
+        id: build-version
+        run: |
+          echo "version=$(php ./bin/get-release-version.php)" >> $GITHUB_OUTPUT
+          echo "Version: ${{ steps.build-version.outputs.version }}"
+
+      - name: Build executable
+        run: php hyde standalone:build --build-version-suffix="${{ steps.build-version.outputs.sha_short }}"
+
+      - name: Verify executable
+        run: php builds/hyde
+
+      - name: Verify executable version
+        run: php builds/hyde --version
+
+      - name: Calculate checksum
+        run: |
+          cd builds
+          sha256sum hyde > checksum
+          echo "SHA256 checksum of the application binary: $(cat checksum)"
+
+      - name: Upload executable
+        uses: actions/upload-artifact@v3
+        with:
+          name: hyde
+          path: builds/hyde
+
+      - name: Upload the checksum artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: checksum
+          path: builds/checksum
+
+      - name: Upload the version number artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: version
+          path: version
+
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Publish release
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download the application artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hyde
+          path: builds
+
+      - name: Download the checksum artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: checksum
+          path: builds
+
+      - name: Download the version number artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: version
+
+      - name: Prepare version information
+        run: |
+          echo "CHECKSUM=$(cat builds/checksum | cut -d ' ' -f 1)" >> $GITHUB_ENV
+          echo "CHECKSUM=$(cat builds/checksum | cut -d ' ' -f 1)"
+          echo "VERSION=$(cat version)" >> $GITHUB_ENV
+          echo "VERSION=$(cat version)"
+          mv builds/checksum builds/checksum.txt
+
+      - name: Create a release
+        uses: ncipollo/release-action@v1
+        with:
+          # token: ${{ secrets.RELEASE_TOKEN }}
+          name: ${{ env.VERSION }}
+          tag: ${{ env.VERSION }}
+          artifacts: builds/hyde, builds/checksum.txt
+          body: |
+            ## Experimental development build
+            
+            This is an automated experimental development build of the application.
+            It is not guaranteed to be stable and may not work at all.
+            
+            ### Checksum
+            
+            SHA256 checksum of the application binary:
+            ```
+            ${{ env.CHECKSUM }}
+            ```
+
+          prerelease: true
