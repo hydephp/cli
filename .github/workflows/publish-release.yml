@@ -23,7 +23,7 @@ jobs:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: master
 
-      - name: Merge stable into master
+      - name: Merge stable branch into master
         run: |
           git fetch origin stable:stable
           git merge stable
