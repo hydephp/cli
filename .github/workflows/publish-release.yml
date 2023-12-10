@@ -82,6 +82,12 @@ jobs:
           name: checksum
           path: builds/checksum.txt
 
+      - name: Upload the version number artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: version
+          path: version
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -103,11 +109,15 @@ jobs:
           name: checksum
           path: builds
 
-      - name: Get build version
-        run: echo "version=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
+      - name: Download the version number artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: version
 
       - name: Prepare version information
-        run: echo "CHECKSUM=$(cat builds/checksum.txt | cut -d ' ' -f 1)" >> $GITHUB_ENV
+        run:  |
+          echo "CHECKSUM=$(cat builds/checksum.txt | cut -d ' ' -f 1)" >> $GITHUB_ENV
+          echo "VERSION=$(cat version)" >> $GITHUB_ENV
 
       - name: Print version information
         run: |
