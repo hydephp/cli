@@ -2,9 +2,9 @@ name: Test Suite
 
 on:
   push:
-    branches: [ "master", "develop" ]
+    branches: [ "master", "develop", "stable" ]
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: [ "master", "develop", "stable" ]
 
 jobs:
   coverage-tests:
