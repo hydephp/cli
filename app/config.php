@@ -37,7 +37,7 @@ return [
     |
     */
 
-    'version' => Hyde\Hyde::version().' <fg=gray>-</> <comment>Experimental Standalone</comment>',
+    'version' => 'v'.\App\Application::APP_VERSION.' <fg=gray>-</> <comment>Experimental Standalone</comment> <fg=gray>-</> <fg=gray>(HydePHP v'.\Hyde\Foundation\HydeKernel::VERSION.')</>',
 
     /*
     |--------------------------------------------------------------------------
