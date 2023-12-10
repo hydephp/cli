@@ -63,7 +63,7 @@ class BuildApplicationBinaryCommand extends Command
         rename(__DIR__.'/../../../box.json.bak', __DIR__.'/../../../box.json');
     }
 
-    protected function clearCachedConfiguration(): void
+    protected function clearCachedConfiguration(bool $silent = false): void
     {
         $configPath = $this->laravel->getCachedConfigPath();
 
@@ -71,7 +71,9 @@ class BuildApplicationBinaryCommand extends Command
             File::delete($configPath);
         }
 
-        $this->components->info('Configuration cache cleared successfully.');
+        if (! $silent) {  
+            $this->components->info('Configuration cache cleared successfully.');
+        }
     }
 
     protected function cacheConfiguration(): void
