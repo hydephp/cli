@@ -7,12 +7,12 @@ on:
         type: choice
         description: The semver level of the release
         options:
-          - major
-          - minor
           - patch
+          - minor
+          - major
 
 permissions:
-    contents: read
+  contents: write
 
 jobs:
   release:
