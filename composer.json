@@ -62,5 +62,8 @@
         "laravel-zero/framework": "^10.0",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^2.26"
+    },
+    "provide": {
+        "ext-fileinfo" : "*"
     }
 }
