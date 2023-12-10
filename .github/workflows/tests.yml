@@ -347,3 +347,12 @@ jobs:
           assert "file_exists_and_is_not_empty('_site/index.html')"
           assert "file_exists_and_is_not_empty('_site/posts/my-new-post.html')"
           assert "file_exists_and_is_not_empty('_site/docs/my-documentation-page.html')"
+
+      - name: Site uses Yaml configuration
+        run: |
+          echo "{{ config('hyde.name', 'null') }}" > _pages/site-name.blade.php
+          hyde rebuild _pages/site-name.blade.php
+          assert "file_contains('_site/site-name.html', 'HydePHP')"
+          echo "name: Hello World" > hyde.yml
+          hyde rebuild _pages/site-name.blade.php
+          assert "file_contains('_site/site-name.html', 'Hello World')"
