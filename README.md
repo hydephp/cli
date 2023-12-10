@@ -1,5 +1,11 @@
 # Experimental Standalone HydePHP Executable
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/hyde/cli?include_prereleases)](https://packagist.org/packages/hyde/cli)
+[![Total Downloads on Packagist](https://img.shields.io/packagist/dt/hyde/cli)](https://packagist.org/packages/hyde/cli)
+[![License MIT](https://img.shields.io/github/license/hydephp/cli) ](https://github.com/hydephp/cli/blob/master/LICENSE.md)
+[![Test Coverage](https://codecov.io/gh/hydephp/cli/branch/master/graph/badge.svg?token=G6N2161TOT)](https://codecov.io/gh/hydephp/cli)
+[![Test Suite](https://github.com/hydephp/cli/actions/workflows/tests.yml/badge.svg)](https://github.com/hydephp/cli/actions/workflows/tests.yml)
+
 ## About
 
 This is an experimental standalone executable for the static site generator HydePHP.
@@ -38,13 +44,12 @@ hyde build
 
 ### Changelog
 
-Please see [CHANGELOG](https://github.com/hydephp/develop/blob/master/CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](https://github.com/hydephp/cli/blob/master/CHANGELOG.md) for more information on what has changed recently.
 
 ### Contributing
 
 HydePHP is an open-source project, contributions are very welcome!
 
-Development is made in the HydePHP Monorepo, which you can find here https://github.com/hydephp/develop.
 
 ### Security
 
@@ -58,4 +63,4 @@ All vulnerabilities will be promptly addressed.
 
 ### License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License. Please see the [License File](LICENSE.md) for more information.
