@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
-
 $application = file_get_contents(__DIR__.'/../app/Application.php');
 
 echo trim(str_replace(['final public const APP_VERSION', '=', '\'', ';'], '', array_values(
