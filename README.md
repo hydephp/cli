@@ -17,7 +17,7 @@ composer global require hyde/cli
 ### Direct Download (Unix)
 
 ```bash
-curl -L https://github.com/caendesilva/hyde-global/releases/latest/download/hyde -o hyde
+curl -L https://github.com/hydephp/cli/releases/latest/download/hyde -o hyde
 chmod +x hyde && sudo mv hyde /usr/local/bin/hyde
 ```
 
