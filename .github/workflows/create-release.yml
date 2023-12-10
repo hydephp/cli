@@ -27,7 +27,7 @@ jobs:
         id: bump-version
         run: |
           php bin/bump-application-version.php ${{ github.event.inputs.type }}
-          echo "version=$(php bin/get-release-version.php)" >> $GITHUB_ENV
+          echo "version=$(php bin/get-release-version.php)" >> $GITHUB_OUTPUT
           echo "Version: ${{ steps.bump-version.outputs.version }}"
 
       - name: Create pull request
