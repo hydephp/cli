@@ -12,6 +12,11 @@ This is an experimental standalone executable for the static site generator Hyde
 
 With this global binary, you can use the HydePHP CLI to generate quality static sites faster than ever before!
 
+### ⚠ Beta software notice
+
+Please note that the standalone HydePHP version is **experimental**, and that there may be breaking changes and bugs until the 1.0 release.
+- In the meantime, you may want to use the standard HydePHP project: https://github.com/hydephp/hyde
+
 ## Installation
 
 ### Using Composer
