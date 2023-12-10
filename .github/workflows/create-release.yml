@@ -38,7 +38,6 @@ jobs:
           commit-message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
           title: "HydeCLI v${{ steps.bump-version.outputs.version }}"
           branch: "release/v${{ steps.bump-version.outputs.version }}"
-          add-paths: 'app/Application.php'
           delete-branch: true
           base: stable
           body: |
