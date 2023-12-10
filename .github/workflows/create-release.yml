@@ -25,17 +25,13 @@ jobs:
 
       - name: Bump application version
         id: bump-version
+        outputs:
+          version: ${{ steps.bump-version.outputs.version }}
         run: |
           php bin/bump-application-version.php ${{ github.event.inputs.type }}
           echo "version=$(php bin/get-release-version.php)" >> $GITHUB_ENV
           echo "Version: ${{ steps.bump-version.outputs.version }}"
 
-#      - name: Commit version bump
-#        uses: EndBug/add-and-commit@v9
-#        with:
-#          add: 'app/Application.php'
-#          message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
-#          new_branch: "release/v${{ steps.bump-version.outputs.version }}"
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v5
@@ -47,6 +43,7 @@ jobs:
           base: stable
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](.github/workflows/create-release.yml).
+
             Please review and merge it to publish a new release which will be created automatically.
           delete-branch: true
           labels: release
