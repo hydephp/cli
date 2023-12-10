@@ -32,15 +32,12 @@ jobs:
           echo "version=$(php bin/get-release-version.php)" >> $GITHUB_OUTPUT
           echo "Version: v$(php bin/get-release-version.php)"
 
-      - name: Create a new branch for the release
-        run: git checkout -b "release/v${{ steps.bump-version.outputs.version }}"
-
       - name: Create pull request
         uses: peter-evans/create-pull-request@v5
         with:
           commit-message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
           title: "HydeCLI v${{ steps.bump-version.outputs.version }}"
-          #  branch: "release/v${{ steps.bump-version.outputs.version }}"
+          branch: "release/v${{ steps.bump-version.outputs.version }}"
           add-paths: 'app/Application.php'
           delete-branch: true
           base: stable
