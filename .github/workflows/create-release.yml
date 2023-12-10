@@ -40,7 +40,7 @@ jobs:
           delete-branch: true
           base: stable
           body: |
-            This pull request was automatically created by the [HydeCLI release workflow](.github/workflows/create-release.yml).
+            This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
             Please review and merge it to publish a new release, which will be created automatically.
           reviewers: caendesilva
