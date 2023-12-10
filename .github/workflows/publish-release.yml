@@ -67,8 +67,8 @@ jobs:
       - name: Calculate checksum
         run: |
           cd builds
-          sha256sum hyde > checksum
-          echo "SHA256 checksum of the application binary: $(cat checksum)"
+          sha256sum hyde > checksum.txt
+          echo "SHA256 checksum of the application binary: $(cat checksum.txt)"
 
       - name: Upload executable
         uses: actions/upload-artifact@v3
@@ -80,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: checksum
-          path: builds/checksum
+          path: builds/checksum.txt
 
   release:
     needs: build
@@ -107,10 +107,12 @@ jobs:
         run: echo "version=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
 
       - name: Prepare version information
+        run: echo "CHECKSUM=$(cat builds/checksum.txt | cut -d ' ' -f 1)" >> $GITHUB_ENV
+
+      - name: Print version information
         run: |
-          echo "CHECKSUM=$(cat builds/checksum | cut -d ' ' -f 1)" >> $GITHUB_ENV
-          echo "CHECKSUM=$(cat builds/checksum | cut -d ' ' -f 1)"
-          mv builds/checksum builds/checksum.txt
+          echo "Version: v${{ env.VERSION }}"
+          echo "Checksum: ${{ env.CHECKSUM }}"
 
       - name: Create a release
         uses: ncipollo/release-action@v1
