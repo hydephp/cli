@@ -61,6 +61,8 @@ class BuildApplicationBinaryCommand extends Command
     {
         unlink(__DIR__.'/../../../config/app.php');
         rename(__DIR__.'/../../../box.json.bak', __DIR__.'/../../../box.json');
+
+        $this->clearCachedConfiguration(true);
     }
 
     protected function clearCachedConfiguration(bool $silent = false): void
