@@ -3,6 +3,12 @@
 use App\Application;
 use Hyde\Foundation\Application as HydeApplication;
 
+test('application version constant follows semantic versioning', function () {
+    $version = Application::APP_VERSION;
+
+    expect($version)->toMatch('/^\d+\.\d+\.\d+$/');
+});
+
 test('custom application extends Hyde application', function () {
     expect(new Application())->toBeInstanceOf(HydeApplication::class);
 });
