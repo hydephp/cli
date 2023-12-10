@@ -23,7 +23,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: master
+          ref: stable
+
+      - name: Reset to master
+        run: |
+          git fetch origin master:master
+          git reset --hard master
 
       - name: Bump application version
         id: bump-version
@@ -39,7 +44,7 @@ jobs:
           title: "HydeCLI v${{ steps.bump-version.outputs.version }}"
           branch: "release/v${{ steps.bump-version.outputs.version }}"
           delete-branch: true
-          base: stable
+
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
