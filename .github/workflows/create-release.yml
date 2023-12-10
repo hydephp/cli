@@ -1,0 +1,59 @@
+# This workflow allows for the creation of a new release through the GitHub UI.
+# This is done by creating a pull request to the protected stable release branch.
+# From there, the publish-release.yml workflow will take over and publish the release.
+
+name: Create a new release PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: The SemVer level of the release
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+
+  prepare-release:
+    runs-on: ubuntu-latest
+    name: Prepare a new release
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ref: stable
+
+      - name: Pull latest changes from master
+        run: |
+          git fetch origin master:master
+          git reset --hard master
+
+      - name: Bump application version
+        id: bump-version
+        run: |
+          php ./bin/bump-application-version.php ${{ github.event.inputs.type }}
+          echo "version=$(php ./bin/get-release-version.php)" >> $GITHUB_OUTPUT
+          echo "Version: v$(php ./bin/get-release-version.php)"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
+          title: "HydeCLI v${{ steps.bump-version.outputs.version }}"
+          branch: "release/v${{ steps.bump-version.outputs.version }}"
+          delete-branch: true
+
+          body: |
+            This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+            Please review and merge it to publish a new release, which will be created automatically upon merge.
+          reviewers: caendesilva
+          labels: release
