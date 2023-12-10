@@ -41,6 +41,6 @@ jobs:
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](.github/workflows/create-release.yml).
 
-            Please review and merge it to publish a new release which will be created automatically.
+            Please review and merge it to publish a new release, which will be created automatically.
           delete-branch: true
           labels: release
