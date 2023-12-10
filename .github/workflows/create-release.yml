@@ -1,11 +1,11 @@
-name: Trigger release
+name: Create a new release
 
 on:
   workflow_dispatch:
     inputs:
       type:
         type: choice
-        description: The semver level of the release
+        description: The SemVer level of the release
         options:
           - patch
           - minor
@@ -13,11 +13,12 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  release:
+  prepare-release:
     runs-on: ubuntu-latest
-    name: Create release pull request
+    name: Prepare a new release
 
     steps:
       - uses: actions/checkout@v3
@@ -29,9 +30,23 @@ jobs:
           echo "version=$(php bin/get-release-version.php)" >> $GITHUB_ENV
           echo "Version: ${{ steps.bump-version.outputs.version }}"
 
-      - name: Commit version bump
-        uses: EndBug/add-and-commit@v9
+#      - name: Commit version bump
+#        uses: EndBug/add-and-commit@v9
+#        with:
+#          add: 'app/Application.php'
+#          message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
+#          new_branch: "release/v${{ steps.bump-version.outputs.version }}"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v5
         with:
-          add: 'app/Application.php'
-          message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
-          new_branch: "release/v${{ steps.bump-version.outputs.version }}"
+          commit-message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
+          title: "HydeCLI v${{ steps.bump-version.outputs.version }}"
+          branch: "release/v${{ steps.bump-version.outputs.version }}"
+          add-paths: 'app/Application.php'
+          base: stable
+          body: |
+            This pull request was automatically created by the [HydeCLI release workflow](.github/workflows/create-release.yml).
+            Please review and merge it to publish a new release which will be created automatically.
+          delete-branch: true
+          labels: release
