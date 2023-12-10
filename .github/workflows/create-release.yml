@@ -22,6 +22,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        branch: master
 
       - name: Bump application version
         id: bump-version
