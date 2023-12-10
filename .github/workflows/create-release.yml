@@ -32,6 +32,11 @@ jobs:
           echo "version=$(php bin/get-release-version.php)" >> $GITHUB_OUTPUT
           echo "Version: v$(php bin/get-release-version.php)"
 
+      - name: debug
+        run: |
+          ls
+          exit 1
+
       - name: Create pull request
         uses: peter-evans/create-pull-request@v5
         with:
