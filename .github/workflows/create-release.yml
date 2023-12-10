@@ -22,7 +22,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        ref: master
+        with:
+          ref: master
 
       - name: Bump application version
         id: bump-version
