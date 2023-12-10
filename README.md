@@ -4,16 +4,34 @@
 
 This is an experimental standalone executable for the static site generator HydePHP.
 
+With this global binary, you can use the HydePHP HydeCLI to generate static sites from source files anywhere on your system.
+
 ## Installation
 
+### Using Composer
+
 ```bash
-// TODO
+composer global require hyde/cli
+```
+
+### Direct Download (Unix)
+
+```bash
+curl -L https://github.com/caendesilva/hyde-global/releases/latest/download/hyde -o hyde
+chmod +x hyde && sudo mv hyde /usr/local/bin/hyde
 ```
 
 ## Usage
 
 ```bash
-// TODO
+# List available commands
+hyde
+
+# Create a new full HydePHP project
+hyde new
+
+# Build a site using source files in the working directory
+hyde build
 ```
 
 ## Resources
