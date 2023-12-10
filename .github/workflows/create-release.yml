@@ -1,0 +1,37 @@
+name: Trigger release
+
+on:
+  workflow_dispatch:
+    inputs:
+      type:
+        type: choice
+        description: The semver level of the release
+        options:
+          - major
+          - minor
+          - patch
+
+permissions:
+    contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    name: Create release pull request
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Bump application version
+        id: bump-version
+        run: |
+          php bin/bump-application-version.php ${{ github.event.inputs.type }}
+          echo "version=$(php bin/get-release-version.php)" >> $GITHUB_ENV
+          echo "Version: ${{ steps.bump-version.outputs.version }}"
+
+      - name: Commit version bump
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'app/Application.php'
+          message: "HydeCLI v${{ steps.bump-version.outputs.version }}"
+          new_branch: "release/v${{ steps.bump-version.outputs.version }}"
