@@ -2,7 +2,7 @@
 # It is triggered by pushes to the protected stable branch used for releases.
 # This process is triggered via the GitHub UI using the create-release.yml action.
 
-name: Build and publish a new release
+name: Publish a new release
 
 on:
   push:
