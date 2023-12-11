@@ -1,12 +1,4 @@
 /vendor
-/node_modules
-/builds
 /.idea
-/.vscode
-/.vagrant
-/.cache
-.phpunit.result.cache
-
+builds
 .env
-
-# /_site
