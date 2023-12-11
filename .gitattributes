@@ -13,13 +13,12 @@ config/ export-ignore
 tests/ export-ignore
 app/ export-ignore
 bin/ export-ignore
-
+/hyde export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
 CHANGELOG.md export-ignore
 LICENSE.md export-ignore
 SECURITY.md export-ignore
 composer.lock export-ignore
-box.json export-ignore
 phpunit.xml export-ignore
-.gitattributes export-ignore
-.gitignore export-ignore
-/hyde export-ignore
+box.json export-ignore

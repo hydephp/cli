@@ -182,7 +182,7 @@ jobs:
       - name: Test can build anonymous project
         run: |
           cd ./source/tests/Fixtures/anonymous-project
-          
+
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde build'), 'Your static site has been built!')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/posts/hello-world.html')"
           php ../../System/bin/Assert.php "file_exists_and_is_not_empty('_site/docs/search.html')"
@@ -200,7 +200,7 @@ jobs:
           cd ./source/tests/Fixtures/full-project
           php ../../System/bin/Assert.php "! str_contains(shell_exec('hyde --version'), 'Experimental Standalone')"
           php ../../System/bin/Assert.php "str_contains(shell_exec('hyde'), 'File proxied by standalone')"
-  
+
   test-realtime-compiler:
     needs: build-executable
 
@@ -271,7 +271,7 @@ jobs:
         run: |
           # Create fake composer vendor autoload file
           mkdir vendor && echo '<?php set_error_handler(function($errno,$errstr,$errfile,$errline){throw new \ErrorException($errstr,0,$errno,$errfile,$errline);});return[];' > vendor/autoload.php
-          
+
           # Create fake app bootstrap file
           mkdir app && echo "<?php namespace{echo 'Hello World'.PHP_EOL;return new class{public function make(){return new class{public function handle(){return 0;}public function terminate(){return 0;}};}};}namespace Symfony\Component\Console\Input{class ArgvInput{}}namespace Symfony\Component\Console\Output{class ConsoleOutput{}}" > app/bootstrap.php
 
