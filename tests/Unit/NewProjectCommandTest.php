@@ -1,13 +1,13 @@
 <?php
 
 use App\Application;
-use Illuminate\Process\Factory;
-use Illuminate\Console\OutputStyle;
 use App\Commands\NewProjectCommand;
+use Illuminate\Console\OutputStyle;
+use Illuminate\Process\Factory;
 use Illuminate\Support\Facades\Process;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 test('can create new project', function () {
     Process::swap(new Factory());

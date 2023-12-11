@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Commands\Internal;
 
-use LogicException;
 use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\BuildCommand;
 use LaravelZero\Framework\Commands\Command;
+use LogicException;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 
@@ -48,7 +48,7 @@ class BuildApplicationBinaryCommand extends Command
 
     protected function getVersion(): string
     {
-        return $this->getApplication()->getVersion() . ($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '');
+        return $this->getApplication()->getVersion().($this->option('build-version-suffix') ? sprintf(' (Build %s)', $this->option('build-version-suffix')) : '');
     }
 
     protected function setupBuildEnvironment(): void
@@ -73,7 +73,7 @@ class BuildApplicationBinaryCommand extends Command
             File::delete($configPath);
         }
 
-        if (! $silent) {  
+        if (! $silent) {
             $this->components->info('Configuration cache cleared successfully.');
         }
     }
