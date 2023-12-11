@@ -9,7 +9,7 @@ on:
     branches: [ "stable" ]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
 
@@ -29,73 +29,7 @@ jobs:
           git merge stable
           git push origin master
 
-  build:
-    runs-on: ubuntu-latest
-    name: Build standalone executable
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-
-      - name: Install dependencies
-        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
-
-      - name: Get build version
-        id: build-version
-        run: |
-          echo "version=$(php ./bin/get-release-version.php)" >> $GITHUB_OUTPUT
-          echo "Version: v$(php ./bin/get-release-version.php)"
-          php ./bin/get-release-version.php > version
-
-      - name: Build executable
-        run: php hyde standalone:build --build-version-suffix="${{ steps.build-version.outputs.sha_short }}"
-
-      - name: Verify executable
-        run: php builds/hyde
-
-      - name: Verify executable version
-        run: php builds/hyde --version
-
-      - name: Calculate checksum
-        run: |
-          cd builds
-          sha256sum hyde > checksum.txt
-          echo "SHA256 checksum of the application binary: $(cat checksum.txt)"
-
-      - name: Commit executable
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: builds/hyde
-          message: "Build standalone executable"
-
-      - name: Upload executable
-        uses: actions/upload-artifact@v3
-        with:
-          name: hyde
-          path: builds/hyde
-
-      - name: Upload the checksum artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: checksum
-          path: builds/checksum.txt
-
-      - name: Upload the version number artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: version
-          path: version
-
   release:
-    needs: build
     runs-on: ubuntu-latest
     name: Publish release
 
@@ -103,6 +37,11 @@ jobs:
       contents: write
 
     steps:
+      - uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ref: stable
+
       - name: Download the application artifact
         uses: actions/download-artifact@v3
         with:
@@ -122,13 +61,11 @@ jobs:
 
       - name: Prepare version information
         run:  |
-          echo "CHECKSUM=$(cat builds/checksum.txt | cut -d ' ' -f 1)" >> $GITHUB_ENV
-          echo "VERSION=$(cat version)" >> $GITHUB_ENV
+          echo "VERSION=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
 
       - name: Print version information
         run: |
           echo "Version: v${{ env.VERSION }}"
-          echo "Checksum: ${{ env.CHECKSUM }}"
 
       - name: Create a release
         uses: ncipollo/release-action@v1
@@ -138,4 +75,4 @@ jobs:
           commit: ${{ github.sha }}
           updateOnlyUnreleased: true
           generateReleaseNotes: true
-          artifacts: builds/hyde, builds/checksum.txt
+          artifacts: builds/hyde
