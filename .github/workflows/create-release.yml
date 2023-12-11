@@ -73,6 +73,9 @@ jobs:
           title: "HydeCLI v${{ steps.build-version.outputs.version }}"
           branch: "release/v${{ steps.build-version.outputs.version }}"
           delete-branch: true
+          add-paths: |
+            app/Application.php
+            builds/hyde
 
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
