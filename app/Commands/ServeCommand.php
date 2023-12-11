@@ -74,11 +74,11 @@ class ServeCommand extends BaseServeCommand
         return <<<PHP
         <?php
         // Proxies the realtime compiler server from the Phar archive
-        
+
         Phar::loadPhar('$phar', 'hyde.phar');
-        
+
         putenv('HYDE_AUTOLOAD_PATH=phar://hyde.phar/vendor/autoload.php');
-        
+
         return require 'phar://hyde.phar/vendor/hyde/realtime-compiler/bin/server.php';
         PHP;
     }
