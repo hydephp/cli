@@ -36,14 +36,10 @@ jobs:
           git fetch origin master:master
           git reset --hard master
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v3
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
+      - name: Remove development dependencies
+        run: |
+          composer remove mockery/mockery --dev --no-install
+          composer remove pestphp/pest --dev --no-install
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
@@ -77,6 +73,9 @@ jobs:
           title: "HydeCLI v${{ steps.build-version.outputs.version }}"
           branch: "release/v${{ steps.build-version.outputs.version }}"
           delete-branch: true
+          add-paths: |
+            app/Application.php
+            builds/hyde
 
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
