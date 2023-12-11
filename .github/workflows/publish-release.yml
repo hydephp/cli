@@ -42,23 +42,6 @@ jobs:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
 
-      - name: Download the application artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: hyde
-          path: builds
-
-      - name: Download the checksum artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: checksum
-          path: builds
-
-      - name: Download the version number artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: version
-
       - name: Prepare version information
         run:  |
           echo "VERSION=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
