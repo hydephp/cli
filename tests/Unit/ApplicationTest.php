@@ -24,3 +24,17 @@ it('uses custom cached config path', function () {
 it('uses custom namespace', function () {
     expect((new Application())->getNamespace())->toBe('App');
 });
+
+it('uses parent namespace logic if composer.json exists', function () {
+    $application = new ApplicationWithPublicNamespace();
+
+    $application->namespace = 'Example';
+    $application->setBasePath(__DIR__.'/../../');
+
+    expect($application->getNamespace())->toBe('Example');
+});
+
+class ApplicationWithPublicNamespace extends Application
+{
+    public $namespace;
+}

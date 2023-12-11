@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpIllegalPsrClassPathInspection */
+<?php
 
 use App\Commands\ServeCommand;
 use Hyde\Foundation\HydeKernel;

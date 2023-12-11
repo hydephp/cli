@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpIllegalPsrClassPathInspection */
+<?php
 
 use App\Commands\VendorPublishCommand;
 use Illuminate\Filesystem\Filesystem;
