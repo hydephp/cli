@@ -70,6 +70,12 @@ jobs:
           sha256sum hyde > checksum.txt
           echo "SHA256 checksum of the application binary: $(cat checksum.txt)"
 
+      - name: Commit executable
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: builds/hyde
+          message: "Build standalone executable"
+
       - name: Upload executable
         uses: actions/upload-artifact@v3
         with:
