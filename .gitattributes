@@ -6,6 +6,8 @@
 *.md diff=markdown
 *.php diff=php
 
+builds/hyde binary
+
 .github/ export-ignore
 tests/ export-ignore
 bin/ export-ignore
