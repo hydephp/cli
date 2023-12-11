@@ -58,7 +58,7 @@
     ],
     "require-dev": {
         "hyde/framework": "dev-develop",
-        "hyde/realtime-compiler": "dev-improve-portability",
+        "hyde/realtime-compiler": "^3.1",
         "laravel-zero/framework": "^10.0",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^2.26"

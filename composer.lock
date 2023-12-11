@@ -1008,16 +1008,16 @@
         },
         {
             "name": "hyde/realtime-compiler",
-            "version": "dev-improve-portability",
+            "version": "v3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/realtime-compiler.git",
-                "reference": "c1031a266759b068bdbcbc6fd02c4a94018496bb"
+                "reference": "90fece255a2df48d64a64b03569249776ea06e7c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/c1031a266759b068bdbcbc6fd02c4a94018496bb",
-                "reference": "c1031a266759b068bdbcbc6fd02c4a94018496bb",
+                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/90fece255a2df48d64a64b03569249776ea06e7c",
+                "reference": "90fece255a2df48d64a64b03569249776ea06e7c",
                 "shasum": ""
             },
             "require": {
@@ -1049,7 +1049,7 @@
             "description": "HydePHP Realtime Compiler Server",
             "support": {
                 "issues": "https://github.com/hydephp/realtime-compiler/issues",
-                "source": "https://github.com/hydephp/realtime-compiler/tree/improve-portability"
+                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.1.0"
             },
             "funding": [
                 {
@@ -1057,7 +1057,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-12-05T12:22:45+00:00"
+            "time": "2023-10-28T14:08:37+00:00"
         },
         {
             "name": "illuminate/bus",
@@ -8935,8 +8935,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "hyde/framework": 20,
-        "hyde/realtime-compiler": 20
+        "hyde/framework": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
