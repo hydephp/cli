@@ -95,33 +95,32 @@ foreach ($views['views'] as $view) {
     ];
 }
 
+// We store these under each year-month, so we can have some sort of tracking over time.
+// The reason we do this monthly is because we can't get the data for a specific date, only the last 14 days,
+// and since we can't know which day some data is for, we don't know when it overlaps with the previous data if
+// we fetch data for the same day multiple times. Having it stored monthly means we get an average that is at least somewhat accurate.
+$popularDataKey = date('Y-m', (time()));
+
 $popularPaths = getResponse('popular/paths');
 
 foreach ($popularPaths as $path) {
+    // Since the paths are messy, we use a hash of the path as the key.
     $key = hash('sha256', $path['path']);
-    $existing = $database['popularPaths'][$key] ?? [];
 
-    // Get the interval the data is collected for. Key is the existing key, or today's date - 14 days justified to the start of that day, value is today's date, justified to the start of that day.
-    // Todo store each interval as a separate entry in the interval array? Or we store the paths under a dated entry in the database?
-    $interval = $existing['interval'] ?? [];
-    $interval[key($interval) ?? date('Y-m-d', strtotime('-14 days', strtotime(date('Y-m-d'))))] = date('Y-m-d', strtotime(date('Y-m-d')));
-
-    $database['popularPaths'][$key] = [
+    $existing = $database['popular'][$popularDataKey]['paths'][$key] ?? [];
+    $database['popular'][$popularDataKey]['paths'][$key] = [
         'path' => $path['path'],
         'title' => $path['title'],
         'count' => max($path['count'], $existing['count'] ?? 0),
         'uniques' => max($path['uniques'], $existing['uniques'] ?? 0),
-        'interval' => [key($interval) => current($interval)],
     ];
 }
 
 $popularReferrers = getResponse('popular/referrers');
-// We store these under each year-month, so we can have some sort of tracking over time.
-$referrerDateKey = date('Y-m', (time()));
 
 foreach ($popularReferrers as $referrer) {
-    $existing = $database['popularReferrers'][$referrerDateKey][$referrer['referrer']] ?? [];
-    $database['popularReferrers'][$referrerDateKey][$referrer['referrer']] = [
+    $existing = $database['popular'][$popularDataKey]['referrers'][$referrer['referrer']] ?? [];
+    $database['popular'][$popularDataKey]['referrers'][$referrer['referrer']] = [
         'count' => max($referrer['count'], $existing['count'] ?? 0),
         'uniques' => max($referrer['uniques'], $existing['uniques'] ?? 0),
     ];

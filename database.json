@@ -21,103 +21,75 @@
             }
         }
     },
-    "popularPaths": {
-        "f317f9e3c82cb0232cdc96d2d793aeaf478a253bf5bfdf198ea648398603e3ed": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments",
-            "title": "caendesilva\/hyde-standalone-release-experiments: Destructive experiments, ple...",
-            "count": 60,
-            "uniques": 2,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "69cecec2489480b5e55604a7e9b2d6e5124b59764e435009e7c39564facd54a6": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/pulls",
-            "title": "Pull requests \u00b7 caendesilva\/hyde-standalone-release-experiments",
-            "count": 59,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "ac300bcf56821ed4424365408702cdf51d7cc0c96d679898cecd88dfb3df6027": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/actions\/workflows\/create-release.yml",
-            "title": "Workflow runs \u00b7 caendesilva\/hyde-standalone-release-experiments",
-            "count": 54,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "27996d3b7c352d738b617273dc5118f02ba98aa1e7fb43cb02fb7e2538309eca": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/actions",
-            "title": "Workflow runs \u00b7 caendesilva\/hyde-standalone-release-experiments",
-            "count": 52,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "f98ff66e827b412cd129c2e6a279f5a26cc81ceda2faba06952654a2c3501817": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/tree\/master",
-            "title": "caendesilva\/hyde-standalone-release-experiments: Experimental global Hyde bin...",
-            "count": 16,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "a41932e598db191f6eb7d0555240cb380901958655537ef9e8f2c63376b0cbd6": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/tree\/stable",
-            "title": "caendesilva\/hyde-standalone-release-experiments at stable",
-            "count": 15,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "800a067ab6a48f284988f009717031dc15e2bc091df9f8bad955b482997b7623": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/actions\/workflows\/release.yml",
-            "title": "Build and release binary \u00b7 Workflow runs \u00b7 caendesilva\/hyde-standalone-releas...",
-            "count": 9,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "a28743d88f952fbcd04956115fba646e716aa93899ac1cbe4a1ffac7ee9c170a": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/branches",
-            "title": "Branches \u00b7 caendesilva\/hyde-standalone-release-experiments",
-            "count": 9,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "6315155a3ecb3edd9c9c8cf8a15525880f08f64b5e856cd794f09930f4c2b4b5": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/pull\/9",
-            "title": "HydeCLI v0.1.1 by github-actions[bot] \u00b7 Pull Request #9 \u00b7 caendesilva\/hyde-st...",
-            "count": 7,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        },
-        "d70507031ffc7669a7962f8b3f6c4fd75cb5b2356ffacb07b9e637e4f7356d68": {
-            "path": "\/caendesilva\/hyde-standalone-release-experiments\/tree\/master\/.github\/workflows",
-            "title": "hyde-standalone-release-experiments\/.github\/workflows at master \u00b7 caendesilva...",
-            "count": 7,
-            "uniques": 1,
-            "interval": {
-                "2023-11-28": "2023-12-12"
-            }
-        }
-    },
-    "popularReferrers": {
+    "popular": {
         "2023-12": {
-            "github.com": {
-                "count": 36,
-                "uniques": 2
+            "paths": {
+                "f317f9e3c82cb0232cdc96d2d793aeaf478a253bf5bfdf198ea648398603e3ed": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments",
+                    "title": "caendesilva\/hyde-standalone-release-experiments: Destructive experiments, ple...",
+                    "count": 60,
+                    "uniques": 2
+                },
+                "69cecec2489480b5e55604a7e9b2d6e5124b59764e435009e7c39564facd54a6": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/pulls",
+                    "title": "Pull requests \u00b7 caendesilva\/hyde-standalone-release-experiments",
+                    "count": 59,
+                    "uniques": 1
+                },
+                "ac300bcf56821ed4424365408702cdf51d7cc0c96d679898cecd88dfb3df6027": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/actions\/workflows\/create-release.yml",
+                    "title": "Workflow runs \u00b7 caendesilva\/hyde-standalone-release-experiments",
+                    "count": 54,
+                    "uniques": 1
+                },
+                "27996d3b7c352d738b617273dc5118f02ba98aa1e7fb43cb02fb7e2538309eca": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/actions",
+                    "title": "Workflow runs \u00b7 caendesilva\/hyde-standalone-release-experiments",
+                    "count": 52,
+                    "uniques": 1
+                },
+                "f98ff66e827b412cd129c2e6a279f5a26cc81ceda2faba06952654a2c3501817": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/tree\/master",
+                    "title": "caendesilva\/hyde-standalone-release-experiments: Experimental global Hyde bin...",
+                    "count": 16,
+                    "uniques": 1
+                },
+                "a41932e598db191f6eb7d0555240cb380901958655537ef9e8f2c63376b0cbd6": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/tree\/stable",
+                    "title": "caendesilva\/hyde-standalone-release-experiments at stable",
+                    "count": 15,
+                    "uniques": 1
+                },
+                "800a067ab6a48f284988f009717031dc15e2bc091df9f8bad955b482997b7623": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/actions\/workflows\/release.yml",
+                    "title": "Build and release binary \u00b7 Workflow runs \u00b7 caendesilva\/hyde-standalone-releas...",
+                    "count": 9,
+                    "uniques": 1
+                },
+                "a28743d88f952fbcd04956115fba646e716aa93899ac1cbe4a1ffac7ee9c170a": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/branches",
+                    "title": "Branches \u00b7 caendesilva\/hyde-standalone-release-experiments",
+                    "count": 9,
+                    "uniques": 1
+                },
+                "6315155a3ecb3edd9c9c8cf8a15525880f08f64b5e856cd794f09930f4c2b4b5": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/pull\/9",
+                    "title": "HydeCLI v0.1.1 by github-actions[bot] \u00b7 Pull Request #9 \u00b7 caendesilva\/hyde-st...",
+                    "count": 7,
+                    "uniques": 1
+                },
+                "d70507031ffc7669a7962f8b3f6c4fd75cb5b2356ffacb07b9e637e4f7356d68": {
+                    "path": "\/caendesilva\/hyde-standalone-release-experiments\/tree\/master\/.github\/workflows",
+                    "title": "hyde-standalone-release-experiments\/.github\/workflows at master \u00b7 caendesilva...",
+                    "count": 7,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 36,
+                    "uniques": 2
+                }
             }
         }
     }
