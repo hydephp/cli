@@ -6,6 +6,10 @@ on:
       # Every Sunday night at 2200 UTC
       - cron: "0 22 * * 0"
 
+  push:
+    branches:
+      - traffic
+
 jobs:
   sync:
     runs-on: ubuntu-latest
