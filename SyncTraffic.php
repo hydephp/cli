@@ -93,14 +93,6 @@ class SyncTraffic
     private function fetchTraffic(): array
     {
         $database = $this->database;
-        $clones = $this->getResponse('clones');
-
-        foreach ($clones['clones'] as $clone) {
-            $database['traffic'][$clone['timestamp']]['clones'] = [
-                'count' => $clone['count'],
-                'uniques' => $clone['uniques'],
-            ];
-        }
 
         $views = $this->getResponse('views');
 
@@ -108,6 +100,15 @@ class SyncTraffic
             $database['traffic'][$view['timestamp']]['views'] = [
                 'count' => $view['count'],
                 'uniques' => $view['uniques'],
+            ];
+        }
+
+        $clones = $this->getResponse('clones');
+
+        foreach ($clones['clones'] as $clone) {
+            $database['traffic'][$clone['timestamp']]['clones'] = [
+                'count' => $clone['count'],
+                'uniques' => $clone['uniques'],
             ];
         }
 
