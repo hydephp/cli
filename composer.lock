@@ -1263,16 +1263,16 @@
         },
         {
             "name": "hyde/realtime-compiler",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/realtime-compiler.git",
-                "reference": "2246311e62dff0cfa95ed7d99457bef9ac4f3ae1"
+                "reference": "47354612e578da74bcad15e001ce0f5f0c2e8ca1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/2246311e62dff0cfa95ed7d99457bef9ac4f3ae1",
-                "reference": "2246311e62dff0cfa95ed7d99457bef9ac4f3ae1",
+                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/47354612e578da74bcad15e001ce0f5f0c2e8ca1",
+                "reference": "47354612e578da74bcad15e001ce0f5f0c2e8ca1",
                 "shasum": ""
             },
             "require": {
@@ -1304,7 +1304,7 @@
             "description": "HydePHP Realtime Compiler Server",
             "support": {
                 "issues": "https://github.com/hydephp/realtime-compiler/issues",
-                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.2.0"
+                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.2.1"
             },
             "funding": [
                 {
@@ -1312,7 +1312,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-12-11T08:37:55+00:00"
+            "time": "2023-12-12T17:37:55+00:00"
         },
         {
             "name": "illuminate/bus",
