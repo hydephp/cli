@@ -12,6 +12,43 @@ echo "Syncing traffic data!\n";
 
 [$debug, $repo, $accessToken] = getValidatedArguments();
 
+/**
+ * @noinspection PhpUndefinedClassInspection
+ *
+ * @psalm-type Timestamp = string<timestamp('YYYY-MM-DDTHH:MM:SSZ')>
+ * @psalm-type YearMonth = string<timestamp('YYYY-MM')>
+ * @psalm-type Sha256 = string<sha256>
+ * @psalm-type Domain = string<domain>
+ *
+ * @var $database  array{
+ *   '_database' : array{
+ *     'last_updated' : int,
+ *     'content_hash' : string
+ *   },
+ *   'traffic' : array<Timestamp, array{
+ *     'views' : array{
+ *       'count' : int,
+ *       'uniques' : int
+ *     },
+ *     'clones' : array{
+ *       'count' : int,
+ *       'uniques' : int
+ *     }
+ *   }>,
+ *   'popular' : array<Timestamp, array{
+ *     'paths' : array<Sha256, array{
+ *       'path' : string,
+ *       'title' : string,
+ *       'count' : int,
+ *       'uniques' : int
+ *     }>,
+ *     'referrers' : array<Domain, array{
+ *       'count' : int,
+ *       'uniques' : int
+ *     }>
+ *   }>
+ * }
+ */
 $database = json_decode(file_get_contents('database.json'), true);
 
 $syncTraffic = new SyncTraffic($database, $repo, $accessToken, $debug);
