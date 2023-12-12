@@ -29,10 +29,6 @@ class ServeCommand extends BaseServeCommand
     {
         $path = HYDE_TEMP_DIR.'/bin/server.php';
 
-        if (File::exists($path)) {
-            return $path;
-        }
-
         $this->createServer($path);
 
         return $path;
