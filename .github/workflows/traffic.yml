@@ -6,6 +6,9 @@ on:
       # Every Sunday night at 2200 UTC
       - cron: "0 22 * * 0"
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
