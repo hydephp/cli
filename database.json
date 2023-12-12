@@ -1,6 +1,204 @@
 {
     "_database": {
-        "last_updated": null,
-        "content_hash": null
+        "last_updated": 1702378961,
+        "content_hash": "ca072678b1b44bb92502710a3262726ab10de48d12b5cee01d9b738b5ab8eb24"
+    },
+    "traffic": {
+        "2023-12-01T00:00:00Z": {
+            "views": {
+                "count": 18,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 7,
+                "uniques": 6
+            }
+        },
+        "2023-12-02T00:00:00Z": {
+            "views": {
+                "count": 154,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 170,
+                "uniques": 16
+            }
+        },
+        "2023-12-03T00:00:00Z": {
+            "views": {
+                "count": 109,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 369,
+                "uniques": 15
+            }
+        },
+        "2023-12-04T00:00:00Z": {
+            "views": {
+                "count": 46,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 307,
+                "uniques": 8
+            }
+        },
+        "2023-12-05T00:00:00Z": {
+            "views": {
+                "count": 49,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 397,
+                "uniques": 7
+            }
+        },
+        "2023-12-06T00:00:00Z": {
+            "views": {
+                "count": 102,
+                "uniques": 15
+            },
+            "clones": {
+                "count": 408,
+                "uniques": 6
+            }
+        },
+        "2023-12-07T00:00:00Z": {
+            "views": {
+                "count": 42,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 195,
+                "uniques": 10
+            }
+        },
+        "2023-12-08T00:00:00Z": {
+            "views": {
+                "count": 72,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 654,
+                "uniques": 8
+            }
+        },
+        "2023-12-09T00:00:00Z": {
+            "views": {
+                "count": 115,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1051,
+                "uniques": 19
+            }
+        },
+        "2023-12-10T00:00:00Z": {
+            "views": {
+                "count": 324,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 1228,
+                "uniques": 28
+            }
+        },
+        "2023-12-11T00:00:00Z": {
+            "views": {
+                "count": 326,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1532,
+                "uniques": 23
+            }
+        },
+        "2023-12-12T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        }
+    },
+    "popular": {
+        "2023-12": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 130,
+                    "uniques": 2
+                },
+                "b3c8d0f13465c37a2ca1211bc98e30771d6da5c0c8b9cf83d55beec707b91c8a": {
+                    "path": "\/caendesilva\/hyde-global",
+                    "title": "caendesilva\/hyde-global: Experimental global Hyde binary project",
+                    "count": 88,
+                    "uniques": 3
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 66,
+                    "uniques": 1
+                },
+                "88d6e5d05f71f5c5a3fbf212f62af51d4b57fdd2bdda14f3553a338d8cabc2c8": {
+                    "path": "\/caendesilva\/hyde-global\/pull\/4",
+                    "title": "Setup building and testing of the standalone executable by caendesilva \u00b7 Pull...",
+                    "count": 61,
+                    "uniques": 1
+                },
+                "0524a02734b9ab21b68dad8f6448b713b86421e6426c392553f1eebfa8931d18": {
+                    "path": "\/caendesilva\/hyde-global\/pull\/9",
+                    "title": "Normalize bootstrappers by caendesilva \u00b7 Pull Request #9 \u00b7 caendesilva\/hyde-g...",
+                    "count": 48,
+                    "uniques": 1
+                },
+                "031cc1d5b7591a5299b0a5c752106bfb63f0d76327c53d0a55715b57d4d39020": {
+                    "path": "\/caendesilva\/hyde-global\/pull\/17",
+                    "title": "Clean up bootstrapping by caendesilva \u00b7 Pull Request #17 \u00b7 caendesilva\/hyde-g...",
+                    "count": 24,
+                    "uniques": 1
+                },
+                "40bf2ba97da83ce2297e05940e37695d34658938f15e9c53eb5c91c62aeea51f": {
+                    "path": "\/hydephp\/cli\/actions\/workflows\/create-release.yml",
+                    "title": "Create a new release PR \u00b7 Workflow runs \u00b7 hydephp\/cli",
+                    "count": 23,
+                    "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "count": 20,
+                    "uniques": 1
+                },
+                "b0cb1148433950c8e849ab645cc36a20707b7e2c59a0b588cfda621e431b7137": {
+                    "path": "\/caendesilva\/hyde-global\/actions",
+                    "title": "Workflow runs \u00b7 caendesilva\/hyde-global",
+                    "count": 17,
+                    "uniques": 1
+                },
+                "b969dc9666191e61b4ee1d5d86babd0bb77cb2505d74d8a9248d2b63b099f8f1": {
+                    "path": "\/caendesilva\/hyde-global\/pull\/11",
+                    "title": "Add integration testing by caendesilva \u00b7 Pull Request #11 \u00b7 caendesilva\/hyde-...",
+                    "count": 17,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 110,
+                    "uniques": 8
+                },
+                "Google": {
+                    "count": 5,
+                    "uniques": 4
+                }
+            }
+        }
     }
 }
