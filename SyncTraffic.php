@@ -7,7 +7,10 @@
  *
  * @see https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
  */
+
 echo "Syncing traffic data!\n";
+
+// Run config
 
 // Check if --debug is passed as an argument, if so, enable debug mode.
 $debug = in_array('--debug', $argv);
@@ -21,6 +24,17 @@ $accessToken = $argv[2] ?? 'null';
 assert(str_starts_with($accessToken, 'github_pat_'), 'Invalid access token');
 
 $database = json_decode(file_get_contents('database.json'), true);
+
+$syncTraffic = new SyncTraffic($database, $repo, $accessToken, $debug);
+$database = $syncTraffic->fetch();
+
+file_put_contents('database.json', json_encode($database, JSON_PRETTY_PRINT));
+
+echo "Done!\n";
+
+echo "All done!\n";
+
+// Helpers
 
 class SyncTraffic
 {
@@ -173,12 +187,3 @@ class SyncTraffic
         return $database;
     }
 }
-
-$syncTraffic = new SyncTraffic($database, $repo, $accessToken, $debug);
-$database = $syncTraffic->fetch();
-
-file_put_contents('database.json', json_encode($database, JSON_PRETTY_PRINT));
-
-echo "Done!\n";
-
-echo "All done!\n";
