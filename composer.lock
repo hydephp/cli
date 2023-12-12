@@ -1203,16 +1203,16 @@
         },
         {
             "name": "hyde/framework",
-            "version": "v1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/framework.git",
-                "reference": "dfd40755edfaae6074684ec16053777f61a65186"
+                "reference": "ef717aa7ac817dce4f0385e0a719a1bdf1ed287d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/framework/zipball/dfd40755edfaae6074684ec16053777f61a65186",
-                "reference": "dfd40755edfaae6074684ec16053777f61a65186",
+                "url": "https://api.github.com/repos/hydephp/framework/zipball/ef717aa7ac817dce4f0385e0a719a1bdf1ed287d",
+                "reference": "ef717aa7ac817dce4f0385e0a719a1bdf1ed287d",
                 "shasum": ""
             },
             "require": {
@@ -1251,7 +1251,7 @@
             "description": "The HydePHP Framework",
             "support": {
                 "issues": "https://github.com/hydephp/framework/issues",
-                "source": "https://github.com/hydephp/framework/tree/v1.4.0"
+                "source": "https://github.com/hydephp/framework/tree/v1.4.1"
             },
             "funding": [
                 {
@@ -1259,7 +1259,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-12-11T10:00:15+00:00"
+            "time": "2023-12-12T18:36:52+00:00"
         },
         {
             "name": "hyde/realtime-compiler",
