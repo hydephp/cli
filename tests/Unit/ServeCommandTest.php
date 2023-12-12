@@ -11,7 +11,7 @@ const HYDE_TEMP_DIR = '/path/to/temp/dir';
 
 test('getExecutablePath method proxies server executable', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
-    File::shouldReceive('exists')->twice()->andReturnFalse();
+    File::shouldReceive('exists')->once()->andReturnFalse();
     File::shouldReceive('ensureDirectoryExists')->once()->with('/path/to/temp/dir/bin');
     File::shouldReceive('put')->once()->withArgs(function ($path, $contents) {
         expect($path)->toBe('/path/to/temp/dir/bin/server.php')
