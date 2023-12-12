@@ -11,11 +11,7 @@
                 "content_hash": {
                     "type": "string"
                 }
-            },
-            "required": [
-                "last_updated",
-                "content_hash"
-            ]
+            }
         },
         "traffic": {
             "type": "object",
@@ -32,11 +28,7 @@
                                 "uniques": {
                                     "type": "integer"
                                 }
-                            },
-                            "required": [
-                                "count",
-                                "uniques"
-                            ]
+                            }
                         },
                         "clones": {
                             "type": "object",
@@ -47,22 +39,11 @@
                                 "uniques": {
                                     "type": "integer"
                                 }
-                            },
-                            "required": [
-                                "count",
-                                "uniques"
-                            ]
+                            }
                         }
-                    },
-                    "required": [
-                        "views",
-                        "clones"
-                    ]
+                    }
                 }
-            },
-            "required": [
-                "2024-01-01T00:00:00Z"
-            ]
+            }
         },
         "popular": {
             "type": "object",
@@ -88,18 +69,9 @@
                                         "uniques": {
                                             "type": "integer"
                                         }
-                                    },
-                                    "required": [
-                                        "path",
-                                        "title",
-                                        "count",
-                                        "uniques"
-                                    ]
+                                    }
                                 }
-                            },
-                            "required": [
-                                "50d858e0985ecc7f60418aaf0cc5ab587f42c2570a884095a9e8ccacd0f6545c"
-                            ]
+                            }
                         },
                         "referrers": {
                             "type": "object",
@@ -113,32 +85,13 @@
                                         "uniques": {
                                             "type": "integer"
                                         }
-                                    },
-                                    "required": [
-                                        "count",
-                                        "uniques"
-                                    ]
+                                    }
                                 }
-                            },
-                            "required": [
-                                "github.com"
-                            ]
+                            }
                         }
-                    },
-                    "required": [
-                        "paths",
-                        "referrers"
-                    ]
+                    }
                 }
-            },
-            "required": [
-                "2024-01"
-            ]
+            }
         }
-    },
-    "required": [
-        "_database",
-        "traffic",
-        "popular"
-    ]
+    }
 }
