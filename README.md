@@ -46,3 +46,46 @@ Please note that this branch is internal and is not covered by any backwards com
   }
 }
 ```
+
+## Abstract schema
+
+This is an abstract representation of the data format.
+
+```php
+$database = array{
+  '_database' => array{
+    'last_updated' => int,
+    'content_hash' => string
+  },
+  'traffic' => array{
+    string<timestamp('YYYY-MM-DDTHH:MM:SSZ')> => array{
+      'views' => array{
+        'count' => int,
+        'uniques' => int
+      },
+      'clones' => array{
+        'count' => int,
+        'uniques' => int
+      }
+    }
+  },
+  'popular' => array{
+    string<timestamp('YYYY-MM')> => array{
+      'paths' => array{
+        string<sha256($path)> => array{
+          'path' => string,
+          'title' => string,
+          'count' => int,
+          'uniques' => int
+        }
+      },
+      'referrers' => array{
+        string<domain> => array{
+          'count' => int,
+          'uniques' => int
+        }
+      }
+    }
+  }
+}
+```
