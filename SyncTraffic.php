@@ -1,41 +1,10 @@
 <?php
 
 /**
- * @internal Super crude script to sync traffic data from GitHub to a local JSON database.
- *
- * @example php SyncTraffic.php owner/repo github_pat_1234567890 [--debug]
+ * @internal Super crude helper class to sync traffic data from GitHub to a local JSON database.
  *
  * @see https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
  */
-
-echo "Syncing traffic data!\n";
-
-// Run config
-
-// Check if --debug is passed as an argument, if so, enable debug mode.
-$debug = in_array('--debug', $argv);
-
-// get first argument as the repo (owner/repo)
-$repo = $argv[1] ?? 'null';
-assert(str_contains($repo, '/'), 'Invalid repo');
-
-// get second argument as the access token
-$accessToken = $argv[2] ?? 'null';
-assert(str_starts_with($accessToken, 'github_pat_'), 'Invalid access token');
-
-$database = json_decode(file_get_contents('database.json'), true);
-
-$syncTraffic = new SyncTraffic($database, $repo, $accessToken, $debug);
-$database = $syncTraffic->fetch();
-
-file_put_contents('database.json', json_encode($database, JSON_PRETTY_PRINT));
-
-echo "Done!\n";
-
-echo "All done!\n";
-
-// Helpers
-
 class SyncTraffic
 {
     private array $database;
@@ -69,42 +38,34 @@ class SyncTraffic
             default => null,
         };
         assert($name !== null, 'Invalid endpoint');
-        echo ' - Fetching '.$name.'... ';
-
-        //curl - L \
-        //  -H 'Accept: application/vnd.github+json' \
-        //  -H 'Authorization: Bearer <YOUR-TOKEN>' \
-        //  -H 'X-GitHub-Api-Version: 2022-11-28' \
-        //https://api.github.com/repos/OWNER/REPO/traffic/clones
+        echo sprintf(' - Fetching %s... ', $name);
 
         $debug = $this->debug;
         $repo = $this->repo;
         $accessToken = $this->accessToken;
 
-        $url = "https://api.github.com/repos/{$repo}/traffic/".$endpoint;
-
-        $userAgent = 'HydePHP Traffic Controller';
+        $url = "https://api.github.com/repos/$repo/traffic/".$endpoint;
 
         $ch = curl_init($url);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'User-Agent: HydePHP Traffic Controller',
             'Accept: application/vnd.github+json',
-            "Authorization: Bearer {$accessToken}",
+            "Authorization: Bearer $accessToken",
             'X-GitHub-Api-Version: 2022-11-28',
-            "User-Agent: {$userAgent}",
         ]);
 
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            throw new \Exception('Curl error: '.curl_error($ch));
+            throw new Exception('Curl error: '.curl_error($ch));
         }
 
         // Check status code
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if ($statusCode >= 400) {
-            throw new \Exception('Invalid status code: '.$statusCode."\n".$response);
+            throw new Exception(sprintf("Invalid status code: %s\n%s", $statusCode, $response));
         }
 
         curl_close($ch);
@@ -113,7 +74,7 @@ class SyncTraffic
         $data = json_decode($response, true);
 
         if (! is_array($data)) {
-            throw new \Exception('Invalid response: '."\n".$response);
+            throw new Exception(sprintf("Invalid response: \n%s", $response));
         }
 
         $padding = 20 - strlen($name);
@@ -151,7 +112,7 @@ class SyncTraffic
         }
 
         // We store these under each year-month, so we can have some sort of tracking over time.
-        // The reason we do this monthly is because we can't get the data for a specific date, only the last 14 days,
+        // The reason we do this monthly is that we can't get the data for a specific date, only the last 14 days,
         // and since we can't know which day some data is for, we don't know when it overlaps with the previous data if
         // we fetch data for the same day multiple times. Having it stored monthly means we get an average that is at least somewhat accurate.
         $popularDataKey = date('Y-m', (time()));
@@ -180,9 +141,6 @@ class SyncTraffic
                 'uniques' => max($referrer['uniques'], $existing['uniques'] ?? 0),
             ];
         }
-
-        // Save the database
-        echo 'Saving database... ';
 
         return $database;
     }
