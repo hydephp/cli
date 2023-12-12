@@ -20,6 +20,8 @@ $database = $syncTraffic->fetch();
 // Save the database
 echo 'Saving database... ';
 
+$database = updateDatabaseMetadata($database);
+
 file_put_contents('database.json', json_encode($database, JSON_PRETTY_PRINT));
 
 echo "Done!\n";
@@ -43,4 +45,13 @@ function getValidatedArguments(): array
     assert(str_starts_with($accessToken, 'github_pat_'), 'Invalid access token');
 
     return [$debug, $repo, $accessToken];
+}
+
+function updateDatabaseMetadata(array $database): array
+{
+    $contentHash = hash('sha256', json_encode($database));
+    $database['_database']['last_updated'] = time();
+    $database['_database']['content_hash'] = $contentHash;
+
+    return $database;
 }

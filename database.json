@@ -1,4 +1,8 @@
 {
+    "_database": {
+        "last_updated": 1702373580,
+        "content_hash": "af60dd45d032274500e254d9c1e6b70617367aae9f987acf74e08ed3b983aea0"
+    },
     "traffic": {
         "2023-12-10T00:00:00Z": {
             "clones": {
