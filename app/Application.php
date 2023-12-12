@@ -6,7 +6,7 @@ namespace App;
 
 class Application extends \Hyde\Foundation\Application
 {
-    final public const APP_VERSION = '0.5.1';
+    final public const APP_VERSION = '0.5.2';
 
     public function getCachedPackagesPath(): string
     {

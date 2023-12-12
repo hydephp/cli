@@ -229,6 +229,9 @@ jobs:
       - name: Verify server is running
         run: curl -sS localhost:8080 | grep -q "Hello World"
 
+      - name: Test dashboard can be accessed
+        run: curl -sS localhost:8080/dashboard | grep -q "HydePHP - Dashboard"
+
   test-live-executable-proxying:
     needs: build-executable
 
