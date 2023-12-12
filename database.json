@@ -1,7 +1,7 @@
 {
     "_database": {
-        "last_updated": 1702378961,
-        "content_hash": "ca072678b1b44bb92502710a3262726ab10de48d12b5cee01d9b738b5ab8eb24"
+        "last_updated": 1702379778,
+        "content_hash": "45b675fba8e7c3bd99346e978ece02cf407123c6f4699e159ba3f44b4014c4d1"
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -116,12 +116,12 @@
         },
         "2023-12-12T00:00:00Z": {
             "views": {
-                "count": 1,
+                "count": 15,
                 "uniques": 1
             },
             "clones": {
-                "count": 2,
-                "uniques": 2
+                "count": 4,
+                "uniques": 3
             }
         }
     },
