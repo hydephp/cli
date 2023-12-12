@@ -2,7 +2,9 @@
 
 /**
  * @internal Super crude script to sync traffic data from GitHub to a local JSON database.
+ *
  * @example php SyncTraffic.php owner/repo github_pat_1234567890 [--debug]
+ *
  * @see https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
  */
 
@@ -31,7 +33,7 @@ function getResponse(string $endpoint): array
     global $repo;
     global $accessToken;
 
-    $url = "https://api.github.com/repos/{$repo}/traffic/".  $endpoint;
+    $url = "https://api.github.com/repos/{$repo}/traffic/".$endpoint;
 
     $userAgent = 'HydePHP Traffic Controller';
 
@@ -48,13 +50,13 @@ function getResponse(string $endpoint): array
     $response = curl_exec($ch);
 
     if (curl_errno($ch)) {
-        throw new \Exception('Curl error: ' . curl_error($ch));
+        throw new \Exception('Curl error: '.curl_error($ch));
     }
 
     // Check status code
     $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     if ($statusCode >= 400) {
-        throw new \Exception('Invalid status code: ' . $statusCode."\n" . $response);
+        throw new \Exception('Invalid status code: '.$statusCode."\n".$response);
     }
 
     curl_close($ch);
@@ -62,8 +64,8 @@ function getResponse(string $endpoint): array
     // $response now contains the API response
     $data = json_decode($response, true);
 
-    if (!is_array($data)) {
-        throw new \Exception('Invalid response: '."\n" . $response);
+    if (! is_array($data)) {
+        throw new \Exception('Invalid response: '."\n".$response);
     }
 
     if ($debug) {
@@ -113,7 +115,6 @@ foreach ($popularPaths as $path) {
     ];
 }
 
-
 $popularReferrers = getResponse('popular/referrers');
 // We store these under each year-month, so we can have some sort of tracking over time.
 $referrerDateKey = date('Y-m', (time()));
@@ -122,7 +123,7 @@ foreach ($popularReferrers as $referrer) {
     $existing = $database['popularReferrers'][$referrerDateKey][$referrer['referrer']] ?? [];
     $database['popularReferrers'][$referrerDateKey][$referrer['referrer']] = [
         'count' => max($referrer['count'], $existing['count'] ?? 0),
-        'uniques' => max($referrer['uniques'], $existing['uniques'] ?? 0)
+        'uniques' => max($referrer['uniques'], $existing['uniques'] ?? 0),
     ];
 }
 
