@@ -8,6 +8,8 @@
  * @see https://docs.github.com/en/rest/metrics/traffic?apiVersion=2022-11-28
  */
 
+echo "Syncing traffic data!\n";
+
 // Check if --debug is passed as an argument, if so, enable debug mode.
 $debug = in_array('--debug', $argv);
 
@@ -23,6 +25,16 @@ $database = json_decode(file_get_contents('database.json'), true);
 
 function getResponse(string $endpoint): array
 {
+    $name = match ($endpoint) {
+        'clones' => 'clones',
+        'views' => 'views',
+        'popular/paths' => 'popular paths',
+        'popular/referrers' => 'popular referrers',
+        default => null,
+    };
+    assert($name !== null, 'Invalid endpoint');
+    echo " - Fetching ". $name ."... ";
+
     //curl - L \
     //  -H 'Accept: application/vnd.github+json' \
     //  -H 'Authorization: Bearer <YOUR-TOKEN>' \
@@ -67,6 +79,10 @@ function getResponse(string $endpoint): array
     if (! is_array($data)) {
         throw new \Exception('Invalid response: '."\n".$response);
     }
+
+    $padding =  20-strlen($name);
+
+    echo str_pad(' ', $padding) ."Done!\n";
 
     if ($debug) {
         echo '<response>';
@@ -126,4 +142,11 @@ foreach ($popularReferrers as $referrer) {
     ];
 }
 
+// Save the database
+echo "Saving database... ";
+
 file_put_contents('database.json', json_encode($database, JSON_PRETTY_PRINT));
+
+echo "Done!\n";
+
+echo "All done!\n";
