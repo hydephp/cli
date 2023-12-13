@@ -92,7 +92,32 @@ function updateDatabaseMetadata(array $database): array
     $database['_database']['last_updated'] = time();
     $database['_database']['content_hash'] = $contentHash;
 
+    $database['_database']['total_views'] = getTotalViews($database);
+    $database['_database']['total_clones'] = getTotalClones($database);
+
     return $database;
+}
+
+function getTotalViews(array $database): int
+{
+    $viewsSum = 0;
+
+    foreach ($database['traffic'] as $timestamp => $traffic) {
+        $viewsSum += $traffic['views']['count'];
+    }
+
+    return $viewsSum;
+}
+
+function getTotalClones(array $database): int
+{
+    $clonesSum = 0;
+
+    foreach ($database['traffic'] as $timestamp => $traffic) {
+        $clonesSum += $traffic['clones']['count'];
+    }
+
+    return $clonesSum;
 }
 
 /** Validate the data integrity */
