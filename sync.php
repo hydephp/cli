@@ -23,7 +23,9 @@ echo "Syncing traffic data!\n";
  * @var $database  array{
  *   '_database' : array{
  *     'last_updated' : int,
- *     'content_hash' : string
+ *     'content_hash' : string,
+ *     'total_views' : int,
+ *     'total_clones' : int
  *   },
  *   'traffic' : array<Timestamp, array{
  *     'views' : array{

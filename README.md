@@ -12,7 +12,9 @@ Please note that this branch is internal and is not covered by any backwards com
 {
   "_database": {
     "last_updated": 1704063600,
-    "content_hash": "a2dee47ba6268925da97750ab742baf67f02e2fb54ce23d499fb66a5b0222903"
+    "content_hash": "a2dee47ba6268925da97750ab742baf67f02e2fb54ce23d499fb66a5b0222903",
+    "total_views": 1500,
+    "total_clones": 6750
   },
   "traffic": {
     "2024-01-01T00:00:00Z": {
@@ -55,7 +57,9 @@ This is an abstract representation of the data format.
 $database = array{
   '_database' => array{
     'last_updated' => int,
-    'content_hash' => string
+    'content_hash' => string,
+    'total_views' => int,
+    'total_clones' => int
   },
   'traffic' => array{
     string<timestamp('YYYY-MM-DDTHH:MM:SSZ')> => array{
