@@ -20,13 +20,13 @@ Please note that the standalone HydePHP version is **experimental**, and that th
 
 ## Installation
 
-### Using Composer
+### Using Composer [![Total Installs on Packagist](https://img.shields.io/packagist/dt/hyde/cli?label=installs)](https://packagist.org/packages/hyde/cli)
 
 ```bash
 composer global require hyde/cli
 ```
 
-### Direct Download (Unix)
+### Direct Download (Unix) [![Total Installs on GitHub](https://img.shields.io/github/downloads/hydephp/cli/total.svg)](https://github.com/hydephp/cli/releases/latest)
 
 ```bash
 curl -L https://github.com/hydephp/cli/releases/latest/download/hyde -o hyde
