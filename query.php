@@ -32,40 +32,139 @@ final class Database
         return $this->database;
     }
 
-    public function table(string $table): array
+    public function table(string $table): Query
     {
-        return $this->database[$table];
+        return new Query($this->database[$table]);
+    }
+}
+
+/**
+ * @internal Helper class to query the JSON database
+ */
+final class Query implements JsonSerializable
+{
+    private array $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
     }
 
-    public function get(string $table, string $key): array
+    public function get(): array
     {
-        return $this->database[$table][$key];
+        return $this->data;
     }
 
-
-    /** @param array<string, mixed> $query Example: ['id' => 123] */
-    public function select(array $query): array
+    public function select(string ...$columns): Query
     {
-        $key = array_key_first($query);
-        $value = $query[$key];
-
         $result = [];
-        foreach ($this->database as $row) {
-            if ($row[$key] === $value) {
-                $result[] = $row;
+
+        foreach ($this->data as $row) {
+            $resultRow = [];
+
+            foreach ($columns as $column) {
+                $resultRow[$column] = $row[$column];
             }
+
+            $result[] = $resultRow;
         }
 
-        return $result;
+        return new Query($result);
     }
 
-    public function column(string $table, string $column): array
+    public function column(string $column): array
     {
         $result = [];
-        foreach ($this->database[$table] as $row) {
+
+        foreach ($this->data as $row) {
             $result[] = $row[$column];
         }
 
         return $result;
     }
+
+    public function where(string $column, string $operator, string $value): Query
+    {
+        $result = [];
+
+        foreach ($this->data as $row) {
+            if ($row[$column] === $value) {
+                $result[] = $row;
+            }
+        }
+
+        return new Query($result);
+    }
+
+    public function first(): Query
+    {
+        return new Query([$this->data[array_key_first($this->data)]]);
+    }
+
+    public function count(): int
+    {
+        return count($this->data);
+    }
+
+    public function sum(string $column): int
+    {
+        $result = 0;
+
+        foreach ($this->data as $row) {
+            $result += $row[$column];
+        }
+
+        return $result;
+    }
+
+    public function max(string $column): int
+    {
+        $result = 0;
+
+        foreach ($this->data as $row) {
+            $result = max($result, $row[$column]);
+        }
+
+        return $result;
+    }
+
+    public function min(string $column): int
+    {
+        $result = PHP_INT_MAX;
+
+        foreach ($this->data as $row) {
+            $result = min($result, $row[$column]);
+        }
+
+        return $result;
+    }
+
+    public function avg(string $column): int
+    {
+        return $this->sum($column) / $this->count();
+    }
+
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
+    public function toJson(): string
+    {
+        return json_encode($this->data, JSON_PRETTY_PRINT);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->data;
+    }
 }
+
+// Load database
+$database = Database::load();
+// Query database
+//$result = $database->table('_database')->select('last_updated');
+
+$result = $database->table('traffic')->select('views', 'clones')->where('date', '=', '2021-01-01T00:00:00Z')->first();
+// Print result
+echo json_encode($result, JSON_PRETTY_PRINT);
