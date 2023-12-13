@@ -1,7 +1,7 @@
 # Experimental Standalone HydePHP Executable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hyde/cli?include_prereleases)](https://packagist.org/packages/hyde/cli)
-[![Total Downloads on Packagist](https://img.shields.io/packagist/dt/hyde/cli)](https://packagist.org/packages/hyde/cli)
+[![Total Installs on Packagist](https://img.shields.io/packagist/dt/hyde/cli?label=installs)](https://packagist.org/packages/hyde/cli)
 [![License MIT](https://img.shields.io/github/license/hydephp/cli) ](https://github.com/hydephp/cli/blob/master/LICENSE.md)
 [![Test Coverage](https://codecov.io/gh/hydephp/cli/branch/master/graph/badge.svg?token=G6N2161TOT)](https://codecov.io/gh/hydephp/cli)
 [![Test Suite](https://github.com/hydephp/cli/actions/workflows/tests.yml/badge.svg)](https://github.com/hydephp/cli/actions/workflows/tests.yml)
