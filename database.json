@@ -1,7 +1,9 @@
 {
     "_database": {
-        "last_updated": 1702379778,
-        "content_hash": "45b675fba8e7c3bd99346e978ece02cf407123c6f4699e159ba3f44b4014c4d1"
+        "last_updated": 1702470556,
+        "content_hash": "50748e35a526a3e563361faa09ee2fc2bb7f1a9371d0011fd3f3145890ccead3",
+        "total_views": 1500,
+        "total_clones": 6750
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -116,12 +118,22 @@
         },
         "2023-12-12T00:00:00Z": {
             "views": {
-                "count": 15,
+                "count": 119,
                 "uniques": 1
             },
             "clones": {
-                "count": 4,
-                "uniques": 3
+                "count": 380,
+                "uniques": 7
+            }
+        },
+        "2023-12-13T00:00:00Z": {
+            "views": {
+                "count": 24,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 52,
+                "uniques": 2
             }
         }
     },
@@ -131,7 +143,7 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 130,
+                    "count": 147,
                     "uniques": 2
                 },
                 "b3c8d0f13465c37a2ca1211bc98e30771d6da5c0c8b9cf83d55beec707b91c8a": {
@@ -143,7 +155,7 @@
                 "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
                     "path": "\/hydephp\/cli\/pulls",
                     "title": "Pull requests \u00b7 hydephp\/cli",
-                    "count": 66,
+                    "count": 70,
                     "uniques": 1
                 },
                 "88d6e5d05f71f5c5a3fbf212f62af51d4b57fdd2bdda14f3553a338d8cabc2c8": {
@@ -167,13 +179,13 @@
                 "40bf2ba97da83ce2297e05940e37695d34658938f15e9c53eb5c91c62aeea51f": {
                     "path": "\/hydephp\/cli\/actions\/workflows\/create-release.yml",
                     "title": "Create a new release PR \u00b7 Workflow runs \u00b7 hydephp\/cli",
-                    "count": 23,
+                    "count": 25,
                     "uniques": 1
                 },
                 "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
                     "path": "\/hydephp\/cli\/actions",
                     "title": "Workflow runs \u00b7 hydephp\/cli",
-                    "count": 20,
+                    "count": 28,
                     "uniques": 1
                 },
                 "b0cb1148433950c8e849ab645cc36a20707b7e2c59a0b588cfda621e431b7137": {
@@ -191,7 +203,7 @@
             },
             "referrers": {
                 "github.com": {
-                    "count": 110,
+                    "count": 128,
                     "uniques": 8
                 },
                 "Google": {
