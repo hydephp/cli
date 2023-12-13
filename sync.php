@@ -25,7 +25,8 @@ echo "Syncing traffic data!\n";
  *     'last_updated' : int,
  *     'content_hash' : string,
  *     'total_views' : int,
- *     'total_clones' : int
+ *     'total_clones' : int,
+ *     'total_installs' : int
  *   },
  *   'traffic' : array<Timestamp, array{
  *     'views' : array{
@@ -55,6 +56,12 @@ $database = json_decode(file_get_contents('database.json'), true);
 
 $syncTraffic = new SyncTraffic($database, $repo, $accessToken, $debug);
 $database = $syncTraffic->fetch();
+
+// Sync total installs
+echo ' - Syncing release installs... ';
+$totalInstalls = syncTotalInstalls();
+$database['_database']['total_installs'] = $totalInstalls;
+echo "     Done!\n";
 
 // Save the database
 echo 'Saving database... ';
@@ -189,4 +196,14 @@ function validateDatabaseSchema(array $database): void
                 break;
         }
     }
+}
+
+function syncTotalInstalls(): int
+{
+    // Merges Packagist installs and GitHub releases downloads
+
+    $packagistInstalls = json_decode(file_get_contents('https://img.shields.io/packagist/dt/hyde/cli.json'), true);
+    $githubReleases = json_decode(file_get_contents('https://img.shields.io/github/downloads/hydephp/cli/total.json'), true);
+
+    return $packagistInstalls['value'] + $githubReleases['value'];
 }
