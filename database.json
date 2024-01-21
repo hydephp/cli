@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1705270052,
-        "content_hash": "4cd0618a033c5b26fe2ecde1eb5bb79cbf10116067871b8cdf4cfe5217103e8a",
-        "total_views": 1666,
-        "total_clones": 7019,
-        "total_installs": 17
+        "last_updated": 1705874853,
+        "content_hash": "2dfc4401f28f7c138d94b053ab5f6cfd1c0e2c5f23d9502191cd4c95a4fec65a",
+        "total_views": 1668,
+        "total_clones": 7024,
+        "total_installs": 25
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -246,6 +246,36 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2024-01-17T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-19T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-14T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-15T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-18T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -465,13 +495,23 @@
                 },
                 "1d7ff0941a4dd3dc6daae12cd54c20c8d2e751f2bd9b305ff0bd6d9688b7e85a": {
                     "path": "\/hydephp\/cli\/commit\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7",
-                    "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5 \u00b7 GitHub",
+                    "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "576ba8b72f087217ebd1149303c61a671b7de642461cf12317882e14b5f4cdb8": {
+                    "path": "\/hydephp\/cli\/pull\/37\/files",
+                    "title": "Update release publisher to commit binary by caendesilva \u00b7 Pull Request #37 \u00b7...",
                     "count": 1,
                     "uniques": 1
                 }
             },
             "referrers": {
                 "Google": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "laravel-zero.com": {
                     "count": 1,
                     "uniques": 1
                 }
