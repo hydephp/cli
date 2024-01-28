@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1705874853,
-        "content_hash": "2dfc4401f28f7c138d94b053ab5f6cfd1c0e2c5f23d9502191cd4c95a4fec65a",
-        "total_views": 1668,
-        "total_clones": 7024,
+        "last_updated": 1706479652,
+        "content_hash": "4083ac4c82bc109e6ff35bd987c9ba5bd145a1585d4cc7a690d97d83982959a2",
+        "total_views": 1673,
+        "total_clones": 7027,
         "total_installs": 25
     },
     "traffic": {
@@ -276,6 +276,28 @@
                 "count": 3,
                 "uniques": 1
             }
+        },
+        "2024-01-22T00:00:00Z": {
+            "views": {
+                "count": 5,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-21T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-25T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -504,6 +526,18 @@
                     "title": "Update release publisher to commit binary by caendesilva \u00b7 Pull Request #37 \u00b7...",
                     "count": 1,
                     "uniques": 1
+                },
+                "89d04861295d7c1cd15fcdadde0dd42ce7fb2dee8d1fc6d2575db80fd19bafe8": {
+                    "path": "\/hydephp\/cli\/tree\/master\/config",
+                    "title": "cli\/config at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "2c0190b1c9d2ce93187d216ff5d4650122c946fb58938758e6ad98fc69989d05": {
+                    "path": "\/hydephp\/cli\/commit\/4e2817a6219dd4473e7952b022eeaad3bf03d672",
+                    "title": "Temporarily try out development self-update version \u00b7 hydephp\/cli@4e2817a",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
@@ -512,6 +546,10 @@
                     "uniques": 1
                 },
                 "laravel-zero.com": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "github.com": {
                     "count": 1,
                     "uniques": 1
                 }
