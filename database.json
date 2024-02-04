@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1706479652,
-        "content_hash": "4083ac4c82bc109e6ff35bd987c9ba5bd145a1585d4cc7a690d97d83982959a2",
-        "total_views": 1673,
-        "total_clones": 7027,
+        "last_updated": 1707084445,
+        "content_hash": "5448e0db24880625d8126959e57408fc283cf8ccd783a9f03781858a3840b943",
+        "total_views": 1693,
+        "total_clones": 7030,
         "total_installs": 25
     },
     "traffic": {
@@ -298,6 +298,30 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2024-01-30T00:00:00Z": {
+            "views": {
+                "count": 20,
+                "uniques": 1
+            }
+        },
+        "2024-01-28T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-01-29T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-02-01T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -546,6 +570,80 @@
                     "uniques": 1
                 },
                 "laravel-zero.com": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "github.com": {
+                    "count": 1,
+                    "uniques": 1
+                }
+            }
+        },
+        "2024-02": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 5,
+                    "uniques": 2
+                },
+                "3d44b7e241c1e35abe4cb1633d9a919f6598c9bea06f4a783dfbbbf1d860ab92": {
+                    "path": "\/hydephp\/cli\/graphs\/traffic",
+                    "title": "Traffic \u00b7 hydephp\/cli",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "7b08cff0031906fcdbb2ad45dc1696f83b817fba16fc8d17fa41e9cd51a69c3f": {
+                    "path": "\/hydephp\/cli\/blob\/traffic\/database.json",
+                    "title": "cli\/database.json at traffic \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "9634b5c4514917690ebd6224ed6bd58cfadab0d98523df1facd56b4dac07e1c7": {
+                    "path": "\/hydephp\/cli\/blob\/traffic\/SyncTraffic.php",
+                    "title": "cli\/SyncTraffic.php at traffic \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "759eb614e1a1aaa619c572cc0f22df4d7d55395d459ec451ca66ee1e63e21f5c": {
+                    "path": "\/hydephp\/cli\/commits\/traffic",
+                    "title": "Commits \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "89d04861295d7c1cd15fcdadde0dd42ce7fb2dee8d1fc6d2575db80fd19bafe8": {
+                    "path": "\/hydephp\/cli\/tree\/master\/config",
+                    "title": "cli\/config at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "1ed5172ba10e5378db729fd5fa4de20ca205346bdb6e61976cc59e74f22a6009": {
+                    "path": "\/hydephp\/cli\/tree\/traffic",
+                    "title": "hydephp\/cli at traffic",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "2c0190b1c9d2ce93187d216ff5d4650122c946fb58938758e6ad98fc69989d05": {
+                    "path": "\/hydephp\/cli\/commit\/4e2817a6219dd4473e7952b022eeaad3bf03d672",
+                    "title": "Temporarily try out development self-update version \u00b7 hydephp\/cli@4e2817a",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "d76a4b7a4c357cc5963cab9ffc1f07cbe04085b902032d1973b40222cae2cebe": {
+                    "path": "\/hydephp\/cli\/commit\/a6c2e9afaee3bc513b217df3a5dd9a9c0586c67c",
+                    "title": "Sync traffic data \u00b7 hydephp\/cli@a6c2e9a",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "Issues \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "Google": {
                     "count": 1,
                     "uniques": 1
                 },
