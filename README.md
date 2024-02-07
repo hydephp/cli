@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hyde/cli?include_prereleases)](https://packagist.org/packages/hyde/cli)
 [![Total Installs on GitHub and Packagist](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhydephp%2Fcli%2Ftraffic%2Fdatabase.json&query=%24._database.total_installs&label=Installs)](https://github.com/hydephp/cli)
 [![Total Downloads on GitHub](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhydephp%2Fcli%2Ftraffic%2Fdatabase.json&query=%24._database.total_clones&label=downloads)](https://github.com/hydephp/cli)
-[![License MIT](https://img.shields.io/github/license/hydephp/cli) ](https://github.com/hydephp/cli/blob/master/LICENSE.md)
+[![License MIT](https://img.shields.io/github/license/hydephp/cli)](https://github.com/hydephp/cli/blob/master/LICENSE.md)
 [![Test Coverage](https://codecov.io/gh/hydephp/cli/branch/master/graph/badge.svg?token=G6N2161TOT)](https://codecov.io/gh/hydephp/cli)
 [![Test Suite](https://github.com/hydephp/cli/actions/workflows/tests.yml/badge.svg)](https://github.com/hydephp/cli/actions/workflows/tests.yml)
 
