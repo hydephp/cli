@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1707084445,
-        "content_hash": "5448e0db24880625d8126959e57408fc283cf8ccd783a9f03781858a3840b943",
-        "total_views": 1693,
-        "total_clones": 7030,
+        "last_updated": 1707689229,
+        "content_hash": "4f3fce35c36533a15c04d65262e4adc364a55328ad275e96cb4ee8f6e8e333ef",
+        "total_views": 1739,
+        "total_clones": 7065,
         "total_installs": 25
     },
     "traffic": {
@@ -322,6 +322,38 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2024-02-05T00:00:00Z": {
+            "views": {
+                "count": 32,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 3,
+                "uniques": 3
+            }
+        },
+        "2024-02-07T00:00:00Z": {
+            "views": {
+                "count": 14,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 30,
+                "uniques": 2
+            }
+        },
+        "2024-02-04T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-02-06T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -584,7 +616,7 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 5,
+                    "count": 10,
                     "uniques": 2
                 },
                 "3d44b7e241c1e35abe4cb1633d9a919f6598c9bea06f4a783dfbbbf1d860ab92": {
@@ -640,6 +672,42 @@
                     "title": "Issues \u00b7 hydephp\/cli",
                     "count": 1,
                     "uniques": 1
+                },
+                "4dd3e29bc80ba8e44295788b7e3b2d41db190c95d05f65c02dd9b98199a650f6": {
+                    "path": "\/hydephp\/cli\/blob\/3830f89373fde5ff05c9c914f90e99b27fd959b3\/tests\/System\/bin\/Assert.php",
+                    "title": "cli\/tests\/System\/bin\/Assert.php at 3830f89373fde5ff05c9c914f90e99b27fd959b3 \u00b7...",
+                    "count": 9,
+                    "uniques": 1
+                },
+                "3aeb88069e9f88b301c78fb2ed68c2eea0a12ed8a4f6022ab51456baeb923193": {
+                    "path": "\/hydephp\/cli\/blob\/master\/tests\/System\/bin\/Assert.php",
+                    "title": "cli\/tests\/System\/bin\/Assert.php at master \u00b7 hydephp\/cli",
+                    "count": 5,
+                    "uniques": 1
+                },
+                "7d30bbe164fd54001a14c16ed8460e9ec02fdb57e0d3df7cea7641594f5f2790": {
+                    "path": "\/hydephp\/cli\/blob\/master\/README.md",
+                    "title": "cli\/README.md at master \u00b7 hydephp\/cli",
+                    "count": 4,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "68c5caa96aaab8c5cc13f934a1c80df3f4cbd18b30dba15efab4ba4e203af0d1": {
+                    "path": "\/hydephp\/cli\/tree\/master\/.github\/workflows",
+                    "title": "cli\/.github\/workflows at master \u00b7 hydephp\/cli",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "130067f8a94e2cdecacd26bc03640aa9db47e9e2c98218f5ce2e3b33bc08818f": {
+                    "path": "\/hydephp\/cli\/blob\/master\/.github\/workflows\/tests.yml",
+                    "title": "cli\/.github\/workflows\/tests.yml at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
                 }
             },
             "referrers": {
@@ -648,8 +716,8 @@
                     "uniques": 1
                 },
                 "github.com": {
-                    "count": 1,
-                    "uniques": 1
+                    "count": 6,
+                    "uniques": 2
                 }
             }
         }
