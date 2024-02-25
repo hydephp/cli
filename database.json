@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1708294091,
-        "content_hash": "723c1735607798351815d231cd3122ebb3b28634718b800679db0474d762136d",
-        "total_views": 1753,
-        "total_clones": 7067,
+        "last_updated": 1708898860,
+        "content_hash": "22a9d0a5f7e0eda67fc7b277d6e4136d7ca1b8ea9a54ca8b92252fea322c4373",
+        "total_views": 1755,
+        "total_clones": 7069,
         "total_installs": 25
     },
     "traffic": {
@@ -374,6 +374,22 @@
             }
         },
         "2024-02-12T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-02-19T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-02-18T00:00:00Z": {
             "clones": {
                 "count": 1,
                 "uniques": 1
@@ -749,6 +765,18 @@
                     "path": "\/hydephp\/cli\/blob\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7\/.github\/workflows\/tests.yml",
                     "title": "cli\/.github\/workflows\/tests.yml at 0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7 \u00b7...",
                     "count": 2,
+                    "uniques": 1
+                },
+                "180045b92b7f51d9953f999562de40efe35d6866623364b6d518916b771a609c": {
+                    "path": "\/hydephp\/cli\/commit\/80d4c858012171756b8380a0fd7774ece08ab5ea",
+                    "title": "Load the Composer autoloader from the Phar archive \u00b7 hydephp\/cli@80d4c85 \u00b7 Gi...",
+                    "count": 2,
+                    "uniques": 2
+                },
+                "e9e38609bc59863b728065064d7ba72e6c04879f4081095d781a1aa659ea8d20": {
+                    "path": "\/hydephp\/cli\/tree\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7",
+                    "title": "GitHub - hydephp\/cli at 0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7",
+                    "count": 1,
                     "uniques": 1
                 }
             },
