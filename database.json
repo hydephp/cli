@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1711922896,
-        "content_hash": "8ddc175fc7a9b3a97872aa721b2d03b9211a9aa841a153dd7134f3ecc8f37640",
-        "total_views": 1789,
-        "total_clones": 7084,
+        "last_updated": 1712527634,
+        "content_hash": "8617959c516c55f59f7a74d0c7882f7c569bba91bd4dd2ea00c61d986fb99039",
+        "total_views": 1796,
+        "total_clones": 7085,
         "total_installs": 25
     },
     "traffic": {
@@ -512,6 +512,24 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2024-04-05T00:00:00Z": {
+            "views": {
+                "count": 5,
+                "uniques": 3
+            }
+        },
+        "2024-04-07T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2024-03-31T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -991,6 +1009,28 @@
                 },
                 "github.com": {
                     "count": 2,
+                    "uniques": 1
+                }
+            }
+        },
+        "2024-04": {
+            "paths": {
+                "2b74fd47ae6e9329bd017c92f7a7196f1c41061646692fd81a5c70d10c320d60": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/7150621171",
+                    "title": "Merge pull request #17 from caendesilva\/clean-up-bootstrapping \u00b7 hydephp\/cli@...",
+                    "count": 5,
+                    "uniques": 3
+                },
+                "1e70b0e9574859f263d0003d3b423c7df3db3502b513a1323644ee0839a44c91": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/7864970161",
+                    "title": "Sync repository traffic \u00b7 hydephp\/cli@a89539a \u00b7 GitHub",
+                    "count": 3,
+                    "uniques": 2
+                },
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 1,
                     "uniques": 1
                 }
             }
