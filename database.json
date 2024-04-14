@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1712527634,
-        "content_hash": "8617959c516c55f59f7a74d0c7882f7c569bba91bd4dd2ea00c61d986fb99039",
-        "total_views": 1796,
-        "total_clones": 7085,
+        "last_updated": 1713137491,
+        "content_hash": "9678983b963d09e509e262db2d91041725bf1766f4cb2d6edfac423be63fee93",
+        "total_views": 1799,
+        "total_clones": 7086,
         "total_installs": 25
     },
     "traffic": {
@@ -523,12 +523,22 @@
             "views": {
                 "count": 2,
                 "uniques": 2
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
             }
         },
         "2024-03-31T00:00:00Z": {
             "clones": {
                 "count": 1,
                 "uniques": 1
+            }
+        },
+        "2024-04-09T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 2
             }
         }
     },
@@ -1029,9 +1039,21 @@
                 },
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 1,
-                    "uniques": 1
+                    "title": "GitHub - hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 2,
+                    "uniques": 2
+                },
+                "b63bcfa9c9a75bfc518c20cb8b907c444d4086e8bed0ba7e7956366d7ebaf54a": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/7151552340",
+                    "title": "Refactor to cache the internal application config \u00b7 hydephp\/cli@b89852b \u00b7 Git...",
+                    "count": 3,
+                    "uniques": 2
+                }
+            },
+            "referrers": {
+                "Google": {
+                    "count": 2,
+                    "uniques": 2
                 }
             }
         }
