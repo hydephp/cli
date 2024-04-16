@@ -28,6 +28,9 @@ class SelfUpdateCommand extends Command
     protected const STATE_UP_TO_DATE = 2;
     protected const STATE_AHEAD = 3;
 
+    /** @var array<string, scalar> The latest release information from the GitHub API */
+    protected array $release;
+
     public function handle(): int
     {
         $this->output->title('Checking for a new version...');
@@ -61,6 +64,13 @@ class SelfUpdateCommand extends Command
 
     protected function getLatestReleaseVersion(): string
     {
+        $this->getLatestReleaseInformation();
+
+        return $this->release['tag_name'];
+    }
+
+    protected function getLatestReleaseInformation(): void
+    {
         // Set the user agent as required by the GitHub API
         ini_set('user_agent', $this->getUserAgent());
 
@@ -68,7 +78,7 @@ class SelfUpdateCommand extends Command
 
         $data = json_decode($response, true);
 
-        return $data['tag_name'];
+        $this->release = $data;
     }
 
     protected function getUserAgent(): string
