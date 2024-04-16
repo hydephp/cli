@@ -142,7 +142,13 @@ class SelfUpdateCommand extends Command
 
             $this->output->warning('Here is what went wrong:');
 
-            throw $exception;
+            if ($this->output->isVerbose()) {
+                throw $exception;
+            } else {
+                $this->warn('For more information, run the command again with the `-v` option to throw the exception.');
+            }
+
+            return Command::FAILURE;
         }
     }
 
