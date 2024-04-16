@@ -28,6 +28,7 @@ class SelfUpdateCommand extends Command
         $this->output->title('Checking for a new version...');
 
         $currentVersion = $this->parseVersion(Application::APP_VERSION);
+
         $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
     }
 
