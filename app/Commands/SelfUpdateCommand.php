@@ -8,5 +8,9 @@ use Illuminate\Console\Command;
 
 class SelfUpdateCommand extends Command
 {
-    //
+    /** @var string */
+    protected $signature = 'self-update';
+
+    /** @var string */
+    protected $description = 'Update the standalone application to the latest version.';
 }
