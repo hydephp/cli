@@ -59,13 +59,9 @@
     "require-dev": {
         "hyde/framework": "^1.4",
         "hyde/realtime-compiler": "^3.2",
-        "laravel-zero/framework": "dev-feature/phar-updater",
+        "laravel-zero/framework": "^10.0",
         "laravel-zero/phar-updater": "^1.3",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^2.26"
-    },
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/owenvoke/laravel-zero-framework.git"
-    }]
+    }
 }
