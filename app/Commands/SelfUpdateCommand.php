@@ -116,8 +116,8 @@ class SelfUpdateCommand extends Command
                 $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
                     'title' => 'Error while self-updating the application',
                     'body' => $this->stripPersonalInformation($this->getIssueMarkdown($exception))
-                ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application')
-            );
+                ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application'
+            ));
 
             if ($this->output->isVerbose()) {
                 throw $exception;
