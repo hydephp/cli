@@ -146,6 +146,17 @@ class SelfUpdateCommand extends Command
         // Todo
     }
 
+    /** @return self::STRATEGY_* */
+    protected function determineUpdateStrategy(string $applicationPath): string
+    {
+        // Check if the application is installed via Composer
+        if (str_contains($applicationPath, 'composer')) {
+            return self::STRATEGY_COMPOSER;
+        }
+
+        return self::STRATEGY_DIRECT;
+    }
+
     protected function debug(string $message = ''): void
     {
         if ($this->output->isVerbose()) {
