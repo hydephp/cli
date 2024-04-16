@@ -97,8 +97,16 @@ class SelfUpdateCommand extends Command
             return Command::SUCCESS;
         } catch (Throwable $exception) {
             $this->output->error('Something went wrong while updating the application!');
+
+            $this->line("<error>Error:</error> <comment>{$exception->getMessage()}</comment> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
+
+            if (! $this->output->isVerbose()) {
+                $this->line('       <fg=gray>For more information, run the command again with the `-v` option to throw the exception.</>');
+            }
+
+            $this->newLine();
+
             $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
-            $this->info('Please report this issue on GitHub so we can fix it!');
 
             $environment = implode("\n", [
                 'Application version: v'.Application::APP_VERSION,
@@ -106,7 +114,7 @@ class SelfUpdateCommand extends Command
                 'Operating system:    '.PHP_OS,
             ]);
 
-            $this->line('<comment>Please use this link:</comment> <href='.$this->buildUrl('https://github.com/hydephp/cli/issues/new', [
+            $this->line('<info>Please report this issue on GitHub so we can fix it!</info> <href='.$this->buildUrl('https://github.com/hydephp/cli/issues/new', [
                     'title' => 'Error while self-updating the application',
                     'body' => <<<MARKDOWN
                 ### Description
@@ -142,8 +150,6 @@ class SelfUpdateCommand extends Command
 
             if ($this->output->isVerbose()) {
                 throw $exception;
-            } else {
-                $this->warn('For more information, run the command again with the `-v` option to throw the exception.');
             }
 
             return Command::FAILURE;
