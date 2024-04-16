@@ -37,6 +37,10 @@ class SelfUpdateCommand extends Command
         ini_set('user_agent', $this->getUserAgent());
 
         $response = file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
+
+        $latestVersion = json_decode($response, true)['tag_name'];
+
+        return array_combine(['major', 'minor', 'patch'], array_map('intval', explode('.', $latestVersion)));
     }
 
     protected function getUserAgent(): string
