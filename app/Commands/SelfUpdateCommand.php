@@ -29,6 +29,14 @@ class SelfUpdateCommand extends Command
         $this->currentVersion = array_combine(['major', 'minor', 'patch'], array_map('intval', explode('.', Application::APP_VERSION)));
     }
 
+    protected function getLatestVersion()
+    {
+        // Set the user agent as required by the GitHub API
+        ini_set('user_agent', $this->getUserAgent());
+
+        $response = file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
+    }
+
     protected function getUserAgent(): string
     {
         return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
