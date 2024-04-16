@@ -66,7 +66,9 @@ class SelfUpdateCommand extends Command
 
         $response = file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
 
-        return json_decode($response, true)['tag_name'];
+        $data = json_decode($response, true);
+
+        return $data['tag_name'];
     }
 
     protected function getUserAgent(): string
