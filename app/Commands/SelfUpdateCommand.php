@@ -174,6 +174,20 @@ class SelfUpdateCommand extends Command
         return self::STRATEGY_DIRECT;
     }
 
+    protected function updateDirectly(): void
+    {
+        $this->output->writeln('Downloading the latest version...');
+
+        // Todo
+    }
+
+    protected function updateViaComposer(): void
+    {
+        $this->output->writeln('Updating via Composer...');
+
+        // Todo
+    }
+
     protected function debug(string $message = ''): void
     {
         if ($this->output->isVerbose()) {
