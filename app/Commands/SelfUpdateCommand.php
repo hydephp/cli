@@ -27,6 +27,7 @@ use function curl_init;
 use function curl_exec;
 use function urlencode;
 use function curl_close;
+use function array_keys;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
