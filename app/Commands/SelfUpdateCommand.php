@@ -42,6 +42,9 @@ class SelfUpdateCommand extends Command
         $applicationPath = $this->findApplicationPath();
         $this->debug("Application path: $applicationPath");
 
+        $strategy = $this->determineUpdateStrategy($applicationPath);
+        $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
+
         $currentVersion = $this->parseVersion(Application::APP_VERSION);
         $this->debug('Current version: v'.implode('.', $currentVersion));
 
