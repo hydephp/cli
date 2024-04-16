@@ -66,7 +66,7 @@ class SelfUpdateCommand extends Command
 
         $this->output->title('Updating to the latest version...');
 
-        $this->updateApplication();
+        $this->updateApplication($strategy);
 
         $this->info('The application has been updated successfully.');
 
@@ -147,9 +147,15 @@ class SelfUpdateCommand extends Command
         };
     }
 
-    protected function updateApplication(): void
+    /** @param self::STRATEGY_* $strategy */
+    protected function updateApplication(string $strategy): void
     {
         $this->output->writeln('Updating the application...');
+
+        match ($strategy) {
+            self::STRATEGY_DIRECT => $this->updateDirectly(),
+            self::STRATEGY_COMPOSER => $this->updateViaComposer(),
+        };
     }
 
     /** @return self::STRATEGY_* */
