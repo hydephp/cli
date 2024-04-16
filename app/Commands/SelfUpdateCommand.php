@@ -105,48 +105,14 @@ class SelfUpdateCommand extends Command
             }
 
             $this->newLine();
-
             $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
 
-            $environment = implode("\n", [
-                'Application version: v'.Application::APP_VERSION,
-                'PHP version:         v'.PHP_VERSION,
-                'Operating system:    '.PHP_OS,
-            ]);
-
-            $this->line('<info>Please report this issue on GitHub so we can fix it!</info> <href='.$this->buildUrl('https://github.com/hydephp/cli/issues/new', [
-                    'title' => 'Error while self-updating the application',
-                    'body' => <<<MARKDOWN
-                ### Description
-                
-                A fatal error occurred while trying to update the application using the self-update command.
-                
-                ### Error message
-                
-                ```
-                {$exception->getMessage()}
-                ```
-                
-                ### Stack trace
-                
-                ```
-                {$exception->getTraceAsString()}
-                ```
-                
-                ### Environment
-                
-                ```
-                $environment
-                ```
-                
-                ### Context
-                
-                - Add any additional context here that may be relevant to the issue.
-                
-                MARKDOWN
-                ])
-                // Using a shorter version of the link for better readability and as a fallback for terminals that don't support hyperlinks
-                .'>https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application</>');
+            $this->line(sprintf('<info>%s</info> <href=%s>%s</>', 'Please report this issue on GitHub so we can fix it!',
+                    $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
+                        'title' => 'Error while self-updating the application',
+                        'body' => $this->getIssueMarkdown($exception)
+                    ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application')
+            );
 
             if ($this->output->isVerbose()) {
                 throw $exception;
@@ -321,5 +287,46 @@ class SelfUpdateCommand extends Command
         return sprintf("$url?%s", implode('&', array_map(function (string $key, string $value): string {
             return sprintf('%s=%s', $key, urlencode($value));
         }, array_keys($params), $params)));
+    }
+
+    private function getDebugEnvironment(): string
+    {
+        return implode("\n", [
+            'Application version: v'.Application::APP_VERSION,
+            'PHP version:         v'.PHP_VERSION,
+            'Operating system:    '.PHP_OS,
+        ]);
+    }
+
+    private function getIssueMarkdown(Throwable $exception): string
+    {
+        return <<<MARKDOWN
+        ### Description
+        
+        A fatal error occurred while trying to update the application using the self-update command.
+        
+        ### Error message
+        
+        ```
+        {$exception->getMessage()}
+        ```
+        
+        ### Stack trace
+        
+        ```
+        {$exception->getTraceAsString()}
+        ```
+        
+        ### Environment
+        
+        ```
+        {$this->getDebugEnvironment()}
+        ```
+        
+        ### Context
+        
+        - Add any additional context here that may be relevant to the issue.
+        
+        MARKDOWN;
     }
 }
