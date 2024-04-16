@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
+use Throwable;
 use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
@@ -24,6 +25,7 @@ use function passthru;
 use function array_map;
 use function curl_init;
 use function curl_exec;
+use function urlencode;
 use function curl_close;
 use function json_decode;
 use function is_writable;
@@ -57,40 +59,46 @@ class SelfUpdateCommand extends Command
 
     public function handle(): int
     {
-        $this->output->title('Checking for a new version...');
+        try {
+            $this->output->title('Checking for a new version...');
 
-        $applicationPath = $this->findApplicationPath();
-        $this->debug("Application path: $applicationPath");
+            $applicationPath = $this->findApplicationPath();
+            $this->debug("Application path: $applicationPath");
 
-        $strategy = $this->determineUpdateStrategy($applicationPath);
-        $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
+            $strategy = $this->determineUpdateStrategy($applicationPath);
+            $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
 
-        $currentVersion = $this->parseVersion(Application::APP_VERSION);
-        $this->debug('Current version: v'.implode('.', $currentVersion));
+            $currentVersion = $this->parseVersion(Application::APP_VERSION);
+            $this->debug('Current version: v'.implode('.', $currentVersion));
 
-        $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
-        $this->debug('Latest version: v'.implode('.', $latestVersion));
+            $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
+            $this->debug('Latest version: v'.implode('.', $latestVersion));
 
-        // Add a newline for better readability
-        $this->debug();
+            // Add a newline for better readability
+            $this->debug();
 
-        $state = $this->compareVersions($currentVersion, $latestVersion);
-        $this->printVersionStateInformation($state);
+            $state = $this->compareVersions($currentVersion, $latestVersion);
+            $this->printVersionStateInformation($state);
 
-        if ($state !== self::STATE_BEHIND) {
+            if ($state !== self::STATE_BEHIND) {
+                return Command::SUCCESS;
+            }
+
+            $this->output->title('Updating to the latest version...');
+
+            $this->updateApplication($strategy);
+
+            // Add a newline for better readability
+            $this->debug();
+
+            $this->info('The application has been updated successfully.');
+
             return Command::SUCCESS;
+        } catch (Throwable $exception) {
+            //
+
+            return Command::FAILURE;
         }
-
-        $this->output->title('Updating to the latest version...');
-
-        $this->updateApplication($strategy);
-
-        // Add a newline for better readability
-        $this->debug();
-
-        $this->info('The application has been updated successfully.');
-
-        return Command::SUCCESS;
     }
 
     protected function getLatestReleaseVersion(): string
