@@ -181,7 +181,38 @@ class SelfUpdateCommand extends Command
     {
         $this->output->writeln('Downloading the latest version...');
 
-        // Todo
+        // Download the latest release from GitHub
+        $downloadUrl = $this->release['assets'][0]['browser_download_url'];
+        $downloadedFile = tempnam(sys_get_temp_dir(), 'hyde');
+        $this->downloadFile($downloadUrl, $downloadedFile);
+
+        // Replace the current application with the downloaded one
+        $this->replaceApplication($downloadedFile);
+    }
+
+    protected function downloadFile(string $url, string $destination): void
+    {
+        $this->debug("Downloading $url to $destination");
+
+        $file = fopen($destination, 'wb');
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_FILE, $file);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+
+        curl_close($ch);
+        fclose($file);
+    }
+
+    protected function replaceApplication(string $downloadedFile): void
+    {
+        $applicationPath = $this->findApplicationPath();
+
+        $this->debug("Moving file $downloadedFile to $applicationPath");
+
+        // Replace the current application with the downloaded one
+        rename($downloadedFile, $applicationPath);
     }
 
     protected function updateViaComposer(): void
