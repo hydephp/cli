@@ -39,6 +39,12 @@ class SelfUpdateCommand extends Command
         $this->debug('Latest version: v'.implode('.', $latestVersion));
 
         $state = $this->compareVersions($currentVersion, $latestVersion);
+
+        match($state) {
+            self::STATE_BEHIND => $this->info('A new version is available.'),
+            self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
+            self::STATE_AHEAD => $this->info('You are using a development version.'),
+        };
     }
 
     protected function getLatestReleaseVersion(): string
@@ -68,16 +74,13 @@ class SelfUpdateCommand extends Command
     protected function compareVersions(array $currentVersion, array $latestVersion): int
     {
         if ($currentVersion === $latestVersion) {
-            $this->info('You are already using the latest version.');
             return self::STATE_UP_TO_DATE;
         }
 
         if ($currentVersion < $latestVersion) {
-            $this->warn('You are using an outdated version.');
             return self::STATE_BEHIND;
         }
 
-        $this->info('You are using a development version.');
         return self::STATE_AHEAD;
     }
 
