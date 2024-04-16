@@ -49,7 +49,7 @@ class SelfUpdateCommand extends Command
     protected const STRATEGY_DIRECT = 'direct';
     protected const STRATEGY_COMPOSER = 'composer';
 
-    /** @var array<string, scalar> The latest release information from the GitHub API */
+    /** @var array<string, string|array<string>> The latest release information from the GitHub API */
     protected array $release;
 
     public function handle(): int
