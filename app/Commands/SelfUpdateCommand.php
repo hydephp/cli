@@ -31,7 +31,8 @@ class SelfUpdateCommand extends Command
         $latestVersion = $this->getLatestVersion();
     }
 
-    protected function getLatestVersion()
+    /** @return array{major: int, minor: int, patch: int} */
+    protected function getLatestVersion(): array
     {
         // Set the user agent as required by the GitHub API
         ini_set('user_agent', $this->getUserAgent());
