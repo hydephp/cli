@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpComposerExtensionStubsInspection as we have our own extension check */
+
 declare(strict_types=1);
 
 namespace App\Commands;
