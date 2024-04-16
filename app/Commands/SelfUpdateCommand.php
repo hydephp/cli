@@ -98,10 +98,10 @@ class SelfUpdateCommand extends Command
         } catch (Throwable $exception) {
             $this->output->error('Something went wrong while updating the application!');
 
-            $this->line("<error>Error:</error> <comment>{$exception->getMessage()}</comment> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
+            $this->line(" <error>{$exception->getMessage()}</error> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
 
             if (! $this->output->isVerbose()) {
-                $this->line('       <fg=gray>For more information, run the command again with the `-v` option to throw the exception.</>');
+                $this->line(' <fg=gray>For more information, run the command again with the `-v` option to throw the exception.</>');
             }
 
             $this->newLine();
