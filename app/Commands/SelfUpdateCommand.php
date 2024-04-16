@@ -8,8 +8,12 @@ use App\Application;
 use Illuminate\Console\Command;
 
 use function explode;
+use function ini_set;
+use function sprintf;
 use function array_map;
+use function json_decode;
 use function array_combine;
+use function file_get_contents;
 
 class SelfUpdateCommand extends Command
 {
