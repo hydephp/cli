@@ -45,6 +45,10 @@ class SelfUpdateCommand extends Command
             self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
             self::STATE_AHEAD => $this->info('You are using a development version.'),
         };
+
+        if ($state !== self::STATE_BEHIND) {
+            return Command::SUCCESS;
+        }
     }
 
     protected function getLatestReleaseVersion(): string
