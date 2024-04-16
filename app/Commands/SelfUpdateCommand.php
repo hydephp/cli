@@ -7,6 +7,7 @@ namespace App\Commands;
 use App\Application;
 use Illuminate\Console\Command;
 
+use function assert;
 use function explode;
 use function ini_set;
 use function sprintf;
@@ -72,6 +73,13 @@ class SelfUpdateCommand extends Command
     protected function getLatestReleaseInformation(): void
     {
         $data = json_decode($this->makeGitHubApiResponse(), true);
+
+        assert($data !== null);
+        assert(isset($data['tag_name']));
+        assert(isset($data['assets']));
+        assert(isset($data['assets'][0]));
+        assert(isset($data['assets'][0]['browser_download_url']));
+        assert(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
 
         $this->release = $data;
     }
