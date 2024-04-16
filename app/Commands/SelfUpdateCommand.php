@@ -136,13 +136,7 @@ class SelfUpdateCommand extends Command
                 MARKDOWN
             ]));
 
-            if ($this->output->isVerbose()) {
-                throw $exception;
-            } else {
-                $this->warn('For more information, run the command again with the `-v` option to throw the exception.');
-            }
-
-            return Command::FAILURE;
+            throw $exception;
         }
     }
 
