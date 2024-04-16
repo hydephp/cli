@@ -23,14 +23,11 @@ class SelfUpdateCommand extends Command
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
 
-    /** @var array{major: int, minor: int, patch: int} */
-    protected array $currentVersion;
-
     public function handle(): void
     {
         $this->output->title('Checking for a new version...');
 
-        $this->currentVersion = $this->parseVersion(Application::APP_VERSION);
+        $currentVersion = $this->parseVersion(Application::APP_VERSION);
 
         $latestVersion = $this->getLatestVersion();
     }
