@@ -95,7 +95,11 @@ class SelfUpdateCommand extends Command
 
             return Command::SUCCESS;
         } catch (Throwable $exception) {
-            //
+            $this->error('Something went wrong while updating the application. As the self-update command is experimental, this may be a bug within the command itself. Please report this issue on GitHub so we can fix it!');
+            $this->warn($this->buildUrl('https://github.com/hydephp/cli/issues/new', [
+                'title' => 'Error while self-updating the application',
+                'body' => $exception->getMessage(),
+            ]));
 
             return Command::FAILURE;
         }
