@@ -45,6 +45,7 @@ class SelfUpdateCommand extends Command
         $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
         $this->debug('Latest version: v'.implode('.', $latestVersion));
 
+        // Add a newline for better readability
         $this->debug();
 
         $state = $this->compareVersions($currentVersion, $latestVersion);
