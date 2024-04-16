@@ -96,7 +96,9 @@ class SelfUpdateCommand extends Command
 
             return Command::SUCCESS;
         } catch (Throwable $exception) {
-            $this->error('Something went wrong while updating the application. As the self-update command is experimental, this may be a bug within the command itself. Please report this issue on GitHub so we can fix it!');
+            $this->output->error('Something went wrong while updating the application!');
+            $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
+            $this->info('Please report this issue on GitHub so we can fix it!');
 
             $environment = implode("\n", [
                 'Application version: v'.Application::APP_VERSION,
@@ -104,7 +106,7 @@ class SelfUpdateCommand extends Command
                 'Operating system:    '.PHP_OS,
             ]);
 
-            $this->warn($this->buildUrl('https://github.com/hydephp/cli/issues/new', [
+            $this->line('<comment>Please use this link:</comment> <href='.$this->buildUrl('https://github.com/hydephp/cli/issues/new', [
                 'title' => 'Error while self-updating the application',
                 'body' => <<<MARKDOWN
                 ### Description
@@ -134,7 +136,10 @@ class SelfUpdateCommand extends Command
                 - Add any additional context here that may be relevant to the issue.
                 
                 MARKDOWN
-            ]));
+            ])
+                // Using a shorter version of the link for better readability and as a fallback for terminals that don't support hyperlinks
+                .'>https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application</>');
+
             $this->output->warning('Here is what went wrong:');
 
             throw $exception;
