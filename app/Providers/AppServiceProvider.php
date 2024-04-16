@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Commands\SelfUpdateCommand;
 use App\Commands\Internal\Describer;
 use App\Commands\NewProjectCommand;
 use App\Commands\ServeCommand;
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->commands([
             NewProjectCommand::class,
+            SelfUpdateCommand::class,
         ]);
     }
 
