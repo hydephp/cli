@@ -140,8 +140,6 @@ class SelfUpdateCommand extends Command
                 // Using a shorter version of the link for better readability and as a fallback for terminals that don't support hyperlinks
                 .'>https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application</>');
 
-            $this->output->warning('Here is what went wrong:');
-
             if ($this->output->isVerbose()) {
                 throw $exception;
             } else {
