@@ -42,6 +42,8 @@ use function get_included_files;
 
 /**
  * @experimental This command is highly experimental and may contain bugs.
+ *
+ * @internal This command should not be accessed from the code as it may change significantly.
  */
 class SelfUpdateCommand extends Command
 {
