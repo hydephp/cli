@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Commands;
 
 use App\Application;
+use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
@@ -15,6 +16,7 @@ use function sprintf;
 use function implode;
 use function array_map;
 use function json_decode;
+use function is_writable;
 use function array_combine;
 use function file_get_contents;
 
@@ -156,6 +158,11 @@ class SelfUpdateCommand extends Command
         // Check if the application is installed via Composer
         if (Str::contains($applicationPath, 'composer', true)) {
             return self::STRATEGY_COMPOSER;
+        }
+
+        // Check that the executable path is writable
+        if (! is_writable($applicationPath)) {
+            throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
         }
 
         return self::STRATEGY_DIRECT;
