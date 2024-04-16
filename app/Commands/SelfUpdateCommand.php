@@ -264,11 +264,11 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    /** @param array<string, string|string[]> $params */
+    /** @param array<string, string> $params */
     protected function buildUrl(string $url, array $params): string
     {
-        return sprintf("$url?%s", implode('&', array_map(function (string $key, string|array $value): string {
-            return sprintf('%s=%s', $key, urlencode(is_array($value) ? implode("\n", $value) : (string) $value));
+        return sprintf("$url?%s", implode('&', array_map(function (string $key, string $value): string {
+            return sprintf('%s=%s', $key, urlencode($value));
         }, array_keys($params), $params)));
     }
 }
