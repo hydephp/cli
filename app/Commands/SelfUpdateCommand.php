@@ -10,6 +10,7 @@ use Illuminate\Console\Command;
 use function explode;
 use function ini_set;
 use function sprintf;
+use function implode;
 use function array_map;
 use function json_decode;
 use function array_combine;
@@ -28,8 +29,10 @@ class SelfUpdateCommand extends Command
         $this->output->title('Checking for a new version...');
 
         $currentVersion = $this->parseVersion(Application::APP_VERSION);
+        $this->debug('Current version: v'.implode('.', $currentVersion));
 
         $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
+        $this->debug('Latest version: v'.implode('.', $latestVersion));
     }
 
     protected function getLatestReleaseVersion(): string
@@ -53,5 +56,12 @@ class SelfUpdateCommand extends Command
         return array_combine(['major', 'minor', 'patch'],
             array_map('intval', explode('.', $semver))
         );
+    }
+
+    protected function debug(string $message): void
+    {
+        if ($this->output->isVerbose()) {
+            $this->output->writeln("$message");
+        }
     }
 }
