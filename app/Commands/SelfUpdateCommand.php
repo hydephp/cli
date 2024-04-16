@@ -68,6 +68,9 @@ class SelfUpdateCommand extends Command
 
         $this->updateApplication($strategy);
 
+        // Add a newline for better readability
+        $this->debug();
+
         $this->info('The application has been updated successfully.');
 
         return Command::SUCCESS;
