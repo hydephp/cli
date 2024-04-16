@@ -28,7 +28,7 @@ class SelfUpdateCommand extends Command
     protected const STATE_UP_TO_DATE = 2;
     protected const STATE_AHEAD = 3;
 
-    public function handle(): void
+    public function handle(): int
     {
         $this->output->title('Checking for a new version...');
 
