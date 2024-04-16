@@ -185,6 +185,11 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
         }
 
+        // Check that the Curl extension is available
+        if (! extension_loaded('curl')) {
+            throw new RuntimeException('The Curl extension is required to use the self-update command.');
+        }
+
         return self::STRATEGY_DIRECT;
     }
 
