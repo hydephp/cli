@@ -107,8 +107,8 @@ class SelfUpdateCommand extends Command
             ]);
 
             $this->line('<comment>Please use this link:</comment> <href='.$this->buildUrl('https://github.com/hydephp/cli/issues/new', [
-                'title' => 'Error while self-updating the application',
-                'body' => <<<MARKDOWN
+                    'title' => 'Error while self-updating the application',
+                    'body' => <<<MARKDOWN
                 ### Description
                 
                 A fatal error occurred while trying to update the application using the self-update command.
@@ -136,7 +136,7 @@ class SelfUpdateCommand extends Command
                 - Add any additional context here that may be relevant to the issue.
                 
                 MARKDOWN
-            ])
+                ])
                 // Using a shorter version of the link for better readability and as a fallback for terminals that don't support hyperlinks
                 .'>https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application</>');
 
