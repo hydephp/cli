@@ -24,6 +24,10 @@ class SelfUpdateCommand extends Command
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
 
+    protected const STATE_BEHIND = 1;
+    protected const STATE_UP_TO_DATE = 2;
+    protected const STATE_AHEAD = 3;
+
     public function handle(): void
     {
         $this->output->title('Checking for a new version...');
@@ -33,6 +37,8 @@ class SelfUpdateCommand extends Command
 
         $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
         $this->debug('Latest version: v'.implode('.', $latestVersion));
+
+        $state = $this->compareVersions($currentVersion, $latestVersion);
     }
 
     protected function getLatestReleaseVersion(): string
@@ -56,6 +62,23 @@ class SelfUpdateCommand extends Command
         return array_combine(['major', 'minor', 'patch'],
             array_map('intval', explode('.', $semver))
         );
+    }
+
+    /** @return self::STATE_* */
+    protected function compareVersions(array $currentVersion, array $latestVersion): int
+    {
+        if ($currentVersion === $latestVersion) {
+            $this->info('You are already using the latest version.');
+            return self::STATE_UP_TO_DATE;
+        }
+
+        if ($currentVersion < $latestVersion) {
+            $this->warn('You are using an outdated version.');
+            return self::STATE_BEHIND;
+        }
+
+        $this->info('You are using a development version.');
+        return self::STATE_AHEAD;
     }
 
     protected function debug(string $message): void
