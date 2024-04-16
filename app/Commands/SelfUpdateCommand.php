@@ -285,7 +285,7 @@ class SelfUpdateCommand extends Command
     }
 
     /** @param array<string, string> $params */
-    protected function buildUrl(string $url, array $params): string
+    private function buildUrl(string $url, array $params): string
     {
         return sprintf("$url?%s", implode('&', array_map(function (string $key, string $value): string {
             return sprintf('%s=%s', $key, urlencode($value));
