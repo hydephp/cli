@@ -135,6 +135,7 @@ class SelfUpdateCommand extends Command
                 
                 MARKDOWN
             ]));
+            $this->output->warning('Here is what went wrong:');
 
             throw $exception;
         }
