@@ -26,7 +26,7 @@ class SelfUpdateCommand extends Command
     {
         $this->output->title('Checking for a new version...');
 
-        $this->currentVersion = array_combine(['major', 'minor', 'patch'], array_map('intval', explode('.', Application::APP_VERSION)));
+        $this->currentVersion = $this->parseVersion(Application::APP_VERSION);
 
         $latestVersion = $this->getLatestVersion();
     }
@@ -41,11 +41,19 @@ class SelfUpdateCommand extends Command
 
         $latestVersion = json_decode($response, true)['tag_name'];
 
-        return array_combine(['major', 'minor', 'patch'], array_map('intval', explode('.', $latestVersion)));
+        return $this->parseVersion($latestVersion);
     }
 
     protected function getUserAgent(): string
     {
         return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
+    }
+
+    /** @return array{major: int, minor: int, patch: int} */
+    protected function parseVersion(string $semver): array
+    {
+        return array_combine(['major', 'minor', 'patch'],
+            array_map('intval', explode('.', $semver))
+        );
     }
 }
