@@ -9,17 +9,27 @@ use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
+use function fopen;
 use function assert;
+use function fclose;
+use function rename;
 use function explode;
 use function ini_set;
 use function sprintf;
 use function implode;
+use function tempnam;
 use function passthru;
 use function array_map;
+use function curl_init;
+use function curl_exec;
+use function curl_close;
 use function json_decode;
 use function is_writable;
+use function curl_setopt;
 use function array_combine;
+use function sys_get_temp_dir;
 use function file_get_contents;
+use function get_included_files;
 
 class SelfUpdateCommand extends Command
 {
