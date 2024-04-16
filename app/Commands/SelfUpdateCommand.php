@@ -30,6 +30,7 @@ use function is_writable;
 use function curl_setopt;
 use function array_combine;
 use function sys_get_temp_dir;
+use function extension_loaded;
 use function file_get_contents;
 use function get_included_files;
 
