@@ -32,6 +32,8 @@ class SelfUpdateCommand extends Command
     {
         $this->output->title('Checking for a new version...');
 
+        $applicationPath = $this->findApplicationPath();
+
         $currentVersion = $this->parseVersion(Application::APP_VERSION);
         $this->debug('Current version: v'.implode('.', $currentVersion));
 
@@ -106,5 +108,12 @@ class SelfUpdateCommand extends Command
         if ($this->output->isVerbose()) {
             $this->output->writeln("$message");
         }
+    }
+
+    protected function findApplicationPath(): string
+    {
+        // Get the full path to the application executable
+
+        return get_included_files()[0];
     }
 }
