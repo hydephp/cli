@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Commands;
 
 use App\Application;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
 use function assert;
@@ -153,7 +154,7 @@ class SelfUpdateCommand extends Command
     protected function determineUpdateStrategy(string $applicationPath): string
     {
         // Check if the application is installed via Composer
-        if (str_contains($applicationPath, 'composer')) {
+        if (Str::contains($applicationPath, 'composer', true)) {
             return self::STRATEGY_COMPOSER;
         }
 
