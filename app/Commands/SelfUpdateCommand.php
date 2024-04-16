@@ -96,9 +96,43 @@ class SelfUpdateCommand extends Command
             return Command::SUCCESS;
         } catch (Throwable $exception) {
             $this->error('Something went wrong while updating the application. As the self-update command is experimental, this may be a bug within the command itself. Please report this issue on GitHub so we can fix it!');
+
+            $environment = implode("\n", [
+                'Application version: v'.Application::APP_VERSION,
+                'PHP version:         v'.PHP_VERSION,
+                'Operating system:    '.PHP_OS,
+            ]);
+
             $this->warn($this->buildUrl('https://github.com/hydephp/cli/issues/new', [
                 'title' => 'Error while self-updating the application',
-                'body' => $exception->getMessage(),
+                'body' => <<<MARKDOWN
+                ### Description
+                
+                A fatal error occurred while trying to update the application using the self-update command.
+                
+                ### Error message
+                
+                ```
+                {$exception->getMessage()}
+                ```
+                
+                ### Stack trace
+                
+                ```
+                {$exception->getTraceAsString()}
+                ```
+                
+                ### Environment
+                
+                ```
+                $environment
+                ```
+                
+                ### Context
+                
+                - Add any additional context here that may be relevant to the issue.
+                
+                MARKDOWN
             ]));
 
             return Command::FAILURE;
