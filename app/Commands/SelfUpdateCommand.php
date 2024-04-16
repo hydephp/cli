@@ -13,4 +13,11 @@ class SelfUpdateCommand extends Command
 
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
+
+    public function handle(): void
+    {
+        $this->output->title('Checking for a new version...');
+
+        //
+    }
 }
