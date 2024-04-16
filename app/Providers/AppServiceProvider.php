@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Commands\SelfUpdateCommand;
 use App\Commands\Internal\Describer;
 use App\Commands\NewProjectCommand;
+use App\Commands\SelfUpdateCommand;
 use App\Commands\ServeCommand;
 use App\Commands\VendorPublishCommand;
 use Illuminate\Support\ServiceProvider;
