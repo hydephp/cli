@@ -308,7 +308,7 @@ class SelfUpdateCommand extends Command
         ### Error message
         
         ```
-        {$exception->getMessage()}
+        {$exception->getMessage()} on line {$exception->getLine()} in file {$exception->getFile()}
         ```
         
         ### Stack trace
