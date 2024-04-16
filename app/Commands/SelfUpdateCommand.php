@@ -27,6 +27,8 @@ class SelfUpdateCommand extends Command
         $this->output->title('Checking for a new version...');
 
         $this->currentVersion = array_combine(['major', 'minor', 'patch'], array_map('intval', explode('.', Application::APP_VERSION)));
+
+        $latestVersion = $this->getLatestVersion();
     }
 
     protected function getLatestVersion()
