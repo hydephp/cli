@@ -42,12 +42,7 @@ class SelfUpdateCommand extends Command
         $this->debug('Latest version: v'.implode('.', $latestVersion));
 
         $state = $this->compareVersions($currentVersion, $latestVersion);
-
-        match($state) {
-            self::STATE_BEHIND => $this->info('A new version is available.'),
-            self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
-            self::STATE_AHEAD => $this->info('You are using a development version.'),
-        };
+        $this->printVersionStateInformation($state);
 
         if ($state !== self::STATE_BEHIND) {
             return Command::SUCCESS;
@@ -117,5 +112,15 @@ class SelfUpdateCommand extends Command
         // Generally /user/bin/hyde, /usr/local/bin/hyde, or C:\Users\User\AppData\Roaming\Composer\vendor\bin\hyde
 
         return get_included_files()[0];
+    }
+
+    /** @param self::STATE_* $state */
+    protected function printVersionStateInformation(int $state): void
+    {
+        match ($state) {
+            self::STATE_BEHIND => $this->info('A new version is available.'),
+            self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
+            self::STATE_AHEAD => $this->info('You are using a development version.'),
+        };
     }
 }
