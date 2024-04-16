@@ -149,7 +149,7 @@ class SelfUpdateCommand extends Command
 
     protected function updateApplication(): void
     {
-        // Todo
+        $this->output->writeln('Updating the application...');
     }
 
     /** @return self::STRATEGY_* */
