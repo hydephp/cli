@@ -34,6 +34,9 @@ use function extension_loaded;
 use function file_get_contents;
 use function get_included_files;
 
+/**
+ * @experimental This command is highly experimental and may contain bugs.
+ */
 class SelfUpdateCommand extends Command
 {
     /** @var string */
