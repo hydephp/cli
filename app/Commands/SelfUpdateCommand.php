@@ -29,6 +29,9 @@ class SelfUpdateCommand extends Command
     protected const STATE_UP_TO_DATE = 2;
     protected const STATE_AHEAD = 3;
 
+    protected const STRATEGY_DIRECT = 'direct';
+    protected const STRATEGY_COMPOSER = 'composer';
+
     /** @var array<string, scalar> The latest release information from the GitHub API */
     protected array $release;
 
