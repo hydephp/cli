@@ -49,6 +49,14 @@ class SelfUpdateCommand extends Command
         if ($state !== self::STATE_BEHIND) {
             return Command::SUCCESS;
         }
+
+        $this->output->title('Updating to the latest version...');
+
+        $this->updateApplication();
+
+        $this->info('The application has been updated successfully.');
+
+        return Command::SUCCESS;
     }
 
     protected function getLatestReleaseVersion(): string
@@ -86,6 +94,11 @@ class SelfUpdateCommand extends Command
         }
 
         return self::STATE_AHEAD;
+    }
+
+    protected function updateApplication(): void
+    {
+        // Todo
     }
 
     protected function debug(string $message): void
