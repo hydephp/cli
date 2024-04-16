@@ -33,6 +33,7 @@ class SelfUpdateCommand extends Command
         $this->output->title('Checking for a new version...');
 
         $applicationPath = $this->findApplicationPath();
+        $this->debug("Application path: $applicationPath");
 
         $currentVersion = $this->parseVersion(Application::APP_VERSION);
         $this->debug('Current version: v'.implode('.', $currentVersion));
