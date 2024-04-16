@@ -96,18 +96,6 @@ class SelfUpdateCommand extends Command
         return self::STATE_AHEAD;
     }
 
-    protected function updateApplication(): void
-    {
-        // Todo
-    }
-
-    protected function debug(string $message = ''): void
-    {
-        if ($this->output->isVerbose()) {
-            $this->output->writeln($message);
-        }
-    }
-
     protected function findApplicationPath(): string
     {
         // Get the full path to the application executable
@@ -124,5 +112,17 @@ class SelfUpdateCommand extends Command
             self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
             self::STATE_AHEAD => $this->info('You are using a development version.'),
         };
+    }
+
+    protected function updateApplication(): void
+    {
+        // Todo
+    }
+
+    protected function debug(string $message = ''): void
+    {
+        if ($this->output->isVerbose()) {
+            $this->output->writeln($message);
+        }
     }
 }
