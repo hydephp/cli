@@ -108,10 +108,10 @@ class SelfUpdateCommand extends Command
             $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
 
             $this->line(sprintf('<info>%s</info> <href=%s>%s</>', 'Please report this issue on GitHub so we can fix it!',
-                    $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
-                        'title' => 'Error while self-updating the application',
-                        'body' => $this->getIssueMarkdown($exception)
-                    ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application')
+                $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
+                    'title' => 'Error while self-updating the application',
+                    'body' => $this->getIssueMarkdown($exception)
+                ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application')
             );
 
             if ($this->output->isVerbose()) {
