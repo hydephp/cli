@@ -16,6 +16,7 @@ use function fopen;
 use function assert;
 use function fclose;
 use function rename;
+use function getenv;
 use function explode;
 use function ini_set;
 use function sprintf;
@@ -26,11 +27,13 @@ use function array_map;
 use function curl_init;
 use function curl_exec;
 use function urlencode;
+use function base_path;
 use function curl_close;
 use function array_keys;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
+use function str_replace;
 use function array_combine;
 use function sys_get_temp_dir;
 use function extension_loaded;
@@ -110,7 +113,7 @@ class SelfUpdateCommand extends Command
             $this->line(sprintf('<info>%s</info> <href=%s>%s</>', 'Please report this issue on GitHub so we can fix it!',
                 $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
                     'title' => 'Error while self-updating the application',
-                    'body' => $this->getIssueMarkdown($exception)
+                    'body' => $this->stripPersonalInformation($this->getIssueMarkdown($exception))
                 ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application')
             );
 
@@ -328,5 +331,16 @@ class SelfUpdateCommand extends Command
         - Add any additional context here that may be relevant to the issue.
         
         MARKDOWN;
+    }
+
+    private function stripPersonalInformation(string $markdown): string
+    {
+        // As the stacktrace may contain the user's name, we remove it to protect their privacy
+        $markdown = str_replace(getenv('USER') ?: getenv('USERNAME'), '<USERNAME>', $markdown);
+
+        // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
+        $markdown = str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
+
+        return ($markdown);
     }
 }
