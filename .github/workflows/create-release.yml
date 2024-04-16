@@ -67,7 +67,7 @@ jobs:
           path: builds/hyde
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "HydeCLI v${{ steps.build-version.outputs.version }}"
           title: "HydeCLI v${{ steps.build-version.outputs.version }}"
