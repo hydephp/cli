@@ -14,6 +14,7 @@ use function explode;
 use function ini_set;
 use function sprintf;
 use function implode;
+use function passthru;
 use function array_map;
 use function json_decode;
 use function is_writable;
@@ -219,7 +220,8 @@ class SelfUpdateCommand extends Command
     {
         $this->output->writeln('Updating via Composer...');
 
-        // Todo
+        // Invoke the Composer command to update the application
+        passthru('composer global update hyde/hyde');
     }
 
     protected function debug(string $message = ''): void
