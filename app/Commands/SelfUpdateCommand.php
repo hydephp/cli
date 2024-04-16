@@ -41,6 +41,8 @@ class SelfUpdateCommand extends Command
         $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
         $this->debug('Latest version: v'.implode('.', $latestVersion));
 
+        $this->debug();
+
         $state = $this->compareVersions($currentVersion, $latestVersion);
         $this->printVersionStateInformation($state);
 
@@ -99,7 +101,7 @@ class SelfUpdateCommand extends Command
         // Todo
     }
 
-    protected function debug(string $message): void
+    protected function debug(string $message = ''): void
     {
         if ($this->output->isVerbose()) {
             $this->output->writeln($message);
