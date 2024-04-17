@@ -36,6 +36,7 @@ use function is_writable;
 use function curl_setopt;
 use function str_replace;
 use function array_combine;
+use function clearstatcache;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
@@ -292,6 +293,8 @@ class SelfUpdateCommand extends Command
 
     protected function moveFile(string $downloadedFile, string $applicationPath): void
     {
+        clearstatcache(true, $applicationPath);
+        
         rename($downloadedFile, $applicationPath);
     }
 
