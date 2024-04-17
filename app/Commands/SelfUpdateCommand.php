@@ -89,6 +89,10 @@ class SelfUpdateCommand extends Command
             $state = $this->compareVersions($currentVersion, $latestVersion);
             $this->printVersionStateInformation($state);
 
+            if ($this->option('check')) {
+                return Command::SUCCESS;
+            }
+
             if ($state !== self::STATE_BEHIND) {
                 return Command::SUCCESS;
             }
