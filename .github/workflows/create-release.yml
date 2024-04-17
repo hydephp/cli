@@ -66,6 +66,9 @@ jobs:
           name: hyde
           path: builds/hyde
 
+      - name: Reset Composer file changes
+        run: git restore composer.json composer.lock
+
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
         with:
