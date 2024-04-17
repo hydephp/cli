@@ -7,7 +7,7 @@ namespace App\Commands\Internal;
 use NunoMaduro\LaravelConsoleSummary\Describer as BaseDescriber;
 
 /**
- * @internal
+ * @internal Custom Laravel summary command describer implementation.
  */
 class Describer extends BaseDescriber
 {
