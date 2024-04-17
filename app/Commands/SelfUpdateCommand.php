@@ -211,7 +211,11 @@ class SelfUpdateCommand extends Command
             self::STATE_AHEAD => 'You are using a development version.',
         };
 
-        $this->info($message);
+        if ($verbose) {
+            $this->line(sprintf("<info>%s</info> (<comment>%s</comment>)", rtrim($message, '.'), $this->release['tag_name']));
+        } else {
+            $this->info($message);
+        }
     }
 
     /** @param self::STRATEGY_* $strategy */
