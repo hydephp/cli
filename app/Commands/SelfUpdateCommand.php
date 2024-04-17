@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
 use function fopen;
+use function chmod;
 use function assert;
 use function fclose;
 use function rename;
@@ -104,8 +105,6 @@ class SelfUpdateCommand extends Command
 
             // Experimental early exit
             exit(0);
-
-            return Command::SUCCESS;
         } catch (Throwable $exception) {
             $this->output->error('Something went wrong while updating the application!');
 
