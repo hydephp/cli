@@ -103,7 +103,7 @@ class SelfUpdateCommand extends Command
             // Verify the application version
             passthru('hyde --version');
 
-            // Experimental early exit
+            // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
             exit(0);
         } catch (Throwable $exception) {
             $this->output->error('Something went wrong while updating the application!');
