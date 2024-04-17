@@ -87,7 +87,7 @@ class SelfUpdateCommand extends Command
             $this->debug();
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
-            $this->printVersionStateInformation($state);
+            $this->printVersionStateInformation($state, (bool) $this->option('check'));
 
             if ($this->option('check')) {
                 return Command::SUCCESS;
@@ -203,7 +203,7 @@ class SelfUpdateCommand extends Command
     }
 
     /** @param self::STATE_* $state */
-    protected function printVersionStateInformation(int $state): void
+    protected function printVersionStateInformation(int $state, bool $verbose = false): void
     {
         match ($state) {
             self::STATE_BEHIND => $this->info('A new version is available.'),
