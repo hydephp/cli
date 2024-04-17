@@ -51,7 +51,7 @@ use function get_included_files;
 class SelfUpdateCommand extends Command
 {
     /** @var string */
-    protected $signature = 'self-update';
+    protected $signature = 'self-update {--check : Only perform the version check without updating the application.}';
 
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
