@@ -14,6 +14,7 @@ use Illuminate\Console\Command;
 
 use function fopen;
 use function chmod;
+use function umask;
 use function assert;
 use function fclose;
 use function rename;
@@ -294,7 +295,10 @@ class SelfUpdateCommand extends Command
     protected function moveFile(string $downloadedFile, string $applicationPath): void
     {
         clearstatcache(true, $applicationPath);
-        
+
+        // Fix permissions on the downloaded file as `tempnam()` creates it with 0600
+        chmod($downloadedFile, 0777 - umask());
+
         rename($downloadedFile, $applicationPath);
     }
 
