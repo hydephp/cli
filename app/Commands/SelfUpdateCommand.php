@@ -242,6 +242,9 @@ class SelfUpdateCommand extends Command
         $downloadedFile = tempnam(sys_get_temp_dir(), 'hyde');
         $this->downloadFile($downloadUrl, $downloadedFile);
 
+        // Make the downloaded file executable
+        chmod($downloadedFile, 0755);
+
         // Replace the current application with the downloaded one
         $this->replaceApplication($downloadedFile);
     }
