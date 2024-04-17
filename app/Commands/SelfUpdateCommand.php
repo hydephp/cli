@@ -278,7 +278,7 @@ class SelfUpdateCommand extends Command
         // Replace the current application with the downloaded one
         try {
             // This might give Permission denied if we can't write to the bin path (might need sudo)
-            rename($downloadedFile, $applicationPath);
+            $this->moveFile($downloadedFile, $applicationPath);
         } catch (Throwable $exception) {
             // Check if it is a permission issue
             if (Str::containsAll($exception->getMessage(), ['rename', 'Permission denied'])) {
@@ -288,6 +288,11 @@ class SelfUpdateCommand extends Command
             // Unknown error, rethrow the exception
             throw $exception;
         }
+    }
+
+    protected function moveFile(string $downloadedFile, string $applicationPath): void
+    {
+        rename($downloadedFile, $applicationPath);
     }
 
     protected function updateViaComposer(): void
