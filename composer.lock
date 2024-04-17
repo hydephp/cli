@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37d83305a0294b25e702bf514a38da12",
+    "content-hash": "dc4028704e3f555bae5e2b48b4dfe826",
     "packages": [],
     "packages-dev": [
         {
@@ -1278,16 +1278,16 @@
         },
         {
             "name": "hyde/framework",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/framework.git",
-                "reference": "4448c98199fd135f9c1b17f47e46e12378ff133e"
+                "reference": "86fb1ae089afbb41f917a2aee12a795ced703894"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/framework/zipball/4448c98199fd135f9c1b17f47e46e12378ff133e",
-                "reference": "4448c98199fd135f9c1b17f47e46e12378ff133e",
+                "url": "https://api.github.com/repos/hydephp/framework/zipball/86fb1ae089afbb41f917a2aee12a795ced703894",
+                "reference": "86fb1ae089afbb41f917a2aee12a795ced703894",
                 "shasum": ""
             },
             "require": {
@@ -1326,15 +1326,19 @@
             "description": "The HydePHP Framework",
             "support": {
                 "issues": "https://github.com/hydephp/framework/issues",
-                "source": "https://github.com/hydephp/framework/tree/v1.5.0"
+                "source": "https://github.com/hydephp/framework/tree/v1.6.0"
             },
             "funding": [
                 {
                     "url": "https://www.buymeacoffee.com/caen",
                     "type": "custom"
+                },
+                {
+                    "url": "https://opencollective.com/hydephp",
+                    "type": "open_collective"
                 }
             ],
-            "time": "2024-02-13T11:03:16+00:00"
+            "time": "2024-04-17T12:58:59+00:00"
         },
         {
             "name": "hyde/realtime-compiler",
