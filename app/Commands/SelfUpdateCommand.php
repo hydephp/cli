@@ -205,11 +205,13 @@ class SelfUpdateCommand extends Command
     /** @param self::STATE_* $state */
     protected function printVersionStateInformation(int $state, bool $verbose = false): void
     {
-        match ($state) {
-            self::STATE_BEHIND => $this->info('A new version is available.'),
-            self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
-            self::STATE_AHEAD => $this->info('You are using a development version.'),
+        $message = match ($state) {
+            self::STATE_BEHIND => 'A new version is available.',
+            self::STATE_UP_TO_DATE => 'You are already using the latest version.',
+            self::STATE_AHEAD => 'You are using a development version.',
         };
+
+        $this->info($message);
     }
 
     /** @param self::STRATEGY_* $strategy */
