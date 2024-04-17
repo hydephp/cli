@@ -102,6 +102,9 @@ class SelfUpdateCommand extends Command
             // Verify the application version
             passthru('hyde --version');
 
+            // Experimental early exit
+            exit(0);
+
             return Command::SUCCESS;
         } catch (Throwable $exception) {
             $this->output->error('Something went wrong while updating the application!');
