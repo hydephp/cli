@@ -6,6 +6,9 @@ namespace App\Commands\Internal;
 
 use NunoMaduro\LaravelConsoleSummary\Describer as BaseDescriber;
 
+/**
+ * @internal
+ */
 class Describer extends BaseDescriber
 {
     protected static function sortCommandsInGroup(array &$commands): void
