@@ -1,8 +1,9 @@
 # Experimental Standalone HydePHP Executable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hyde/cli?include_prereleases)](https://packagist.org/packages/hyde/cli)
-[![Total Downloads on Packagist](https://img.shields.io/packagist/dt/hyde/cli)](https://packagist.org/packages/hyde/cli)
-[![License MIT](https://img.shields.io/github/license/hydephp/cli) ](https://github.com/hydephp/cli/blob/master/LICENSE.md)
+[![Total Installs on GitHub and Packagist](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhydephp%2Fcli%2Ftraffic%2Fdatabase.json&query=%24._database.total_installs&label=Installs)](https://github.com/hydephp/cli)
+[![Total Downloads on GitHub](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhydephp%2Fcli%2Ftraffic%2Fdatabase.json&query=%24._database.total_clones&label=downloads)](https://github.com/hydephp/cli)
+[![License MIT](https://img.shields.io/github/license/hydephp/cli)](https://github.com/hydephp/cli/blob/master/LICENSE.md)
 [![Test Coverage](https://codecov.io/gh/hydephp/cli/branch/master/graph/badge.svg?token=G6N2161TOT)](https://codecov.io/gh/hydephp/cli)
 [![Test Suite](https://github.com/hydephp/cli/actions/workflows/tests.yml/badge.svg)](https://github.com/hydephp/cli/actions/workflows/tests.yml)
 
@@ -19,13 +20,13 @@ Please note that the standalone HydePHP version is **experimental**, and that th
 
 ## Installation
 
-### Using Composer
+### Using Composer <a href="https://packagist.org/packages/hyde/cli"><img alt="Total Installs on Packagist" src="https://img.shields.io/packagist/dt/hyde/cli?label=installs" align="right"></a>
 
 ```bash
 composer global require hyde/cli
 ```
 
-### Direct Download (Unix)
+### Direct Download (Unix) <a href="https://github.com/hydephp/cli/releases/latest"><img alt="Total Installs on GitHub" src="https://img.shields.io/github/downloads/hydephp/cli/total.svg" align="right"></a>
 
 ```bash
 curl -L https://github.com/hydephp/cli/releases/latest/download/hyde -o hyde

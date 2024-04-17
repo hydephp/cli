@@ -1,0 +1,35 @@
+name: Sync repository traffic
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Sunday night at 2200 UTC
+    - cron: "0 22 * * 0"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: traffic
+
+      - name: Sync traffic
+        run: php sync.php ${{ github.repository }} ${{ secrets.TRAFFIC_TOKEN }}
+
+      - name: Print changes
+        run: |
+          if git diff --quiet database.json; then
+            echo "No changes"
+          else
+            git diff database.json
+          fi
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'database.json'
+          message: 'Sync traffic data'
