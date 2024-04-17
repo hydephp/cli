@@ -8,6 +8,8 @@ use NunoMaduro\LaravelConsoleSummary\Describer as BaseDescriber;
 
 /**
  * @internal Custom Laravel summary command describer implementation.
+ *
+ * @depends on https://github.com/nunomaduro/laravel-console-summary/pull/20
  */
 class Describer extends BaseDescriber
 {
