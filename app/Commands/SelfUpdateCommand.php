@@ -297,7 +297,7 @@ class SelfUpdateCommand extends Command
         clearstatcache(true, $applicationPath);
 
         // Fix permissions on the downloaded file as `tempnam()` creates it with 0600
-        chmod($downloadedFile, 0777 - umask());
+        chmod($downloadedFile, 0777 - umask()); // Using the same permissions as Laravel
 
         rename($downloadedFile, $applicationPath);
     }
