@@ -276,7 +276,7 @@ class SelfUpdateCommand extends Command
         $this->output->writeln('Updating via Composer...');
 
         // Invoke the Composer command to update the application
-        passthru('composer global update hyde/hyde');
+        passthru('composer global update hyde/cli');
     }
 
     protected function debug(string $message = ''): void
