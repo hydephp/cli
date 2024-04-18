@@ -70,12 +70,11 @@ class SelfUpdateCommand extends Command
     {
         try {
             if ($this->output->isVerbose()) {
-                $this->info('Checking for a new version...');
+                $this->info("Checking for a new version...\n");
             } else {
                 $this->output->write('<info>Checking for updates</info>');
             }
 
-            $this->printNewlineIfVerbose();
             $applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $applicationPath");
             $this->printUnlessVerbose('<info>.</info>');
