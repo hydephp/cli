@@ -75,16 +75,38 @@ test('get debug environment', function () {
 });
 
 it('strips personal information from markdown', function () {
+    $user = getenv('USER') ?: getenv('USERNAME') ?: 'user';
+
+    $mock = Mockery::mock(\Illuminate\Container\Container::class);
+    $mock->shouldReceive('basePath')->andReturn("/home/$user/project");
+    \Illuminate\Container\Container::setInstance($mock);
+
     $class = new InspectableSelfUpdateCommand();
-    $markdown = "Error occurred in /home/user/project/file.php\nStack trace:\n/home/user/project/file.php:10";
+    $markdown = "Error occurred in /home/$user/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/$user/project".DIRECTORY_SEPARATOR."file.php:10";
 
     $result = $class->stripPersonalInformation($markdown);
 
-    // Assertions
-    expect($result)->not->toContainString(getenv('USER') ?: getenv('USERNAME'));
-    expect($result)->not->toContainString(base_path().DIRECTORY_SEPARATOR);
-    expect($result)->toContain('<USERNAME>');
-    expect($result)->toContain('<project>');
+    expect($result)->toBeString()
+        ->and($result)->not->toContain($user)
+        ->and($result)->not->toContain(base_path().DIRECTORY_SEPARATOR)
+        ->and($result)->toContain('<USERNAME>');
+});
+
+it('strips personal and path information from markdown', function () {
+
+    $mock = Mockery::mock(\Illuminate\Container\Container::class);
+    $mock->shouldReceive('basePath')->andReturn('/home/foo/project');
+    \Illuminate\Container\Container::setInstance($mock);
+
+    $class = new InspectableSelfUpdateCommand();
+    $markdown = "Error occurred in /home/foo/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/foo/project".DIRECTORY_SEPARATOR."file.php:10";
+
+    $result = $class->stripPersonalInformation($markdown);
+
+    expect($result)->toBeString()
+        ->and($result)->not->toContain('/home/foo/project')
+        ->and($result)->not->toContain(base_path())
+        ->and($result)->toContain('<project>');
 });
 
 it('does not modify markdown without personal information', function () {
