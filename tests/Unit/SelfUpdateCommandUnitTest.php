@@ -9,17 +9,11 @@ $versions = [
 ];
 
 it('parses the version correctly', function ($input, $expectedOutput) {
-    $class = new InspectableSelfUpdateCommand();
-
-    $result = $class->parseVersion($input);
-
-    expect($result)->toBe($expectedOutput);
+    expect((new InspectableSelfUpdateCommand())->parseVersion($input))->toBe($expectedOutput);
 })->with($versions);
 
 it('returns an array with integer values', function ($input, $expectedOutput) {
-    $class = new InspectableSelfUpdateCommand();
-
-    $result = $class->parseVersion($input);
+    $result = (new InspectableSelfUpdateCommand())->parseVersion($input);
 
     expect($result)->toEqual($expectedOutput)
         ->and($result['major'])->toBeInt()
