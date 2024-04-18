@@ -83,8 +83,7 @@ class SelfUpdateCommand extends Command
             $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
             $this->debug('Latest version: v'.implode('.', $latestVersion));
 
-            // Add a newline for better readability
-            $this->debug();
+            $this->printNewlineIfVerbose();
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
             $this->printVersionStateInformation($state, (bool) $this->option('check'));
@@ -101,8 +100,7 @@ class SelfUpdateCommand extends Command
 
             $this->updateApplication($strategy);
 
-            // Add a newline for better readability
-            $this->debug();
+            $this->printNewlineIfVerbose();
 
             $this->info('The application has been updated successfully.');
 
@@ -320,11 +318,16 @@ class SelfUpdateCommand extends Command
         passthru('composer global require hyde/cli');
     }
 
-    protected function debug(string $message = ''): void
+    protected function debug(string $message): void
     {
         if ($this->output->isVerbose()) {
             $this->output->writeln($message);
         }
+    }
+
+    protected function printNewlineIfVerbose(): void
+    {
+        $this->debug('');
     }
 
     /** @param array<string, string> $params */
