@@ -401,6 +401,7 @@ class SelfUpdateCommand extends Command
         $this->debug('');
     }
 
+    /** @experimental This is highly experimental and may be unstable. */
     protected function runComposerInElevatedPrompt(): void
     {
         // Invokes a UAC prompt to run composer as an admin
@@ -408,42 +409,61 @@ class SelfUpdateCommand extends Command
         // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
 
         // In order to get the output, we need a proxy batch file to redirect the output to a file that we can use as a substitute stream
-        $updateScript = tempnam(sys_get_temp_dir(), 'hyde-update');
-        $outputStream = $updateScript.'.log';
+
+        $path = tempnam(sys_get_temp_dir(), 'hyde-update');
+        $outputStream = "$path.log";
+
+        // Create the output stream file
         touch($outputStream);
+
         $outputStream = realpath($outputStream);
+
+        // Set up a batch script so we can redirect the output to our stream file
         $batch = <<<CMD
         call composer global require hyde/cli --no-interaction 2> $outputStream
         echo --END-- >> $outputStream
         CMD;
 
-        $update = $updateScript.'.bat';
-        file_put_contents($update, $batch);
-        $update = realpath($update);
+        $updateScript = "$path.bat";
+        file_put_contents($updateScript, $batch);
+        $updateScript = realpath($updateScript);
 
         $vbs = <<<VBS
         Set UAC = CreateObject("Shell.Application")
-        UAC.ShellExecute "cmd.exe", "/c $update", "", "runas", 0
+        UAC.ShellExecute "cmd.exe", "/c $updateScript", "", "runas", 0
         VBS;
 
-        $script = $updateScript.'.vbs';
-        file_put_contents($script, $vbs);
+        $vbsScript = "$path.vbs";
+        file_put_contents($vbsScript, $vbs);
 
-        exec("cscript //nologo $script");
+        // Run the script
+        exec("cscript //nologo $vbsScript");
 
         // ShellExecute is async, so we read the file to stream the output to the console to get logs and to know when it is done
+
+        $this->streamBatchOutput($outputStream);
+
+        @unlink($vbsScript);
+        @unlink($updateScript);
+        @unlink($outputStream);
+    }
+
+    /** @experimental This is highly experimental and may be unstable. */
+    protected function streamBatchOutput(string $outputStream): void
+    {
         $timeout = 30;
         $start = time();
         $writtenLines = [];
+
         while (true) {
             // Stream the log file until we see the end of the output
             $log = file($outputStream);
 
             foreach ($log as $line) {
-
                 if (trim($line) === '--END--') {
-                    break 2;
+                    return;
                 }
+
                 if (! in_array($line, $writtenLines, true)) {
                     $this->output->writeln('<fg=gray> > '.trim($line).'</>');
                     $writtenLines[] = $line; // Prevent duplicate lines
@@ -451,7 +471,7 @@ class SelfUpdateCommand extends Command
             }
 
             // If we have run for 5 seconds and have no output at all, something is wrong (probably we did not get UAC permission)
-            if (empty($log) && time() - $start > 5) {
+            if (empty($log) && (time() - $start > 5)) {
                 $timeout = 0;
             }
 
@@ -460,12 +480,8 @@ class SelfUpdateCommand extends Command
                 exit(1);
             }
 
-            // sleep for 250ms
-            usleep(250000);
+            // Sleep for 250ms
+            usleep((int) (0.250 * 1_000_000));
         }
-
-        @unlink($script);
-        @unlink($update);
-        @unlink($outputStream);
     }
 }
