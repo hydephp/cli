@@ -142,7 +142,7 @@ class SelfUpdateCommand extends Command
     {
         $data = json_decode($this->makeGitHubApiResponse(), true);
 
-        $data = $this->validateReleaseData($data);
+        $this->validateReleaseData($data);
 
         $this->release = $data;
     }
