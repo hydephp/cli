@@ -320,7 +320,11 @@ class SelfUpdateCommand extends Command
         $this->output->writeln('Updating via Composer...');
 
         // Invoke the Composer command to update the application
-        passthru('composer global require hyde/cli');
+        passthru('composer global require hyde/cli', $exitCode);
+
+        if ($exitCode !== 0) {
+            throw new RuntimeException('The Composer command failed with exit code '.$exitCode, $exitCode);
+        }
     }
 
     protected function debug(string $message): void
