@@ -67,7 +67,7 @@ class SelfUpdateCommand extends Command
     public function handle(): int
     {
         try {
-            $this->output->title('Checking for a new version...');
+            $this->info('Checking for a new version...');
 
             $applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $applicationPath");
@@ -94,7 +94,7 @@ class SelfUpdateCommand extends Command
                 return Command::SUCCESS;
             }
 
-            $this->output->title('Updating to the latest version...');
+            $this->info('Updating to the latest version...');
 
             $this->updateApplication($strategy);
 
