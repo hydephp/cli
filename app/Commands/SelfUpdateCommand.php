@@ -330,6 +330,10 @@ class SelfUpdateCommand extends Command
     protected function debug(string $message): void
     {
         if ($this->output->isVerbose()) {
+            if (filled($message)) {
+                $message = '<fg=gray>DEBUG:</> '.$message;
+            }
+
             $this->output->writeln($message);
         }
     }
