@@ -206,7 +206,7 @@ class SelfUpdateCommand extends Command
         // Get the full path to the application executable file
         // Generally /user/bin/hyde, /usr/local/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
 
-        return get_included_files()[0];
+        return get_included_files()[0]; // Could also try realpath($_SERVER['argv'][0]) (used by Composer)
     }
 
     /** @param self::STATE_* $state */
