@@ -117,6 +117,21 @@ class SelfUpdateCommand extends Command
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
             exit(0);
         } catch (Throwable $exception) {
+            // Handle known exceptions
+            if ($exception instanceof RuntimeException) {
+                $known = [
+                    'The application path is not writable. Please rerun the command with elevated privileges.',
+                    'The application path is not writable. Please rerun the command with elevated privileges (e.g. using sudo).',
+                    'The Curl extension is required to use the self-update command.',
+                ];
+
+                if (in_array($exception->getMessage(), $known, true)) {
+                    $this->output->error($exception->getMessage());
+                    return Command::FAILURE;
+                }
+            }
+
+            // Handle unknown exceptions
             $this->output->error('Something went wrong while updating the application!');
 
             $this->line(" <error>{$exception->getMessage()}</error> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
