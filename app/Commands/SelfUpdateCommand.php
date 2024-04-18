@@ -13,18 +13,28 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
+use function trim;
+use function exec;
+use function time;
+use function file;
 use function fopen;
 use function chmod;
 use function umask;
+use function touch;
 use function assert;
 use function fclose;
 use function rename;
+use function unlink;
+use function usleep;
+use function filled;
 use function explode;
 use function ini_set;
 use function sprintf;
 use function implode;
 use function tempnam;
 use function passthru;
+use function realpath;
+use function in_array;
 use function array_map;
 use function curl_init;
 use function curl_exec;
@@ -33,10 +43,12 @@ use function json_decode;
 use function is_writable;
 use function curl_setopt;
 use function array_combine;
+use function str_ends_with;
 use function clearstatcache;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
+use function file_put_contents;
 use function get_included_files;
 
 /**
@@ -44,7 +56,7 @@ use function get_included_files;
  *
  * @internal This command should not be accessed from the code as it may change significantly.
  *
- * @see We can probably use some code from https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php
+ * @link https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php contains some code we can probably use
  */
 class SelfUpdateCommand extends Command
 {
@@ -334,8 +346,31 @@ class SelfUpdateCommand extends Command
     {
         $this->output->writeln('Updating via Composer...');
 
+        $command = 'composer global require hyde/cli';
+
+        /** @experimental Support for elevating Windows privileges */
+        if (PHP_OS_FAMILY === 'Windows') {
+            $path = $this->findApplicationPath();
+
+            // Check if this is the expected path, so we don't try anything crazy
+            if (str_ends_with($path, '\AppData\Roaming\Composer\vendor\bin\hyde')) {
+                // Early check to see if our process has the required privileges
+                if (! is_writable($path) || exec('where cscript') === '') {
+                    $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
+                    exit(126);
+                }
+
+                // The called Composer process probably will not have the required privileges, so we need to elevate them
+                if ($this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true)) {
+                    $this->runComposerInElevatedPrompt();
+
+                    return;
+                }
+            }
+        }
+
         // Invoke the Composer command to update the application
-        passthru('composer global require hyde/cli', $exitCode);
+        passthru($command, $exitCode);
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
@@ -364,5 +399,89 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
+    }
+
+    /** @experimental This is highly experimental and may be unstable. */
+    protected function runComposerInElevatedPrompt(): void
+    {
+        // Invokes a UAC prompt to run composer as an admin
+        // Uses a .vbs script to elevate and run the cmd.exe composer command.
+        // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
+
+        // In order to get the output, we need a proxy batch file to redirect the output to a file that we can use as a substitute stream
+
+        $path = tempnam(sys_get_temp_dir(), 'hyde-update');
+        $outputStream = "$path.log";
+
+        // Create the output stream file
+        touch($outputStream);
+
+        $outputStream = realpath($outputStream);
+
+        // Set up a batch script so we can redirect the output to our stream file
+        $batch = <<<CMD
+        call composer global require hyde/cli --no-interaction 2> $outputStream
+        echo --END-- >> $outputStream
+        CMD;
+
+        $updateScript = "$path.bat";
+        file_put_contents($updateScript, $batch);
+        $updateScript = realpath($updateScript);
+
+        $vbs = <<<VBS
+        Set UAC = CreateObject("Shell.Application")
+        UAC.ShellExecute "cmd.exe", "/c $updateScript", "", "runas", 0
+        VBS;
+
+        $vbsScript = "$path.vbs";
+        file_put_contents($vbsScript, $vbs);
+
+        // Run the script
+        exec("cscript //nologo $vbsScript");
+
+        // ShellExecute is async, so we read the file to stream the output to the console to get logs and to know when it is done
+
+        $this->streamBatchOutput($outputStream);
+
+        @unlink($vbsScript);
+        @unlink($updateScript);
+        @unlink($outputStream);
+    }
+
+    /** @experimental This is highly experimental and may be unstable. */
+    protected function streamBatchOutput(string $outputStream): void
+    {
+        $timeout = 30;
+        $start = time();
+        $writtenLines = [];
+
+        while (true) {
+            // Stream the log file until we see the end of the output
+            $log = file($outputStream);
+
+            foreach ($log as $line) {
+                if (trim($line) === '--END--') {
+                    return;
+                }
+
+                if (! in_array($line, $writtenLines, true)) {
+                    $this->output->writeln('<fg=gray> > '.trim($line).'</>');
+                    $writtenLines[] = $line; // Prevent duplicate lines
+                }
+            }
+
+            // If we have run for 5 seconds and have no output at all, something is wrong (probably we did not get UAC permission)
+            if (empty($log) && (time() - $start > 5)) {
+                $timeout = 0;
+            }
+
+            if (time() - $start > $timeout) {
+                $this->error('The Composer command timed out. Please try again.');
+                exit(1);
+            }
+
+            // Sleep for 250ms
+            usleep((int) (0.250 * 1_000_000));
+        }
     }
 }
