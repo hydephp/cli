@@ -267,6 +267,8 @@ class SelfUpdateCommand extends Command
             return self::STRATEGY_COMPOSER;
         }
 
+        // TODO: Move these checks to before running direct install
+
         // Check that the executable path is writable
         if (! is_writable($applicationPath)) {
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
