@@ -364,6 +364,8 @@ class SelfUpdateCommand extends Command
                     file_put_contents($script, $vbs);
                     exec('"'.$script.'"');
                     @unlink($script);
+
+                    return;
                 }
             }
         }
