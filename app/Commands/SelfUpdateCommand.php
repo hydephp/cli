@@ -11,13 +11,14 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function fopen;
 use function chmod;
+use function umask;
 use function assert;
 use function fclose;
 use function rename;
-use function getenv;
 use function explode;
 use function ini_set;
 use function sprintf;
@@ -27,15 +28,12 @@ use function passthru;
 use function array_map;
 use function curl_init;
 use function curl_exec;
-use function urlencode;
-use function base_path;
 use function curl_close;
-use function array_keys;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
-use function str_replace;
 use function array_combine;
+use function clearstatcache;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
@@ -45,11 +43,15 @@ use function get_included_files;
  * @experimental This command is highly experimental and may contain bugs.
  *
  * @internal This command should not be accessed from the code as it may change significantly.
+ *
+ * @see We can probably use some code from https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php
  */
 class SelfUpdateCommand extends Command
 {
+    use ReportsSelfUpdateCommandIssues;
+
     /** @var string */
-    protected $signature = 'self-update';
+    protected $signature = 'self-update {--check : Check for a new version without updating}';
 
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
@@ -67,13 +69,19 @@ class SelfUpdateCommand extends Command
     public function handle(): int
     {
         try {
-            $this->output->title('Checking for a new version...');
+            if ($this->output->isVerbose()) {
+                $this->info("Checking for a new version...\n");
+            } else {
+                $this->output->write('<info>Checking for updates</info>');
+            }
 
             $applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $applicationPath");
+            $this->printUnlessVerbose('<info>.</info>');
 
             $strategy = $this->determineUpdateStrategy($applicationPath);
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
+            $this->printUnlessVerbose('<info>.</info>');
 
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
@@ -81,29 +89,32 @@ class SelfUpdateCommand extends Command
             $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
             $this->debug('Latest version: v'.implode('.', $latestVersion));
 
-            // Add a newline for better readability
-            $this->debug();
+            $this->printNewlineIfVerbose();
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
+            $this->printUnlessVerbose('<info>.</info> ');
             $this->printVersionStateInformation($state);
+
+            if ($this->option('check')) {
+                return Command::SUCCESS;
+            }
 
             if ($state !== self::STATE_BEHIND) {
                 return Command::SUCCESS;
             }
 
-            $this->output->title('Updating to the latest version...');
+            $this->info('Updating to the latest version...');
 
             $this->updateApplication($strategy);
 
-            // Add a newline for better readability
-            $this->debug();
+            $this->printNewlineIfVerbose();
 
             $this->info('The application has been updated successfully.');
 
             // Verify the application version
             passthru('hyde --version');
 
-            // Experimental early exit
+            // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
             exit(0);
         } catch (Throwable $exception) {
             $this->output->error('Something went wrong while updating the application!');
@@ -118,10 +129,7 @@ class SelfUpdateCommand extends Command
             $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
 
             $this->line(sprintf('<info>%s</info> <href=%s>%s</>', 'Please report this issue on GitHub so we can fix it!',
-                $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
-                    'title' => 'Error while self-updating the application',
-                    'body' => $this->stripPersonalInformation($this->getIssueMarkdown($exception))
-                ]), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application'
+                $this->createIssueTemplateLink($exception), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application'
             ));
 
             if ($this->output->isVerbose()) {
@@ -143,12 +151,7 @@ class SelfUpdateCommand extends Command
     {
         $data = json_decode($this->makeGitHubApiResponse(), true);
 
-        assert($data !== null);
-        assert(isset($data['tag_name']));
-        assert(isset($data['assets']));
-        assert(isset($data['assets'][0]));
-        assert(isset($data['assets'][0]['browser_download_url']));
-        assert(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+        $this->validateReleaseData($data);
 
         $this->release = $data;
     }
@@ -164,6 +167,16 @@ class SelfUpdateCommand extends Command
     protected function getUserAgent(): string
     {
         return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
+    }
+
+    protected function validateReleaseData(array $data): void
+    {
+        assert($data !== null);
+        assert(isset($data['tag_name']));
+        assert(isset($data['assets']));
+        assert(isset($data['assets'][0]));
+        assert(isset($data['assets'][0]['browser_download_url']));
+        assert(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
     }
 
     /** @return array{major: int, minor: int, patch: int} */
@@ -190,20 +203,22 @@ class SelfUpdateCommand extends Command
 
     protected function findApplicationPath(): string
     {
-        // Get the full path to the application executable
-        // Generally /user/bin/hyde, /usr/local/bin/hyde, or C:\Users\User\AppData\Roaming\Composer\vendor\bin\hyde
+        // Get the full path to the application executable file
+        // Generally /user/bin/hyde, /usr/local/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
 
-        return get_included_files()[0];
+        return get_included_files()[0]; // Could also try realpath($_SERVER['argv'][0]) (used by Composer)
     }
 
     /** @param self::STATE_* $state */
     protected function printVersionStateInformation(int $state): void
     {
-        match ($state) {
-            self::STATE_BEHIND => $this->info('A new version is available.'),
-            self::STATE_UP_TO_DATE => $this->info('You are already using the latest version.'),
-            self::STATE_AHEAD => $this->info('You are using a development version.'),
+        $message = match ($state) {
+            self::STATE_BEHIND => 'A new version is available',
+            self::STATE_UP_TO_DATE => 'You are already using the latest version',
+            self::STATE_AHEAD => 'You are using a development version',
         };
+
+        $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
     }
 
     /** @param self::STRATEGY_* $strategy */
@@ -278,7 +293,7 @@ class SelfUpdateCommand extends Command
         // Replace the current application with the downloaded one
         try {
             // This might give Permission denied if we can't write to the bin path (might need sudo)
-            rename($downloadedFile, $applicationPath);
+            $this->moveFile($downloadedFile, $applicationPath);
         } catch (Throwable $exception) {
             // Check if it is a permission issue
             if (Str::containsAll($exception->getMessage(), ['rename', 'Permission denied'])) {
@@ -290,6 +305,16 @@ class SelfUpdateCommand extends Command
         }
     }
 
+    protected function moveFile(string $downloadedFile, string $applicationPath): void
+    {
+        clearstatcache(true, $applicationPath);
+
+        // Fix permissions on the downloaded file as `tempnam()` creates it with 0600
+        chmod($downloadedFile, 0777 - umask()); // Using the same permissions as Laravel
+
+        rename($downloadedFile, $applicationPath);
+    }
+
     protected function updateViaComposer(): void
     {
         $this->output->writeln('Updating via Composer...');
@@ -298,70 +323,26 @@ class SelfUpdateCommand extends Command
         passthru('composer global require hyde/cli');
     }
 
-    protected function debug(string $message = ''): void
+    protected function debug(string $message): void
     {
         if ($this->output->isVerbose()) {
+            if (filled($message)) {
+                $message = '<fg=gray>DEBUG:</> '.$message;
+            }
+
             $this->output->writeln($message);
         }
     }
 
-    /** @param array<string, string> $params */
-    private function buildUrl(string $url, array $params): string
+    protected function printUnlessVerbose(string $message): void
     {
-        return sprintf("$url?%s", implode('&', array_map(function (string $key, string $value): string {
-            return sprintf('%s=%s', $key, urlencode($value));
-        }, array_keys($params), $params)));
+        if (! $this->output->isVerbose()) {
+            $this->output->write($message);
+        }
     }
 
-    private function getDebugEnvironment(): string
+    protected function printNewlineIfVerbose(): void
     {
-        return implode("\n", [
-            'Application version: v'.Application::APP_VERSION,
-            'PHP version:         v'.PHP_VERSION,
-            'Operating system:    '.PHP_OS,
-        ]);
-    }
-
-    private function getIssueMarkdown(Throwable $exception): string
-    {
-        return <<<MARKDOWN
-        ### Description
-        
-        A fatal error occurred while trying to update the application using the self-update command.
-        
-        ### Error message
-        
-        ```
-        {$exception->getMessage()} on line {$exception->getLine()} in file {$exception->getFile()}
-        ```
-        
-        ### Stack trace
-        
-        ```
-        {$exception->getTraceAsString()}
-        ```
-        
-        ### Environment
-        
-        ```
-        {$this->getDebugEnvironment()}
-        ```
-        
-        ### Context
-        
-        - Add any additional context here that may be relevant to the issue.
-        
-        MARKDOWN;
-    }
-
-    private function stripPersonalInformation(string $markdown): string
-    {
-        // As the stacktrace may contain the user's name, we remove it to protect their privacy
-        $markdown = str_replace(getenv('USER') ?: getenv('USERNAME'), '<USERNAME>', $markdown);
-
-        // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
-        $markdown = str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
-
-        return ($markdown);
+        $this->debug('');
     }
 }
