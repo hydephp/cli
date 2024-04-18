@@ -9,6 +9,13 @@ $versions = [
     ['0.0.1', ['major' => 0, 'minor' => 0, 'patch' => 1]],
 ];
 
+afterEach(function () {
+    Mockery::close();
+
+    // Reset the container instance
+    Container::setInstance();
+});
+
 it('parses the version correctly', function ($input, $expectedOutput) {
     expect((new InspectableSelfUpdateCommand())->parseVersion($input))->toBe($expectedOutput);
 })->with($versions);
@@ -77,10 +84,7 @@ test('get debug environment', function () {
 
 it('strips personal information from markdown', function () {
     $user = getenv('USER') ?: getenv('USERNAME') ?: 'user';
-
-    $mock = Mockery::mock(Container::class);
-    $mock->shouldReceive('basePath')->andReturn("/home/$user/project");
-    Container::setInstance($mock);
+    mockContainerPath("/home/$user/project");
 
     $class = new InspectableSelfUpdateCommand();
     $markdown = "Error occurred in /home/$user/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/$user/project".DIRECTORY_SEPARATOR.'file.php:10';
@@ -94,10 +98,7 @@ it('strips personal information from markdown', function () {
 });
 
 it('strips personal and path information from markdown', function () {
-
-    $mock = Mockery::mock(Container::class);
-    $mock->shouldReceive('basePath')->andReturn('/home/foo/project');
-    Container::setInstance($mock);
+    mockContainerPath('/home/foo/project');
 
     $class = new InspectableSelfUpdateCommand();
     $markdown = 'Error occurred in /home/foo/project'.DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/foo/project".DIRECTORY_SEPARATOR.'file.php:10';
@@ -110,7 +111,16 @@ it('strips personal and path information from markdown', function () {
         ->and($result)->toContain('<project>');
 });
 
+function mockContainerPath(string $path): void
+{
+    $mock = Mockery::mock(Container::class);
+    $mock->shouldReceive('basePath')->andReturn($path);
+    Container::setInstance($mock);
+}
+
 it('does not modify markdown without personal information', function () {
+    mockContainerPath('/home/foo/project');
+
     $class = new InspectableSelfUpdateCommand();
     $markdown = 'No personal information present.';
 
