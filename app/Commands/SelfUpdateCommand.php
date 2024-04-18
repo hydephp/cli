@@ -44,7 +44,7 @@ use function get_included_files;
  *
  * @internal This command should not be accessed from the code as it may change significantly.
  *
- * @see We can probably use some code from https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php
+ * @link https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php contains some code we can probably use
  */
 class SelfUpdateCommand extends Command
 {
