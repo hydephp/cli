@@ -93,7 +93,7 @@ class SelfUpdateCommand extends Command
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
             $this->printUnlessVerbose('<info>.</info> ');
-            $this->printVersionStateInformation($state, (bool) $this->option('check'));
+            $this->printVersionStateInformation($state, ! $this->output->isVerbose());
 
             if ($this->option('check')) {
                 return Command::SUCCESS;
