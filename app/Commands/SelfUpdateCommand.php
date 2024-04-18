@@ -219,7 +219,7 @@ class SelfUpdateCommand extends Command
         };
 
         if ($verbose) {
-            $this->line(sprintf("<info>%s</info> (<comment>%s</comment>)", $message, $this->release['tag_name']));
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
         } else {
             $this->info("$message.");
         }
