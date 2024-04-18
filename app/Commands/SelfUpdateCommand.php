@@ -361,73 +361,8 @@ class SelfUpdateCommand extends Command
                 }
 
                 // The called Composer process probably will not have the required privileges, so we need to elevate them
-                $consent = $this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true);
-
-                if ($consent) {
-                    // Invokes a UAC prompt to run composer as an admin
-                    // Uses a .vbs script to elevate and run the cmd.exe composer command.
-                    // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
-
-                    // In order to get the output, we need a proxy batch file to redirect the output to a file that we can use as a substitute stream
-                    $updateScript = tempnam(sys_get_temp_dir(), 'hyde-update');
-                    $outputStream = $updateScript.'.log';
-                    touch($outputStream);
-                    $outputStream=realpath($outputStream);
-                    $batch = <<<CMD
-                    call composer global require hyde/cli --no-interaction 2> $outputStream
-                    echo --END-- >> $outputStream
-                    CMD;
-
-                    $update = $updateScript.'.bat';
-                    file_put_contents($update, $batch);
-                    $update=realpath($update);
-
-                    $vbs = <<<VBS
-                    Set UAC = CreateObject("Shell.Application")
-                    UAC.ShellExecute "cmd.exe", "/c $update", "", "runas", 0
-                    VBS;
-
-                    $script = $updateScript.'.vbs';
-                    file_put_contents($script, $vbs);
-
-                    exec("cscript //nologo $script");
-
-                    // ShellExecute is async, so we read the file to stream the output to the console to get logs and to know when it is done
-                    $timeout = 30;
-                    $start = time();
-                    $writtenLines = [];
-                    while (true) {
-                        // Stream the log file until we see the end of the output
-                        $log = file($outputStream);
-
-                        foreach ($log as $line) {
-
-                            if (trim($line) === '--END--') {
-                                break 2;
-                            }
-                            if (! in_array($line, $writtenLines, true)) {
-                                $this->output->writeln('<fg=gray> > '.trim($line).'</>');
-                                $writtenLines[] = $line; // Prevent duplicate lines
-                            }
-                        }
-
-                        // If we have run for 5 seconds and have no output at all, something is wrong (probably we did not get UAC permission)
-                        if (empty($log) && time() - $start > 5) {
-                            $timeout = 0;
-                        }
-
-                        if (time() - $start > $timeout) {
-                            $this->error('The Composer command timed out. Please try again.');
-                            exit(1);
-                        }
-
-                        // sleep for 250ms
-                        usleep(250000);
-                    }
-
-                    @unlink($script);
-                    @unlink($update);
-                    @unlink($outputStream);
+                if ($this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true)) {
+                    $this->runComposerInElevatedPrompt();
 
                     return;
                 }
@@ -464,5 +399,73 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
+    }
+
+    protected function runComposerInElevatedPrompt(): void
+    {
+        // Invokes a UAC prompt to run composer as an admin
+        // Uses a .vbs script to elevate and run the cmd.exe composer command.
+        // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
+
+        // In order to get the output, we need a proxy batch file to redirect the output to a file that we can use as a substitute stream
+        $updateScript = tempnam(sys_get_temp_dir(), 'hyde-update');
+        $outputStream = $updateScript.'.log';
+        touch($outputStream);
+        $outputStream = realpath($outputStream);
+        $batch = <<<CMD
+        call composer global require hyde/cli --no-interaction 2> $outputStream
+        echo --END-- >> $outputStream
+        CMD;
+
+        $update = $updateScript.'.bat';
+        file_put_contents($update, $batch);
+        $update = realpath($update);
+
+        $vbs = <<<VBS
+        Set UAC = CreateObject("Shell.Application")
+        UAC.ShellExecute "cmd.exe", "/c $update", "", "runas", 0
+        VBS;
+
+        $script = $updateScript.'.vbs';
+        file_put_contents($script, $vbs);
+
+        exec("cscript //nologo $script");
+
+        // ShellExecute is async, so we read the file to stream the output to the console to get logs and to know when it is done
+        $timeout = 30;
+        $start = time();
+        $writtenLines = [];
+        while (true) {
+            // Stream the log file until we see the end of the output
+            $log = file($outputStream);
+
+            foreach ($log as $line) {
+
+                if (trim($line) === '--END--') {
+                    break 2;
+                }
+                if (! in_array($line, $writtenLines, true)) {
+                    $this->output->writeln('<fg=gray> > '.trim($line).'</>');
+                    $writtenLines[] = $line; // Prevent duplicate lines
+                }
+            }
+
+            // If we have run for 5 seconds and have no output at all, something is wrong (probably we did not get UAC permission)
+            if (empty($log) && time() - $start > 5) {
+                $timeout = 0;
+            }
+
+            if (time() - $start > $timeout) {
+                $this->error('The Composer command timed out. Please try again.');
+                exit(1);
+            }
+
+            // sleep for 250ms
+            usleep(250000);
+        }
+
+        @unlink($script);
+        @unlink($update);
+        @unlink($outputStream);
     }
 }
