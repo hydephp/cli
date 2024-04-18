@@ -75,6 +75,7 @@ class SelfUpdateCommand extends Command
                 $this->output->write('<info>Checking for updates</info>');
             }
 
+            $this->printNewlineIfVerbose();
             $applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $applicationPath");
             $this->printUnlessVerbose('<info>.</info>');
