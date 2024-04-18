@@ -33,6 +33,7 @@ use function json_decode;
 use function is_writable;
 use function curl_setopt;
 use function array_combine;
+use function str_ends_with;
 use function clearstatcache;
 use function sys_get_temp_dir;
 use function extension_loaded;
@@ -333,6 +334,18 @@ class SelfUpdateCommand extends Command
     protected function updateViaComposer(): void
     {
         $this->output->writeln('Updating via Composer...');
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $path = $this->findApplicationPath();
+            // Check if this is the expected path, so we don't try anything crazy
+            if (str_ends_with($path, '\AppData\Roaming\Composer\vendor\bin\hyde')) {
+                // Check if we can write to the path
+                if (! is_writable($path)) {
+                    $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
+                    exit(126);
+                }
+            }
+        }
 
         // Invoke the Composer command to update the application
         passthru('composer global require hyde/cli', $exitCode);
