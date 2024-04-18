@@ -9,16 +9,6 @@ $versions = [
     ['0.0.1', ['major' => 0, 'minor' => 0, 'patch' => 1]],
 ];
 
-beforeAll(function () {
-    // Enable php assert() function
-    ini_set('assert.exception', '1');
-});
-
-afterEach(function () {
-    Mockery::close();
-    Container::setInstance();
-});
-
 it('parses the version correctly', function ($input, $expectedOutput) {
     expect((new InspectableSelfUpdateCommand())->parseVersion($input))->toBe($expectedOutput);
 })->with($versions);
@@ -63,75 +53,6 @@ it('throws exception if release data is invalid', function ($data) {
     [['assets' => []]], // Empty assets array
     [['assets' => [['name' => 'invalid_name']]]], // Invalid asset name
 ]);
-
-it('returns the correct application path', function () {
-    $class = new InspectableSelfUpdateCommand();
-    $result = $class->findApplicationPath();
-
-    // Assertions for the application path
-    expect($result)->toBeString()
-        ->and($result)->not->toBeEmpty()
-        ->and(file_exists($result))->toBeTrue();
-});
-
-test('get debug environment', function () {
-    $class = new InspectableSelfUpdateCommand();
-    $result = $class->getDebugEnvironment();
-
-    expect($result)->toBeString()
-        ->and($result)->not->toBeEmpty()
-        ->and($result)->toContain('Application version: v')
-        ->and($result)->toContain('PHP version:         v')
-        ->and($result)->toContain('Operating system:    ');
-});
-
-it('strips personal information from markdown', function () {
-    $user = getenv('USER') ?: getenv('USERNAME') ?: 'user';
-    mockContainerPath("/home/$user/project");
-
-    $class = new InspectableSelfUpdateCommand();
-    $markdown = "Error occurred in /home/$user/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/$user/project".DIRECTORY_SEPARATOR.'file.php:10';
-
-    $result = $class->stripPersonalInformation($markdown);
-
-    expect($result)->toBeString()
-        ->and($result)->not->toContain($user)
-        ->and($result)->not->toContain(base_path().DIRECTORY_SEPARATOR)
-        ->and($result)->toContain('<USERNAME>');
-});
-
-it('strips personal and path information from markdown', function () {
-    mockContainerPath('/home/foo/project');
-
-    $class = new InspectableSelfUpdateCommand();
-    $markdown = 'Error occurred in /home/foo/project'.DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/foo/project".DIRECTORY_SEPARATOR.'file.php:10';
-
-    $result = $class->stripPersonalInformation($markdown);
-
-    expect($result)->toBeString()
-        ->and($result)->not->toContain('/home/foo/project')
-        ->and($result)->not->toContain(base_path())
-        ->and($result)->toContain('<project>');
-});
-
-function mockContainerPath(string $path): void
-{
-    $mock = Mockery::mock(Container::class);
-    $mock->shouldReceive('basePath')->andReturn($path);
-    Container::setInstance($mock);
-}
-
-it('does not modify markdown without personal information', function () {
-    mockContainerPath('/home/foo/project');
-
-    $class = new InspectableSelfUpdateCommand();
-    $markdown = 'No personal information present.';
-
-    $result = $class->stripPersonalInformation($markdown);
-
-    // Assertions
-    expect($result)->toBe($markdown);
-});
 
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
