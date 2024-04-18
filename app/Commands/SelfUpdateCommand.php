@@ -194,8 +194,8 @@ class SelfUpdateCommand extends Command
 
     protected function findApplicationPath(): string
     {
-        // Get the full path to the application executable
-        // Generally /user/bin/hyde, /usr/local/bin/hyde, or C:\Users\User\AppData\Roaming\Composer\vendor\bin\hyde
+        // Get the full path to the application executable file
+        // Generally /user/bin/hyde, /usr/local/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
 
         return get_included_files()[0];
     }
