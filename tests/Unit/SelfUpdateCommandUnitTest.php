@@ -1,6 +1,7 @@
 <?php
 
 use App\Commands\SelfUpdateCommand;
+use Illuminate\Container\Container;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],
@@ -77,12 +78,12 @@ test('get debug environment', function () {
 it('strips personal information from markdown', function () {
     $user = getenv('USER') ?: getenv('USERNAME') ?: 'user';
 
-    $mock = Mockery::mock(\Illuminate\Container\Container::class);
+    $mock = Mockery::mock(Container::class);
     $mock->shouldReceive('basePath')->andReturn("/home/$user/project");
-    \Illuminate\Container\Container::setInstance($mock);
+    Container::setInstance($mock);
 
     $class = new InspectableSelfUpdateCommand();
-    $markdown = "Error occurred in /home/$user/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/$user/project".DIRECTORY_SEPARATOR."file.php:10";
+    $markdown = "Error occurred in /home/$user/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/$user/project".DIRECTORY_SEPARATOR.'file.php:10';
 
     $result = $class->stripPersonalInformation($markdown);
 
@@ -94,12 +95,12 @@ it('strips personal information from markdown', function () {
 
 it('strips personal and path information from markdown', function () {
 
-    $mock = Mockery::mock(\Illuminate\Container\Container::class);
+    $mock = Mockery::mock(Container::class);
     $mock->shouldReceive('basePath')->andReturn('/home/foo/project');
-    \Illuminate\Container\Container::setInstance($mock);
+    Container::setInstance($mock);
 
     $class = new InspectableSelfUpdateCommand();
-    $markdown = "Error occurred in /home/foo/project".DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/foo/project".DIRECTORY_SEPARATOR."file.php:10";
+    $markdown = 'Error occurred in /home/foo/project'.DIRECTORY_SEPARATOR."file.php\nStack trace:\n/home/foo/project".DIRECTORY_SEPARATOR.'file.php:10';
 
     $result = $class->stripPersonalInformation($markdown);
 
