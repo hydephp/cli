@@ -346,6 +346,9 @@ class SelfUpdateCommand extends Command
                     $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
                     exit(126);
                 }
+
+                // The called Composer process probably will not have the required privileges, so we need to elevate them
+                $consent = $this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true);
             }
         }
 
