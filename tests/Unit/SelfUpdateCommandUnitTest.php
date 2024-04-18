@@ -9,11 +9,6 @@ $versions = [
     ['0.0.1', ['major' => 0, 'minor' => 0, 'patch' => 1]],
 ];
 
-beforeAll(function () {
-    // Enable php assert() function
-    ini_set('assert.exception', '1');
-});
-
 afterEach(function () {
     Mockery::close();
     Container::setInstance();
@@ -54,7 +49,7 @@ it('validates release data correctly', function () {
 });
 
 it('throws exception if release data is invalid', function ($data) {
-    $this->expectException(AssertionError::class);
+    $this->expectException(RuntimeException::class);
 
     (new InspectableSelfUpdateCommand())->validateReleaseData($data);
 })->with([
