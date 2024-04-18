@@ -43,6 +43,8 @@ use function get_included_files;
  * @experimental This command is highly experimental and may contain bugs.
  *
  * @internal This command should not be accessed from the code as it may change significantly.
+ *
+ * @see We can probably use some code from https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php
  */
 class SelfUpdateCommand extends Command
 {
