@@ -53,6 +53,50 @@ it('throws exception if release data is invalid', function ($data) {
     [['assets' => [['name' => 'invalid_name']]]], // Invalid asset name
 ]);
 
+it('returns the correct application path', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $result = $class->findApplicationPath();
+
+    // Assertions for the application path
+    expect($result)->toBeString()
+        ->and($result)->not->toBeEmpty()
+        ->and(file_exists($result))->toBeTrue();
+});
+
+test('get debug environment', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $result = $class->getDebugEnvironment();
+
+    expect($result)->toBeString()
+        ->and($result)->not->toBeEmpty()
+        ->and($result)->toContain('Application version: v')
+        ->and($result)->toContain('PHP version:         v')
+        ->and($result)->toContain('Operating system:    ');
+});
+
+it('strips personal information from markdown', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $markdown = "Error occurred in /home/user/project/file.php\nStack trace:\n/home/user/project/file.php:10";
+
+    $result = $class->stripPersonalInformation($markdown);
+
+    // Assertions
+    expect($result)->not->toContainString(getenv('USER') ?: getenv('USERNAME'));
+    expect($result)->not->toContainString(base_path().DIRECTORY_SEPARATOR);
+    expect($result)->toContain('<USERNAME>');
+    expect($result)->toContain('<project>');
+});
+
+it('does not modify markdown without personal information', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $markdown = 'No personal information present.';
+
+    $result = $class->stripPersonalInformation($markdown);
+
+    // Assertions
+    expect($result)->toBe($markdown);
+});
+
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
     public function property(string $property): mixed
