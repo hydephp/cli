@@ -21,6 +21,18 @@ it('returns an array with integer values', function ($input, $expectedOutput) {
         ->and($result['patch'])->toBeInt();
 })->with($versions);
 
+it('correctly compares versions', function ($currentVersion, $latestVersion, $expectedResult) {
+    $class = new InspectableSelfUpdateCommand();
+
+    $result = $class->compareVersions($class->parseVersion($currentVersion), $class->parseVersion($latestVersion));
+
+    expect($result)->toBe($class->constants($expectedResult));
+})->with([
+    ['1.2.3', '1.2.3', 'STATE_UP_TO_DATE'],
+    ['1.2.3', '2.0.0', 'STATE_BEHIND'],
+    ['2.0.0', '1.2.3', 'STATE_AHEAD'],
+]);
+
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
     public function property(string $property): mixed
@@ -31,5 +43,10 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
     public function __call($method, $parameters)
     {
         return $this->$method(...$parameters);
+    }
+
+    public function constants(string $constant): mixed
+    {
+        return constant("self::$constant");
     }
 }
