@@ -348,27 +348,22 @@ class SelfUpdateCommand extends Command
                     exit(126);
                 }
 
-                // Check if we have PowerShell available
-                $hasPowershell = (bool) shell_exec('where powershell');
+                // The called Composer process probably will not have the required privileges, so we need to elevate them
+                $consent = $this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true);
 
-                if ($hasPowershell) {
-                    // The called Composer process probably will not have the required privileges, so we need to elevate them
-                    $consent = $this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true);
+                if ($consent) {
+                    // Invokes a UAC prompt to run composer as an admin
+                    // Uses a .vbs script to elevate and run the cmd.exe composer command.
+                    // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
+                    $vbs = <<<'VBS'
+                    Set UAC = CreateObject("Shell.Application")
+                    UAC.ShellExecute "cmd.exe", "/c composer global require hyde/cli", "", "runas", 0
+                    VBS;
 
-                    if ($consent) {
-                        // Invokes a UAC prompt to run composer as an admin
-                        // Uses a .vbs script to elevate and run the cmd.exe composer command.
-                        // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
-                        $vbs = <<<'VBS'
-                        Set UAC = CreateObject("Shell.Application")
-                        UAC.ShellExecute "cmd.exe", "/c composer global require hyde/cli", "", "runas", 0
-                        VBS;
-
-                        $script = tempnam(sys_get_temp_dir(), 'hyde-update').'.vbs';
-                        file_put_contents($script, $vbs);
-                        exec('"'.$script.'"');
-                        @unlink($script);
-                    }
+                    $script = tempnam(sys_get_temp_dir(), 'hyde-update').'.vbs';
+                    file_put_contents($script, $vbs);
+                    exec('"'.$script.'"');
+                    @unlink($script);
                 }
             }
         }
