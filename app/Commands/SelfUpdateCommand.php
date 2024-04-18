@@ -335,6 +335,8 @@ class SelfUpdateCommand extends Command
     {
         $this->output->writeln('Updating via Composer...');
 
+        $command = 'composer global require hyde/cli';
+
         if (PHP_OS_FAMILY === 'Windows') {
             $path = $this->findApplicationPath();
             // Check if this is the expected path, so we don't try anything crazy
@@ -348,7 +350,7 @@ class SelfUpdateCommand extends Command
         }
 
         // Invoke the Composer command to update the application
-        passthru('composer global require hyde/cli', $exitCode);
+        passthru($command, $exitCode);
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
