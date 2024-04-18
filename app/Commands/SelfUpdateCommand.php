@@ -69,7 +69,7 @@ class SelfUpdateCommand extends Command
     public function handle(): int
     {
         try {
-            $this->info('Checking for a new version...');
+            $this->output->write('<info>Checking for updates... </info>');
 
             $applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $applicationPath");
@@ -82,8 +82,6 @@ class SelfUpdateCommand extends Command
 
             $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
             $this->debug('Latest version: v'.implode('.', $latestVersion));
-
-            $this->printNewlineIfVerbose();
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
             $this->printVersionStateInformation($state, (bool) $this->option('check'));
