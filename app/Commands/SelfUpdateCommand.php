@@ -69,13 +69,19 @@ class SelfUpdateCommand extends Command
     public function handle(): int
     {
         try {
-            $this->output->write('<info>Checking for updates... </info>');
+            if ($this->output->isVerbose()) {
+                $this->info('Checking for a new version...');
+            } else {
+                $this->output->write('<info>Checking for updates</info>');
+            }
 
             $applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $applicationPath");
+            $this->printUnlessVerbose('<info>.</info>');
 
             $strategy = $this->determineUpdateStrategy($applicationPath);
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
+            $this->printUnlessVerbose('<info>.</info>');
 
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
@@ -83,7 +89,10 @@ class SelfUpdateCommand extends Command
             $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
             $this->debug('Latest version: v'.implode('.', $latestVersion));
 
+            $this->printNewlineIfVerbose();
+
             $state = $this->compareVersions($currentVersion, $latestVersion);
+            $this->printUnlessVerbose('<info>.</info> ');
             $this->printVersionStateInformation($state, (bool) $this->option('check'));
 
             if ($this->option('check')) {
@@ -322,6 +331,13 @@ class SelfUpdateCommand extends Command
     {
         if ($this->output->isVerbose()) {
             $this->output->writeln($message);
+        }
+    }
+
+    protected function printUnlessVerbose(string $message): void
+    {
+        if (! $this->output->isVerbose()) {
+            $this->output->write($message);
         }
     }
 
