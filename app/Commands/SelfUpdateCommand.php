@@ -93,7 +93,7 @@ class SelfUpdateCommand extends Command
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
             $this->printUnlessVerbose('<info>.</info> ');
-            $this->printVersionStateInformation($state, ! $this->output->isVerbose());
+            $this->printVersionStateInformation($state);
 
             if ($this->option('check')) {
                 return Command::SUCCESS;
@@ -210,7 +210,7 @@ class SelfUpdateCommand extends Command
     }
 
     /** @param self::STATE_* $state */
-    protected function printVersionStateInformation(int $state, bool $verbose = false): void
+    protected function printVersionStateInformation(int $state): void
     {
         $message = match ($state) {
             self::STATE_BEHIND => 'A new version is available',
@@ -218,11 +218,7 @@ class SelfUpdateCommand extends Command
             self::STATE_AHEAD => 'You are using a development version',
         };
 
-        if ($verbose) {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
-        } else {
-            $this->info("$message.");
-        }
+        $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
     }
 
     /** @param self::STRATEGY_* $strategy */
