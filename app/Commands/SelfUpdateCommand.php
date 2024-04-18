@@ -204,15 +204,15 @@ class SelfUpdateCommand extends Command
     protected function printVersionStateInformation(int $state, bool $verbose = false): void
     {
         $message = match ($state) {
-            self::STATE_BEHIND => 'A new version is available.',
-            self::STATE_UP_TO_DATE => 'You are already using the latest version.',
-            self::STATE_AHEAD => 'You are using a development version.',
+            self::STATE_BEHIND => 'A new version is available',
+            self::STATE_UP_TO_DATE => 'You are already using the latest version',
+            self::STATE_AHEAD => 'You are using a development version',
         };
 
         if ($verbose) {
-            $this->line(sprintf("<info>%s</info> (<comment>%s</comment>)", rtrim($message, '.'), $this->release['tag_name']));
+            $this->line(sprintf("<info>%s</info> (<comment>%s</comment>)", $message, $this->release['tag_name']));
         } else {
-            $this->info($message);
+            $this->info("$message.");
         }
     }
 
