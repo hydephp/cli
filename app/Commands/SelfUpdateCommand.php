@@ -142,12 +142,7 @@ class SelfUpdateCommand extends Command
     {
         $data = json_decode($this->makeGitHubApiResponse(), true);
 
-        assert($data !== null);
-        assert(isset($data['tag_name']));
-        assert(isset($data['assets']));
-        assert(isset($data['assets'][0]));
-        assert(isset($data['assets'][0]['browser_download_url']));
-        assert(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+        $data = $this->validateReleaseData($data);
 
         $this->release = $data;
     }
@@ -163,6 +158,16 @@ class SelfUpdateCommand extends Command
     protected function getUserAgent(): string
     {
         return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
+    }
+
+    protected function validateReleaseData(array $data): void
+    {
+        assert($data !== null);
+        assert(isset($data['tag_name']));
+        assert(isset($data['assets']));
+        assert(isset($data['assets'][0]));
+        assert(isset($data['assets'][0]['browser_download_url']));
+        assert(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
     }
 
     /** @return array{major: int, minor: int, patch: int} */
