@@ -11,6 +11,7 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function fopen;
 use function chmod;
@@ -18,7 +19,6 @@ use function umask;
 use function assert;
 use function fclose;
 use function rename;
-use function getenv;
 use function explode;
 use function ini_set;
 use function sprintf;
@@ -28,14 +28,10 @@ use function passthru;
 use function array_map;
 use function curl_init;
 use function curl_exec;
-use function urlencode;
-use function base_path;
 use function curl_close;
-use function array_keys;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
-use function str_replace;
 use function array_combine;
 use function clearstatcache;
 use function sys_get_temp_dir;
@@ -50,6 +46,8 @@ use function get_included_files;
  */
 class SelfUpdateCommand extends Command
 {
+    use ReportsSelfUpdateCommandIssues;
+
     /** @var string */
     protected $signature = 'self-update {--check : Check for a new version without updating}';
 
@@ -328,65 +326,5 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
-    }
-
-    /** @param array<string, string> $params */
-    private function buildUrl(string $url, array $params): string
-    {
-        return sprintf("$url?%s", implode('&', array_map(function (string $key, string $value): string {
-            return sprintf('%s=%s', $key, urlencode($value));
-        }, array_keys($params), $params)));
-    }
-
-    private function getDebugEnvironment(): string
-    {
-        return implode("\n", [
-            'Application version: v'.Application::APP_VERSION,
-            'PHP version:         v'.PHP_VERSION,
-            'Operating system:    '.PHP_OS,
-        ]);
-    }
-
-    private function getIssueMarkdown(Throwable $exception): string
-    {
-        return <<<MARKDOWN
-        ### Description
-        
-        A fatal error occurred while trying to update the application using the self-update command.
-        
-        ### Error message
-        
-        ```
-        {$exception->getMessage()} on line {$exception->getLine()} in file {$exception->getFile()}
-        ```
-        
-        ### Stack trace
-        
-        ```
-        {$exception->getTraceAsString()}
-        ```
-        
-        ### Environment
-        
-        ```
-        {$this->getDebugEnvironment()}
-        ```
-        
-        ### Context
-        
-        - Add any additional context here that may be relevant to the issue.
-        
-        MARKDOWN;
-    }
-
-    private function stripPersonalInformation(string $markdown): string
-    {
-        // As the stacktrace may contain the user's name, we remove it to protect their privacy
-        $markdown = str_replace(getenv('USER') ?: getenv('USERNAME'), '<USERNAME>', $markdown);
-
-        // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
-        $markdown = str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
-
-        return ($markdown);
     }
 }
