@@ -112,7 +112,7 @@ class SelfUpdateCommand extends Command
             $this->info('The application has been updated successfully.');
 
             // Verify the application version
-            passthru('hyde --version');
+            passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
             exit(0);
