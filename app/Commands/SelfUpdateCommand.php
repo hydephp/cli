@@ -13,18 +13,28 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
+use function trim;
+use function exec;
+use function time;
+use function file;
 use function fopen;
 use function chmod;
 use function umask;
+use function touch;
 use function assert;
 use function fclose;
 use function rename;
+use function unlink;
+use function usleep;
+use function filled;
 use function explode;
 use function ini_set;
 use function sprintf;
 use function implode;
 use function tempnam;
 use function passthru;
+use function realpath;
+use function in_array;
 use function array_map;
 use function curl_init;
 use function curl_exec;
@@ -38,6 +48,7 @@ use function clearstatcache;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
+use function file_put_contents;
 use function get_included_files;
 
 /**
@@ -340,10 +351,11 @@ class SelfUpdateCommand extends Command
         /** @experimental Support for elevating Windows privileges */
         if (PHP_OS_FAMILY === 'Windows') {
             $path = $this->findApplicationPath();
+
             // Check if this is the expected path, so we don't try anything crazy
             if (str_ends_with($path, '\AppData\Roaming\Composer\vendor\bin\hyde')) {
                 // Early check to see if our process has the required privileges
-                if (! is_writable($path)) {
+                if (! is_writable($path) || exec('where cscript') === '') {
                     $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
                     exit(126);
                 }
@@ -355,15 +367,67 @@ class SelfUpdateCommand extends Command
                     // Invokes a UAC prompt to run composer as an admin
                     // Uses a .vbs script to elevate and run the cmd.exe composer command.
                     // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
-                    $vbs = <<<'VBS'
+
+                    // In order to get the output, we need a proxy batch file to redirect the output to a file that we can use as a substitute stream
+                    $updateScript = tempnam(sys_get_temp_dir(), 'hyde-update');
+                    $outputStream = $updateScript.'.log';
+                    touch($outputStream);
+                    $outputStream=realpath($outputStream);
+                    $batch = <<<CMD
+                    call composer global require hyde/cli --no-interaction 2> $outputStream
+                    echo --END-- >> $outputStream
+                    CMD;
+
+                    $update = $updateScript.'.bat';
+                    file_put_contents($update, $batch);
+                    $update=realpath($update);
+
+                    $vbs = <<<VBS
                     Set UAC = CreateObject("Shell.Application")
-                    UAC.ShellExecute "cmd.exe", "/c composer global require hyde/cli", "", "runas", 0
+                    UAC.ShellExecute "cmd.exe", "/c $update", "", "runas", 0
                     VBS;
 
-                    $script = tempnam(sys_get_temp_dir(), 'hyde-update').'.vbs';
+                    $script = $updateScript.'.vbs';
                     file_put_contents($script, $vbs);
-                    exec('"'.$script.'"');
+
+                    exec("cscript //nologo $script");
+
+                    // ShellExecute is async, so we read the file to stream the output to the console to get logs and to know when it is done
+                    $timeout = 30;
+                    $start = time();
+                    $writtenLines = [];
+                    while (true) {
+                        // Stream the log file until we see the end of the output
+                        $log = file($outputStream);
+
+                        foreach ($log as $line) {
+
+                            if (trim($line) === '--END--') {
+                                break 2;
+                            }
+                            if (! in_array($line, $writtenLines, true)) {
+                                $this->output->writeln('<fg=gray> > '.trim($line).'</>');
+                                $writtenLines[] = $line; // Prevent duplicate lines
+                            }
+                        }
+
+                        // If we have run for 5 seconds and have no output at all, something is wrong (probably we did not get UAC permission)
+                        if (empty($log) && time() - $start > 5) {
+                            $timeout = 0;
+                        }
+
+                        if (time() - $start > $timeout) {
+                            $this->error('The Composer command timed out. Please try again.');
+                            exit(1);
+                        }
+
+                        // sleep for 250ms
+                        usleep(250000);
+                    }
+
                     @unlink($script);
+                    @unlink($update);
+                    @unlink($outputStream);
 
                     return;
                 }
