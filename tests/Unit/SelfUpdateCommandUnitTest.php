@@ -5,7 +5,7 @@ use App\Commands\SelfUpdateCommand;
 it('parses the version correctly', function ($input, $expectedOutput) {
     $class = new InspectableSelfUpdateCommand();
 
-    $result = $class->method('parseVersion', $input);
+    $result = $class->parseVersion($input);
 
     expect($result)->toBe($expectedOutput);
 })->with([
@@ -21,8 +21,8 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
         return $this->$property;
     }
 
-    public function method(string $command, mixed ...$arguments): mixed
+    public function __call($method, $parameters)
     {
-        return $this->$command(...$arguments);
+        return $this->$method(...$parameters);
     }
 }
