@@ -33,6 +33,26 @@ it('correctly compares versions', function ($currentVersion, $latestVersion, $ex
     ['2.0.0', '1.2.3', 'STATE_AHEAD'],
 ]);
 
+it('validates release data correctly', function () {
+    $data = ['tag_name' => 'v1.0.0', 'assets' => [['name' => 'hyde', 'browser_download_url' => 'https://example.com']]];
+
+    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+
+    // No exception thrown means validation passed
+    expect(true)->toBeTrue();
+});
+
+it('throws exception if release data is invalid', function ($data) {
+    $this->expectException(AssertionError::class);
+
+    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+})->with([
+    [[]], // Empty data
+    [['tag_name' => 'v1.0.0']], // Missing assets key
+    [['assets' => []]], // Empty assets array
+    [['assets' => [['name' => 'invalid_name']]]], // Invalid asset name
+]);
+
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
     public function property(string $property): mixed
