@@ -9,7 +9,7 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
         return $this->$property;
     }
 
-    public function method(string $command, ...$arguments): mixed
+    public function method(string $command, mixed ...$arguments): mixed
     {
         return $this->$command(...$arguments);
     }
