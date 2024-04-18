@@ -356,7 +356,18 @@ class SelfUpdateCommand extends Command
                     $consent = $this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true);
 
                     if ($consent) {
-                        $command = 'powershell -Command "Start-Process -Verb RunAs '.PHP_BINARY.' -ArgumentList \'hyde self-update\'"';
+                        // Invokes a UAC prompt to run composer as an admin
+                        // Uses a .vbs script to elevate and run the cmd.exe composer command.
+                        // Based on https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L596
+                        $vbs = <<<'VBS'
+                        Set UAC = CreateObject("Shell.Application")
+                        UAC.ShellExecute "cmd.exe", "/c composer global require hyde/cli", "", "runas", 0
+                        VBS;
+
+                        $script = tempnam(sys_get_temp_dir(), 'hyde-update').'.vbs';
+                        file_put_contents($script, $vbs);
+                        exec('"'.$script.'"');
+                        @unlink($script);
                     }
                 }
             }
