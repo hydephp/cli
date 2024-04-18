@@ -337,11 +337,12 @@ class SelfUpdateCommand extends Command
 
         $command = 'composer global require hyde/cli';
 
+        /** @experimental Support for elevating Windows privileges */
         if (PHP_OS_FAMILY === 'Windows') {
             $path = $this->findApplicationPath();
             // Check if this is the expected path, so we don't try anything crazy
             if (str_ends_with($path, '\AppData\Roaming\Composer\vendor\bin\hyde')) {
-                // Check if we can write to the path
+                // Early check to see if our process has the required privileges
                 if (! is_writable($path)) {
                     $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
                     exit(126);
@@ -349,6 +350,10 @@ class SelfUpdateCommand extends Command
 
                 // The called Composer process probably will not have the required privileges, so we need to elevate them
                 $consent = $this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true);
+
+                if ($consent) {
+                    $command = 'powershell -Command "Start-Process -Verb RunAs '.PHP_BINARY.' -ArgumentList \'hyde self-update\'"';
+                }
             }
         }
 
