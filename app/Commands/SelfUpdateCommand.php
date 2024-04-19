@@ -369,10 +369,7 @@ class SelfUpdateCommand extends Command
     protected function runComposerCommandOnWindows(): array
     {
         // Running the Composer process on Windows may require extra privileges,
-        // so in order to improve the UX, we run a more low level interaction
-        // than is needed on Unix systems, so we can read the output since
-        // Composer sends almost all output to STDERR instead of STDOUT
-        // which is not captured by `passthru()` or `shell_exec()`
+        // so in order to improve the UX, we interact with the process directly.
 
         $process = Process::timeout(30);
 
