@@ -16,6 +16,7 @@ use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function trim;
 use function file;
+use function exec;
 use function fopen;
 use function chmod;
 use function umask;
@@ -405,8 +406,12 @@ class SelfUpdateCommand extends Command
             $stdout = tempnam(sys_get_temp_dir(), 'hyde');
             touch($stdout);
 
-            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s 2> %s' -Wait", escapeshellarg($command), escapeshellarg($stdout));
+            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
+            exec($command);
+            // Try exiting to release the lock on the used binary
+            $this->info('The installation will continue in a new window.');
+            exit(0);
         }
 
         $outputHandler = function (string $type, string $buffer) use (&$output): void {
