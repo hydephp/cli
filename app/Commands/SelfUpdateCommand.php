@@ -402,10 +402,12 @@ class SelfUpdateCommand extends Command
             $command = 'powershell -Command "'.$powerShell.'"';
         }
 
-        $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
+        $outputHandler = function (string $type, string $buffer) use (&$output): void {
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
-        });
+        };
+
+        $result = $process->run($command, $outputHandler);
 
         if (isset($stdout)) {
             $output = file($stdout, FILE_IGNORE_NEW_LINES);
