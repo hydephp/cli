@@ -129,7 +129,7 @@ class SelfUpdateCommand extends Command
 
             $this->info('The application has been updated successfully.');
 
-            // Verify the application version (// Fixme: This shows the old version when using Composer to update)
+            // Verify the application version
             passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
