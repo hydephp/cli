@@ -353,32 +353,24 @@ class SelfUpdateCommand extends Command
     {
         $this->output->writeln('Updating via Composer...');
 
-        if (PHP_OS_FAMILY === 'Windows') {
-            [$exitCode, $output] = $this->runComposerCommandOnWindows();
-        } else {
-            // Invoke the Composer command to update the application
-            passthru(self::COMPOSER_COMMAND, $exitCode);
-        }
+        [$exitCode, $output] = $this->runComposerProcess();
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
-            if (isset($output)) {
-                if (str_contains(implode("\n", $output), 'Failed to open stream: Permission denied')) {
-                    $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
-                    $this->info('You can also try copying the command below and running it manually:');
-                    $this->line(self::COMPOSER_COMMAND);
-                }
+
+            if (str_contains(implode("\n", $output), 'Failed to open stream: Permission denied')) {
+                $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
+                $this->info('You can also try copying the command below and running it manually:');
+                $this->line(self::COMPOSER_COMMAND);
             }
+
             exit($exitCode);
         }
     }
 
     /** @return array{0: int, 1: array<string>} */
-    protected function runComposerCommandOnWindows(): array
+    protected function runComposerProcess(): array
     {
-        // Running the Composer process on Windows may require extra privileges,
-        // so in order to improve the UX, we interact with the process directly.
-
         $process = Process::timeout(30);
 
         $output = [];
