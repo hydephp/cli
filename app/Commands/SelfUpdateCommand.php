@@ -416,7 +416,7 @@ class SelfUpdateCommand extends Command
             $command = 'powershell -Command "'.$powerShell.'"';
             exec($command); // Todo we can still see if user cancels the UAC prompt as it halts until the user responds
             // Try exiting to release the lock on the used binary
-            $this->info('The installation will continue in a new window.');
+            $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
             exit(0);
         }
 
