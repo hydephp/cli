@@ -410,6 +410,7 @@ class SelfUpdateCommand extends Command
         }
 
         $outputHandler = function (string $type, string $buffer) use (&$output): void {
+            // Todo: Technically we don't need to print the debug output, we just want to know if it failed due to something we can suggest a fix for
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
         };
