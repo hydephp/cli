@@ -390,7 +390,12 @@ class SelfUpdateCommand extends Command
         $command = self::COMPOSER_COMMAND;
 
         if (PHP_OS_FAMILY === 'Windows') {
-            // Attempt to run the command with the elevated privileges
+            // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed
+            // Since this means that we lose the ability to capture the output, we redirect it to a temporary file instead
+
+            $stdout = tempnam(sys_get_temp_dir(), 'hyde');
+            touch($stdout);
+
             $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s' -Wait", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
         }
@@ -399,6 +404,12 @@ class SelfUpdateCommand extends Command
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
         });
+
+        if (isset($stdout)) {
+            $output = file($stdout, FILE_IGNORE_NEW_LINES);
+            $this->output->writeln($output);
+            unlink($stdout);
+        }
 
         return [$result->exitCode(), $output];
     }
