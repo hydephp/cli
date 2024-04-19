@@ -198,12 +198,18 @@ class SelfUpdateCommand extends Command
 
     protected function validateReleaseData(array $data): void
     {
-        assert($data !== null);
-        assert(isset($data['tag_name']));
-        assert(isset($data['assets']));
-        assert(isset($data['assets'][0]));
-        assert(isset($data['assets'][0]['browser_download_url']));
-        assert(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+        $this->assertReleaseEntryIsValid(isset($data['tag_name']));
+        $this->assertReleaseEntryIsValid(isset($data['assets']));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+    }
+
+    protected function assertReleaseEntryIsValid(bool $condition): void
+    {
+        if (! $condition) {
+            throw new RuntimeException('Invalid release data received from the GitHub API.');
+        }
     }
 
     /** @return array{major: int, minor: int, patch: int} */
