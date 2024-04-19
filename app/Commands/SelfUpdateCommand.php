@@ -77,7 +77,10 @@ class SelfUpdateCommand extends Command
     /** @var array<string, string|array<string>> The latest release information from the GitHub API */
     protected array $release;
 
-    /** @var string The path to the application executable */
+    /**
+     * @var string The path to the application executable
+     * @example Generally /user/bin/hyde, /usr/local/bin/hyde, /home/<User>/.config/composer/vendor/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
+     */
     protected string $applicationPath;
 
     public function handle(): int
@@ -239,7 +242,6 @@ class SelfUpdateCommand extends Command
     protected function findApplicationPath(): string
     {
         // Get the full path to the application executable file
-        // Generally /user/bin/hyde, /usr/local/bin/hyde, /home/<User>/.config/composer/vendor/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
 
         return get_included_files()[0]; // Could also try realpath($_SERVER['argv'][0]) (used by Composer)
     }
