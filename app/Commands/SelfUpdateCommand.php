@@ -368,67 +368,29 @@ class SelfUpdateCommand extends Command
         // Composer sends almost all output to STDERR instead of STDOUT
         // which is not captured by `passthru()` or `shell_exec()`
 
-        $process = proc_open($command, [
-            ['pipe', 'r'],
-            ['pipe', 'w'],
-            ['pipe', 'w'],
-        ], $pipes);
+        $descriptors = [
+            0 => ['pipe', 'r'], // stdin
+            1 => ['pipe', 'w'], // stdout
+            2 => ['pipe', 'w']  // stderr
+        ];
+
+        $process = proc_open($command, $descriptors, $pipes);
 
         if (!is_resource($process)) {
             throw new RuntimeException('Failed to open the Composer process.');
         }
 
-        // Close unused pipes
+        stream_set_blocking($pipes[1], true);
+        stream_set_blocking($pipes[2], true);
+
+        $capturedOutput = stream_get_contents($pipes[1]);
+        $capturedError = stream_get_contents($pipes[2]);
+
         fclose($pipes[0]);
-
-        // Stream output and error in real-time
-        stream_set_blocking($pipes[1], false);
-        stream_set_blocking($pipes[2], false);
-
-        $stdout = '';
-        $stderr = '';
-
-        $exitCode = null;
-
-        while (!feof($pipes[1]) || !feof($pipes[2])) {
-            $readPipes = [$pipes[1], $pipes[2]];
-            $writePipes = null;
-            $exceptPipes = null;
-
-            if (stream_select($readPipes, $writePipes, $exceptPipes, 0)) {
-                foreach ($readPipes as $pipe) {
-                    if ($pipe === $pipes[1]) {
-                        $data = fread($pipe, 8192);
-                        if (strlen($data) > 0) {
-                            $stdout .= $data;
-                            $this->output->write($data);
-                        }
-                    } elseif ($pipe === $pipes[2]) {
-                        $data = fread($pipe, 8192);
-                        if (strlen($data) > 0) {
-                            $stderr .= $data;
-                            $this->output->write($data);
-                        }
-                    }
-                }
-            }
-
-            $status = proc_get_status($process);
-            if (!$status['running']) {
-                $exitCode = $status['exitcode'];
-                break;
-            }
-
-            usleep(100000); // Sleep for 100 milliseconds to avoid excessive CPU usage
-        }
-
-        // Close pipes
         fclose($pipes[1]);
         fclose($pipes[2]);
 
-        if ($exitCode !== 0) {
-            $this->error($stderr);
-        }
+        $exitCode = proc_close($process);
 
         return $exitCode;
     }
