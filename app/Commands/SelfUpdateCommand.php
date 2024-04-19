@@ -375,7 +375,9 @@ class SelfUpdateCommand extends Command
 
         $output = [];
 
-        $result = $process->run(self::COMPOSER_COMMAND, function (string $type, string $buffer) use (&$output): void {
+        $command = self::COMPOSER_COMMAND;
+        
+        $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
         });
