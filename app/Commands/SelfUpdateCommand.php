@@ -370,6 +370,10 @@ class SelfUpdateCommand extends Command
 
                 // The called Composer process probably will not have the required privileges, so we need to elevate them
                 if ($this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true)) {
+                    // Attempt to release the file path
+                    clearstatcache(true, $path);
+                    unset($path);
+
                     $this->runComposerInElevatedPrompt();
 
                     return;
