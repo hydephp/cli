@@ -347,7 +347,6 @@ class SelfUpdateCommand extends Command
 
         $command = 'composer global require hyde/cli';
 
-        /** @experimental Support for elevating Windows privileges */
         if (PHP_OS_FAMILY === 'Windows') {
             $path = $this->findApplicationPath();
 
