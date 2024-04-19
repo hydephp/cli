@@ -109,13 +109,6 @@ it('strips personal and path information from markdown', function () {
         ->and($result)->toContain('<project>');
 });
 
-function mockContainerPath(string $path): void
-{
-    $mock = Mockery::mock(Container::class);
-    $mock->shouldReceive('basePath')->andReturn($path);
-    Container::setInstance($mock);
-}
-
 it('does not modify markdown without personal information', function () {
     mockContainerPath('/home/foo/project');
 
@@ -145,4 +138,11 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
     {
         return constant("self::$constant");
     }
+}
+
+function mockContainerPath(string $path): void
+{
+    $mock = Mockery::mock(Container::class);
+    $mock->shouldReceive('basePath')->andReturn($path);
+    Container::setInstance($mock);
 }
