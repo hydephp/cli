@@ -390,7 +390,7 @@ class SelfUpdateCommand extends Command
         $command = self::COMPOSER_COMMAND;
 
         if (PHP_OS_FAMILY === 'Windows') {
-            // Attempt to run the command with the elevated privileges
+            // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed
             $powerShell = sprintf("Start-Process -NoNewWindow powershell -ArgumentList '-Command %s' -Wait", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
         }
