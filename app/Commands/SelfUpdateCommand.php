@@ -122,7 +122,7 @@ class SelfUpdateCommand extends Command
 
             $this->info('The application has been updated successfully.');
 
-            // Verify the application version
+            // Verify the application version (// Fixme: This shows the old version when using Composer to update)
             passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
@@ -249,7 +249,11 @@ class SelfUpdateCommand extends Command
             self::STATE_AHEAD => 'You are using a development version',
         };
 
-        $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
+        if ($state === self::STATE_BEHIND) {
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release['tag_name']));
+        } else {
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
+        }
     }
 
     /** @param self::STRATEGY_* $strategy */
