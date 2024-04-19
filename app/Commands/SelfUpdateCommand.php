@@ -376,7 +376,12 @@ class SelfUpdateCommand extends Command
         $output = [];
 
         $command = self::COMPOSER_COMMAND;
-        
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            $command = 'Start-Process -Verb RunAs "'.$command.'"';
+            $command = "powershell.exe -Command \"$command\"";
+        }
+
         $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
