@@ -128,6 +128,7 @@ it('does not modify markdown without personal information', function () {
     expect($result)->toBe($markdown);
 });
 
+/** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
     public function property(string $property): mixed
