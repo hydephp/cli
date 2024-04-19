@@ -18,6 +18,7 @@ use function trim;
 use function fopen;
 use function chmod;
 use function umask;
+use function touch;
 use function fclose;
 use function rename;
 use function filled;
@@ -28,6 +29,7 @@ use function implode;
 use function tempnam;
 use function passthru;
 use function in_array;
+use function realpath;
 use function array_map;
 use function curl_init;
 use function curl_exec;
@@ -360,6 +362,29 @@ class SelfUpdateCommand extends Command
         if (! is_writable(dirname($this->applicationPath))) {
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
         }
+
+        // Experimental check to see if directory can be written to
+        touch($this->applicationPath);
+        $applicationPath = realpath($this->applicationPath);
+
+        // Check if subprocesses can write to the application path (ie can shell_exec write to the path)
+        if (PHP_OS_FAMILY === 'Windows') {
+            $command = 'copy /b '. escapeshellarg($applicationPath).' +,, '.escapeshellarg($applicationPath);
+
+            $output = shell_exec($command);
+            $failed = $output === false;
+            if (str_contains((string)$output, '1 file(s) copied')) {
+                $failed = false;
+            }
+        } else {
+            $command = 'touch '.escapeshellarg($applicationPath);
+            $failed = shell_exec($command) === false;
+        }
+
+        if ($failed) {
+            throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
+        }
+        // End experimental check
 
         $this->output->writeln('Updating via Composer...');
 
