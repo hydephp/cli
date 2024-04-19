@@ -415,8 +415,8 @@ class SelfUpdateCommand extends Command
             $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
             exec($command); // Todo we can still see if user cancels the UAC prompt as it halts until the user responds
-            // Try exiting to release the lock on the used binary
             $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
+            // We need to exit here so we can release the binary as Composer can't modify it when we are using it
             exit(0);
         }
 
