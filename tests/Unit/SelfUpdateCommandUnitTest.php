@@ -121,6 +121,20 @@ it('does not modify markdown without personal information', function () {
     expect($result)->toBe($markdown);
 });
 
+test('get issue markdown method', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $result = $class->getIssueMarkdown($exception);
+
+    expect($result)->toBeString()
+        ->and($result)->toContain('Description')
+        ->and($result)->toContain('Error message')
+        ->and($result)->toContain('Stack trace')
+        ->and($result)->toContain('Environment')
+        ->and($result)->toContain('Context');
+});
+
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
