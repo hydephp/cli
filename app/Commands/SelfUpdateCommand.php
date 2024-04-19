@@ -359,10 +359,10 @@ class SelfUpdateCommand extends Command
                     exit(126);
                 }
             }
+        } else {
+            // Invoke the Composer command to update the application
+            passthru($command, $exitCode);
         }
-
-        // Invoke the Composer command to update the application
-        passthru($command, $exitCode);
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
