@@ -21,7 +21,6 @@ use function fopen;
 use function chmod;
 use function umask;
 use function touch;
-use function assert;
 use function fclose;
 use function rename;
 use function unlink;
