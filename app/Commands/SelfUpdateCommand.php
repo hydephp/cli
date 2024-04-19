@@ -406,7 +406,7 @@ class SelfUpdateCommand extends Command
             $stdout = tempnam(sys_get_temp_dir(), 'hyde');
             touch($stdout);
 
-            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s", escapeshellarg($command));
+            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
             exec($command);
             // Try exiting to release the lock on the used binary
