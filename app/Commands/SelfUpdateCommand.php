@@ -414,13 +414,8 @@ class SelfUpdateCommand extends Command
             collect($buffer)->each(function (string $line) use ($outputHandler): void {
                 // Normalize the output
                 $line = str_replace("\u{FEFF}composer : ", '', $line);
-                if (trim($line) === 'At line:1 char:1"') {
-                    return;
-                }
-                if (str_starts_with(trim($line), '+ ')) {
-                    return;
-                }
-                if (empty(trim($line))) {
+                if (trim($line) === 'At line:1 char:1"' || str_starts_with(trim($line), '+ ') || empty(trim($line))) {
+                    // Skip the error message from PowerShell and empty lines
                     return;
                 }
                 $outputHandler('out', $line);
