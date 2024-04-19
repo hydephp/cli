@@ -276,8 +276,11 @@ class SelfUpdateCommand extends Command
             return self::STRATEGY_COMPOSER;
         }
 
-        // TODO: Move these checks to before running direct install
+        return self::STRATEGY_DIRECT;
+    }
 
+    protected function updateDirectly(): void
+    {
         // Check that the executable path is writable
         if (! is_writable($this->applicationPath)) {
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
@@ -288,11 +291,6 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The Curl extension is required to use the self-update command.');
         }
 
-        return self::STRATEGY_DIRECT;
-    }
-
-    protected function updateDirectly(): void
-    {
         $this->output->writeln('Downloading the latest version...');
 
         // Download the latest release from GitHub
