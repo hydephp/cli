@@ -35,6 +35,7 @@ use function curl_close;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
+use function str_contains;
 use function array_combine;
 use function clearstatcache;
 use function sys_get_temp_dir;
@@ -361,6 +362,13 @@ class SelfUpdateCommand extends Command
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
+            if (isset($output)) {
+                if (str_contains(implode("\n", $output), 'Failed to open stream: Permission denied')) {
+                    $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
+                    $this->info('You can also try copying the command below and running it manually:');
+                    $this->line(self::COMPOSER_COMMAND);
+                }
+            }
             exit($exitCode);
         }
     }
