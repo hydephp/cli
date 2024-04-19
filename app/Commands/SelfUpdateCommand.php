@@ -412,6 +412,17 @@ class SelfUpdateCommand extends Command
         if (isset($stdout)) {
             $buffer = file($stdout, FILE_IGNORE_NEW_LINES);
             collect($buffer)->each(function (string $line) use ($outputHandler): void {
+                // Normalize the output
+                $line = str_replace("\u{FEFF}composer : ", '', $line);
+                if (trim($line) === 'At line:1 char:1"') {
+                    return;
+                }
+                if (str_starts_with(trim($line), '+ ')) {
+                    return;
+                }
+                if (empty(trim($line))) {
+                    return;
+                }
                 $outputHandler('out', $line);
             });
             unlink($stdout);
