@@ -363,28 +363,7 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
         }
 
-        // Experimental check to see if directory can be written to
-        touch($this->applicationPath);
-        $applicationPath = realpath($this->applicationPath);
-
-        // Check if subprocesses can write to the application path (ie can shell_exec write to the path)
-        if (PHP_OS_FAMILY === 'Windows') {
-            $command = 'copy /b '. escapeshellarg($applicationPath).' +,, '.escapeshellarg($applicationPath);
-
-            $output = shell_exec($command);
-            $failed = $output === false;
-            if (str_contains((string)$output, '1 file(s) copied')) {
-                $failed = false;
-            }
-        } else {
-            $command = 'touch '.escapeshellarg($applicationPath);
-            $failed = shell_exec($command) === false;
-        }
-
-        if ($failed) {
-            throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
-        }
-        // End experimental check
+        $this->checkIfProcessesCanWriteToPath();
 
         $this->output->writeln('Updating via Composer...');
 
@@ -441,5 +420,30 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
+    }
+
+    /** @experimental Experimental check to see if directory can be written to */
+    protected function checkIfProcessesCanWriteToPath(): void
+    {
+        touch($this->applicationPath);
+        $applicationPath = realpath($this->applicationPath);
+
+        // Check if subprocesses can write to the application path (ie can shell_exec write to the path)
+        if (PHP_OS_FAMILY === 'Windows') {
+            $command = 'copy /b '.escapeshellarg($applicationPath).' +,, '.escapeshellarg($applicationPath);
+
+            $output = shell_exec($command);
+            $failed = $output === false;
+            if (str_contains((string)$output, '1 file(s) copied')) {
+                $failed = false;
+            }
+        } else {
+            $command = 'touch '.escapeshellarg($applicationPath);
+            $failed = shell_exec($command) === false;
+        }
+
+        if ($failed) {
+            throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
+        }
     }
 }
