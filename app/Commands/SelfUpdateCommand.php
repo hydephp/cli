@@ -66,6 +66,8 @@ class SelfUpdateCommand extends Command
     protected const STRATEGY_DIRECT = 'direct';
     protected const STRATEGY_COMPOSER = 'composer';
 
+    protected const COMPOSER_COMMAND = 'composer global require hyde/cli';
+
     /** @var array<string, string|array<string>> The latest release information from the GitHub API */
     protected array $release;
 
@@ -346,13 +348,11 @@ class SelfUpdateCommand extends Command
     {
         $this->output->writeln('Updating via Composer...');
 
-        $command = 'composer global require hyde/cli';
-
         if (PHP_OS_FAMILY === 'Windows') {
-            $exitCode = $this->runComposerCommandOnWindows($command);
+            $exitCode = $this->runComposerCommandOnWindows();
         } else {
             // Invoke the Composer command to update the application
-            passthru($command, $exitCode);
+            passthru(self::COMPOSER_COMMAND, $exitCode);
         }
 
         if ($exitCode !== 0) {
@@ -361,7 +361,7 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    protected function runComposerCommandOnWindows(string $command): int
+    protected function runComposerCommandOnWindows(): int
     {
         // Running the Composer process on Windows may require extra privileges,
         // so in order to improve the UX, we run a more low level interaction
@@ -373,7 +373,7 @@ class SelfUpdateCommand extends Command
 
         $output = [];
 
-        $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
+        $result = $process->run(self::COMPOSER_COMMAND, function (string $type, string $buffer) use (&$output): void {
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
         });
