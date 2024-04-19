@@ -63,7 +63,7 @@ class SelfUpdateCommand extends Command
     use ReportsSelfUpdateCommandIssues;
 
     /** @var string */
-    protected $signature = 'self-update {--check : Check for a new version without updating}';
+    protected $signature = 'self-update {--check : Check for a new version without updating} {--force-composer-update : Internal temporary flag to force a Composer update}';
 
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
@@ -100,6 +100,12 @@ class SelfUpdateCommand extends Command
             $this->printUnlessVerbose('<info>.</info>');
 
             $strategy = $this->determineUpdateStrategy();
+
+            /** @deprecated */
+            if ($this->option('force-composer-update')) {
+                $strategy = self::STRATEGY_COMPOSER;
+            }
+
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
             $this->printUnlessVerbose('<info>.</info>');
 
@@ -119,7 +125,7 @@ class SelfUpdateCommand extends Command
                 return Command::SUCCESS;
             }
 
-            if ($state !== self::STATE_BEHIND) {
+            if ($state !== self::STATE_BEHIND && ! $this->option('force-composer-update')) {
                 return Command::SUCCESS;
             }
 
@@ -406,7 +412,7 @@ class SelfUpdateCommand extends Command
             $stdout = tempnam(sys_get_temp_dir(), 'hyde');
             touch($stdout);
 
-            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s", escapeshellarg($command));
+            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
             exec($command);
             // Try exiting to release the lock on the used binary
