@@ -367,6 +367,32 @@ class SelfUpdateCommand extends Command
         // than is needed on Unix systems, so we can read the output since
         // Composer sends almost all output to STDERR instead of STDOUT
         // which is not captured by `passthru()` or `shell_exec()`
+
+        $process = proc_open($command, [
+            ['pipe', 'r'],
+            ['pipe', 'w'],
+            ['pipe', 'w'],
+        ], $pipes);
+
+        if (! is_resource($process)) {
+            throw new RuntimeException('Failed to open the Composer process.');
+        }
+
+        $output = stream_get_contents($pipes[1]);
+        $error = stream_get_contents($pipes[2]);
+
+        fclose($pipes[0]);
+
+        $exitCode = proc_close($process);
+
+        $this->output->write($output);
+        $this->output->write($error);
+
+        if ($exitCode !== 0) {
+            $this->error($error);
+        }
+
+        return $exitCode;
     }
 
     protected function debug(string $message): void
