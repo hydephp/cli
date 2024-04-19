@@ -35,6 +35,7 @@ use function curl_close;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
+use function str_contains;
 use function array_combine;
 use function clearstatcache;
 use function sys_get_temp_dir;
@@ -353,7 +354,7 @@ class SelfUpdateCommand extends Command
         $this->output->writeln('Updating via Composer...');
 
         if (PHP_OS_FAMILY === 'Windows') {
-            $exitCode = $this->runComposerCommandOnWindows();
+            [$exitCode, $output] = $this->runComposerCommandOnWindows();
         } else {
             // Invoke the Composer command to update the application
             passthru(self::COMPOSER_COMMAND, $exitCode);
@@ -361,17 +362,22 @@ class SelfUpdateCommand extends Command
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
+            if (isset($output)) {
+                if (str_contains(implode("\n", $output), 'Failed to open stream: Permission denied')) {
+                    $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
+                    $this->info('You can also try copying the command below and running it manually:');
+                    $this->line(self::COMPOSER_COMMAND);
+                }
+            }
             exit($exitCode);
         }
     }
 
-    protected function runComposerCommandOnWindows(): int
+    /** @return array{0: int, 1: array<string>} */
+    protected function runComposerCommandOnWindows(): array
     {
         // Running the Composer process on Windows may require extra privileges,
-        // so in order to improve the UX, we run a more low level interaction
-        // than is needed on Unix systems, so we can read the output since
-        // Composer sends almost all output to STDERR instead of STDOUT
-        // which is not captured by `passthru()` or `shell_exec()`
+        // so in order to improve the UX, we interact with the process directly.
 
         $process = Process::timeout(30);
 
@@ -382,7 +388,7 @@ class SelfUpdateCommand extends Command
             $output[] = $buffer;
         });
 
-        return $result->exitCode();
+        return [$result, $output];
     }
 
     protected function debug(string $message): void
