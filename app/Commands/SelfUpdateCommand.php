@@ -414,10 +414,17 @@ class SelfUpdateCommand extends Command
 
             $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
-            exec($command); // Todo we can still see if user cancels the UAC prompt as it halts until the user responds
-            $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
-            // We need to exit here so we can release the binary as Composer can't modify it when we are using it
-            exit(0);
+            exec($command, $output, $exitCode);
+
+            if ($exitCode !== 0) {
+                $this->error('The Composer command failed with exit code '.$exitCode);
+                $this->output->writeln($output);
+                exit($exitCode);
+            } else {
+                $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
+                // We need to exit here so we can release the binary as Composer can't modify it when we are using it
+                exit(0);
+            }
         }
 
         /** @deprecated Technically we don't need to print the debug output, we just want to know if it failed due to something we can suggest a fix for */
