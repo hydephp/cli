@@ -390,6 +390,7 @@ class SelfUpdateCommand extends Command
         $command = self::COMPOSER_COMMAND;
 
         if (PHP_OS_FAMILY === 'Windows') {
+            // Attempt to run the command with the same privileges as the current process
             $command = 'Start-Process -Verb RunAs "'.$command.'"';
             $command = "powershell.exe -Command \"$command\"";
         }
