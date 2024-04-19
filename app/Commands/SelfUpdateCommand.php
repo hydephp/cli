@@ -353,7 +353,7 @@ class SelfUpdateCommand extends Command
         $this->output->writeln('Updating via Composer...');
 
         if (PHP_OS_FAMILY === 'Windows') {
-            $exitCode = $this->runComposerCommandOnWindows();
+            [$exitCode, $output] = $this->runComposerCommandOnWindows();
         } else {
             // Invoke the Composer command to update the application
             passthru(self::COMPOSER_COMMAND, $exitCode);
@@ -365,7 +365,8 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    protected function runComposerCommandOnWindows(): int
+    /** @return array{0: int, 1: array<string>} */
+    protected function runComposerCommandOnWindows(): array
     {
         // Running the Composer process on Windows may require extra privileges,
         // so in order to improve the UX, we run a more low level interaction
@@ -382,7 +383,7 @@ class SelfUpdateCommand extends Command
             $output[] = $buffer;
         });
 
-        return $result->exitCode();
+        return [$result, $output];
     }
 
     protected function debug(string $message): void
