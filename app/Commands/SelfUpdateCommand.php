@@ -398,7 +398,7 @@ class SelfUpdateCommand extends Command
             $stdout = tempnam(sys_get_temp_dir(), 'hyde');
             touch($stdout);
 
-            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s 2> %s | %%{ \"\$_\" }' -Wait", escapeshellarg($command), escapeshellarg($stdout));
+            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s 2> %s' -Wait", escapeshellarg($command), escapeshellarg($stdout));
             $command = 'powershell -Command "'.$powerShell.'"';
         }
 
