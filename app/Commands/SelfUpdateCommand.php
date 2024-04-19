@@ -21,7 +21,6 @@ use function fopen;
 use function chmod;
 use function umask;
 use function touch;
-use function assert;
 use function fclose;
 use function rename;
 use function unlink;
@@ -78,6 +77,9 @@ class SelfUpdateCommand extends Command
     /** @var array<string, string|array<string>> The latest release information from the GitHub API */
     protected array $release;
 
+    /** @var string The path to the application executable */
+    protected string $applicationPath;
+
     public function handle(): int
     {
         try {
@@ -87,11 +89,11 @@ class SelfUpdateCommand extends Command
                 $this->output->write('<info>Checking for updates</info>');
             }
 
-            $applicationPath = $this->findApplicationPath();
-            $this->debug("Application path: $applicationPath");
+            $this->applicationPath = $this->findApplicationPath();
+            $this->debug("Application path: $this->applicationPath");
             $this->printUnlessVerbose('<info>.</info>');
 
-            $strategy = $this->determineUpdateStrategy($applicationPath);
+            $strategy = $this->determineUpdateStrategy();
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
             $this->printUnlessVerbose('<info>.</info>');
 
@@ -266,17 +268,20 @@ class SelfUpdateCommand extends Command
     }
 
     /** @return self::STRATEGY_* */
-    protected function determineUpdateStrategy(string $applicationPath): string
+    protected function determineUpdateStrategy(): string
     {
         // Check if the application is installed via Composer
-        if (Str::contains($applicationPath, 'composer', true)) {
+        if (Str::contains($this->applicationPath, 'composer', true)) {
             return self::STRATEGY_COMPOSER;
         }
 
-        // TODO: Move these checks to before running direct install
+        return self::STRATEGY_DIRECT;
+    }
 
+    protected function updateDirectly(): void
+    {
         // Check that the executable path is writable
-        if (! is_writable($applicationPath)) {
+        if (! is_writable($this->applicationPath)) {
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
         }
 
@@ -285,11 +290,6 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The Curl extension is required to use the self-update command.');
         }
 
-        return self::STRATEGY_DIRECT;
-    }
-
-    protected function updateDirectly(): void
-    {
         $this->output->writeln('Downloading the latest version...');
 
         // Download the latest release from GitHub
@@ -321,14 +321,12 @@ class SelfUpdateCommand extends Command
 
     protected function replaceApplication(string $downloadedFile): void
     {
-        $applicationPath = $this->findApplicationPath();
-
-        $this->debug("Moving file $downloadedFile to $applicationPath");
+        $this->debug("Moving file $downloadedFile to $this->applicationPath");
 
         // Replace the current application with the downloaded one
         try {
             // This might give Permission denied if we can't write to the bin path (might need sudo)
-            $this->moveFile($downloadedFile, $applicationPath);
+            $this->moveFile($downloadedFile, $this->applicationPath);
         } catch (Throwable $exception) {
             // Check if it is a permission issue
             if (Str::containsAll($exception->getMessage(), ['rename', 'Permission denied'])) {
@@ -370,6 +368,10 @@ class SelfUpdateCommand extends Command
 
                 // The called Composer process probably will not have the required privileges, so we need to elevate them
                 if ($this->confirm('The application path may require elevated privileges to update. Do you want to provide administrator permissions, or try updating without?', true)) {
+                    // Attempt to release the file path
+                    clearstatcache(true, $path);
+                    unset($path);
+
                     $this->runComposerInElevatedPrompt();
 
                     return;
