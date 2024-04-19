@@ -14,24 +14,19 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
-use function trim;
-use function file;
 use function exec;
 use function fopen;
 use function chmod;
 use function umask;
-use function touch;
 use function fclose;
 use function rename;
 use function filled;
-use function unlink;
 use function explode;
 use function ini_set;
 use function sprintf;
 use function implode;
 use function tempnam;
 use function dirname;
-use function collect;
 use function passthru;
 use function in_array;
 use function array_map;
@@ -41,7 +36,6 @@ use function curl_close;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
-use function str_replace;
 use function str_contains;
 use function array_combine;
 use function clearstatcache;
@@ -397,21 +391,10 @@ class SelfUpdateCommand extends Command
     /** @return array{0: int, 1: array<string>} */
     protected function runComposerProcess(): array
     {
-        $process = Process::timeout(30);
-
-        $output = [];
-
         $command = self::COMPOSER_COMMAND;
 
         if (PHP_OS_FAMILY === 'Windows') {
-            // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed
-            // Since this means that we lose the ability to capture the output, we redirect it to a temporary file instead
-            // We have to do it this way since NoNewWindow is incompatible with Verbs, and it seems that Windows never
-            // allow elevating an existing process, but instead requires a new one, so that's what we have to do.
-
-            $stdout = tempnam(sys_get_temp_dir(), 'hyde');
-            touch($stdout);
-
+            // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed.
             $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
             exec($command, $output, $exitCode);
@@ -427,27 +410,13 @@ class SelfUpdateCommand extends Command
             }
         }
 
-        /** @deprecated Technically we don't need to print the debug output, we just want to know if it failed due to something we can suggest a fix for */
-        $outputHandler = function (string $type, string $buffer) use (&$output): void {
-            $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
+        $output = [];
+        $process = Process::timeout(30);
+
+        $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
+            // $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
-        };
-
-        $result = $process->run($command, $outputHandler);
-
-        if (isset($stdout)) {
-            $buffer = file($stdout, FILE_IGNORE_NEW_LINES);
-            collect($buffer)->each(function (string $line) use ($outputHandler): void {
-                // Normalize the output
-                $line = str_replace("\u{FEFF}composer : ", '', $line);
-                if (trim($line) === 'At line:1 char:1"' || str_starts_with(trim($line), '+ ') || empty(trim($line))) {
-                    // Skip the error message from PowerShell and empty lines
-                    return;
-                }
-                $outputHandler('out', $line);
-            });
-            unlink($stdout);
-        }
+        });
 
         return [$result->exitCode(), $output];
     }
