@@ -15,17 +15,22 @@ use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function trim;
+use function file;
 use function fopen;
 use function chmod;
 use function umask;
+use function touch;
 use function fclose;
 use function rename;
 use function filled;
+use function unlink;
 use function explode;
 use function ini_set;
 use function sprintf;
 use function implode;
 use function tempnam;
+use function dirname;
+use function collect;
 use function passthru;
 use function in_array;
 use function array_map;
@@ -35,9 +40,11 @@ use function curl_close;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
+use function str_replace;
 use function str_contains;
 use function array_combine;
 use function clearstatcache;
+use function escapeshellarg;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
@@ -391,14 +398,37 @@ class SelfUpdateCommand extends Command
 
         if (PHP_OS_FAMILY === 'Windows') {
             // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed
-            $powerShell = sprintf("Start-Process -NoNewWindow powershell -ArgumentList '-Command %s' -Wait", escapeshellarg($command));
+            // Since this means that we lose the ability to capture the output, we redirect it to a temporary file instead
+            // We have to do it this way since NoNewWindow is incompatible with Verbs, and it seems that Windows never
+            // allow elevating an existing process, but instead requires a new one, so that's what we have to do.
+
+            $stdout = tempnam(sys_get_temp_dir(), 'hyde');
+            touch($stdout);
+
+            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s 2> %s' -Wait", escapeshellarg($command), escapeshellarg($stdout));
             $command = 'powershell -Command "'.$powerShell.'"';
         }
 
-        $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
+        $outputHandler = function (string $type, string $buffer) use (&$output): void {
             $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
             $output[] = $buffer;
-        });
+        };
+
+        $result = $process->run($command, $outputHandler);
+
+        if (isset($stdout)) {
+            $buffer = file($stdout, FILE_IGNORE_NEW_LINES);
+            collect($buffer)->each(function (string $line) use ($outputHandler): void {
+                // Normalize the output
+                $line = str_replace("\u{FEFF}composer : ", '', $line);
+                if (trim($line) === 'At line:1 char:1"' || str_starts_with(trim($line), '+ ') || empty(trim($line))) {
+                    // Skip the error message from PowerShell and empty lines
+                    return;
+                }
+                $outputHandler('out', $line);
+            });
+            unlink($stdout);
+        }
 
         return [$result->exitCode(), $output];
     }
