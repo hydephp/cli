@@ -355,6 +355,10 @@ class SelfUpdateCommand extends Command
 
         [$exitCode, $output] = $this->runComposerProcess();
 
+        if ($exitCode !== 0) {
+            $this->error('The Composer command failed with exit code '.$exitCode);
+        }
+
         if (str_contains(implode("\n", $output), 'Failed to open stream: Permission denied')) {
             $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
             $this->info('You can also try copying the command below and running it manually:');
@@ -362,8 +366,6 @@ class SelfUpdateCommand extends Command
         }
 
         if ($exitCode !== 0) {
-            $this->error('The Composer command failed with exit code '.$exitCode);
-
             exit($exitCode);
         }
     }
