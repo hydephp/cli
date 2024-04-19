@@ -392,6 +392,8 @@ class SelfUpdateCommand extends Command
         if (PHP_OS_FAMILY === 'Windows') {
             // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed
             // Since this means that we lose the ability to capture the output, we redirect it to a temporary file instead
+            // We have to do it this way since NoNewWindow is incompatible with Verbs, and it seems that Windows never
+            // allow elevating an existing process, but instead requires a new one, so that's what we have to do.
 
             $stdout = tempnam(sys_get_temp_dir(), 'hyde');
             touch($stdout);
