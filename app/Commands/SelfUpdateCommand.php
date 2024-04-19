@@ -348,16 +348,7 @@ class SelfUpdateCommand extends Command
         $command = 'composer global require hyde/cli';
 
         if (PHP_OS_FAMILY === 'Windows') {
-            $path = $this->findApplicationPath();
-
-            // Check if this is the expected path, so we don't try anything crazy
-            if (str_ends_with($path, '\AppData\Roaming\Composer\vendor\bin\hyde')) {
-                // Early check to see if our process has the required privileges
-                if (! is_writable($path)) {
-                    $this->error('The application path is not writable. Please rerun the command with elevated privileges.');
-                    exit(126);
-                }
-            }
+            $exitCode = $this->runComposerCommandOnWindows($command);
         } else {
             // Invoke the Composer command to update the application
             passthru($command, $exitCode);
@@ -367,6 +358,11 @@ class SelfUpdateCommand extends Command
             $this->error('The Composer command failed with exit code '.$exitCode);
             exit($exitCode);
         }
+    }
+
+    protected function runComposerCommandOnWindows(string $command): int
+    {
+        //
     }
 
     protected function debug(string $message): void
