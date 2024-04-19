@@ -410,8 +410,8 @@ class SelfUpdateCommand extends Command
         $result = $process->run($command, $outputHandler);
 
         if (isset($stdout)) {
-            $output = file($stdout, FILE_IGNORE_NEW_LINES);
-            $this->output->writeln($output);
+            $buffer = file($stdout, FILE_IGNORE_NEW_LINES);
+            collect($buffer)->each(fn (string $line) => $outputHandler('out', $line));
             unlink($stdout);
         }
 
