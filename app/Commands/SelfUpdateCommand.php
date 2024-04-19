@@ -391,9 +391,7 @@ class SelfUpdateCommand extends Command
 
         if (PHP_OS_FAMILY === 'Windows') {
             // Attempt to run the command with the same privileges as the current process
-            $escapedCommand = escapeshellarg($command);
-            $psCommand = "Start-Process -Verb RunAs powershell -ArgumentList '-Command $escapedCommand'";
-            $command = $psCommand;
+            $command = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
         }
 
         $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
