@@ -391,7 +391,7 @@ class SelfUpdateCommand extends Command
 
         if (PHP_OS_FAMILY === 'Windows') {
             // Attempt to run the command with the elevated privileges
-            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
+            $powerShell = sprintf("Start-Process -NoNewWindow powershell -ArgumentList '-Command %s' -Wait", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
         }
 
