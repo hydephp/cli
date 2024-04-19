@@ -11,8 +11,10 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
+use function trim;
 use function fopen;
 use function chmod;
 use function umask;
@@ -34,7 +36,6 @@ use function json_decode;
 use function is_writable;
 use function curl_setopt;
 use function array_combine;
-use function str_ends_with;
 use function clearstatcache;
 use function sys_get_temp_dir;
 use function extension_loaded;
@@ -368,31 +369,16 @@ class SelfUpdateCommand extends Command
         // Composer sends almost all output to STDERR instead of STDOUT
         // which is not captured by `passthru()` or `shell_exec()`
 
-        $descriptors = [
-            0 => ['pipe', 'r'], // stdin
-            1 => ['pipe', 'w'], // stdout
-            2 => ['pipe', 'w']  // stderr
-        ];
+        $process = Process::timeout(30);
 
-        $process = proc_open($command, $descriptors, $pipes);
+        $output = [];
 
-        if (!is_resource($process)) {
-            throw new RuntimeException('Failed to open the Composer process.');
-        }
+        $result = $process->run($command, function (string $type, string $buffer) use (&$output): void {
+            $this->output->writeln('<fg=gray> > '.trim($buffer).'</>');
+            $output[] = $buffer;
+        });
 
-        stream_set_blocking($pipes[1], true);
-        stream_set_blocking($pipes[2], true);
-
-        $capturedOutput = stream_get_contents($pipes[1]);
-        $capturedError = stream_get_contents($pipes[2]);
-
-        fclose($pipes[0]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
-
-        $exitCode = proc_close($process);
-
-        return $exitCode;
+        return $result->exitCode();
     }
 
     protected function debug(string $message): void
