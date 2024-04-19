@@ -378,10 +378,42 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('Failed to open the Composer process.');
         }
 
-        $output = stream_get_contents($pipes[1]);
-        $error = stream_get_contents($pipes[2]);
-
+        // Close unused pipes
         fclose($pipes[0]);
+
+        // Stream output and error in real-time
+        $output = '';
+        $error = '';
+        $readPipes = [$pipes[1], $pipes[2]];
+
+        while (!feof($pipes[1]) || !feof($pipes[2])) {
+            $readablePipes = $readPipes;
+            $writePipes = null;
+            $exceptPipes = null;
+
+            if (stream_select($readablePipes, $writePipes, $exceptPipes, 0)) {
+                foreach ($readablePipes as $pipe) {
+                    $line = stream_get_line($pipe, 1024, "\n");
+
+                    if ($line === false) {
+                        // End of stream
+                        continue;
+                    }
+
+                    if ($pipe === $pipes[1]) {
+                        $output .= $line;
+                        $this->output->write($line);
+                    } elseif ($pipe === $pipes[2]) {
+                        $error .= $line;
+                        $this->output->write($line);
+                    }
+                }
+            }
+        }
+
+        // Close pipes
+        fclose($pipes[1]);
+        fclose($pipes[2]);
 
         $exitCode = proc_close($process);
 
