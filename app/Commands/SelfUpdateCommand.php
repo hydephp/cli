@@ -380,7 +380,7 @@ class SelfUpdateCommand extends Command
             $output[] = $buffer;
         });
 
-        return [$result, $output];
+        return [$result->exitCode(), $output];
     }
 
     protected function debug(string $message): void
