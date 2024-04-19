@@ -351,6 +351,16 @@ class SelfUpdateCommand extends Command
 
     protected function updateViaComposer(): void
     {
+        // Check if the application path is writable
+        if (! is_writable($this->applicationPath)) {
+            throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
+        }
+
+        // Check if the directory is writable
+        if (! is_writable(dirname($this->applicationPath))) {
+            throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
+        }
+
         $this->output->writeln('Updating via Composer...');
 
         [$exitCode, $output] = $this->runComposerProcess();
