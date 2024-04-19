@@ -41,6 +41,7 @@ use function curl_close;
 use function json_decode;
 use function is_writable;
 use function curl_setopt;
+use function str_replace;
 use function array_combine;
 use function str_ends_with;
 use function clearstatcache;
@@ -128,7 +129,7 @@ class SelfUpdateCommand extends Command
 
             $this->info('The application has been updated successfully.');
 
-            // Verify the application version
+            // Verify the application version (// Fixme: This shows the old version when using Composer to update)
             passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
@@ -431,19 +432,13 @@ class SelfUpdateCommand extends Command
         $outputStream = realpath($outputStream);
 
         // Set up a batch script so we can redirect the output to our stream file
-        $batch = <<<CMD
-        call composer global require hyde/cli --no-interaction 2> $outputStream
-        echo --END-- >> $outputStream
-        CMD;
+        $batch = str_replace('{{ outputStream }}', $outputStream, file_get_contents(__DIR__.'/../bin/composer-update-proxy.bat'));
 
         $updateScript = "$path.bat";
         file_put_contents($updateScript, $batch);
         $updateScript = realpath($updateScript);
 
-        $vbs = <<<VBS
-        Set UAC = CreateObject("Shell.Application")
-        UAC.ShellExecute "cmd.exe", "/c $updateScript", "", "runas", 0
-        VBS;
+        $vbs = str_replace('{{ updateScript }}', $updateScript, file_get_contents(__DIR__.'/../bin/composer-update-proxy.vbs'));
 
         $vbsScript = "$path.vbs";
         file_put_contents($vbsScript, $vbs);
