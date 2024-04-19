@@ -413,9 +413,9 @@ class SelfUpdateCommand extends Command
                 }
             }
 
-            $exitCode = proc_get_status($process)['running'] ? null : proc_close($process);
-
-            if ($exitCode !== null) {
+            $status = proc_get_status($process);
+            if (!$status['running']) {
+                $exitCode = $status['exitcode'];
                 break;
             }
 
