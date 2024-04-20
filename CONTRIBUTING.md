@@ -24,7 +24,7 @@ You can run a live version of the executable by running `php hyde <command>` in 
 Please add tests for any new features or bug fixes. Tests are run using PestPHP.
 
 ```bash
-vendor/bin/phpunitpest
+vendor/bin/pest
 ```
 
 ## Releases
