@@ -61,7 +61,7 @@ jobs:
         run: php builds/hyde --version
 
       - name: Upload executable artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hyde
           path: builds/hyde
@@ -93,7 +93,7 @@ jobs:
 
       - name: Upload signature artifact
         if: github.event.repository.full_name == 'hydephp/cli'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: signature
           path: builds/hyde.sig
