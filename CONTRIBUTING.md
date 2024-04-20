@@ -26,3 +26,11 @@ Please add tests for any new features or bug fixes. Tests are run using PestPHP.
 ```bash
 vendor/bin/phpunitpest
 ```
+
+## Releases
+
+Releases are handled by the maintainers of the project according to the following workflow:
+1. The `create-release.yml` GitHub Actions workflow is triggered by workflow dispatch, where the maintainer specifies the SemVer level.
+2. The workflow updates the application version constant and compiles the application. It then creates a new branch and creates a pull request.
+3. The maintainer reviews the pull request and merges it into the protected stable branch when ready.
+4. The `publish-release.yml` GitHub Actions workflow is triggered by the merge, which creates a new release on GitHub with the compiled application attached. It also syncs the changes to the main branch.
