@@ -81,21 +81,21 @@ jobs:
               --yes \
               --passphrase="${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}" \
               --detach-sign \
-              --output builds/hyde.asc \
+              --output builds/hyde.sig \
               builds/hyde
 
       - name: Verify the signature
         if: github.event.repository.full_name == 'hydephp/cli'
         run: |
           gpg --import-ownertrust <<< "657B4D97184E9E6E596E6EA13B829782D5B7BA59:6:"
-          gpg --verify builds/hyde.asc builds/hyde
+          gpg --verify builds/hyde.sig builds/hyde
 
       - name: Upload signature artifact
         if: github.event.repository.full_name == 'hydephp/cli'
         uses: actions/upload-artifact@v3
         with:
           name: hyde-signature
-          path: builds/hyde.asc
+          path: builds/hyde.sig
 
       - name: Reset Composer file changes
         run: git restore composer.json composer.lock
@@ -110,7 +110,7 @@ jobs:
           add-paths: |
             app/Application.php
             builds/hyde
-            builds/hyde.asc
+            builds/hyde.sig
 
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
