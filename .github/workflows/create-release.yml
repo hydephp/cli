@@ -94,7 +94,7 @@ jobs:
         if: github.event.repository.full_name == 'hydephp/cli'
         uses: actions/upload-artifact@v3
         with:
-          name: hyde-signature
+          name: signature
           path: builds/hyde.sig
 
       - name: Reset Composer file changes
