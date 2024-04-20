@@ -397,6 +397,7 @@ class SelfUpdateCommand extends Command
             // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed.
             $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
             $command = 'powershell -Command "'.$powerShell.'"';
+            $this->debug("Running command: $command");
             exec($command, $output, $exitCode);
 
             if ($exitCode !== 0) {
