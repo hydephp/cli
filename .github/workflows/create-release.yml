@@ -84,19 +84,11 @@ jobs:
               --output builds/hyde.asc \
               builds/hyde
 
-      - name: Import public key from keyserver
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          gpg --keyserver keys.openpgp.org --recv-keys 657B4D97184E9E6E596E6EA13B829782D5B7BA59
-
-      - name: Trust the imported key
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          echo "trust\n5\ny\n" | gpg --no-tty --command-fd 0 --edit-key 657B4D97184E9E6E596E6EA13B829782D5B7BA59
-
       - name: Verify the signature
         if: github.event.repository.full_name == 'hydephp/cli'
-        run: gpg --verify builds/hyde.asc builds/hyde
+        run: |
+          gpg --import-ownertrust <<< "657B4D97184E9E6E596E6EA13B829782D5B7BA59:6:"
+          gpg --verify builds/hyde.asc builds/hyde
 
       - name: Upload signature artifact
         if: github.event.repository.full_name == 'hydephp/cli'
