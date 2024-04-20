@@ -86,9 +86,7 @@ jobs:
 
       - name: Verify the signature
         if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          gpg --import-ownertrust <<< "657B4D97184E9E6E596E6EA13B829782D5B7BA59:6:"
-          gpg --verify builds/hyde.asc builds/hyde
+        run: gpg --verify builds/hyde.asc builds/hyde
 
       - name: Upload signature artifact
         if: github.event.repository.full_name == 'hydephp/cli'
