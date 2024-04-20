@@ -54,7 +54,7 @@ Please see [CHANGELOG](https://github.com/hydephp/cli/blob/master/CHANGELOG.md) 
 
 ### Contributing
 
-HydePHP is an open-source project, contributions are very welcome!
+HydePHP is an open-source project, contributions are very welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidance.
 
 
 ### Security
