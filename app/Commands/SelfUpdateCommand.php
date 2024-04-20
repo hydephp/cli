@@ -268,7 +268,7 @@ class SelfUpdateCommand extends Command
     /** @param self::STRATEGY_* $strategy */
     protected function updateApplication(string $strategy): void
     {
-        $this->output->writeln('Updating the application...');
+        $this->debug('Updating the application...');
 
         match ($strategy) {
             self::STRATEGY_DIRECT => $this->updateDirectly(),
@@ -299,7 +299,7 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The Curl extension is required to use the self-update command.');
         }
 
-        $this->output->writeln('Downloading the latest version...');
+        $this->debug('Downloading the latest version...');
 
         // Download the latest release from GitHub
         $downloadUrl = $this->release['assets'][0]['browser_download_url'];
@@ -369,7 +369,7 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The application path is not writable. Please rerun the command with elevated privileges.');
         }
 
-        $this->output->writeln('Updating via Composer...');
+        $this->debug('Updating via Composer...');
 
         [$exitCode, $output] = $this->runComposerProcess();
 
