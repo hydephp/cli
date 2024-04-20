@@ -86,12 +86,11 @@ class SelfUpdateCommand extends Command
             if ($this->output->isVerbose()) {
                 $this->info("Checking for a new version...\n");
             } else {
-                $this->output->write('<info>Checking for updates</info>');
+                $this->output->write('<info>Checking for updates...</info> ');
             }
 
             $this->applicationPath = $this->findApplicationPath();
             $this->debug("Application path: $this->applicationPath");
-            $this->printUnlessVerbose('<info>.</info>');
 
             $strategy = $this->determineUpdateStrategy();
 
@@ -101,7 +100,6 @@ class SelfUpdateCommand extends Command
             }
 
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
-            $this->printUnlessVerbose('<info>.</info>');
 
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
@@ -112,7 +110,6 @@ class SelfUpdateCommand extends Command
             $this->printNewlineIfVerbose();
 
             $state = $this->compareVersions($currentVersion, $latestVersion);
-            $this->printUnlessVerbose('<info>.</info> ');
             $this->printVersionStateInformation($state);
 
             if ($this->option('check')) {
@@ -430,13 +427,6 @@ class SelfUpdateCommand extends Command
             }
 
             $this->output->writeln($message);
-        }
-    }
-
-    protected function printUnlessVerbose(string $message): void
-    {
-        if (! $this->output->isVerbose()) {
-            $this->output->write($message);
         }
     }
 
