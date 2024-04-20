@@ -18,3 +18,11 @@ If you want to contribute to something specially related to the HydePHP CLI, you
 3. Install dependencies with `composer install`
 
 You can run a live version of the executable by running `php hyde <command>` in the project root to test your changes.
+
+## Testing
+
+Please add tests for any new features or bug fixes. Tests are run using PestPHP.
+
+```bash
+vendor/bin/phpunitpest
+```
