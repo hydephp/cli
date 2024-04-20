@@ -72,6 +72,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.GPG_SIGNING_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}
+          trust_level: 5
 
       - name: Sign the executable
         if: github.event.repository.full_name == 'hydephp/cli'
