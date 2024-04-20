@@ -19,7 +19,7 @@ jobs:
           extensions:
             fileinfo
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache Composer packages
         id: composer-cache
@@ -59,7 +59,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: fileinfo
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -84,7 +84,7 @@ jobs:
     name: Build standalone executable
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache Composer packages
         id: composer-cache
@@ -138,7 +138,7 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: fileinfo
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: ./source
 
