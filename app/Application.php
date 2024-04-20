@@ -6,7 +6,7 @@ namespace App;
 
 class Application extends \Hyde\Foundation\Application
 {
-    final public const APP_VERSION = '0.7.48';
+    final public const APP_VERSION = '0.7.49';
 
     public function getCachedPackagesPath(): string
     {
@@ -29,5 +29,11 @@ class Application extends \Hyde\Foundation\Application
 
         // Adds a fallback so that the application can still run without a composer.json file
         return 'App';
+    }
+
+    /** Experimental patch for https://github.com/hydephp/cli/issues/129 */
+    public function getName(): string
+    {
+        return 'HydePHP';
     }
 }
