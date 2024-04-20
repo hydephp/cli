@@ -1342,16 +1342,16 @@
         },
         {
             "name": "hyde/realtime-compiler",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/realtime-compiler.git",
-                "reference": "121167177ba50053abbec86ea28d9f470f5204f2"
+                "reference": "4758bfdf7758295edf8d7404a2a4aac9395ab76c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/121167177ba50053abbec86ea28d9f470f5204f2",
-                "reference": "121167177ba50053abbec86ea28d9f470f5204f2",
+                "url": "https://api.github.com/repos/hydephp/realtime-compiler/zipball/4758bfdf7758295edf8d7404a2a4aac9395ab76c",
+                "reference": "4758bfdf7758295edf8d7404a2a4aac9395ab76c",
                 "shasum": ""
             },
             "require": {
@@ -1383,15 +1383,19 @@
             "description": "HydePHP Realtime Compiler Server",
             "support": {
                 "issues": "https://github.com/hydephp/realtime-compiler/issues",
-                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.3.0"
+                "source": "https://github.com/hydephp/realtime-compiler/tree/v3.3.1"
             },
             "funding": [
                 {
                     "url": "https://www.buymeacoffee.com/caen",
                     "type": "custom"
+                },
+                {
+                    "url": "https://opencollective.com/hydephp",
+                    "type": "open_collective"
                 }
             ],
-            "time": "2024-02-12T19:14:59+00:00"
+            "time": "2024-04-15T14:15:47+00:00"
         },
         {
             "name": "illuminate/bus",
