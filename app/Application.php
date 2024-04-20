@@ -6,7 +6,7 @@ namespace App;
 
 class Application extends \Hyde\Foundation\Application
 {
-    final public const APP_VERSION = '0.7.49';
+    final public const APP_VERSION = '0.7.50';
 
     public function getCachedPackagesPath(): string
     {
@@ -31,9 +31,9 @@ class Application extends \Hyde\Foundation\Application
         return 'App';
     }
 
-    /** Experimental patch for https://github.com/hydephp/cli/issues/129 */
+    /** Get the default command for the application. */
     public function getName(): string
     {
-        return 'HydePHP';
+        return 'list';
     }
 }
