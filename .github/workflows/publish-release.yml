@@ -58,4 +58,4 @@ jobs:
           commit: ${{ github.sha }}
           updateOnlyUnreleased: true
           generateReleaseNotes: true
-          artifacts: builds/hyde
+          artifacts: builds/hyde, builds/hyde.sig
