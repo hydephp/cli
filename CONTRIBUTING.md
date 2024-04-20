@@ -17,3 +17,4 @@ If you want to contribute to something specially related to the HydePHP CLI, you
 2. Clone your fork to your local machine
 3. Install dependencies with `composer install`
 
+You can run a live version of the executable by running `php hyde <command>` in the project root to test your changes.
