@@ -31,9 +31,9 @@ class Application extends \Hyde\Foundation\Application
         return 'App';
     }
 
-    /** Experimental patch for https://github.com/hydephp/cli/issues/129 */
+    /** Get the default command for the application. */
     public function getName(): string
     {
-        return 'HydePHP';
+        return 'list';
     }
 }
