@@ -50,14 +50,6 @@ jobs:
         run: |
           echo "Version: v${{ env.VERSION }}"
 
-      - name: Verify signature against key server
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          gpg --keyserver keys.openpgp.org --recv-keys 657B4D97184E9E6E596E6EA13B829782D5B7BA59
-          gpg --fingerprint 657B4D97184E9E6E596E6EA13B829782D5B7BA59
-          echo "trust\n5\ny\n" | gpg --no-tty --command-fd 0 --edit-key 657B4D97184E9E6E596E6EA13B829782D5B7BA59
-          gpg --verify builds/hyde.asc builds/hyde
-
       - name: Create a release
         uses: ncipollo/release-action@v1
         with:
@@ -66,4 +58,4 @@ jobs:
           commit: ${{ github.sha }}
           updateOnlyUnreleased: true
           generateReleaseNotes: true
-          artifacts: builds/hyde
+          artifacts: builds/hyde, builds/hyde.sig
