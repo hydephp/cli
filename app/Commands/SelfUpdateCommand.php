@@ -306,6 +306,8 @@ class SelfUpdateCommand extends Command
         // Download the latest release from GitHub
         $phar = $tempPath.'.phar';
         $this->downloadFile($this->release['assets'][0]['browser_download_url'], $phar);
+        $signature = $tempPath.'.sig';
+        $this->downloadFile($this->release['assets'][1]['browser_download_url'], $signature);
 
         // Make the downloaded file executable
         chmod($phar, 0755);
