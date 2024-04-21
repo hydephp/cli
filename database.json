@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1713137491,
-        "content_hash": "9678983b963d09e509e262db2d91041725bf1766f4cb2d6edfac423be63fee93",
-        "total_views": 1799,
-        "total_clones": 7086,
-        "total_installs": 25
+        "last_updated": 1713695069,
+        "content_hash": "6be736948f98bfbd0ddc97e199656ade1505f5466604bf01df2e67f7cdaa1e02",
+        "total_views": 2817,
+        "total_clones": 17778,
+        "total_installs": 120
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -540,6 +540,78 @@
                 "count": 3,
                 "uniques": 2
             }
+        },
+        "2024-04-15T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 1
+            }
+        },
+        "2024-04-16T00:00:00Z": {
+            "views": {
+                "count": 167,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 454,
+                "uniques": 14
+            }
+        },
+        "2024-04-17T00:00:00Z": {
+            "views": {
+                "count": 156,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1497,
+                "uniques": 24
+            }
+        },
+        "2024-04-18T00:00:00Z": {
+            "views": {
+                "count": 111,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 1586,
+                "uniques": 30
+            }
+        },
+        "2024-04-19T00:00:00Z": {
+            "views": {
+                "count": 342,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 4515,
+                "uniques": 45
+            }
+        },
+        "2024-04-20T00:00:00Z": {
+            "views": {
+                "count": 227,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2607,
+                "uniques": 38
+            }
+        },
+        "2024-04-21T00:00:00Z": {
+            "views": {
+                "count": 12,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 4
+            }
+        },
+        "2024-04-14T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -1039,8 +1111,8 @@
                 },
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "GitHub - hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 2,
+                    "title": "hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 171,
                     "uniques": 2
                 },
                 "b63bcfa9c9a75bfc518c20cb8b907c444d4086e8bed0ba7e7956366d7ebaf54a": {
@@ -1048,12 +1120,74 @@
                     "title": "Refactor to cache the internal application config \u00b7 hydephp\/cli@b89852b \u00b7 Git...",
                     "count": 3,
                     "uniques": 2
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 129,
+                    "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "count": 72,
+                    "uniques": 1
+                },
+                "6f19f298d5528d4bd516dc40573422c8541103adafd130e074dcd91e1a1d8882": {
+                    "path": "\/hydephp\/cli\/issues\/new",
+                    "title": "New Issue \u00b7 hydephp\/cli",
+                    "count": 27,
+                    "uniques": 1
+                },
+                "6646cba24c74a2c8613b5be208f4fdfbcaf4bb57c040e84d149972d358fbabe9": {
+                    "path": "\/hydephp\/cli\/pull\/55",
+                    "title": "Add self update feature by caendesilva \u00b7 Pull Request #55 \u00b7 hydephp\/cli",
+                    "count": 25,
+                    "uniques": 1
+                },
+                "40bf2ba97da83ce2297e05940e37695d34658938f15e9c53eb5c91c62aeea51f": {
+                    "path": "\/hydephp\/cli\/actions\/workflows\/create-release.yml",
+                    "title": "Create a new release PR \u00b7 Workflow runs \u00b7 hydephp\/cli",
+                    "count": 21,
+                    "uniques": 1
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "Issues \u00b7 hydephp\/cli",
+                    "count": 15,
+                    "uniques": 1
+                },
+                "3cc9d1a1984aa7147f4aa192f93af83c04a6e5a9b4d9a870bea44054da95beb0": {
+                    "path": "\/hydephp\/cli\/compare\/improve-the-selfupdate-command",
+                    "title": "Comparing master...improve-the-selfupdate-command \u00b7 hydephp\/cli",
+                    "count": 13,
+                    "uniques": 1
+                },
+                "a164f26fce689a84b63e5b7d5c74b67cde25983d76d516f991a6ff113081f93c": {
+                    "path": "\/hydephp\/cli\/pull\/55\/files",
+                    "title": "Add self update feature by caendesilva \u00b7 Pull Request #55 \u00b7 hydephp\/cli",
+                    "count": 13,
+                    "uniques": 1
+                },
+                "95a859d2a51f391fdb007b1cf47282b02a08793cde139b9099c545cbc23df7e1": {
+                    "path": "\/hydephp\/cli\/pull\/72",
+                    "title": "Improve the self-update command by caendesilva \u00b7 Pull Request #72 \u00b7 hydephp\/cli",
+                    "count": 9,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "Google": {
                     "count": 2,
                     "uniques": 2
+                },
+                "github.com": {
+                    "count": 8,
+                    "uniques": 1
+                },
+                "packagist.org": {
+                    "count": 1,
+                    "uniques": 1
                 }
             }
         }
