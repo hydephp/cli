@@ -208,6 +208,9 @@ class SelfUpdateCommand extends Command
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+        $this->assertReleaseEntryIsValid(isset($data['assets'][1]));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['browser_download_url']));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['name']) && $data['assets'][1]['name'] === 'hyde.sig');
     }
 
     protected function assertReleaseEntryIsValid(bool $condition): void
