@@ -419,11 +419,11 @@ class SelfUpdateCommand extends Command
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
             $this->output->writeln($output);
-            return $exitCode;
         } else {
             $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
-            return 0;
         }
+
+        return $exitCode;
     }
 
     protected function debug(string $message): void
