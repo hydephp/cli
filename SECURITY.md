@@ -27,7 +27,7 @@ This verification is also done automatically when self-updating the CLI using th
 
 ### Public Key Information
 
-The public key used for signing is an `rsa3072` key with the fingerprint `3B829782D5B7BA59`. It will expire on `2026-04-20` and is only used for builds in the 0.x series range, and is as follows:
+The public key used for signing builds in the 0.x series range has the fingerprint `3B829782D5B7BA59`. It is an `rsa3072` key expiring on `2026-04-20`, and is as follows:
 
 ```
 657B4D97184E9E6E596E6EA13B829782D5B7BA59 (HydePHP CLI Alpha Key <hello@hydephp.com>)
@@ -83,3 +83,24 @@ YXlffyl8g5pXBQKUo/L1BGbePF18Xg4jwsNPIMjUQObJ
 ```
 </details>
 
+#### Validating certificate authenticity
+
+In order to validate the authenticity of the public key and that it comes from HydePHP you can visit https://trustservices.hydephp.com/certificates/ for a listing of all our public keys and certificates.
+
+The certificate is also listed on several keyservers:
+- [OpenPGP Keyserver](https://keys.openpgp.org/vks/v1/by-fingerprint/657B4D97184E9E6E596E6EA13B829782D5B7BA59)
+- [Ubuntu Keyserver](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x657B4D97184E9E6E596E6EA13B829782D5B7BA59)
+- [MIT Keyserver](https://pgp.mit.edu/pks/lookup?op=get&search=0x657B4D97184E9E6E596E6EA13B829782D5B7BA59)
+
+#### Certificate security handling
+
+If you are curious how we secure our certificates and private keys, here is a brief overview:
+
+To ensure the security of our certificates and private keys, we implement a multi-layered approach:
+
+- Our private key is safeguarded through several redundancy measures. This includes encrypted storage via GitHub Actions Secrets for cloud builds, alongside a master copy securely managed by our core maintainer. Additionally, there's a physical recovery key stored in a vault in an undisclosed location.
+- The current key in use is scoped to only be used for alpha builds in the 0.x series range, this means that security protocols can be field tested before the final key is used for general availability.
+- In the unlikely event of a compromise, the key can be revoked and replaced with a new key. The new key will be signed by the old key to ensure continuity of trust.
+- Additionally, the public key is made available on several independent platforms, making it much more difficult for an attacker to spoof the key.
+
+This comprehensive strategy reinforces our commitment to safeguarding the integrity and security of our cryptographic assets.
