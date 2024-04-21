@@ -391,21 +391,8 @@ class SelfUpdateCommand extends Command
         $command = self::COMPOSER_COMMAND;
 
         if (PHP_OS_FAMILY === 'Windows') {
-            // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed.
-            $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
-            $command = 'powershell -Command "'.$powerShell.'"';
-            $this->debug("Running command: $command");
-            exec($command, $output, $exitCode);
-
-            if ($exitCode !== 0) {
-                $this->error('The Composer command failed with exit code '.$exitCode);
-                $this->output->writeln($output);
-                exit($exitCode);
-            } else {
-                $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
-                // We need to exit here so we can release the binary as Composer can't modify it when we are using it
-                exit(0);
-            }
+            // We need to exit here so we can release the binary as Composer can't modify it when we are using it
+            exit($this->runComposerWindowsProcess());
         }
 
         $output = [];
@@ -417,6 +404,26 @@ class SelfUpdateCommand extends Command
         });
 
         return [$result->exitCode(), $output];
+    }
+
+    protected function runComposerWindowsProcess(): int
+    {
+        $command = self::COMPOSER_COMMAND;
+
+        // We need to run Composer as an administrator on Windows, so we use PowerShell to request a UAC prompt if needed.
+        $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
+        $command = 'powershell -Command "'.$powerShell.'"';
+        $this->debug("Running command: $command");
+        exec($command, $output, $exitCode);
+
+        if ($exitCode !== 0) {
+            $this->error('The Composer command failed with exit code '.$exitCode);
+            $this->output->writeln($output);
+        } else {
+            $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
+        }
+
+        return $exitCode;
     }
 
     protected function debug(string $message): void
