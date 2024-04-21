@@ -34,7 +34,7 @@ The public key used for signing is an `rsa3072` key with the fingerprint `3B8297
 ```
 
 <details>
-<summary>Public Key</summary>
+<summary>View full Public Key</summary>
 
 ```plaintext
 -----BEGIN PGP PUBLIC KEY BLOCK-----
@@ -80,5 +80,6 @@ C7e7eoE/G78nv6beQslqVEj+xXHp/SPOIdXfUyBIIKoOuwpavGFI7gOfPLRBQepQ
 YXlffyl8g5pXBQKUo/L1BGbePF18Xg4jwsNPIMjUQObJ
 =L0Bf
 -----END PGP PUBLIC KEY BLOCK-----
+```
 </details>
 
