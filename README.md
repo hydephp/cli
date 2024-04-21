@@ -26,6 +26,8 @@ Please note that the standalone HydePHP version is **experimental**, and that th
 composer global require hyde/cli
 ```
 
+Make sure to place the Composer system-wide vendor bin directory in your `$PATH` so the `hyde` executable can be located by your system. This directory is typically located at `$HOME/.composer/vendor/bin`.
+
 ### Direct Download (Unix) <a href="https://github.com/hydephp/cli/releases/latest"><img alt="Total Installs on GitHub" src="https://img.shields.io/github/downloads/hydephp/cli/total.svg" align="right"></a>
 
 ```bash
