@@ -309,6 +309,8 @@ class SelfUpdateCommand extends Command
         $signature = $tempPath.'.sig';
         $this->downloadFile($this->release['assets'][1]['browser_download_url'], $signature);
 
+        $this->verifySignature($phar, $signature);
+
         // Make the downloaded file executable
         chmod($phar, 0755);
 
@@ -329,6 +331,11 @@ class SelfUpdateCommand extends Command
 
         curl_close($ch);
         fclose($file);
+    }
+
+    protected function verifySignature(string $phar, string $signature): void
+    {
+        // TODO: Implement signature verification
     }
 
     protected function replaceApplication(string $downloadedFile): void
