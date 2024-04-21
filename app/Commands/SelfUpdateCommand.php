@@ -304,15 +304,14 @@ class SelfUpdateCommand extends Command
         $tempPath = tempnam(sys_get_temp_dir(), 'hyde');
 
         // Download the latest release from GitHub
-        $downloadUrl = $this->release['assets'][0]['browser_download_url'];
-        $downloadedFile = $tempPath.'.phar';
-        $this->downloadFile($downloadUrl, $downloadedFile);
+        $phar = $tempPath.'.phar';
+        $this->downloadFile($this->release['assets'][0]['browser_download_url'], $phar);
 
         // Make the downloaded file executable
-        chmod($downloadedFile, 0755);
+        chmod($phar, 0755);
 
         // Replace the current application with the downloaded one
-        $this->replaceApplication($downloadedFile);
+        $this->replaceApplication($phar);
     }
 
     protected function downloadFile(string $url, string $destination): void
