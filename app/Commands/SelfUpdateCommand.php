@@ -391,7 +391,7 @@ class SelfUpdateCommand extends Command
         $command = self::COMPOSER_COMMAND;
 
         if (PHP_OS_FAMILY === 'Windows') {
-            $this->runComposerWindowsProcess();
+            exit($this->runComposerWindowsProcess());
         }
 
         $output = [];
@@ -405,7 +405,7 @@ class SelfUpdateCommand extends Command
         return [$result->exitCode(), $output];
     }
 
-    protected function runComposerWindowsProcess(): never
+    protected function runComposerWindowsProcess(): int
     {
         $command = self::COMPOSER_COMMAND;
 
@@ -418,11 +418,11 @@ class SelfUpdateCommand extends Command
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
             $this->output->writeln($output);
-            exit($exitCode);
+            return $exitCode;
         } else {
             $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
             // We need to exit here so we can release the binary as Composer can't modify it when we are using it
-            exit(0);
+            return 0;
         }
     }
 
