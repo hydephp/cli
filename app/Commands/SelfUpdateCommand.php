@@ -298,9 +298,11 @@ class SelfUpdateCommand extends Command
 
         $this->debug('Downloading the latest version...');
 
+        $tempPath = tempnam(sys_get_temp_dir(), 'hyde');
+
         // Download the latest release from GitHub
         $downloadUrl = $this->release['assets'][0]['browser_download_url'];
-        $downloadedFile = tempnam(sys_get_temp_dir(), 'hyde').'.phar';
+        $downloadedFile = $tempPath.'.phar';
         $this->downloadFile($downloadUrl, $downloadedFile);
 
         // Make the downloaded file executable
