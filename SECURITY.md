@@ -17,3 +17,11 @@ If you discover a security vulnerability within this package, please send an e-m
 You can also report a vulnerability through GitHub on the [Security Advisory](https://github.com/hydephp/develop/security/advisories) page.
 
 All security vulnerabilities will be promptly addressed.
+
+## Phar Security
+
+The HydePHP CLI is distributed as a Phar archive, which is a PHP executable file format.
+The Phar is signed with a GPG key, and the public key is available in the repository.
+You can verify the integrity of the Phar by checking the signature against the public key.
+This verification is also done automatically when self-updating the CLI using the direct download strategy.
+
