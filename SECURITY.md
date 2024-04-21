@@ -27,10 +27,9 @@ This verification is also done automatically when self-updating the CLI using th
 
 ### Public Key Information
 
-The public key used for signing the 0.x series range of the executable is as follows:
+The public key used for signing is an `rsa3072` key with the fingerprint `3B829782D5B7BA59`. It will expire on `2026-04-20` and is only used for builds in the 0.x series range, and is as follows:
 
 ```
 657B4D97184E9E6E596E6EA13B829782D5B7BA59 (HydePHP CLI Alpha Key <hello@hydephp.com>)
 ```
 
-It is an `rsa3072` key with the fingerprint `3B829782D5B7BA59`. It will expire on `2026-04-20` and is only used for builds in the 0.x series range.
