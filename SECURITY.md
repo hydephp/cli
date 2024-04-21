@@ -86,6 +86,7 @@ YXlffyl8g5pXBQKUo/L1BGbePF18Xg4jwsNPIMjUQObJ
 #### Validating certificate authenticity
 
 In order to validate the authenticity of the public key and that it comes from HydePHP you can visit https://trustservices.hydephp.com/certificates/ for a listing of all our public keys and certificates.
+You can also see the listing on [GitHub](https://github.com/hydephp/certificates) for the same information. Note that this repository is handled independently of the trust services meaning that two separate platforms would need to be compromised to spoof the key.
 
 The certificate is also listed on several keyservers:
 - [OpenPGP Keyserver](https://keys.openpgp.org/vks/v1/by-fingerprint/657B4D97184E9E6E596E6EA13B829782D5B7BA59)
