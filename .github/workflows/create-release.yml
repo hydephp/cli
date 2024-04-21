@@ -26,7 +26,7 @@ jobs:
     name: Prepare a new release
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
@@ -61,17 +61,18 @@ jobs:
         run: php builds/hyde --version
 
       - name: Upload executable artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hyde
           path: builds/hyde
 
       - name: Import GPG key
         if: github.event.repository.full_name == 'hydephp/cli'
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@01dd5d3ca463c7f10f7f4f7b4f177225ac661ee4
         with:
           gpg_private_key: ${{ secrets.GPG_SIGNING_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}
+          trust_level: 5
 
       - name: Sign the executable
         if: github.event.repository.full_name == 'hydephp/cli'
@@ -92,7 +93,7 @@ jobs:
 
       - name: Upload signature artifact
         if: github.event.repository.full_name == 'hydephp/cli'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: signature
           path: builds/hyde.sig
@@ -101,7 +102,7 @@ jobs:
         run: git restore composer.json composer.lock
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@9153d834b60caba6d51c9b9510b087acf9f33f83
         with:
           commit-message: "HydeCLI v${{ steps.build-version.outputs.version }}"
           title: "HydeCLI v${{ steps.build-version.outputs.version }}"

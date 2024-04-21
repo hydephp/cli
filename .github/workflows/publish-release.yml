@@ -18,7 +18,7 @@ jobs:
     name: Merge stable branch into master
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: master
@@ -37,7 +37,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
@@ -51,7 +51,7 @@ jobs:
           echo "Version: v${{ env.VERSION }}"
 
       - name: Create a release
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5
         with:
           name: v${{ env.VERSION }}
           tag: v${{ env.VERSION }}

@@ -19,11 +19,11 @@ jobs:
           extensions:
             fileinfo
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -37,7 +37,7 @@ jobs:
         run: vendor/bin/pest --coverage --coverage-clover ./coverage.xml
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
 
 
   run-tests:
@@ -59,14 +59,14 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: fileinfo
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -84,11 +84,11 @@ jobs:
     name: Build standalone executable
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Cache Composer packages
         id: composer-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
           key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -114,7 +114,7 @@ jobs:
         run: php builds/hyde --version
 
       - name: Upload executable
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hyde
           path: builds/hyde
@@ -138,11 +138,11 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: fileinfo
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: ./source
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: hyde
           path: .
@@ -212,7 +212,7 @@ jobs:
           php-version: 8.1
           extensions: fileinfo
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: hyde
           path: .
@@ -249,7 +249,7 @@ jobs:
           php-version: 8.1
           extensions: fileinfo
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: hyde
           path: .
@@ -301,7 +301,7 @@ jobs:
           php-version: 8.1
           extensions: fileinfo
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: hyde
           path: .
