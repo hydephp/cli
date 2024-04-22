@@ -467,6 +467,7 @@ class SelfUpdateCommand extends Command
     /**
      * The public key used to verify the signature of the downloaded file.
      *
+     * @uid HydePHP CLI Alpha GPG Key
      * @id 657B4D97184E9E6E596E6EA13B829782D5B7BA59
      *
      * @created 2024‑04‑20
