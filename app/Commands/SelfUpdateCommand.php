@@ -309,7 +309,11 @@ class SelfUpdateCommand extends Command
         $signature = $tempPath.'.sig';
         $this->downloadFile($this->release['assets'][1]['browser_download_url'], $signature);
 
-        $this->verifySignature($phar, $signature);
+        if (! extension_loaded('openssl')) {
+            $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
+        } else {
+            $this->verifySignature($phar, $signature);
+        }
 
         // Make the downloaded file executable
         chmod($phar, 0755);
