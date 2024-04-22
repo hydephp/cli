@@ -337,6 +337,10 @@ class SelfUpdateCommand extends Command
         fclose($file);
     }
 
+    /**
+     * @see https://github.com/composer/getcomposer.org/blob/9f6b66dc3cd73688bc214683001a6b2320379393/bin/sign.php#L3
+     * @see https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L263
+     */
     protected function verifySignature(string $phar, string $signature): void
     {
         // TODO: Implement signature verification
