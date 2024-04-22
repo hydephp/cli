@@ -344,7 +344,21 @@ class SelfUpdateCommand extends Command
      */
     protected function verifySignature(string $phar, string $signature): void
     {
-        // TODO: Implement signature verification
+        $publicKey = openssl_pkey_get_public(self::publicKey());
+
+        $data = file_get_contents($phar);
+
+        $signature = file_get_contents($signature);
+
+        $isValid = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512);
+
+        if ($isValid === 1) {
+            $this->info('Signature is valid!');
+        } elseif ($isValid === 0) {
+            $this->error('Signature is invalid!');
+        } else {
+            $this->error('Error occurred during verification!');
+        }
     }
 
     protected function replaceApplication(string $downloadedFile): void
