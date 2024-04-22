@@ -339,7 +339,29 @@ class SelfUpdateCommand extends Command
 
     protected function verifySignature(string $phar, string $signature): void
     {
-        // TODO: Implement signature verification
+        $publicKey = $phar.'.asc';
+
+        file_put_contents($publicKey, self::publicKey());
+
+        $success = $this->verifyPGPSignature($phar, $signature, $publicKey, '657B4D97184E9E6E596E6EA13B829782D5B7BA59');
+    }
+
+    protected function verifyPGPSignature(string $file, string $signature, string $publicKey, string $id): bool
+    {
+        // Command to verify signature using gpg
+        $command = "gpg --keyring $publicKey --no-default-keyring --verify $signature $file  2>&1";
+
+        // Execute the command
+        exec($command, $output, $return);
+        $output = implode("\n", $output);
+
+        // Check if the return code indicates successful verification
+        if ($return === 0) {
+            // Check if the output contains the public key
+            return str_contains($output, $id) && str_contains($output, 'Good signature');
+        }
+
+        return false; // Verification failed
     }
 
     protected function replaceApplication(string $downloadedFile): void
