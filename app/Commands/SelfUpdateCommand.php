@@ -458,4 +458,9 @@ class SelfUpdateCommand extends Command
     {
         $this->debug('');
     }
+
+    protected static final function publicKey(): string
+    {
+        return '';
+    }
 }
