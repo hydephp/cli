@@ -103,5 +103,8 @@ To ensure the security of our certificates and private keys, we implement a mult
 - The current key in use is scoped to only be used for alpha builds in the 0.x series range, this means that security protocols can be field tested before the final key is used for general availability.
 - In the unlikely event of a compromise, the key can be revoked and replaced with a new key. The new key will be signed by the old key to ensure continuity of trust.
 - Additionally, the public key is made available on several independent platforms, making it much more difficult for an attacker to spoof the key.
+- Of course all private keys are protected by unique highly secure and complex passphrases that are never stored in plaintext.
 
 This comprehensive strategy reinforces our commitment to safeguarding the integrity and security of our cryptographic assets.
+This document has been assembled to provide transparency and assurance to our users and contributors,
+but has been designed in an interactive process with risk assessments for each piece of information disclosed.
