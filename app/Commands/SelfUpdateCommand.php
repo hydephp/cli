@@ -346,9 +346,17 @@ class SelfUpdateCommand extends Command
     {
         $publicKey = openssl_pkey_get_public(self::publicKey());
 
+        if ($publicKey === false) {
+            throw new RuntimeException('Failed to load the public key.');
+        }
+
         $data = file_get_contents($phar);
 
         $signature = file_get_contents($signature);
+
+        if (! defined('OPENSSL_ALGO_SHA512')) {
+            throw new RuntimeException('The OpenSSL extension is missing the SHA-512 algorithm.');
+        }
 
         $isValid = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512);
 
@@ -357,7 +365,7 @@ class SelfUpdateCommand extends Command
         } elseif ($isValid === 0) {
             $this->error('Signature is invalid!');
         } else {
-            $this->error('Error occurred during verification!');
+            throw new RuntimeException('Error occurred during verification!');
         }
     }
 
