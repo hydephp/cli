@@ -459,6 +459,19 @@ class SelfUpdateCommand extends Command
         $this->debug('');
     }
 
+    /**
+     * The public key used to verify the signature of the downloaded file.
+     *
+     * @id 657B4D97184E9E6E596E6EA13B829782D5B7BA59
+     *
+     * @created 2024‑04‑20
+     * @expires 2026‑04‑20
+     *
+     * @link https://trustservices.hydephp.com/certificates/657B4D97184E9E6E596E6EA13B829782D5B7BA59.asc
+     * @link https://github.com/hydephp/certificates/tree/master/657B4D97184E9E6E596E6EA13B829782D5B7BA59
+     *
+     * @return string The public key in ASCII-armored format
+     */
     protected static final function publicKey(): string
     {
         return <<<'TXT'
