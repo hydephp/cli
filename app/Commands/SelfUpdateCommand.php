@@ -358,14 +358,12 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The OpenSSL extension is missing the SHA-512 algorithm.');
         }
 
-        $isValid = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512);
+        $isValid = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
 
-        if ($isValid === 1) {
+        if ($isValid) {
             $this->info('Signature is valid!');
-        } elseif ($isValid === 0) {
-            $this->error('Signature is invalid!');
         } else {
-            throw new RuntimeException('Error occurred during verification!');
+            throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
         }
     }
 
