@@ -83,6 +83,9 @@ class SelfUpdateCommand extends Command
      */
     protected string $applicationPath;
 
+    /** @internal Mocking hook for unit tests */
+    protected ?string $releaseResponse = null;
+
     public function handle(): int
     {
         try {
@@ -181,7 +184,7 @@ class SelfUpdateCommand extends Command
     protected function getLatestReleaseInformationFromGitHub(): array
     {
         /** @see tests/Fixtures/general/github-release-api-response.json */
-        $data = json_decode($this->makeGitHubApiResponse(), true);
+        $data = json_decode($this->releaseResponse ?? $this->makeGitHubApiResponse(), true);
 
         $this->validateReleaseData($data);
 
