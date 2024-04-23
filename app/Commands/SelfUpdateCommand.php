@@ -368,13 +368,13 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('Failed to load the public key.');
         }
 
-        $data = file_get_contents($phar);
-
-        $signature = file_get_contents($signature);
-
         if (! defined('OPENSSL_ALGO_SHA512')) {
             throw new RuntimeException('The OpenSSL extension is missing the SHA-512 algorithm.');
         }
+
+        $data = file_get_contents($phar);
+
+        $signature = file_get_contents($signature);
 
         return openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
     }
