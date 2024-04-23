@@ -150,6 +150,23 @@ test('signature verification', function () {
     expect($class->verifySignature($phar, $signature))->toBeTrue();
 });
 
+test('signature verification fails if signature is invalid', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $phar = 'builds/hyde';
+    $signature = 'builds/false-signature.bin';
+
+    // Sanity check to ensure the file exists
+    assert(file_exists($phar), 'Phar file must exist');
+
+    file_put_contents($signature, 'Invalid signature');
+
+    expect($class->verifySignature($phar, $signature))->toBeFalse();
+
+    // Clean up
+    unlink($signature);
+});
+
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
