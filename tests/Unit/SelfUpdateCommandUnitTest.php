@@ -45,7 +45,10 @@ it('validates release data correctly', function () {
         ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com']
     ]];
 
-    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+    $command = new InspectableSelfUpdateCommand();
+    $command->validateReleaseData($data);
+
+    $command->validateReleaseData(json_decode($command->property('releaseResponse'), true));
 
     // No exception thrown means validation passed
     expect(true)->toBeTrue();
