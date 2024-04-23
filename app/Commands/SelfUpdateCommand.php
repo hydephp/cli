@@ -83,6 +83,7 @@ class SelfUpdateCommand extends Command
 
     /**
      * @var string The path to the application executable
+     *
      * @example Generally /user/bin/hyde, /usr/local/bin/hyde, /home/<User>/.config/composer/vendor/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
      */
     protected string $applicationPath;
@@ -157,6 +158,7 @@ class SelfUpdateCommand extends Command
 
                 if (in_array($exception->getMessage(), $known, true)) {
                     $this->output->error($exception->getMessage());
+
                     return Command::FAILURE;
                 }
             }
@@ -235,7 +237,7 @@ class SelfUpdateCommand extends Command
         return get_included_files()[0]; // Could also try realpath($_SERVER['argv'][0]) (used by Composer)
     }
 
-    /** @param self::STATE_* $state */
+    /** @param  self::STATE_*  $state */
     protected function printVersionStateInformation(int $state): void
     {
         $message = match ($state) {
@@ -251,7 +253,7 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    /** @param self::STRATEGY_* $strategy */
+    /** @param  self::STRATEGY_*  $strategy */
     protected function updateApplication(string $strategy): void
     {
         $this->debug('Updating the application...');
@@ -333,9 +335,8 @@ class SelfUpdateCommand extends Command
     /**
      * Verify the signature of the downloaded file against the public embedded public key.
      *
-     * @param string $phar The path to the downloaded PHAR file
-     * @param string $signature The path to the downloaded signature file
-     *
+     * @param  string  $phar The path to the downloaded PHAR file
+     * @param  string  $signature The path to the downloaded signature file
      * @return bool Whether the signature is valid, true if it is, false otherwise
      *
      * @throws RuntimeException If the public key could not be loaded or the needed algorithm is missing.
@@ -477,7 +478,8 @@ class SelfUpdateCommand extends Command
 
     protected function makeGitHubReleaseObject(array $data): object
     {
-        return new class ($data) {
+        return new class($data)
+        {
             protected readonly array $data;
 
             /** @var string The tag name of the release */
@@ -530,9 +532,11 @@ class SelfUpdateCommand extends Command
      * The public key used to verify the signature of the downloaded file.
      *
      * @uid HydePHP CLI Bravo RSA Key
+     *
      * @id EE5FC423177F61B096D768E3B3D3CA94C5435426
      *
      * @created 2024‑04‑22
+     *
      * @expires <never>
      *
      * @link https://trustservices.hydephp.com/certificates/EE5FC423177F61B096D768E3B3D3CA94C5435426.pem
@@ -540,7 +544,7 @@ class SelfUpdateCommand extends Command
      *
      * @return string The public key in ASCII-armored format
      */
-    protected static final function publicKey(): string
+    final protected static function publicKey(): string
     {
         return <<<'TXT'
         -----BEGIN PUBLIC KEY-----

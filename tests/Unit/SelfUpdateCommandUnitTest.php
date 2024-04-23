@@ -42,7 +42,7 @@ it('correctly compares versions', function ($currentVersion, $latestVersion, $ex
 it('validates release data correctly', function () {
     $data = ['tag_name' => 'v1.0.0', 'assets' => [
         ['name' => 'hyde', 'browser_download_url' => 'https://example.com'],
-        ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com']
+        ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com'],
     ]];
 
     $command = new InspectableSelfUpdateCommand();
