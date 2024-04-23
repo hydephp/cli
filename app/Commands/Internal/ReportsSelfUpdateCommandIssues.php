@@ -23,11 +23,11 @@ trait ReportsSelfUpdateCommandIssues
     {
         return $this->buildUrl('https://github.com/hydephp/cli/issues/new', [
             'title' => 'Error while self-updating the application',
-            'body' => $this->stripPersonalInformation($this->getIssueMarkdown($exception))
+            'body' => $this->stripPersonalInformation($this->getIssueMarkdown($exception)),
         ]);
     }
 
-    /** @param array<string, string> $params */
+    /** @param  array<string, string>  $params */
     protected function buildUrl(string $url, array $params): string
     {
         return sprintf("$url?%s", implode('&', array_map(function (string $key, string $value): string {
