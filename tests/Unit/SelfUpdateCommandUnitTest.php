@@ -178,7 +178,6 @@ test('signature verification fails if signature is invalid', function () {
 
 test('get latest release information method', function () {
     $class = new InspectableSelfUpdateCommand();
-    $class->setProperty('releaseResponse', file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json'));
 
     $result = $class->getLatestReleaseInformationFromGitHub();
 
@@ -192,6 +191,13 @@ test('get latest release information method', function () {
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->releaseResponse = file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
+    }
+
     public function property(string $property): mixed
     {
         return $this->$property;
