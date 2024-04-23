@@ -27,6 +27,7 @@ use function sprintf;
 use function implode;
 use function tempnam;
 use function dirname;
+use function defined;
 use function passthru;
 use function in_array;
 use function array_map;
@@ -40,10 +41,12 @@ use function str_contains;
 use function array_combine;
 use function clearstatcache;
 use function escapeshellarg;
+use function openssl_verify;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
 use function get_included_files;
+use function openssl_pkey_get_public;
 
 /**
  * @experimental This command is highly experimental and may contain bugs.
