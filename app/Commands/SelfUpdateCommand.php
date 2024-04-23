@@ -291,9 +291,9 @@ class SelfUpdateCommand extends Command
 
         // Download the latest release from GitHub
         $phar = $tempPath.'.phar';
-        $this->downloadFile($this->release['assets'][0]['browser_download_url'], $phar);
+        $this->downloadFile($this->release->asset('hyde')['browser_download_url'], $phar);
         $signature = $tempPath.'.sig';
-        $this->downloadFile($this->release['assets'][1]['browser_download_url'], $signature);
+        $this->downloadFile($this->release->asset('signature.bin')['browser_download_url'], $signature);
 
         if (! extension_loaded('openssl')) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
@@ -499,6 +499,11 @@ class SelfUpdateCommand extends Command
             public function __get(string $name): mixed
             {
                 return $this->data[$name] ?? null;
+            }
+
+            public function asset(string $name): array
+            {
+                return $this->assets[$name];
             }
 
             protected function validate(array $data): void
