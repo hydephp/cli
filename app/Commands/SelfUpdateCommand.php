@@ -207,22 +207,6 @@ class SelfUpdateCommand extends Command
     protected function validateReleaseData(array $data): void
     {
         $object = $this->makeGitHubReleaseObject($data);
-
-        $this->assertReleaseEntryIsValid(isset($data['tag_name']));
-        $this->assertReleaseEntryIsValid(isset($data['assets']));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
-        $this->assertReleaseEntryIsValid(isset($data['assets'][1]));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['browser_download_url']));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['name']) && $data['assets'][1]['name'] === 'hyde.sig');
-    }
-
-    protected function assertReleaseEntryIsValid(bool $condition): void
-    {
-        if (! $condition) {
-            throw new RuntimeException('Invalid release data received from the GitHub API.');
-        }
     }
 
     /** @return array{major: int, minor: int, patch: int} */
@@ -501,12 +485,33 @@ class SelfUpdateCommand extends Command
 
             public function __construct(array $data)
             {
+                $this->validate($data);
+
                 $this->data = $data;
             }
 
             public function __get(string $name): mixed
             {
                 return $this->data[$name] ?? null;
+            }
+
+            protected function validate(array $data): void
+            {
+                $this->assertReleaseEntryIsValid(isset($data['tag_name']));
+                $this->assertReleaseEntryIsValid(isset($data['assets']));
+                $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
+                $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
+                $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+                $this->assertReleaseEntryIsValid(isset($data['assets'][1]));
+                $this->assertReleaseEntryIsValid(isset($data['assets'][1]['browser_download_url']));
+                $this->assertReleaseEntryIsValid(isset($data['assets'][1]['name']) && $data['assets'][1]['name'] === 'hyde.sig');
+            }
+
+            protected function assertReleaseEntryIsValid(bool $condition): void
+            {
+                if (! $condition) {
+                    throw new RuntimeException('Invalid release data received from the GitHub API.');
+                }
             }
         };
     }
