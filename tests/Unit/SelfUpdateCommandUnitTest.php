@@ -40,9 +40,16 @@ it('correctly compares versions', function ($currentVersion, $latestVersion, $ex
 ]);
 
 it('validates release data correctly', function () {
-    $data = ['tag_name' => 'v1.0.0', 'assets' => [['name' => 'hyde', 'browser_download_url' => 'https://example.com']]];
+    $data = ['tag_name' => 'v1.0.0', 'assets' => [
+        ['name' => 'hyde', 'browser_download_url' => 'https://example.com'],
+        ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com']
+    ]];
 
-    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+    $command = new InspectableSelfUpdateCommand();
+    $fixture = json_decode($command->property('releaseResponse'), true);
+
+    $command->makeGitHubReleaseObject($data);
+    $command->makeGitHubReleaseObject($fixture);
 
     // No exception thrown means validation passed
     expect(true)->toBeTrue();
@@ -51,7 +58,7 @@ it('validates release data correctly', function () {
 it('throws exception if release data is invalid', function ($data) {
     $this->expectException(RuntimeException::class);
 
-    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+    (new InspectableSelfUpdateCommand())->makeGitHubReleaseObject($data);
 })->with([
     [[]], // Empty data
     [['tag_name' => 'v1.0.0']], // Missing assets key
@@ -135,9 +142,67 @@ test('get issue markdown method', function () {
         ->and($result)->toContain('Context');
 });
 
+test('public key hash identifier', function () {
+    $publicKey = (new InspectableSelfUpdateCommand())->publicKey();
+    $identifier = strtoupper(substr(hash('sha256', $publicKey."\n"), 0, 40));
+
+    // Expect to match https://trustservices.hydephp.com/certificates/EE5FC423177F61B096D768E3B3D3CA94C5435426.pem
+    // See also mirror https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
+    expect($identifier)->toBe('EE5FC423177F61B096D768E3B3D3CA94C5435426');
+});
+
+test('signature verification', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $phar = 'builds/hyde';
+    $signature = 'builds/signature.bin';
+
+    // Sanity check to ensure the files exist
+    assert(file_exists($phar) && file_exists($signature), 'Phar and signature files must exist');
+
+    expect($class->verifySignature($phar, $signature))->toBeTrue();
+});
+
+test('signature verification fails if signature is invalid', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $phar = 'builds/hyde';
+    $signature = 'builds/false-signature.bin';
+
+    // Sanity check to ensure the file exists
+    assert(file_exists($phar), 'Phar file must exist');
+
+    file_put_contents($signature, 'Invalid signature');
+
+    expect($class->verifySignature($phar, $signature))->toBeFalse();
+
+    // Clean up
+    unlink($signature);
+});
+
+test('get latest release information method', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $result = (array) $class->getLatestReleaseInformationFromGitHub();
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveKeys(['tag', 'assets'])
+        ->and($result['tag'])->toBeString()
+        ->and($result['assets'])->toBeArray()
+        ->and($result['assets'])->toHaveKeys(['hyde', 'hyde.sig', 'signature.bin'])
+        ->and($result['assets'])->each->toHaveKeys(['name', 'browser_download_url']);
+});
+
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->releaseResponse = file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
+    }
+
     public function property(string $property): mixed
     {
         return $this->$property;
@@ -145,12 +210,21 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
 
     public function __call($method, $parameters)
     {
+        if (! method_exists($this, $method)) {
+            throw new BadMethodCallException("Method [$method] does not exist.");
+        }
+
         return $this->$method(...$parameters);
     }
 
     public function constants(string $constant): mixed
     {
         return constant("self::$constant");
+    }
+
+    public function setProperty(string $property, mixed $value): void
+    {
+        $this->$property = $value;
     }
 }
 
