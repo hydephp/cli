@@ -373,7 +373,6 @@ class SelfUpdateCommand extends Command
         }
 
         $data = file_get_contents($phar);
-
         $signature = file_get_contents($signature);
 
         return openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
