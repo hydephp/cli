@@ -508,20 +508,20 @@ class SelfUpdateCommand extends Command
     protected static final function publicKey(): string
     {
         return <<<'TXT'
------BEGIN PUBLIC KEY-----
-MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAs3cVirZlZhS/zl2svR09
-6gcoQg1QNbyHQzomRWwiO3Zk0TphFzRJ/wATFQ+BjytgQzjOEi6YKSVZLgu0CKHd
-JG27wpFyuLO0OkykCnHOQ/O81K9YI0WpgAd/pA60BpOh+5LUx0lsjRqPzV/O2Rk4
-YekJk7bdLMgwoAM6fTpg1gM1/5ytFd0Gc1461s4cmQCH51pX2NPdldGYNOjgSZKk
-qJMYpvDNfLNqzhc2gXHqenswAwWGspWgC32lcm0TVknC5+wt1SDGei5IyP/hv/L5
-Hr2C9QvzH3nDuK3qea8Hpk5IbcRoiUm+HIBQ/wRzCa3UOkNGmipNlVicOHxaSwpn
-M2x94TIjR2f3adUA9hmjHicPPPmDCc8wUfLmfktF2+4C6NL4BwdRuC2bdp/Dfsys
-pW2Rjq4KDU06IzfPq1B6PNs6vwwCbQ4AT/X3hhFl1e25ygRaneB1NRLBCj+/X9j3
-lhlxVDo6y83E9QkqebiBJpJ0aGFPfi8vpAt+IgRr2C7rAFiCrjDUIRQaNZfC19W1
-UxkBzXPe+HXIOc9CVSWtVgf2fPkyn0WkZmSrN5M0UA12snMoLPDzPJ+K50TwO5Y1
-60NQorbPFpjIy5WSAn+a+F5SwZ+3umk1eL+17SjqEmQ/jHYWTX1Hn+LJY+CVUqCz
-Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
------END PUBLIC KEY-----
-TXT;
+        -----BEGIN PUBLIC KEY-----
+        MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAs3cVirZlZhS/zl2svR09
+        6gcoQg1QNbyHQzomRWwiO3Zk0TphFzRJ/wATFQ+BjytgQzjOEi6YKSVZLgu0CKHd
+        JG27wpFyuLO0OkykCnHOQ/O81K9YI0WpgAd/pA60BpOh+5LUx0lsjRqPzV/O2Rk4
+        YekJk7bdLMgwoAM6fTpg1gM1/5ytFd0Gc1461s4cmQCH51pX2NPdldGYNOjgSZKk
+        qJMYpvDNfLNqzhc2gXHqenswAwWGspWgC32lcm0TVknC5+wt1SDGei5IyP/hv/L5
+        Hr2C9QvzH3nDuK3qea8Hpk5IbcRoiUm+HIBQ/wRzCa3UOkNGmipNlVicOHxaSwpn
+        M2x94TIjR2f3adUA9hmjHicPPPmDCc8wUfLmfktF2+4C6NL4BwdRuC2bdp/Dfsys
+        pW2Rjq4KDU06IzfPq1B6PNs6vwwCbQ4AT/X3hhFl1e25ygRaneB1NRLBCj+/X9j3
+        lhlxVDo6y83E9QkqebiBJpJ0aGFPfi8vpAt+IgRr2C7rAFiCrjDUIRQaNZfC19W1
+        UxkBzXPe+HXIOc9CVSWtVgf2fPkyn0WkZmSrN5M0UA12snMoLPDzPJ+K50TwO5Y1
+        60NQorbPFpjIy5WSAn+a+F5SwZ+3umk1eL+17SjqEmQ/jHYWTX1Hn+LJY+CVUqCz
+        Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
+        -----END PUBLIC KEY-----
+        TXT;
     }
 }
