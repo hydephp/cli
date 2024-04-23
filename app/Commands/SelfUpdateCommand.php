@@ -488,13 +488,13 @@ class SelfUpdateCommand extends Command
      * The public key used to verify the signature of the downloaded file.
      *
      * @uid HydePHP CLI Bravo RSA Key
-     * @id 780c5b531c8bf9a7a65718ffff5595e2411aba050a446cbbda5a0b755d7c81a2
+     * @id ee5fc423177f61b096d768e3b3d3ca94c5435426b51864558707c8b514db0ec0
      *
      * @created 2024‑04‑20
      * @expires <never>
      *
-     * @link https://trustservices.hydephp.com/certificates/780c5b531c8bf9a7a65718ffff5595e2411aba050a446cbbda5a0b755d7c81a2.pem
-     * @link https://github.com/hydephp/certificates/tree/master/780c5b531c8bf9a7a65718ffff5595e2411aba050a446cbbda5a0b755d7c81a2
+     * @link https://trustservices.hydephp.com/certificates/ee5fc423177f61b096d768e3b3d3ca94c5435426b51864558707c8b514db0ec0.pem
+     * @link https://github.com/hydephp/certificates/tree/master/ee5fc423177f61b096d768e3b3d3ca94c5435426b51864558707c8b514db0ec0
      *
      * @return string The public key in ASCII-armored format
      */
