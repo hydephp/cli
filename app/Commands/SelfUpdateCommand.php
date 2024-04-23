@@ -74,14 +74,21 @@ class SelfUpdateCommand extends Command
 
     protected const COMPOSER_COMMAND = 'composer global require hyde/cli';
 
-    /** @var array<string, string|array<string>> The latest release information from the GitHub API */
-    protected array $release;
+    /**
+     * The latest release information from the GitHub API.
+     *
+     * @var object{tag: string, assets: array<string, array{name: string, browser_download_url: string}>}
+     */
+    protected object $release;
 
     /**
      * @var string The path to the application executable
      * @example Generally /user/bin/hyde, /usr/local/bin/hyde, /home/<User>/.config/composer/vendor/bin/hyde, or C:\Users\<User>\AppData\Roaming\Composer\vendor\bin\hyde
      */
     protected string $applicationPath;
+
+    /** @internal Mocking hook for unit tests */
+    protected ?string $releaseResponse = null;
 
     public function handle(): int
     {
@@ -104,10 +111,13 @@ class SelfUpdateCommand extends Command
 
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
 
+            $this->debug('Getting the latest release information from GitHub...');
+            $this->release = $this->getLatestReleaseInformationFromGitHub();
+
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
 
-            $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
+            $latestVersion = $this->parseVersion($this->release->tag);
             $this->debug('Latest version: v'.implode('.', $latestVersion));
 
             $this->printNewlineIfVerbose();
@@ -175,20 +185,12 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    protected function getLatestReleaseVersion(): string
+    protected function getLatestReleaseInformationFromGitHub(): object
     {
-        $this->getLatestReleaseInformation();
+        /** @see tests/Fixtures/general/github-release-api-response.json */
+        $data = json_decode($this->releaseResponse ?? $this->makeGitHubApiResponse(), true);
 
-        return $this->release['tag_name'];
-    }
-
-    protected function getLatestReleaseInformation(): void
-    {
-        $data = json_decode($this->makeGitHubApiResponse(), true);
-
-        $this->validateReleaseData($data);
-
-        $this->release = $data;
+        return $this->makeGitHubReleaseObject($data);
     }
 
     protected function makeGitHubApiResponse(): string
@@ -202,25 +204,6 @@ class SelfUpdateCommand extends Command
     protected function getUserAgent(): string
     {
         return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
-    }
-
-    protected function validateReleaseData(array $data): void
-    {
-        $this->assertReleaseEntryIsValid(isset($data['tag_name']));
-        $this->assertReleaseEntryIsValid(isset($data['assets']));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
-        $this->assertReleaseEntryIsValid(isset($data['assets'][1]));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['browser_download_url']));
-        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['name']) && $data['assets'][1]['name'] === 'hyde.sig');
-    }
-
-    protected function assertReleaseEntryIsValid(bool $condition): void
-    {
-        if (! $condition) {
-            throw new RuntimeException('Invalid release data received from the GitHub API.');
-        }
     }
 
     /** @return array{major: int, minor: int, patch: int} */
@@ -262,9 +245,9 @@ class SelfUpdateCommand extends Command
         };
 
         if ($state === self::STATE_BEHIND) {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release['tag_name']));
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release->tag));
         } else {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release->tag));
         }
     }
 
@@ -308,9 +291,9 @@ class SelfUpdateCommand extends Command
 
         // Download the latest release from GitHub
         $phar = $tempPath.'.phar';
-        $this->downloadFile($this->release['assets'][0]['browser_download_url'], $phar);
+        $this->downloadFile($this->release->asset('hyde')['browser_download_url'], $phar);
         $signature = $tempPath.'.sig';
-        $this->downloadFile($this->release['assets'][1]['browser_download_url'], $signature);
+        $this->downloadFile($this->release->asset('signature.bin')['browser_download_url'], $signature);
 
         if (! extension_loaded('openssl')) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
@@ -490,6 +473,57 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
+    }
+
+    protected function makeGitHubReleaseObject(array $data): object
+    {
+        return new class ($data) {
+            protected readonly array $data;
+
+            /** @var string The tag name of the release */
+            public readonly string $tag;
+
+            /** @var array<string, array{name: string, browser_download_url: string}> Release assets keyed by their name */
+            public readonly array $assets;
+
+            public function __construct(array $data)
+            {
+                $this->validate($data);
+
+                $this->data = $data;
+
+                $this->tag = $data['tag_name'];
+                $this->assets = array_combine(array_map(fn (array $asset): string => $asset['name'], $data['assets']), $data['assets']);
+            }
+
+            public function __get(string $name): mixed
+            {
+                return $this->data[$name] ?? null;
+            }
+
+            public function asset(string $name): array
+            {
+                return $this->assets[$name];
+            }
+
+            protected function validate(array $data): void
+            {
+                $this->assertReleaseEntryIsValid(isset($data['tag_name']));
+                $this->assertReleaseEntryIsValid(isset($data['assets']));
+
+                foreach ($data['assets'] as $asset) {
+                    $this->assertReleaseEntryIsValid(isset($asset['name']));
+                    $this->assertReleaseEntryIsValid(isset($asset['browser_download_url']));
+                }
+            }
+
+            protected function assertReleaseEntryIsValid(bool $condition): void
+            {
+                if (! $condition) {
+                    throw new RuntimeException('Invalid release data received from the GitHub API.');
+                }
+            }
+        };
     }
 
     /**

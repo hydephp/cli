@@ -45,7 +45,11 @@ it('validates release data correctly', function () {
         ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com']
     ]];
 
-    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+    $command = new InspectableSelfUpdateCommand();
+    $fixture = json_decode($command->property('releaseResponse'), true);
+
+    $command->makeGitHubReleaseObject($data);
+    $command->makeGitHubReleaseObject($fixture);
 
     // No exception thrown means validation passed
     expect(true)->toBeTrue();
@@ -54,7 +58,7 @@ it('validates release data correctly', function () {
 it('throws exception if release data is invalid', function ($data) {
     $this->expectException(RuntimeException::class);
 
-    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+    (new InspectableSelfUpdateCommand())->makeGitHubReleaseObject($data);
 })->with([
     [[]], // Empty data
     [['tag_name' => 'v1.0.0']], // Missing assets key
@@ -176,9 +180,29 @@ test('signature verification fails if signature is invalid', function () {
     unlink($signature);
 });
 
+test('get latest release information method', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $result = (array) $class->getLatestReleaseInformationFromGitHub();
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveKeys(['tag', 'assets'])
+        ->and($result['tag'])->toBeString()
+        ->and($result['assets'])->toBeArray()
+        ->and($result['assets'])->toHaveKeys(['hyde', 'hyde.sig', 'signature.bin'])
+        ->and($result['assets'])->each->toHaveKeys(['name', 'browser_download_url']);
+});
+
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->releaseResponse = file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
+    }
+
     public function property(string $property): mixed
     {
         return $this->$property;
@@ -186,12 +210,21 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
 
     public function __call($method, $parameters)
     {
+        if (! method_exists($this, $method)) {
+            throw new BadMethodCallException("Method [$method] does not exist.");
+        }
+
         return $this->$method(...$parameters);
     }
 
     public function constants(string $constant): mixed
     {
         return constant("self::$constant");
+    }
+
+    public function setProperty(string $property, mixed $value): void
+    {
+        $this->$property = $value;
     }
 }
 
