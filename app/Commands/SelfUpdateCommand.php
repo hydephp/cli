@@ -318,7 +318,7 @@ class SelfUpdateCommand extends Command
             $isValid = $this->verifySignature($phar, $signature);
 
             if ($isValid) {
-                $this->info('Signature is valid!');
+                $this->debug('Signature is valid!');
             } else {
                 throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
             }
