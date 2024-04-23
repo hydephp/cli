@@ -138,6 +138,15 @@ test('get issue markdown method', function () {
         ->and($result)->toContain('Context');
 });
 
+test('public key hash identifier', function () {
+    $publicKey = (new InspectableSelfUpdateCommand())->publicKey();
+    $identifier = strtoupper(substr(hash('sha256', $publicKey."\n"), 0, 40));
+
+    // Expect to match https://trustservices.hydephp.com/certificates/EE5FC423177F61B096D768E3B3D3CA94C5435426.pem
+    // See also mirror https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
+    expect($identifier)->toBe('EE5FC423177F61B096D768E3B3D3CA94C5435426');
+});
+
 test('signature verification', function () {
     $class = new InspectableSelfUpdateCommand();
 
