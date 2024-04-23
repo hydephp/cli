@@ -110,7 +110,7 @@ class SelfUpdateCommand extends Command
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
 
-            $latestVersion = $this->parseVersion($this->getLatestReleaseVersion());
+            $latestVersion = $this->parseVersion($this->release['tag_name']);
             $this->debug('Latest version: v'.implode('.', $latestVersion));
 
             $this->printNewlineIfVerbose();
@@ -176,11 +176,6 @@ class SelfUpdateCommand extends Command
 
             return Command::FAILURE;
         }
-    }
-
-    protected function getLatestReleaseVersion(): string
-    {
-        return $this->release['tag_name'];
     }
 
     protected function getLatestReleaseInformationFromGitHub(): array
