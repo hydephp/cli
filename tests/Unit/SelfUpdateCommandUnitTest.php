@@ -46,9 +46,10 @@ it('validates release data correctly', function () {
     ]];
 
     $command = new InspectableSelfUpdateCommand();
-    $command->validateReleaseData($data);
+    $fixture = json_decode($command->property('releaseResponse'), true);
 
-    $command->validateReleaseData(json_decode($command->property('releaseResponse'), true));
+    $command->validateReleaseData($data);
+    $command->validateReleaseData($fixture);
 
     // No exception thrown means validation passed
     expect(true)->toBeTrue();
