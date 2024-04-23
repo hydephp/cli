@@ -185,7 +185,7 @@ test('get latest release information method', function () {
         ->and($result)->toHaveKeys(['tag_name', 'assets'])
         ->and($result['tag_name'])->toBeString()
         ->and($result['assets'])->toBeArray()
-        ->and($result['assets'])->toHaveKeys(['name', 'browser_download_url']);
+        ->and($result['assets'])->each->toHaveKeys(['name', 'browser_download_url']);
 });
 
 /** @noinspection PhpIllegalPsrClassPathInspection */
