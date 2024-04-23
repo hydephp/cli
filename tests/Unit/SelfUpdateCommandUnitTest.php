@@ -40,7 +40,10 @@ it('correctly compares versions', function ($currentVersion, $latestVersion, $ex
 ]);
 
 it('validates release data correctly', function () {
-    $data = ['tag_name' => 'v1.0.0', 'assets' => [['name' => 'hyde', 'browser_download_url' => 'https://example.com']]];
+    $data = ['tag_name' => 'v1.0.0', 'assets' => [
+        ['name' => 'hyde', 'browser_download_url' => 'https://example.com'],
+        ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com']
+    ]];
 
     (new InspectableSelfUpdateCommand())->validateReleaseData($data);
 
@@ -133,6 +136,44 @@ test('get issue markdown method', function () {
         ->and($result)->toContain('Stack trace')
         ->and($result)->toContain('Environment')
         ->and($result)->toContain('Context');
+});
+
+test('public key hash identifier', function () {
+    $publicKey = (new InspectableSelfUpdateCommand())->publicKey();
+    $identifier = strtoupper(substr(hash('sha256', $publicKey."\n"), 0, 40));
+
+    // Expect to match https://trustservices.hydephp.com/certificates/EE5FC423177F61B096D768E3B3D3CA94C5435426.pem
+    // See also mirror https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
+    expect($identifier)->toBe('EE5FC423177F61B096D768E3B3D3CA94C5435426');
+});
+
+test('signature verification', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $phar = 'builds/hyde';
+    $signature = 'builds/signature.bin';
+
+    // Sanity check to ensure the files exist
+    assert(file_exists($phar) && file_exists($signature), 'Phar and signature files must exist');
+
+    expect($class->verifySignature($phar, $signature))->toBeTrue();
+});
+
+test('signature verification fails if signature is invalid', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $phar = 'builds/hyde';
+    $signature = 'builds/false-signature.bin';
+
+    // Sanity check to ensure the file exists
+    assert(file_exists($phar), 'Phar file must exist');
+
+    file_put_contents($signature, 'Invalid signature');
+
+    expect($class->verifySignature($phar, $signature))->toBeFalse();
+
+    // Clean up
+    unlink($signature);
 });
 
 /** @noinspection PhpIllegalPsrClassPathInspection */

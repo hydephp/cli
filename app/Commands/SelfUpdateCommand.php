@@ -27,6 +27,7 @@ use function sprintf;
 use function implode;
 use function tempnam;
 use function dirname;
+use function defined;
 use function passthru;
 use function in_array;
 use function array_map;
@@ -40,10 +41,12 @@ use function str_contains;
 use function array_combine;
 use function clearstatcache;
 use function escapeshellarg;
+use function openssl_verify;
 use function sys_get_temp_dir;
 use function extension_loaded;
 use function file_get_contents;
 use function get_included_files;
+use function openssl_pkey_get_public;
 
 /**
  * @experimental This command is highly experimental and may contain bugs.
@@ -208,6 +211,9 @@ class SelfUpdateCommand extends Command
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
+        $this->assertReleaseEntryIsValid(isset($data['assets'][1]));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['browser_download_url']));
+        $this->assertReleaseEntryIsValid(isset($data['assets'][1]['name']) && $data['assets'][1]['name'] === 'hyde.sig');
     }
 
     protected function assertReleaseEntryIsValid(bool $condition): void
@@ -298,16 +304,32 @@ class SelfUpdateCommand extends Command
 
         $this->debug('Downloading the latest version...');
 
+        $tempPath = tempnam(sys_get_temp_dir(), 'hyde');
+
         // Download the latest release from GitHub
-        $downloadUrl = $this->release['assets'][0]['browser_download_url'];
-        $downloadedFile = tempnam(sys_get_temp_dir(), 'hyde');
-        $this->downloadFile($downloadUrl, $downloadedFile);
+        $phar = $tempPath.'.phar';
+        $this->downloadFile($this->release['assets'][0]['browser_download_url'], $phar);
+        $signature = $tempPath.'.sig';
+        $this->downloadFile($this->release['assets'][1]['browser_download_url'], $signature);
+
+        if (! extension_loaded('openssl')) {
+            $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
+        } else {
+            $this->debug('Verifying the signature...');
+            $isValid = $this->verifySignature($phar, $signature);
+
+            if ($isValid) {
+                $this->debug('Signature is valid!');
+            } else {
+                throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
+            }
+        }
 
         // Make the downloaded file executable
-        chmod($downloadedFile, 0755);
+        chmod($phar, 0755);
 
         // Replace the current application with the downloaded one
-        $this->replaceApplication($downloadedFile);
+        $this->replaceApplication($phar);
     }
 
     protected function downloadFile(string $url, string $destination): void
@@ -323,6 +345,34 @@ class SelfUpdateCommand extends Command
 
         curl_close($ch);
         fclose($file);
+    }
+
+    /**
+     * Verify the signature of the downloaded file against the public embedded public key.
+     *
+     * @param string $phar The path to the downloaded PHAR file
+     * @param string $signature The path to the downloaded signature file
+     *
+     * @return bool Whether the signature is valid, true if it is, false otherwise
+     *
+     * @throws RuntimeException If the public key could not be loaded or the needed algorithm is missing.
+     */
+    protected function verifySignature(string $phar, string $signature): bool
+    {
+        $publicKey = openssl_pkey_get_public(self::publicKey());
+
+        if ($publicKey === false) {
+            throw new RuntimeException('Failed to load the public key.');
+        }
+
+        if (! defined('OPENSSL_ALGO_SHA512')) {
+            throw new RuntimeException('The OpenSSL extension is missing the SHA-512 algorithm.');
+        }
+
+        $data = file_get_contents($phar);
+        $signature = file_get_contents($signature);
+
+        return openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
     }
 
     protected function replaceApplication(string $downloadedFile): void
@@ -440,5 +490,39 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
+    }
+
+    /**
+     * The public key used to verify the signature of the downloaded file.
+     *
+     * @uid HydePHP CLI Bravo RSA Key
+     * @id EE5FC423177F61B096D768E3B3D3CA94C5435426
+     *
+     * @created 2024‑04‑22
+     * @expires <never>
+     *
+     * @link https://trustservices.hydephp.com/certificates/EE5FC423177F61B096D768E3B3D3CA94C5435426.pem
+     * @link https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
+     *
+     * @return string The public key in ASCII-armored format
+     */
+    protected static final function publicKey(): string
+    {
+        return <<<'TXT'
+        -----BEGIN PUBLIC KEY-----
+        MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAs3cVirZlZhS/zl2svR09
+        6gcoQg1QNbyHQzomRWwiO3Zk0TphFzRJ/wATFQ+BjytgQzjOEi6YKSVZLgu0CKHd
+        JG27wpFyuLO0OkykCnHOQ/O81K9YI0WpgAd/pA60BpOh+5LUx0lsjRqPzV/O2Rk4
+        YekJk7bdLMgwoAM6fTpg1gM1/5ytFd0Gc1461s4cmQCH51pX2NPdldGYNOjgSZKk
+        qJMYpvDNfLNqzhc2gXHqenswAwWGspWgC32lcm0TVknC5+wt1SDGei5IyP/hv/L5
+        Hr2C9QvzH3nDuK3qea8Hpk5IbcRoiUm+HIBQ/wRzCa3UOkNGmipNlVicOHxaSwpn
+        M2x94TIjR2f3adUA9hmjHicPPPmDCc8wUfLmfktF2+4C6NL4BwdRuC2bdp/Dfsys
+        pW2Rjq4KDU06IzfPq1B6PNs6vwwCbQ4AT/X3hhFl1e25ygRaneB1NRLBCj+/X9j3
+        lhlxVDo6y83E9QkqebiBJpJ0aGFPfi8vpAt+IgRr2C7rAFiCrjDUIRQaNZfC19W1
+        UxkBzXPe+HXIOc9CVSWtVgf2fPkyn0WkZmSrN5M0UA12snMoLPDzPJ+K50TwO5Y1
+        60NQorbPFpjIy5WSAn+a+F5SwZ+3umk1eL+17SjqEmQ/jHYWTX1Hn+LJY+CVUqCz
+        Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
+        -----END PUBLIC KEY-----
+        TXT;
     }
 }
