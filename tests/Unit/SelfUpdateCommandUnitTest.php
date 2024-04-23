@@ -147,10 +147,7 @@ test('signature verification', function () {
     // Sanity check to ensure the files exist
     assert(file_exists($phar) && file_exists($signature), 'Phar and signature files must exist');
 
-    $class->verifySignature($phar, $signature);
-
-    // No exception thrown means the signature is valid
-    expect(true)->toBeTrue();
+    expect($class->verifySignature($phar, $signature))->toBeTrue();
 });
 
 /** @noinspection PhpIllegalPsrClassPathInspection */

@@ -312,7 +312,13 @@ class SelfUpdateCommand extends Command
         if (! extension_loaded('openssl')) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
-            $this->verifySignature($phar, $signature);
+            $isValid = $this->verifySignature($phar, $signature);
+
+            if ($isValid) {
+                $this->info('Signature is valid!');
+            } else {
+                throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
+            }
         }
 
         // Make the downloaded file executable
@@ -343,13 +349,15 @@ class SelfUpdateCommand extends Command
      * @param string $phar The path to the downloaded PHAR file
      * @param string $signature The path to the downloaded signature file
      *
-     * @throws RuntimeException If the signature is invalid or if there are unknown issues.
+     * @return bool Whether the signature is valid, true if it is, false otherwise
+     *
+     * @throws RuntimeException If the public key could not be loaded or the needed algorithm is missing.
      *
      * @see https://github.com/composer/getcomposer.org/blob/9f6b66dc3cd73688bc214683001a6b2320379393/bin/sign.php#L3
      * @see https://github.com/composer/getcomposer.org/blob/9f6b66dc3cd73688bc214683001a6b2320379393/bin/verify.php
      * @see https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L263
      */
-    protected function verifySignature(string $phar, string $signature): void
+    protected function verifySignature(string $phar, string $signature): bool
     {
         $publicKey = openssl_pkey_get_public(self::publicKey());
 
@@ -365,13 +373,7 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The OpenSSL extension is missing the SHA-512 algorithm.');
         }
 
-        $isValid = openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
-
-        if ($isValid) {
-            $this->info('Signature is valid!');
-        } else {
-            throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
-        }
+        return openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
     }
 
     protected function replaceApplication(string $downloadedFile): void
