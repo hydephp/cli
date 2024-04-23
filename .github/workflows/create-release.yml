@@ -91,12 +91,23 @@ jobs:
           gpg --import-ownertrust <<< "657B4D97184E9E6E596E6EA13B829782D5B7BA59:6:"
           gpg --verify builds/hyde.sig builds/hyde
 
-      - name: Upload signature artifact
+      - name: Create OpenSSL fallback signature
+        if: github.event.repository.full_name == 'hydephp/cli'
+        run: |
+          mkdir -p $HOME/.cert/
+          chmod 0700 $HOME/.cert/
+          echo "${{ secrets.RSA_SIGNING_PRIVATE_KEY }}" > $HOME/.cert/private_encrypted.key
+          echo "${{ secrets.RSA_SIGNING_KEY_PASSPHRASE }}" > $HOME/.cert/passphrase.txt
+          openssl rsa -in $HOME/.cert/private_encrypted.key -out $HOME/.cert/private.key -passin file:$HOME/.cert/passphrase.txt
+          openssl dgst -sha512 -sign $HOME/.cert/private.key -out builds/signature.bin builds/hyde
+          rm -rf $HOME/.cert/
+
+      - name: Upload signature artifacts
         if: github.event.repository.full_name == 'hydephp/cli'
         uses: actions/upload-artifact@v4
         with:
           name: signature
-          path: builds/hyde.sig
+          path: builds/hyde.sig, builds/signature.bin
 
       - name: Reset Composer file changes
         run: git restore composer.json composer.lock
@@ -112,6 +123,7 @@ jobs:
             app/Application.php
             builds/hyde
             builds/hyde.sig
+            builds/signature.bin
 
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).

@@ -27,7 +27,7 @@ This verification is also done automatically when self-updating the CLI using th
 
 ### Public Key Information
 
-The public key used for signing builds in the 0.x series range has the fingerprint `3B829782D5B7BA59`. It is an `rsa3072` key expiring on `2026-04-20`, and is as follows:
+The public key used for signing builds in the 0.x series range is a PGP key that has the fingerprint `3B829782D5B7BA59`. It is an `rsa3072` key expiring on `2026-04-20`, and is as follows:
 
 ```
 657B4D97184E9E6E596E6EA13B829782D5B7BA59 (HydePHP CLI Alpha Key <hello@hydephp.com>)
@@ -83,6 +83,30 @@ YXlffyl8g5pXBQKUo/L1BGbePF18Xg4jwsNPIMjUQObJ
 ```
 </details>
 
+We also provide an experimental fallback `.bin` signature that uses an OpenSSL key for increased compatibility with systems that do not support GPG.
+
+
+<details>
+<summary>View OpenSSL Public Key</summary>
+
+```plaintext
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAs3cVirZlZhS/zl2svR09
+6gcoQg1QNbyHQzomRWwiO3Zk0TphFzRJ/wATFQ+BjytgQzjOEi6YKSVZLgu0CKHd
+JG27wpFyuLO0OkykCnHOQ/O81K9YI0WpgAd/pA60BpOh+5LUx0lsjRqPzV/O2Rk4
+YekJk7bdLMgwoAM6fTpg1gM1/5ytFd0Gc1461s4cmQCH51pX2NPdldGYNOjgSZKk
+qJMYpvDNfLNqzhc2gXHqenswAwWGspWgC32lcm0TVknC5+wt1SDGei5IyP/hv/L5
+Hr2C9QvzH3nDuK3qea8Hpk5IbcRoiUm+HIBQ/wRzCa3UOkNGmipNlVicOHxaSwpn
+M2x94TIjR2f3adUA9hmjHicPPPmDCc8wUfLmfktF2+4C6NL4BwdRuC2bdp/Dfsys
+pW2Rjq4KDU06IzfPq1B6PNs6vwwCbQ4AT/X3hhFl1e25ygRaneB1NRLBCj+/X9j3
+lhlxVDo6y83E9QkqebiBJpJ0aGFPfi8vpAt+IgRr2C7rAFiCrjDUIRQaNZfC19W1
+UxkBzXPe+HXIOc9CVSWtVgf2fPkyn0WkZmSrN5M0UA12snMoLPDzPJ+K50TwO5Y1
+60NQorbPFpjIy5WSAn+a+F5SwZ+3umk1eL+17SjqEmQ/jHYWTX1Hn+LJY+CVUqCz
+Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
+-----END PUBLIC KEY-----
+```
+</details>
+
 #### Validating certificate authenticity
 
 In order to validate the authenticity of the public key and that it comes from HydePHP you can visit https://trustservices.hydephp.com/certificates/ for a listing of all our public keys and certificates.
@@ -103,5 +127,8 @@ To ensure the security of our certificates and private keys, we implement a mult
 - The current key in use is scoped to only be used for alpha builds in the 0.x series range, this means that security protocols can be field tested before the final key is used for general availability.
 - In the unlikely event of a compromise, the key can be revoked and replaced with a new key. The new key will be signed by the old key to ensure continuity of trust.
 - Additionally, the public key is made available on several independent platforms, making it much more difficult for an attacker to spoof the key.
+- Of course all private keys are protected by unique highly secure and complex passphrases that are never stored in plaintext.
 
 This comprehensive strategy reinforces our commitment to safeguarding the integrity and security of our cryptographic assets.
+This document has been assembled to provide transparency and assurance to our users and contributors,
+but has been designed in an interactive process with risk assessments for each piece of information disclosed.
