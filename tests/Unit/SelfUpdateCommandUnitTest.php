@@ -48,8 +48,8 @@ it('validates release data correctly', function () {
     $command = new InspectableSelfUpdateCommand();
     $fixture = json_decode($command->property('releaseResponse'), true);
 
-    $command->validateReleaseData($data);
-    $command->validateReleaseData($fixture);
+    $command->makeGitHubReleaseObject($data);
+    $command->makeGitHubReleaseObject($fixture);
 
     // No exception thrown means validation passed
     expect(true)->toBeTrue();
@@ -58,7 +58,7 @@ it('validates release data correctly', function () {
 it('throws exception if release data is invalid', function ($data) {
     $this->expectException(RuntimeException::class);
 
-    (new InspectableSelfUpdateCommand())->validateReleaseData($data);
+    (new InspectableSelfUpdateCommand())->makeGitHubReleaseObject($data);
 })->with([
     [[]], // Empty data
     [['tag_name' => 'v1.0.0']], // Missing assets key
