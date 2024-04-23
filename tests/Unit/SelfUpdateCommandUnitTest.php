@@ -176,6 +176,18 @@ test('signature verification fails if signature is invalid', function () {
     unlink($signature);
 });
 
+test('get latest release information method', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $result = $class->getLatestReleaseInformationFromGitHub();
+
+    expect($result)->toBeArray()
+        ->and($result)->toHaveKeys(['tag_name', 'assets'])
+        ->and($result['tag_name'])->toBeString()
+        ->and($result['assets'])->toBeArray()
+        ->and($result['assets'])->toHaveKeys(['name', 'browser_download_url']);
+});
+
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
