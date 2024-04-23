@@ -315,6 +315,7 @@ class SelfUpdateCommand extends Command
         if (! extension_loaded('openssl')) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
+            $this->debug('Verifying the signature...');
             $isValid = $this->verifySignature($phar, $signature);
 
             if ($isValid) {
