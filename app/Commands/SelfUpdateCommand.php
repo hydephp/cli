@@ -490,7 +490,7 @@ class SelfUpdateCommand extends Command
      * @uid HydePHP CLI Bravo RSA Key
      * @id ee5fc423177f61b096d768e3b3d3ca94c5435426b51864558707c8b514db0ec0
      *
-     * @created 2024‑04‑20
+     * @created 2024‑04‑22
      * @expires <never>
      *
      * @link https://trustservices.hydephp.com/certificates/ee5fc423177f61b096d768e3b3d3ca94c5435426b51864558707c8b514db0ec0.pem
