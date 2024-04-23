@@ -178,6 +178,7 @@ test('signature verification fails if signature is invalid', function () {
 
 test('get latest release information method', function () {
     $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('releaseResponse', file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json'));
 
     $result = $class->getLatestReleaseInformationFromGitHub();
 
@@ -204,6 +205,11 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
     public function constants(string $constant): mixed
     {
         return constant("self::$constant");
+    }
+
+    public function setProperty(string $property, mixed $value): void
+    {
+        $this->$property = $value;
     }
 }
 
