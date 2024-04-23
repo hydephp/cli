@@ -186,7 +186,7 @@ class SelfUpdateCommand extends Command
         /** @see tests/Fixtures/general/github-release-api-response.json */
         $data = json_decode($this->releaseResponse ?? $this->makeGitHubApiResponse(), true);
 
-        $this->validateReleaseData($data);
+        $object = $this->makeGitHubReleaseObject($data);
 
         return $data;
     }
@@ -202,11 +202,6 @@ class SelfUpdateCommand extends Command
     protected function getUserAgent(): string
     {
         return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
-    }
-
-    protected function validateReleaseData(array $data): void
-    {
-        $object = $this->makeGitHubReleaseObject($data);
     }
 
     /** @return array{major: int, minor: int, patch: int} */
