@@ -104,6 +104,8 @@ class SelfUpdateCommand extends Command
 
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
 
+            $this->release = $this->getLatestReleaseInformation();
+
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
 
@@ -177,19 +179,17 @@ class SelfUpdateCommand extends Command
 
     protected function getLatestReleaseVersion(): string
     {
-        $this->getLatestReleaseInformation();
-
         return $this->release['tag_name'];
     }
 
-    protected function getLatestReleaseInformation(): void
+    protected function getLatestReleaseInformation(): array
     {
         /** @see tests/Fixtures/general/github-release-api-response.json */
         $data = json_decode($this->makeGitHubApiResponse(), true);
 
         $this->validateReleaseData($data);
 
-        $this->release = $data;
+        return $data;
     }
 
     protected function makeGitHubApiResponse(): string
