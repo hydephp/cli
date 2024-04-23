@@ -183,12 +183,13 @@ test('signature verification fails if signature is invalid', function () {
 test('get latest release information method', function () {
     $class = new InspectableSelfUpdateCommand();
 
-    $result = $class->getLatestReleaseInformationFromGitHub();
+    $result = (array) $class->getLatestReleaseInformationFromGitHub();
 
     expect($result)->toBeArray()
-        ->and($result)->toHaveKeys(['tag_name', 'assets'])
-        ->and($result['tag_name'])->toBeString()
+        ->and($result)->toHaveKeys(['tag', 'assets'])
+        ->and($result['tag'])->toBeString()
         ->and($result['assets'])->toBeArray()
+        ->and($result['assets'])->toHaveKeys(['hyde', 'hyde.sig', 'signature.bin'])
         ->and($result['assets'])->each->toHaveKeys(['name', 'browser_download_url']);
 });
 

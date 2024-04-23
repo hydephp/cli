@@ -74,8 +74,12 @@ class SelfUpdateCommand extends Command
 
     protected const COMPOSER_COMMAND = 'composer global require hyde/cli';
 
-    /** @var array<string, string|array<string>> The latest release information from the GitHub API */
-    protected array $release;
+    /**
+     * The latest release information from the GitHub API.
+     *
+     * @var object{tag: string, assets: array<string, array{name: string, browser_download_url: string}>}
+     */
+    protected object $release;
 
     /**
      * @var string The path to the application executable
@@ -113,7 +117,7 @@ class SelfUpdateCommand extends Command
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
             $this->debug('Current version: v'.implode('.', $currentVersion));
 
-            $latestVersion = $this->parseVersion($this->release['tag_name']);
+            $latestVersion = $this->parseVersion($this->release->tag);
             $this->debug('Latest version: v'.implode('.', $latestVersion));
 
             $this->printNewlineIfVerbose();
@@ -181,14 +185,12 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    protected function getLatestReleaseInformationFromGitHub(): array
+    protected function getLatestReleaseInformationFromGitHub(): object
     {
         /** @see tests/Fixtures/general/github-release-api-response.json */
         $data = json_decode($this->releaseResponse ?? $this->makeGitHubApiResponse(), true);
 
-        $object = $this->makeGitHubReleaseObject($data);
-
-        return $data;
+        return $this->makeGitHubReleaseObject($data);
     }
 
     protected function makeGitHubApiResponse(): string
@@ -243,9 +245,9 @@ class SelfUpdateCommand extends Command
         };
 
         if ($state === self::STATE_BEHIND) {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release['tag_name']));
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release->tag));
         } else {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release['tag_name']));
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release->tag));
         }
     }
 
@@ -478,11 +480,20 @@ class SelfUpdateCommand extends Command
         return new class ($data) {
             protected readonly array $data;
 
+            /** @var string The tag name of the release */
+            public readonly string $tag;
+
+            /** @var array<string, array{name: string, browser_download_url: string}> Release assets keyed by their name */
+            public readonly array $assets;
+
             public function __construct(array $data)
             {
                 $this->validate($data);
 
                 $this->data = $data;
+
+                $this->tag = $data['tag_name'];
+                $this->assets = array_combine(array_map(fn (array $asset): string => $asset['name'], $data['assets']), $data['assets']);
             }
 
             public function __get(string $name): mixed
@@ -494,12 +505,11 @@ class SelfUpdateCommand extends Command
             {
                 $this->assertReleaseEntryIsValid(isset($data['tag_name']));
                 $this->assertReleaseEntryIsValid(isset($data['assets']));
-                $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
-                $this->assertReleaseEntryIsValid(isset($data['assets'][0]['browser_download_url']));
-                $this->assertReleaseEntryIsValid(isset($data['assets'][0]['name']) && $data['assets'][0]['name'] === 'hyde');
-                $this->assertReleaseEntryIsValid(isset($data['assets'][1]));
-                $this->assertReleaseEntryIsValid(isset($data['assets'][1]['browser_download_url']));
-                $this->assertReleaseEntryIsValid(isset($data['assets'][1]['name']) && $data['assets'][1]['name'] === 'hyde.sig');
+
+                foreach ($data['assets'] as $asset) {
+                    $this->assertReleaseEntryIsValid(isset($asset['name']));
+                    $this->assertReleaseEntryIsValid(isset($asset['browser_download_url']));
+                }
             }
 
             protected function assertReleaseEntryIsValid(bool $condition): void
