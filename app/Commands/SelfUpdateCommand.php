@@ -206,6 +206,8 @@ class SelfUpdateCommand extends Command
 
     protected function validateReleaseData(array $data): void
     {
+        $object = $this->makeGitHubReleaseObject($data);
+
         $this->assertReleaseEntryIsValid(isset($data['tag_name']));
         $this->assertReleaseEntryIsValid(isset($data['assets']));
         $this->assertReleaseEntryIsValid(isset($data['assets'][0]));
@@ -490,6 +492,23 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
+    }
+
+    protected function makeGitHubReleaseObject(array $data): object
+    {
+        return new class ($data) {
+            protected readonly array $data;
+
+            public function __construct(array $data)
+            {
+                $this->data = $data;
+            }
+
+            public function __get(string $name): mixed
+            {
+                return $this->data[$name] ?? null;
+            }
+        };
     }
 
     /**
