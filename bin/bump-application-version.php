@@ -5,7 +5,6 @@
  *
  * @usage php bin/bump-application-version.php [major|minor|patch]
  */
-
 echo "Bumping application version!\n";
 
 // Get type from argument input
