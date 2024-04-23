@@ -209,6 +209,10 @@ class InspectableSelfUpdateCommand extends SelfUpdateCommand
 
     public function __call($method, $parameters)
     {
+        if (! method_exists($this, $method)) {
+            throw new BadMethodCallException("Method [$method] does not exist.");
+        }
+
         return $this->$method(...$parameters);
     }
 
