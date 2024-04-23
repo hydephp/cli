@@ -184,6 +184,7 @@ class SelfUpdateCommand extends Command
 
     protected function getLatestReleaseInformation(): void
     {
+        /** @see tests/Fixtures/general/github-release-api-response.json */
         $data = json_decode($this->makeGitHubApiResponse(), true);
 
         $this->validateReleaseData($data);
