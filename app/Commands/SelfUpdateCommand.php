@@ -104,6 +104,7 @@ class SelfUpdateCommand extends Command
 
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
 
+            $this->debug('Getting the latest release information from GitHub...');
             $this->release = $this->getLatestReleaseInformation();
 
             $currentVersion = $this->parseVersion(Application::APP_VERSION);
