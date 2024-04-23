@@ -138,6 +138,21 @@ test('get issue markdown method', function () {
         ->and($result)->toContain('Context');
 });
 
+test('signature verification', function () {
+    $class = new InspectableSelfUpdateCommand();
+
+    $phar = 'builds/hyde';
+    $signature = 'builds/signature.bin';
+
+    // Sanity check to ensure the files exist
+    assert(file_exists($phar) && file_exists($signature), 'Phar and signature files must exist');
+
+    $class->verifySignature($phar, $signature);
+
+    // No exception thrown means the signature is valid
+    expect(true)->toBeTrue();
+});
+
 /** @noinspection PhpIllegalPsrClassPathInspection */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
