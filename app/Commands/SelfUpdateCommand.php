@@ -338,6 +338,13 @@ class SelfUpdateCommand extends Command
     }
 
     /**
+     * Verify the signature of the downloaded file against the public embedded public key.
+     *
+     * @param string $phar The path to the downloaded PHAR file
+     * @param string $signature The path to the downloaded signature file
+     *
+     * @throws RuntimeException If the signature is invalid or if there are unknown issues.
+     *
      * @see https://github.com/composer/getcomposer.org/blob/9f6b66dc3cd73688bc214683001a6b2320379393/bin/sign.php#L3
      * @see https://github.com/composer/getcomposer.org/blob/9f6b66dc3cd73688bc214683001a6b2320379393/bin/verify.php
      * @see https://github.com/composer/composer/blob/main/src/Composer/Command/SelfUpdateCommand.php#L263
