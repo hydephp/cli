@@ -29,6 +29,16 @@ afterEach(function () use ($path) {
     File::deleteDirectory($path);
 });
 
+test('handle when up to date', function () {
+    $command = new MockSelfUpdateCommand();
+
+    expect($command->handle())->toBe(0);
+
+    $output = 'Checking for updates... You are already using the latest version (v1.0.0)';
+
+    expect(trim($command->output->fetch()))->toBe($output);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
