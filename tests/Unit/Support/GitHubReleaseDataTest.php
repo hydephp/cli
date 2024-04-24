@@ -31,6 +31,16 @@ it('constructs assets', function () {
         ->toContainOnlyInstancesOf(GitHubReleaseAsset::class);
 });
 
+it('constructs asset name', function () {
+    expect((new GitHubReleaseAsset($this->data['assets'][0]))->name)
+        ->toBe('example.zip');
+});
+
+it('constructs asset URL', function () {
+    expect((new GitHubReleaseAsset($this->data['assets'][0]))->url)
+        ->toBe('https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip');
+});
+
 test('data class throws an exception when required fields are missing', function () {
     new GitHubReleaseData([]);
 })->throws(InvalidArgumentException::class);

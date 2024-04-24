@@ -18,9 +18,18 @@ use function array_diff;
  */
 class GitHubReleaseAsset
 {
+    /** @var string The file name of the asset */
+    public readonly string $name;
+
+    /** @var string The download URL of the asset */
+    public readonly string $url;
+
     public function __construct(array $data)
     {
         $this->validate($data);
+
+        $this->name = $data['name'];
+        $this->url = $data['browser_download_url'];
     }
 
     protected function validate(array $data): void
