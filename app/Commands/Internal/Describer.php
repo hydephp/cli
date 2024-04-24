@@ -17,11 +17,13 @@ class Describer extends BaseDescriber
     protected static function sortCommandsInGroup(array &$commands): void
     {
         usort($commands, function (Command $a, Command $b): int {
-            if ($a->getName() === 'new') {
+            if ($a->getName() === 'new' && $b->getName() !== 'new') {
                 return -1;
+            } elseif ($a->getName() !== 'new' && $b->getName() === 'new') {
+                return 1;
+            } else {
+                return strcmp($a->getName(), $b->getName());
             }
-
-            return strcmp($a->getName(), $b->getName());
         });
     }
 }
