@@ -35,9 +35,15 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     /** @var MockBufferedOutput */
     public $output;
 
-    public function __construct()
+    protected string $appVersion;
+    protected string $latestVersion;
+
+    public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0')
     {
         parent::__construct();
+
+        $this->appVersion = $mockAppVersion;
+        $this->latestVersion = $mockLatestVersion;
 
         $this->input = Mockery::mock(ArrayInput::class, ['getOption' => false]);
         $this->output = new MockBufferedOutput();
