@@ -2,6 +2,7 @@
 
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\BufferedConsoleOutput;
 use Illuminate\Container\Container;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -9,8 +10,10 @@ use Symfony\Component\Console\Input\ArrayInput;
 // We want to run everything in a clean temporary directory
 $path = __DIR__.'/../../vendor/.testing';
 
-beforeAll(function () use ($path) {
-    if (is_dir($path)) {
+beforeEach(function () use ($path) {
+    File::swap(new Filesystem());
+
+    if (is_dir($path) && ! File::isEmptyDirectory($path)) {
         throw new RuntimeException('The directory already exists. Please remove it first.');
     } else {
         mkdir($path, 0777, true);
@@ -21,7 +24,7 @@ beforeAll(function () use ($path) {
     Container::setInstance($mock);
 });
 
-afterAll(function () use ($path) {
+afterEach(function () use ($path) {
     // Clean up the temporary directory
     File::deleteDirectory($path);
 });
