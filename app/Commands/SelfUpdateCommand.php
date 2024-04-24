@@ -208,11 +208,10 @@ class SelfUpdateCommand extends Command
             self::STATE_AHEAD => 'You are using a development version',
         };
 
-        if ($state === self::STATE_BEHIND) {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.$this->getAppVersion(), $this->release->tag));
-        } else {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $state === self::STATE_AHEAD ? $this->getAppVersion() : $this->release->tag));
-        }
+        $this->line(sprintf('<info>%s</info> %s', $message, $state === self::STATE_BEHIND
+            ? sprintf('(<comment>v%s</comment> <fg=gray>-></> <comment>%s</comment>)', $this->getAppVersion(), $this->release->tag)
+            : sprintf('(<comment>%s</comment>)', $state === self::STATE_AHEAD ? $this->getAppVersion() : $this->release->tag)
+        ));
     }
 
     /** @param  self::STRATEGY_*  $strategy */
