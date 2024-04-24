@@ -37,6 +37,8 @@ test('handle when up to date', function () {
     $output = 'Checking for updates... You are already using the latest version (v1.0.0)';
 
     expect(trim($command->output->fetch()))->toBe($output);
+
+    $this->assertTrue($command->madeApiRequest);
 });
 
 /** Class that uses mocks instead of making real API and binary path calls */
@@ -47,6 +49,8 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
     protected string $appVersion;
     protected string $latestVersion;
+
+    public bool $madeApiRequest = false;
 
     public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0')
     {
@@ -61,6 +65,8 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
     protected function makeGitHubApiResponse(): string
     {
+        $this->madeApiRequest = true;
+
         $contents = file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
         $contents = str_replace('v0.7.61', $this->latestVersion, $contents);
 
