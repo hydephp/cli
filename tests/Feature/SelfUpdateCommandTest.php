@@ -6,6 +6,7 @@
 
 declare(strict_types=1);
 
+use PHPUnit\Framework\TestCase;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
@@ -45,6 +46,8 @@ test('handle when up to date', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
+
+    $command->teardown($this);
 });
 
 test('handle when ahead of latest version', function () {
@@ -57,6 +60,8 @@ test('handle when ahead of latest version', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
+
+    $command->teardown($this);
 });
 
 /** Class that uses mocks instead of making real API and binary path calls */
@@ -70,6 +75,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
     public bool $madeApiRequest = false;
 
+    /** @var array<string, string> */
+    protected array $responseMocks = [];
+
+    protected bool $hasBeenTearedDown = false;
+
     public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0')
     {
         parent::__construct();
@@ -81,6 +91,20 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $this->output = new MockBufferedOutput();
 
         file_put_contents(base_path().'/hyde.phar', '<?php echo "Hyde '.$mockAppVersion.'";');
+    }
+
+    public function __destruct()
+    {
+        if (! $this->hasBeenTearedDown) {
+            throw new RuntimeException('You forgot to call the teardown method!');
+        }
+    }
+
+    public function teardown(TestCase $test): void
+    {
+        $test->assertEmpty($this->responseMocks, 'Not all pending mock responses were used!');
+
+        $this->hasBeenTearedDown = true;
     }
 
     protected function findApplicationPath(): string
@@ -106,6 +130,8 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     protected function downloadFile(string $url, string $destination): void
     {
         file_put_contents($destination, $this->responseMocks[$url] ?? throw new RuntimeException('No mock response for '.$url));
+
+        unset($this->responseMocks[$url]);
     }
 }
 
