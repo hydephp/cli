@@ -239,6 +239,7 @@ test('debug helper does not print debug when not verbose', function () {
  * @method int runComposerWindowsProcess()
  * @method void debug(string $message)
  * @method void printNewlineIfVerbose()
+ * @method void handleException(Throwable $exception)
  * @method string createIssueTemplateLink(Throwable $exception)
  * @method string buildUrl(string $url, array $params)
  * @method string getDebugEnvironment()
