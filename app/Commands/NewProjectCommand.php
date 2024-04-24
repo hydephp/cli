@@ -52,7 +52,7 @@ class NewProjectCommand extends Command
         };
     }
 
-    private function getLogo(): string
+    protected function getLogo(): string
     {
         $logo = trim((new class(app()) extends ConsoleServiceProvider
         {
