@@ -16,6 +16,8 @@ class Describer extends BaseDescriber
 {
     protected static function sortCommandsInGroup(array &$commands): void
     {
+        // This makes so the `new` project command is always the first one in the list.
+
         usort($commands, function (Command $a, Command $b): int {
             if ($a->getName() === 'new' && $b->getName() !== 'new') {
                 return -1;
