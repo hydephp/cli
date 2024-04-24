@@ -483,7 +483,11 @@ class SelfUpdateCommand extends Command
             }
         }
 
-        // Handle unknown exceptions
+        return $this->handleUnknownException($exception);
+    }
+
+    protected function handleUnknownException(mixed $exception): int
+    {
         $this->output->error('Something went wrong while updating the application!');
 
         $this->line(" <error>{$exception->getMessage()}</error> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
