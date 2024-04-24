@@ -4,29 +4,19 @@ use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\Support\GitHubReleaseAsset;
 
 it('creates a GitHubRelease object from JSON data', function () {
-    $data = fixture('github-release-api-sample-response.json');
-
-    $release = new GitHubReleaseData($data);
-
-    expect($release)->toBeInstanceOf(GitHubReleaseData::class);
+    expect(new GitHubReleaseData(fixture('github-release-api-sample-response.json')))
+        ->toBeInstanceOf(GitHubReleaseData::class);
 });
 
 it('creates a GitHubReleaseAsset object from JSON data', function () {
-    $data = fixture('github-release-api-sample-response.json');
-
-    $asset = new GitHubReleaseAsset($data['assets'][0]);
-
-    expect($asset)->toBeInstanceOf(GitHubReleaseAsset::class);
+    expect(new GitHubReleaseAsset(fixture('github-release-api-sample-response.json')['assets'][0]))
+        ->toBeInstanceOf(GitHubReleaseAsset::class);
 });
 
 test('data class throws an exception when required fields are missing', function () {
-    $data = [];
-
-    new GitHubReleaseData($data);
+    new GitHubReleaseData([]);
 })->throws(InvalidArgumentException::class);
 
 test('asset class throws an exception when required fields are missing', function () {
-    $data = [];
-
-    new GitHubReleaseAsset($data);
+    new GitHubReleaseAsset([]);
 })->throws(InvalidArgumentException::class);
