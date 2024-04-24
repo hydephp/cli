@@ -39,33 +39,6 @@ it('correctly compares versions', function ($currentVersion, $latestVersion, $ex
     ['2.0.0', '1.2.3', 'STATE_AHEAD'],
 ]);
 
-it('validates release data correctly', function () {
-    $data = ['tag_name' => 'v1.0.0', 'assets' => [
-        ['name' => 'hyde', 'browser_download_url' => 'https://example.com'],
-        ['name' => 'hyde.sig', 'browser_download_url' => 'https://example.com'],
-    ]];
-
-    $command = new InspectableSelfUpdateCommand();
-    $fixture = json_decode($command->property('releaseResponse'), true);
-
-    $command->makeGitHubReleaseObject($data);
-    $command->makeGitHubReleaseObject($fixture);
-
-    // No exception thrown means validation passed
-    expect(true)->toBeTrue();
-});
-
-it('throws exception if release data is invalid', function ($data) {
-    $this->expectException(RuntimeException::class);
-
-    (new InspectableSelfUpdateCommand())->makeGitHubReleaseObject($data);
-})->with([
-    [[]], // Empty data
-    [['tag_name' => 'v1.0.0']], // Missing assets key
-    [['assets' => []]], // Empty assets array
-    [['assets' => [['name' => 'invalid_name']]]], // Invalid asset name
-]);
-
 it('returns the correct application path', function () {
     $class = new InspectableSelfUpdateCommand();
     $result = $class->findApplicationPath();
@@ -180,7 +153,7 @@ test('signature verification fails if signature is invalid', function () {
     unlink($signature);
 });
 
-test('get latest release information method', function () {
+test('get latest release information', function () {
     $class = new InspectableSelfUpdateCommand();
 
     $result = (array) $class->getLatestReleaseInformationFromGitHub();
@@ -190,7 +163,7 @@ test('get latest release information method', function () {
         ->and($result['tag'])->toBeString()
         ->and($result['assets'])->toBeArray()
         ->and($result['assets'])->toHaveKeys(['hyde', 'hyde.sig', 'signature.bin'])
-        ->and($result['assets'])->each->toHaveKeys(['name', 'browser_download_url']);
+        ->and($result['assets'])->each->toHaveKeys(['name', 'url']);
 });
 
 /** @noinspection PhpIllegalPsrClassPathInspection */

@@ -43,3 +43,9 @@ function something()
 {
     // ..
 }
+
+/** Get a Json fixture as array from the general fixtures directory */
+function fixture(string $fixture): array
+{
+    return json_decode(file_get_contents(__DIR__.'/Fixtures/general/'.$fixture), true);
+}

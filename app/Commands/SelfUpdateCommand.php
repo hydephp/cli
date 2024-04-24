@@ -12,6 +12,7 @@ use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
+use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function exec;
@@ -74,12 +75,8 @@ class SelfUpdateCommand extends Command
 
     protected const COMPOSER_COMMAND = 'composer global require hyde/cli';
 
-    /**
-     * The latest release information from the GitHub API.
-     *
-     * @var object{tag: string, assets: array<string, array{name: string, browser_download_url: string}>}
-     */
-    protected object $release;
+    /** The latest release information from the GitHub API. */
+    protected GitHubReleaseData $release;
 
     /**
      * @var string The path to the application executable
@@ -187,12 +184,12 @@ class SelfUpdateCommand extends Command
         }
     }
 
-    protected function getLatestReleaseInformationFromGitHub(): object
+    protected function getLatestReleaseInformationFromGitHub(): GitHubReleaseData
     {
         /** @see tests/Fixtures/general/github-release-api-response.json */
         $data = json_decode($this->releaseResponse ?? $this->makeGitHubApiResponse(), true);
 
-        return $this->makeGitHubReleaseObject($data);
+        return new GitHubReleaseData($data);
     }
 
     protected function makeGitHubApiResponse(): string
@@ -293,9 +290,9 @@ class SelfUpdateCommand extends Command
 
         // Download the latest release from GitHub
         $phar = $tempPath.'.phar';
-        $this->downloadFile($this->release->asset('hyde')['browser_download_url'], $phar);
+        $this->downloadFile($this->release->getAsset('hyde')->url, $phar);
         $signature = $tempPath.'.sig';
-        $this->downloadFile($this->release->asset('signature.bin')['browser_download_url'], $signature);
+        $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
 
         if (! extension_loaded('openssl')) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
@@ -474,58 +471,6 @@ class SelfUpdateCommand extends Command
     protected function printNewlineIfVerbose(): void
     {
         $this->debug('');
-    }
-
-    protected function makeGitHubReleaseObject(array $data): object
-    {
-        return new class($data)
-        {
-            protected readonly array $data;
-
-            /** @var string The tag name of the release */
-            public readonly string $tag;
-
-            /** @var array<string, array{name: string, browser_download_url: string}> Release assets keyed by their name */
-            public readonly array $assets;
-
-            public function __construct(array $data)
-            {
-                $this->validate($data);
-
-                $this->data = $data;
-
-                $this->tag = $data['tag_name'];
-                $this->assets = array_combine(array_map(fn (array $asset): string => $asset['name'], $data['assets']), $data['assets']);
-            }
-
-            public function __get(string $name): mixed
-            {
-                return $this->data[$name] ?? null;
-            }
-
-            public function asset(string $name): array
-            {
-                return $this->assets[$name];
-            }
-
-            protected function validate(array $data): void
-            {
-                $this->assertReleaseEntryIsValid(isset($data['tag_name']));
-                $this->assertReleaseEntryIsValid(isset($data['assets']));
-
-                foreach ($data['assets'] as $asset) {
-                    $this->assertReleaseEntryIsValid(isset($asset['name']));
-                    $this->assertReleaseEntryIsValid(isset($asset['browser_download_url']));
-                }
-            }
-
-            protected function assertReleaseEntryIsValid(bool $condition): void
-            {
-                if (! $condition) {
-                    throw new RuntimeException('Invalid release data received from the GitHub API.');
-                }
-            }
-        };
     }
 
     /**
