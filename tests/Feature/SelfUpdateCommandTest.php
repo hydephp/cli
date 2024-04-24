@@ -47,6 +47,18 @@ test('handle when up to date', function () {
     $this->assertTrue($command->madeApiRequest);
 });
 
+test('handle when ahead of latest version', function () {
+    $command = new MockSelfUpdateCommand('v1.0.1', 'v1.0.0');
+
+    expect($command->handle())->toBe(0);
+
+    $output = 'Checking for updates... You are using a development version (v1.0.1)';
+
+    expect(trim($command->output->fetch()))->toBe($output);
+
+    $this->assertTrue($command->madeApiRequest);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
