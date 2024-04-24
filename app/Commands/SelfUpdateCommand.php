@@ -210,6 +210,8 @@ class SelfUpdateCommand extends Command
 
         if ($state === self::STATE_BEHIND) {
             $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.$this->getAppVersion(), $this->release->tag));
+        } else if ($state === self::STATE_AHEAD) {
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->getAppVersion()));
         } else {
             $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release->tag));
         }
