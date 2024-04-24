@@ -476,10 +476,6 @@ class SelfUpdateCommand extends Command
      *
      * @id EE5FC423177F61B096D768E3B3D3CA94C5435426
      *
-     * @created 2024‑04‑22
-     *
-     * @expires <never>
-     *
      * @link https://trustservices.hydephp.com/certificates/EE5FC423177F61B096D768E3B3D3CA94C5435426.pem
      * @link https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
      *
