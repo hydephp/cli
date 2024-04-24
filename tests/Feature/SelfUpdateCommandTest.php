@@ -42,6 +42,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $this->input = Mockery::mock(ArrayInput::class, ['getOption' => false]);
         $this->output = new MockBufferedOutput();
     }
+
+    protected function makeGitHubApiResponse(): string
+    {
+        return file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
+    }
 }
 
 /** Buffered output that "interacts" with IO {@see \Illuminate\Console\Concerns\InteractsWithIO} */
