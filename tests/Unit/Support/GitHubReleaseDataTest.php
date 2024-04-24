@@ -20,3 +20,15 @@ test('data class throws an exception when required fields are missing', function
 test('asset class throws an exception when required fields are missing', function () {
     new GitHubReleaseAsset([]);
 })->throws(InvalidArgumentException::class);
+
+test('data class throws an exception when required field is missing', function () {
+    $data = fixture('github-release-api-sample-response.json');
+    array_shift($data);
+    new GitHubReleaseData($data);
+})->throws(InvalidArgumentException::class);
+
+test('asset class throws an exception when required field is missing', function () {
+    $data = fixture('github-release-api-sample-response.json')['assets'][0];
+    array_shift($data);
+    new GitHubReleaseAsset($data);
+})->throws(InvalidArgumentException::class);
