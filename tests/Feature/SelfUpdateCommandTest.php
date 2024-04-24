@@ -102,6 +102,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     {
         return $this->appVersion;
     }
+
+    protected function downloadFile(string $url, string $destination): void
+    {
+        file_put_contents($destination, $this->responseMocks[$url] ?? throw new RuntimeException('No mock response for '.$url));
+    }
 }
 
 /** Buffered output that "interacts" with IO {@see \Illuminate\Console\Concerns\InteractsWithIO} */
