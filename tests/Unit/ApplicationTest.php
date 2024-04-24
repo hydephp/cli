@@ -34,6 +34,10 @@ it('uses parent namespace logic if composer.json exists', function () {
     expect($application->getNamespace())->toBe('Example');
 });
 
+it('returns default command name', function () {
+    expect((new Application())->getName())->toBe('list');
+});
+
 class ApplicationWithPublicNamespace extends Application
 {
     public $namespace;
