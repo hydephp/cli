@@ -253,6 +253,7 @@ class SelfUpdateCommand extends Command
     /** @param  self::STRATEGY_*  $strategy */
     protected function updateApplication(string $strategy): void
     {
+        $this->printNewlineIfVerbose();
         $this->debug('Updating the application...');
 
         match ($strategy) {
