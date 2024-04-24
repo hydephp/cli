@@ -4,6 +4,8 @@
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 /** @noinspection PhpUnnecessaryLocalVariableInspection */
 
+declare(strict_types=1);
+
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
