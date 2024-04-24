@@ -46,4 +46,9 @@ class GitHubReleaseData
             throw new InvalidArgumentException('Missing required field(s): '.implode(', ', array_diff($requiredFields, array_keys($data))));
         }
     }
+
+    public function getAsset(string $name): GitHubReleaseAsset
+    {
+        return $this->assets[$name];
+    }
 }

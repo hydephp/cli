@@ -41,6 +41,19 @@ it('constructs asset URL', function () {
         ->toBe('https://github.com/octocat/Hello-World/releases/download/v1.0.0/example.zip');
 });
 
+test('getAsset method returns an asset by name', function () {
+    $release = new GitHubReleaseData($this->data);
+
+    expect($release->getAsset('example.zip'))
+        ->toBeInstanceOf(GitHubReleaseAsset::class);
+});
+
+test('getAsset method throws an exception when asset is not found', function () {
+    $release = new GitHubReleaseData($this->data);
+
+    $release->getAsset('non-existent-asset');
+})->throws(TypeError::class);
+
 test('data class throws an exception when required fields are missing', function () {
     new GitHubReleaseData([]);
 })->throws(InvalidArgumentException::class);
