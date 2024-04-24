@@ -2,6 +2,7 @@
 
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
+use App\Commands\Internal\Support\GitHubReleaseData;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],
@@ -179,7 +180,35 @@ test('get latest release information', function () {
         ->and($result['assets'])->each->toHaveKeys(['name', 'url']);
 });
 
-/** @noinspection PhpIllegalPsrClassPathInspection */
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ *
+ * @method GitHubReleaseData getLatestReleaseInformationFromGitHub()
+ * @method string makeGitHubApiResponse()
+ * @method string getUserAgent()
+ * @method array parseVersion(string $semver)
+ * @method int compareVersions(array $currentVersion, array $latestVersion)
+ * @method string findApplicationPath()
+ * @method void printVersionStateInformation(int $state)
+ * @method void updateApplication(string $strategy)
+ * @method string determineUpdateStrategy()
+ * @method void updateDirectly()
+ * @method void downloadFile(string $url, string $destination)
+ * @method bool verifySignature(string $phar, string $signature)
+ * @method void replaceApplication(string $downloadedFile)
+ * @method void moveFile(string $downloadedFile, string $applicationPath)
+ * @method void updateViaComposer()
+ * @method array runComposerProcess()
+ * @method int runComposerWindowsProcess()
+ * @method void debug(string $message)
+ * @method void printNewlineIfVerbose()
+ * @method string createIssueTemplateLink(Throwable $exception)
+ * @method string buildUrl(string $url, array $params)
+ * @method string getDebugEnvironment()
+ * @method string getIssueMarkdown(Throwable $exception)
+ * @method string stripPersonalInformation(string $markdown)
+ * @method string publicKey()
+ */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
     public function __construct()
