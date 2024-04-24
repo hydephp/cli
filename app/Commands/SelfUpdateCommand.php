@@ -61,7 +61,7 @@ class SelfUpdateCommand extends Command
     use ReportsSelfUpdateCommandIssues;
 
     /** @var string */
-    protected $signature = 'self-update {--check : Check for a new version without updating} {--force-composer-update : Internal temporary flag to force a Composer update}';
+    protected $signature = 'self-update {--check : Check for a new version without updating}';
 
     /** @var string */
     protected $description = 'Update the standalone application to the latest version.';
@@ -102,11 +102,6 @@ class SelfUpdateCommand extends Command
 
             $strategy = $this->determineUpdateStrategy();
 
-            /** @deprecated */
-            if ($this->option('force-composer-update')) {
-                $strategy = self::STRATEGY_COMPOSER;
-            }
-
             $this->debug('Update strategy: '.($strategy === self::STRATEGY_COMPOSER ? 'Composer' : 'Direct download'));
 
             $this->debug('Getting the latest release information from GitHub...');
@@ -127,7 +122,7 @@ class SelfUpdateCommand extends Command
                 return Command::SUCCESS;
             }
 
-            if ($state !== self::STATE_BEHIND && ! $this->option('force-composer-update')) {
+            if ($state !== self::STATE_BEHIND) {
                 return Command::SUCCESS;
             }
 
@@ -139,7 +134,7 @@ class SelfUpdateCommand extends Command
 
             $this->info('The application has been updated successfully.');
 
-            // Verify the application version (// Fixme: This shows the old version when using Composer to update {@see https://github.com/hydephp/cli/issues/97})
+            // Verify the application version (// Fixme: This sometimes shows the old version when using direct install {@see https://github.com/hydephp/cli/issues/97})
             passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
@@ -253,6 +248,7 @@ class SelfUpdateCommand extends Command
     /** @param  self::STRATEGY_*  $strategy */
     protected function updateApplication(string $strategy): void
     {
+        $this->printNewlineIfVerbose();
         $this->debug('Updating the application...');
 
         match ($strategy) {
