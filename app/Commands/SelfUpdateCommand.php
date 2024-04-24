@@ -75,9 +75,7 @@ class SelfUpdateCommand extends Command
 
     protected const COMPOSER_COMMAND = 'composer global require hyde/cli';
 
-    /**
-     * The latest release information from the GitHub API.
-     */
+    /** The latest release information from the GitHub API. */
     protected GitHubReleaseData $release;
 
     /**
