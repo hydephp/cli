@@ -69,6 +69,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $this->output = new MockBufferedOutput();
     }
 
+    protected function findApplicationPath(): string
+    {
+        return realpath(base_path().'/hyde.phar');
+    }
+
     protected function makeGitHubApiResponse(): string
     {
         $this->madeApiRequest = true;
