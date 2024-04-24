@@ -21,15 +21,10 @@ it('sorts the commands properly with different starting order', function () {
 
 function createCommandMocks(array $names): array
 {
-    return array_map(function (string $name): Command {
-        $command = test()->getMockBuilder(Command::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $command->method('getName')->willReturn($name);
-
-        return $command;
-    }, $names);
+    return array_map(fn (string $name): Command => tap(
+        test()->getMockBuilder(Command::class)->disableOriginalConstructor()->getMock(),
+        fn ($command) => $command->method('getName')->willReturn($name)
+    ), $names);
 }
 
 function commandNames(array $commands): array
