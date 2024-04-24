@@ -4,7 +4,7 @@ use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\Support\GitHubReleaseAsset;
 
 it('creates a GitHubRelease object from JSON data', function () {
-    expect(getGitHubReleaseData())
+    expect(new GitHubReleaseData(fixture('github-release-api-sample-response.json')))
         ->toBeInstanceOf(GitHubReleaseData::class);
 });
 
@@ -14,13 +14,13 @@ it('creates a GitHubReleaseAsset object from JSON data', function () {
 });
 
 it('constructs semver tag', function () {
-    $release = getGitHubReleaseData();
+    $release = new GitHubReleaseData(fixture('github-release-api-sample-response.json'));
 
     expect($release->tag)->toBe('v1.0.0');
 });
 
 it('constructs assets', function () {
-    $release = getGitHubReleaseData();
+    $release = new GitHubReleaseData(fixture('github-release-api-sample-response.json'));
 
     expect($release->assets)
         ->toHaveCount(1)
@@ -47,8 +47,3 @@ test('asset class throws an exception when required field is missing', function 
     array_shift($data);
     new GitHubReleaseAsset($data);
 })->throws(InvalidArgumentException::class);
-
-function getGitHubReleaseData(): GitHubReleaseData
-{
-    return new GitHubReleaseData(fixture('github-release-api-sample-response.json'));
-}
