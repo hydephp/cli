@@ -3,33 +3,38 @@
 use Illuminate\Console\Command;
 use App\Commands\Internal\Describer;
 
-test('test sort commands in group method', function () {
-    // Mock the Command class for testing
-    $command1 = createCommandMock('aaa');
-    $command2 = createCommandMock('new');
-    $command3 = createCommandMock('bbb');
+it('sorts the commands properly', function () {
+    $commands = createCommandMocks(['aaa', 'new', 'bbb']);
 
-    // Call the method to be tested
-    $commands = [$command1, $command2, $command3];
     TestDescriber::sortCommandsInGroup($commands);
 
-    // Assert that the commands are sorted correctly
-    $this->assertSame('new', $commands[0]->getName());
-    $this->assertSame('aaa', $commands[1]->getName());
-    $this->assertSame('bbb', $commands[2]->getName());
-
-    $this->assertSame(['new', 'aaa', 'bbb'], array_map(fn ($command) => $command->getName(), $commands));
+    $this->assertSame(['new', 'aaa', 'bbb'], commandNames($commands));
 });
 
-function createCommandMock(string $name): Command
+it('sorts the commands properly with different starting order', function () {
+    $commands = createCommandMocks(['new', 'aaa', 'bbb']);
+
+    TestDescriber::sortCommandsInGroup($commands);
+
+    $this->assertSame(['new', 'aaa', 'bbb'], commandNames($commands));
+});
+
+function createCommandMocks(array $names): array
 {
-    $command = test()->getMockBuilder(Command::class)
-        ->disableOriginalConstructor()
-        ->getMock();
+    return array_map(function (string $name): Command {
+        $command = test()->getMockBuilder(Command::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-    $command->method('getName')->willReturn($name);
+        $command->method('getName')->willReturn($name);
 
-    return $command;
+        return $command;
+    }, $names);
+}
+
+function commandNames(array $commands): array
+{
+    return array_map(fn (Command $command):   string => $command->getName(), $commands);
 }
 
 class TestDescriber extends Describer
