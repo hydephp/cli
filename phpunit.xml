@@ -14,7 +14,6 @@
             <directory suffix=".php">./app</directory>
         </include>
         <exclude>
-            <directory>./app/Commands/Internal</directory>
             <directory>./app/storage</directory>
             <file>./app/config.php</file>
         </exclude>
