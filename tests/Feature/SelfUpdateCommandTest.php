@@ -4,6 +4,7 @@ use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Console\BufferedConsoleOutput;
 use Illuminate\Container\Container;
+use Symfony\Component\Console\Input\ArrayInput;
 
 // We want to run everything in a clean temporary directory
 $path = __DIR__.'/../../vendor/.testing';
@@ -35,6 +36,7 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     {
         parent::__construct();
 
+        $this->input = Mockery::mock(ArrayInput::class, ['getOption' => false]);
         $this->output = new MockBufferedOutput();
     }
 }
