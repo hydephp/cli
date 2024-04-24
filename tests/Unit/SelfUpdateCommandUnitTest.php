@@ -60,6 +60,19 @@ test('get debug environment', function () {
         ->and($result)->toContain('Operating system:    ');
 });
 
+test('createIssueTemplateLink method builds issue URL', function () {
+    mockContainerPath('foo');
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $result = $class->createIssueTemplateLink($exception);
+
+    expect($result)->toBeString()
+        ->toStartWith('https://github.com/hydephp/cli/issues/new?title=')
+        ->toContain(urlencode('Error while self-updating the application'))
+        ->toContain(urlencode($class->stripPersonalInformation($class->getIssueMarkdown($exception))));
+});
+
 it('strips personal information from markdown', function () {
     $user = getenv('USER') ?: getenv('USERNAME') ?: 'user';
     mockContainerPath("/home/$user/project");
