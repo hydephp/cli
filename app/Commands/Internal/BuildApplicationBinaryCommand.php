@@ -13,6 +13,8 @@ use Throwable;
 
 /**
  * @internal Wrapper for {@see \LaravelZero\Framework\Commands\BuildCommand}
+ *
+ * @codeCoverageIgnore This command is only used within the internal build process and does not need to be tested.
  */
 class BuildApplicationBinaryCommand extends Command
 {
