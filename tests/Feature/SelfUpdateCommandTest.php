@@ -1,5 +1,8 @@
 <?php
 
+/** @noinspection PhpIllegalPsrClassPathInspection */
+/** @noinspection PhpMultipleClassesDeclarationsInOneFile */
+
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
