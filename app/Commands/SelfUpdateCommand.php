@@ -107,7 +107,7 @@ class SelfUpdateCommand extends Command
             $this->debug('Getting the latest release information from GitHub...');
             $this->release = $this->getLatestReleaseInformationFromGitHub();
 
-            $currentVersion = $this->parseVersion(Application::APP_VERSION);
+            $currentVersion = $this->parseVersion($this->getAppVersion());
             $this->debug('Current version: v'.implode('.', $currentVersion));
 
             $latestVersion = $this->parseVersion($this->release->tag);
@@ -162,7 +162,7 @@ class SelfUpdateCommand extends Command
 
     protected function getUserAgent(): string
     {
-        return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
+        return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', $this->getAppVersion());
     }
 
     /** @return array{major: int, minor: int, patch: int} */
@@ -171,6 +171,11 @@ class SelfUpdateCommand extends Command
         return array_combine(['major', 'minor', 'patch'],
             array_map('intval', explode('.', $semver))
         );
+    }
+
+    protected function getAppVersion(): string
+    {
+        return Application::APP_VERSION;
     }
 
     /** @return self::STATE_* */
@@ -204,7 +209,7 @@ class SelfUpdateCommand extends Command
         };
 
         if ($state === self::STATE_BEHIND) {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release->tag));
+            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.$this->getAppVersion(), $this->release->tag));
         } else {
             $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release->tag));
         }

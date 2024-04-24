@@ -38,7 +38,7 @@ trait ReportsSelfUpdateCommandIssues
     protected function getDebugEnvironment(): string
     {
         return implode("\n", [
-            'Application version: v'.Application::APP_VERSION,
+            'Application version: v'.$this->getAppVersion(),
             'PHP version:         v'.PHP_VERSION,
             'Operating system:    '.PHP_OS,
         ]);
