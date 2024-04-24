@@ -4,6 +4,7 @@ use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],
@@ -128,6 +129,70 @@ test('get issue markdown method', function () {
         ->and($result)->toContain('Stack trace')
         ->and($result)->toContain('Environment')
         ->and($result)->toContain('Context');
+});
+
+test('handle exception method with known error', function () {
+    mockContainerPath('/home/foo/project');
+    $class = new InspectableSelfUpdateCommand();
+    $message = 'The application path is not writable. Please rerun the command with elevated privileges.';
+    $exception = new RuntimeException($message, 0);
+
+    $class->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'newLine' => null,
+        'writeln' => null,
+        'getFormatter' => Mockery::mock(OutputFormatterInterface::class, [
+            'hasStyle' => false,
+            'setStyle' => null,
+        ]),
+    ]));
+
+    $class->output->shouldReceive('error')->once()->with($message);
+
+    $class->handleException($exception);
+});
+
+test('handle exception method with unknown error', function () {
+    mockContainerPath('/home/foo/project');
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $class->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'newLine' => null,
+        'writeln' => null,
+        'getFormatter' => Mockery::mock(OutputFormatterInterface::class, [
+            'hasStyle' => false,
+            'setStyle' => null,
+        ]),
+    ]));
+
+    $class->output->shouldReceive('error')->once()->with('Something went wrong while updating the application!');
+
+    $class->handleException($exception);
+});
+
+test('handle exception method with unknown error throws when verbose', function () {
+    mockContainerPath('/home/foo/project');
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $class->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => true,
+        'newLine' => null,
+        'writeln' => null,
+        'getFormatter' => Mockery::mock(OutputFormatterInterface::class, [
+            'hasStyle' => false,
+            'setStyle' => null,
+        ]),
+    ]));
+
+    $class->output->shouldReceive('error')->once()->with('Something went wrong while updating the application!');
+
+    $this->expectException(RuntimeException::class);
+    $this->expectExceptionMessage('Error message');
+
+    $class->handleException($exception);
 });
 
 test('public key hash identifier', function () {
