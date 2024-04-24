@@ -41,13 +41,11 @@ test('asset class throws an exception when required fields are missing', functio
 })->throws(InvalidArgumentException::class);
 
 test('data class throws an exception when required field is missing', function () {
-    $data = $this->data;
-    array_shift($data);
-    new GitHubReleaseData($data);
+    array_shift($this->data);
+    new GitHubReleaseData($this->data);
 })->throws(InvalidArgumentException::class);
 
 test('asset class throws an exception when required field is missing', function () {
-    $data = $this->data['assets'][0];
-    array_shift($data);
-    new GitHubReleaseAsset($data);
+    array_shift($this->data['assets'][0]);
+    new GitHubReleaseAsset($this->data['assets'][0]);
 })->throws(InvalidArgumentException::class);
