@@ -49,6 +49,6 @@ class GitHubReleaseData
 
     public function getAsset(string $name): GitHubReleaseAsset
     {
-        return $this->assets[$name];
+        return $this->assets[$name] ?? throw new InvalidArgumentException('Asset not found: '.$name);
     }
 }

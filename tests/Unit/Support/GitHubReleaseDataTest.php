@@ -52,7 +52,7 @@ test('getAsset method throws an exception when asset is not found', function () 
     $release = new GitHubReleaseData($this->data);
 
     $release->getAsset('non-existent-asset');
-})->throws(TypeError::class);
+})->throws(InvalidArgumentException::class);
 
 test('data class throws an exception when required fields are missing', function () {
     new GitHubReleaseData([]);
