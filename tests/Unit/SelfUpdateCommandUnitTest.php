@@ -3,6 +3,7 @@
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
 use App\Commands\Internal\Support\GitHubReleaseData;
+use Symfony\Component\Console\Output\OutputInterface;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],
@@ -180,6 +181,42 @@ test('get latest release information', function () {
         ->and($result['assets'])->each->toHaveKeys(['name', 'url']);
 });
 
+test('print newline if verbose when verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnTrue();
+    $class->output->shouldReceive('writeln')->once()->with('');
+
+    $class->printNewlineIfVerbose();
+});
+
+test('print newline if verbose when not verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnFalse();
+    $class->output->shouldNotReceive('writeln');
+
+    $class->printNewlineIfVerbose();
+});
+
+test('debug helper prints debug when verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnTrue();
+    $class->output->shouldReceive('writeln')->once()->with('<fg=gray>DEBUG:</> Debug message');
+
+    $class->debug('Debug message');
+});
+
+test('debug helper does not print debug when not verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnFalse();
+    $class->output->shouldNotReceive('writeln');
+
+    $class->debug('Debug message');
+});
+
 /**
  * @noinspection PhpIllegalPsrClassPathInspection
  *
@@ -211,6 +248,8 @@ test('get latest release information', function () {
  */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
+    public $output;
+
     public function __construct()
     {
         parent::__construct();
