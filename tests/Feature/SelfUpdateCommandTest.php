@@ -51,7 +51,15 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
     protected function makeGitHubApiResponse(): string
     {
-        return file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
+        $contents = file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
+        $contents = str_replace('v0.7.61', $this->latestVersion, $contents);
+
+        return ($contents);
+    }
+
+    protected function getAppVersion(): string
+    {
+        return $this->appVersion;
     }
 }
 
