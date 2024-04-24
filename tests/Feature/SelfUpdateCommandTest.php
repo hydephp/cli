@@ -2,7 +2,7 @@
 
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Illuminate\Console\BufferedConsoleOutput;
 use Illuminate\Container\Container;
 
 // We want to run everything in a clean temporary directory
@@ -40,7 +40,7 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 }
 
 /** Buffered output that "interacts" with IO {@see \Illuminate\Console\Concerns\InteractsWithIO} */
-class MockBufferedOutput extends BufferedOutput
+class MockBufferedOutput extends BufferedConsoleOutput
 {
     public function error($string, $verbosity = null): void
     {
