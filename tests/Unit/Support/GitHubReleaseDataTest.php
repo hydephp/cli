@@ -18,3 +18,15 @@ it('creates a GitHubReleaseAsset object from JSON data', function () {
 
     expect($asset)->toBeInstanceOf(GitHubReleaseAsset::class);
 });
+
+test('data class throws an exception when required fields are missing', function () {
+    $data = [];
+
+    new GitHubReleaseData($data);
+})->throws(InvalidArgumentException::class);
+
+test('asset class throws an exception when required fields are missing', function () {
+    $data = [];
+
+    new GitHubReleaseAsset($data);
+})->throws(InvalidArgumentException::class);
