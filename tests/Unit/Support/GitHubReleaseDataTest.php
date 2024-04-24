@@ -18,9 +18,8 @@ it('creates a GitHubReleaseAsset object from JSON data', function () {
 });
 
 it('constructs semver tag', function () {
-    $release = new GitHubReleaseData($this->data);
-
-    expect($release->tag)->toBe('v1.0.0');
+    expect((new GitHubReleaseData($this->data))->tag)
+        ->toBe('v1.0.0');
 });
 
 it('constructs assets', function () {
