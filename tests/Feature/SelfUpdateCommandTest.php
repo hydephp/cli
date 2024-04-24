@@ -23,7 +23,6 @@ beforeEach(function () use ($path) {
         throw new RuntimeException('The directory already exists. Please remove it first.');
     } else {
         mkdir($path, 0777, true);
-        file_put_contents($path.'/hyde.phar', '<?php echo "Hyde v1.0.0";');
     }
 
     $mock = Mockery::mock(Container::class);
@@ -68,6 +67,8 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
         $this->input = Mockery::mock(ArrayInput::class, ['getOption' => false]);
         $this->output = new MockBufferedOutput();
+
+        file_put_contents(base_path().'/hyde.phar', '<?php echo "Hyde '.$mockAppVersion.'";');
     }
 
     protected function findApplicationPath(): string
