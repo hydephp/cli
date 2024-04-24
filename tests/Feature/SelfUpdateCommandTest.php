@@ -2,6 +2,7 @@
 
 /** @noinspection PhpIllegalPsrClassPathInspection */
 /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
+/** @noinspection PhpUnnecessaryLocalVariableInspection */
 
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
@@ -73,7 +74,7 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $contents = file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json');
         $contents = str_replace('v0.7.61', $this->latestVersion, $contents);
 
-        return ($contents);
+        return $contents;
     }
 
     protected function getAppVersion(): string
