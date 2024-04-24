@@ -209,7 +209,7 @@ class SelfUpdateCommand extends Command
         };
 
         $suffix = match ($state) {
-            self::STATE_BEHIND => sprintf('(<comment>v%s</comment> <fg=gray>-></> <comment>%s</comment>)', $this->getAppVersion(), $this->release->tag),
+            self::STATE_BEHIND => sprintf('(<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $this->getAppVersion(), $this->release->tag),
             self::STATE_UP_TO_DATE => sprintf('(<comment>%s</comment>)', $this->release->tag),
             self::STATE_AHEAD => sprintf('(<comment>%s</comment>)', $this->getAppVersion()),
         };
