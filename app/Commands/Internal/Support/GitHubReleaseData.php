@@ -8,8 +8,10 @@ use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 use function implode;
+use function array_map;
 use function array_keys;
 use function array_diff;
+use function array_combine;
 
 /**
  * @internal Helper class for the self-update command to wrap the GitHub release data API response.
@@ -18,9 +20,22 @@ use function array_diff;
  */
 class GitHubReleaseData
 {
+    /** @var string The SemVer tag of the release */
+    public readonly string $tag;
+
+    /** @var array<string, \App\Commands\Internal\Support\GitHubReleaseAsset> The assets of the release, keyed by their name */
+    public readonly array $assets;
+
     public function __construct(array $data)
     {
         $this->validate($data);
+
+        $this->tag = $data['tag_name'];
+
+        $this->assets = array_combine(
+            array_map(fn (array $asset) => $asset['name'], $data['assets']),
+            array_map(fn (array $asset) => new GitHubReleaseAsset($asset), $data['assets'])
+        );
     }
 
     protected function validate(array $data): void
