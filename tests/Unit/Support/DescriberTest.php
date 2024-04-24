@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 use App\Commands\Internal\Describer;
+use PHPUnit\Framework\MockObject\MockObject;
 
 it('sorts the commands properly', function () {
     $commands = createCommandMocks(['aaa', 'new', 'bbb']);
@@ -21,7 +22,7 @@ it('sorts the commands properly with different starting order', function () {
 
 function createCommandMocks(array $names): array
 {
-    return array_map(function (string $name): Command {
+    return array_map(function (string $name): MockObject {
         $command = test()->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
             ->getMock();
