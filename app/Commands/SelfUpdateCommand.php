@@ -260,7 +260,7 @@ class SelfUpdateCommand extends Command
         $phar = $tempPath.'.phar';
         $this->downloadFile($this->release->getAsset('hyde')->url, $phar);
 
-        if (! extension_loaded('openssl')) {
+        if (! extension_loaded('openssl') || config('app.openssl_verify') === false) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
             $signature = $tempPath.'.sig';
