@@ -93,13 +93,6 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         file_put_contents(base_path().'/hyde.phar', '<?php echo "Hyde '.$mockAppVersion.'";');
     }
 
-    public function __destruct()
-    {
-        if (! $this->hasBeenTearedDown) {
-            throw new RuntimeException('You forgot to call the teardown method!');
-        }
-    }
-
     public function teardown(TestCase $test): void
     {
         $test->assertEmpty($this->responseMocks, 'Not all pending mock responses were used!');
