@@ -15,7 +15,6 @@
         </include>
         <exclude>
             <directory>./app/storage</directory>
-            <file>./app/config.php</file>
         </exclude>
     </source>
 </phpunit>

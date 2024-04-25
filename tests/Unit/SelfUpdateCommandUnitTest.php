@@ -2,6 +2,9 @@
 
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
+use App\Commands\Internal\Support\GitHubReleaseData;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],
@@ -60,6 +63,19 @@ test('get debug environment', function () {
         ->and($result)->toContain('Operating system:    ');
 });
 
+test('createIssueTemplateLink method builds issue URL', function () {
+    mockContainerPath('foo');
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $result = $class->createIssueTemplateLink($exception);
+
+    expect($result)->toBeString()
+        ->toStartWith('https://github.com/hydephp/cli/issues/new?title=')
+        ->toContain(urlencode('Error while self-updating the application'))
+        ->toContain(urlencode($class->stripPersonalInformation($class->getIssueMarkdown($exception))));
+});
+
 it('strips personal information from markdown', function () {
     $user = getenv('USER') ?: getenv('USERNAME') ?: 'user';
     mockContainerPath("/home/$user/project");
@@ -115,6 +131,70 @@ test('get issue markdown method', function () {
         ->and($result)->toContain('Context');
 });
 
+test('handle exception method with known error', function () {
+    mockContainerPath('/home/foo/project');
+    $class = new InspectableSelfUpdateCommand();
+    $message = 'The application path is not writable. Please rerun the command with elevated privileges.';
+    $exception = new RuntimeException($message, 0);
+
+    $class->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'newLine' => null,
+        'writeln' => null,
+        'getFormatter' => Mockery::mock(OutputFormatterInterface::class, [
+            'hasStyle' => false,
+            'setStyle' => null,
+        ]),
+    ]));
+
+    $class->output->shouldReceive('error')->once()->with($message);
+
+    $class->handleException($exception);
+});
+
+test('handle exception method with unknown error', function () {
+    mockContainerPath('/home/foo/project');
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $class->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'newLine' => null,
+        'writeln' => null,
+        'getFormatter' => Mockery::mock(OutputFormatterInterface::class, [
+            'hasStyle' => false,
+            'setStyle' => null,
+        ]),
+    ]));
+
+    $class->output->shouldReceive('error')->once()->with('Something went wrong while updating the application!');
+
+    $class->handleException($exception);
+});
+
+test('handle exception method with unknown error throws when verbose', function () {
+    mockContainerPath('/home/foo/project');
+    $class = new InspectableSelfUpdateCommand();
+    $exception = new RuntimeException('Error message');
+
+    $class->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => true,
+        'newLine' => null,
+        'writeln' => null,
+        'getFormatter' => Mockery::mock(OutputFormatterInterface::class, [
+            'hasStyle' => false,
+            'setStyle' => null,
+        ]),
+    ]));
+
+    $class->output->shouldReceive('error')->once()->with('Something went wrong while updating the application!');
+
+    $this->expectException(RuntimeException::class);
+    $this->expectExceptionMessage('Error message');
+
+    $class->handleException($exception);
+});
+
 test('public key hash identifier', function () {
     $publicKey = (new InspectableSelfUpdateCommand())->publicKey();
     $identifier = strtoupper(substr(hash('sha256', $publicKey."\n"), 0, 40));
@@ -166,9 +246,76 @@ test('get latest release information', function () {
         ->and($result['assets'])->each->toHaveKeys(['name', 'url']);
 });
 
-/** @noinspection PhpIllegalPsrClassPathInspection */
+test('print newline if verbose when verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnTrue();
+    $class->output->shouldReceive('writeln')->once()->with('');
+
+    $class->printNewlineIfVerbose();
+});
+
+test('print newline if verbose when not verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnFalse();
+    $class->output->shouldNotReceive('writeln');
+
+    $class->printNewlineIfVerbose();
+});
+
+test('debug helper prints debug when verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnTrue();
+    $class->output->shouldReceive('writeln')->once()->with('<fg=gray>DEBUG:</> Debug message');
+
+    $class->debug('Debug message');
+});
+
+test('debug helper does not print debug when not verbose', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('output', Mockery::mock(OutputInterface::class));
+    $class->output->shouldReceive('isVerbose')->andReturnFalse();
+    $class->output->shouldNotReceive('writeln');
+
+    $class->debug('Debug message');
+});
+
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ *
+ * @method GitHubReleaseData getLatestReleaseInformationFromGitHub()
+ * @method string makeGitHubApiResponse()
+ * @method string getUserAgent()
+ * @method array parseVersion(string $semver)
+ * @method int compareVersions(array $currentVersion, array $latestVersion)
+ * @method string findApplicationPath()
+ * @method void printVersionStateInformation(int $state)
+ * @method void updateApplication(string $strategy)
+ * @method string determineUpdateStrategy()
+ * @method void updateDirectly()
+ * @method void downloadFile(string $url, string $destination)
+ * @method bool verifySignature(string $phar, string $signature)
+ * @method void replaceApplication(string $downloadedFile)
+ * @method void moveFile(string $downloadedFile, string $applicationPath)
+ * @method void updateViaComposer()
+ * @method array runComposerProcess()
+ * @method int runComposerWindowsProcess()
+ * @method void debug(string $message)
+ * @method void printNewlineIfVerbose()
+ * @method void handleException(Throwable $exception)
+ * @method string createIssueTemplateLink(Throwable $exception)
+ * @method string buildUrl(string $url, array $params)
+ * @method string getDebugEnvironment()
+ * @method string getIssueMarkdown(Throwable $exception)
+ * @method string stripPersonalInformation(string $markdown)
+ * @method string publicKey()
+ */
 class InspectableSelfUpdateCommand extends SelfUpdateCommand
 {
+    public $output;
+
     public function __construct()
     {
         parent::__construct();

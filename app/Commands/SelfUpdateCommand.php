@@ -107,7 +107,7 @@ class SelfUpdateCommand extends Command
             $this->debug('Getting the latest release information from GitHub...');
             $this->release = $this->getLatestReleaseInformationFromGitHub();
 
-            $currentVersion = $this->parseVersion(Application::APP_VERSION);
+            $currentVersion = $this->parseVersion($this->getAppVersion());
             $this->debug('Current version: v'.implode('.', $currentVersion));
 
             $latestVersion = $this->parseVersion($this->release->tag);
@@ -138,45 +138,12 @@ class SelfUpdateCommand extends Command
             passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
-            exit(0);
+            $this->exit(0);
         } catch (Throwable $exception) {
-            // Handle known exceptions
-            if ($exception instanceof RuntimeException) {
-                $known = [
-                    'The application path is not writable. Please rerun the command with elevated privileges.',
-                    'The application path is not writable. Please rerun the command with elevated privileges (e.g. using sudo).',
-                    'The Curl extension is required to use the self-update command.',
-                ];
-
-                if (in_array($exception->getMessage(), $known, true)) {
-                    $this->output->error($exception->getMessage());
-
-                    return Command::FAILURE;
-                }
-            }
-
-            // Handle unknown exceptions
-            $this->output->error('Something went wrong while updating the application!');
-
-            $this->line(" <error>{$exception->getMessage()}</error> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
-
-            if (! $this->output->isVerbose()) {
-                $this->line(' <fg=gray>For more information, run the command again with the `-v` option to throw the exception.</>');
-            }
-
-            $this->newLine();
-            $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
-
-            $this->line(sprintf('<info>%s</info> <href=%s>%s</>', 'Please report this issue on GitHub so we can fix it!',
-                $this->createIssueTemplateLink($exception), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application'
-            ));
-
-            if ($this->output->isVerbose()) {
-                throw $exception;
-            }
-
-            return Command::FAILURE;
+            return $this->handleException($exception);
         }
+
+        return Command::SUCCESS;
     }
 
     protected function getLatestReleaseInformationFromGitHub(): GitHubReleaseData
@@ -197,7 +164,7 @@ class SelfUpdateCommand extends Command
 
     protected function getUserAgent(): string
     {
-        return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', Application::APP_VERSION);
+        return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', $this->getAppVersion());
     }
 
     /** @return array{major: int, minor: int, patch: int} */
@@ -206,6 +173,11 @@ class SelfUpdateCommand extends Command
         return array_combine(['major', 'minor', 'patch'],
             array_map('intval', explode('.', $semver))
         );
+    }
+
+    protected function getAppVersion(): string
+    {
+        return Application::APP_VERSION;
     }
 
     /** @return self::STATE_* */
@@ -238,11 +210,13 @@ class SelfUpdateCommand extends Command
             self::STATE_AHEAD => 'You are using a development version',
         };
 
-        if ($state === self::STATE_BEHIND) {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $message, 'v'.Application::APP_VERSION, $this->release->tag));
-        } else {
-            $this->line(sprintf('<info>%s</info> (<comment>%s</comment>)', $message, $this->release->tag));
-        }
+        $suffix = match ($state) {
+            self::STATE_BEHIND => sprintf('(<comment>%s</comment> <fg=gray>-></> <comment>%s</comment>)', $this->getAppVersion(), $this->release->tag),
+            self::STATE_UP_TO_DATE => sprintf('(<comment>%s</comment>)', $this->release->tag),
+            self::STATE_AHEAD => sprintf('(<comment>%s</comment>)', $this->getAppVersion()),
+        };
+
+        $this->line("<info>$message</info> $suffix");
     }
 
     /** @param  self::STRATEGY_*  $strategy */
@@ -287,12 +261,13 @@ class SelfUpdateCommand extends Command
         // Download the latest release from GitHub
         $phar = $tempPath.'.phar';
         $this->downloadFile($this->release->getAsset('hyde')->url, $phar);
-        $signature = $tempPath.'.sig';
-        $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
 
-        if (! extension_loaded('openssl')) {
+        if (! extension_loaded('openssl') || config('app.openssl_verify') === false) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
+            $signature = $tempPath.'.sig';
+            $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
+
             $this->debug('Verifying the signature...');
             $isValid = $this->verifySignature($phar, $signature);
 
@@ -408,7 +383,7 @@ class SelfUpdateCommand extends Command
         }
 
         if ($exitCode !== 0) {
-            exit($exitCode);
+            $this->exit($exitCode);
         }
     }
 
@@ -419,7 +394,7 @@ class SelfUpdateCommand extends Command
 
         if (PHP_OS_FAMILY === 'Windows') {
             // We need to exit here so we can release the binary as Composer can't modify it when we are using it
-            exit($this->runComposerWindowsProcess());
+            $this->exit($this->runComposerWindowsProcess());
         }
 
         $output = [];
@@ -469,6 +444,50 @@ class SelfUpdateCommand extends Command
         $this->debug('');
     }
 
+    protected function handleException(Throwable $exception): int
+    {
+        // Handle known exceptions
+        if ($exception instanceof RuntimeException) {
+            $known = [
+                'The application path is not writable. Please rerun the command with elevated privileges.',
+                'The application path is not writable. Please rerun the command with elevated privileges (e.g. using sudo).',
+                'The Curl extension is required to use the self-update command.',
+            ];
+
+            if (in_array($exception->getMessage(), $known, true)) {
+                $this->output->error($exception->getMessage());
+
+                return Command::FAILURE;
+            }
+        }
+
+        return $this->handleUnknownException($exception);
+    }
+
+    protected function handleUnknownException(Throwable $exception): int
+    {
+        $this->output->error('Something went wrong while updating the application!');
+
+        $this->line(" <error>{$exception->getMessage()}</error> on line <comment>{$exception->getLine()}</comment> in file <comment>{$exception->getFile()}</comment>");
+
+        if (! $this->output->isVerbose()) {
+            $this->line(' <fg=gray>For more information, run the command again with the `-v` option to throw the exception.</>');
+        }
+
+        $this->newLine();
+        $this->warn('As the self-update command is experimental, this may be a bug within the command itself.');
+
+        $this->line(sprintf('<info>%s</info> <href=%s>%s</>', 'Please report this issue on GitHub so we can fix it!',
+            $this->createIssueTemplateLink($exception), 'https://github.com/hydephp/cli/issues/new?title=Error+while+self-updating+the+application'
+        ));
+
+        if ($this->output->isVerbose()) {
+            throw $exception;
+        }
+
+        return Command::FAILURE;
+    }
+
     /**
      * The public key used to verify the signature of the downloaded file.
      *
@@ -499,5 +518,11 @@ class SelfUpdateCommand extends Command
         Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
         -----END PUBLIC KEY-----
         TXT;
+    }
+
+    /** @noinspection PhpNoReturnAttributeCanBeAddedInspection */
+    protected function exit(int $exitCode): void
+    {
+        exit($exitCode);
     }
 }
