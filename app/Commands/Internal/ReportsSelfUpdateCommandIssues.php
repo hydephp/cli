@@ -38,7 +38,7 @@ trait ReportsSelfUpdateCommandIssues
     protected function getDebugEnvironment(): string
     {
         return implode("\n", [
-            'Application version: v'.Application::APP_VERSION,
+            'Application version: v'.$this->getAppVersion(),
             'PHP version:         v'.PHP_VERSION,
             'Operating system:    '.PHP_OS,
         ]);
@@ -84,6 +84,6 @@ trait ReportsSelfUpdateCommandIssues
         // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
         $markdown = str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
 
-        return ($markdown);
+        return $markdown;
     }
 }
