@@ -11,7 +11,6 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
-use JetBrains\PhpStorm\NoReturn;
 use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
@@ -143,6 +142,8 @@ class SelfUpdateCommand extends Command
         } catch (Throwable $exception) {
             return $this->handleException($exception);
         }
+
+        return Command::SUCCESS;
     }
 
     protected function getLatestReleaseInformationFromGitHub(): GitHubReleaseData
@@ -519,7 +520,7 @@ class SelfUpdateCommand extends Command
         TXT;
     }
 
-    #[NoReturn]
+    /** @noinspection PhpNoReturnAttributeCanBeAddedInspection */
     protected function exit(int $exitCode): void
     {
         exit($exitCode);
