@@ -7,6 +7,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Hyde\Foundation\HydeKernel;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
@@ -64,6 +65,30 @@ test('handle when ahead of latest version', function () {
     $command->teardown($this);
 });
 
+test('handle when behind latest version', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
+    $command->mockApiResponse('https://github.com/hydephp/cli/releases/download/v1.2.3/hyde', '<?php echo "Hyde v1.2.3";');
+//    $command->mockApiResponse('https://github.com/hydephp/cli/releases/download/v1.2.3/signature.bin', 'signature');
+    app()->shouldReceive('make')->with('config', [])->andReturn(new \Illuminate\Config\Repository([
+        'app.openssl_verify' => false,
+    ]));
+
+    expect($command->handle())->toBe(0);
+
+    $output = 'Checking for updates... A new version is available (v1.0.0 -> v1.2.3)
+Updating to the latest version...
+Skipping signature verification as the OpenSSL extension is not available.
+The application has been updated successfully.';
+
+    expect(trim(HydeKernel::normalizeNewlines($command->output->fetch())))->toBe($output);
+
+    $this->assertTrue($command->madeApiRequest);
+    $this->assertTrue(File::exists(base_path().'/hyde.phar'));
+    $this->assertSame('<?php echo "Hyde v1.2.3";', file_get_contents(base_path().'/hyde.phar'));
+
+    $command->teardown($this);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
@@ -79,6 +104,7 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     protected array $responseMocks = [];
 
     protected bool $hasBeenTearedDown = false;
+    protected ?int $exitedWithCode = null;
 
     public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0')
     {
@@ -98,6 +124,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $test->assertEmpty($this->responseMocks, 'Not all pending mock responses were used!');
 
         $this->hasBeenTearedDown = true;
+    }
+
+    public function mockApiResponse(string $url, string $contents): void
+    {
+        $this->responseMocks[$url] = $contents;
     }
 
     protected function findApplicationPath(): string
@@ -125,6 +156,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         file_put_contents($destination, $this->responseMocks[$url] ?? throw new RuntimeException('No mock response for '.$url));
 
         unset($this->responseMocks[$url]);
+    }
+
+    protected function exit(int $exitCode): void
+    {
+        $this->exitedWithCode = $exitCode;
     }
 }
 
