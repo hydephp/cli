@@ -11,6 +11,7 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use JetBrains\PhpStorm\NoReturn;
 use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
@@ -138,7 +139,7 @@ class SelfUpdateCommand extends Command
             passthru('hyde --version --ansi');
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
-            exit(0);
+            $this->exit(0);
         } catch (Throwable $exception) {
             return $this->handleException($exception);
         }
@@ -381,7 +382,7 @@ class SelfUpdateCommand extends Command
         }
 
         if ($exitCode !== 0) {
-            exit($exitCode);
+            $this->exit($exitCode);
         }
     }
 
@@ -392,7 +393,7 @@ class SelfUpdateCommand extends Command
 
         if (PHP_OS_FAMILY === 'Windows') {
             // We need to exit here so we can release the binary as Composer can't modify it when we are using it
-            exit($this->runComposerWindowsProcess());
+            $this->exit($this->runComposerWindowsProcess());
         }
 
         $output = [];
@@ -516,5 +517,11 @@ class SelfUpdateCommand extends Command
         Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
         -----END PUBLIC KEY-----
         TXT;
+    }
+
+    #[NoReturn]
+    protected function exit(int $exitCode): void
+    {
+        exit($exitCode);
     }
 }
