@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1713737298,
-        "content_hash": "f09cfd5770c55eebb558cc71606441f0103579f0543308bf3c220e2bdad54dba",
-        "total_views": 2910,
-        "total_clones": 18128,
-        "total_installs": 130
+        "last_updated": 1714342052,
+        "content_hash": "02c695b932c443a746c1d1384d443a5b5e9d1745d965f0103203c7e7f95b969f",
+        "total_views": 3173,
+        "total_clones": 20712,
+        "total_installs": 153
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -603,11 +603,73 @@
                 "uniques": 1
             },
             "clones": {
-                "count": 382,
+                "count": 383,
                 "uniques": 13
             }
         },
         "2024-04-14T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-04-22T00:00:00Z": {
+            "views": {
+                "count": 6,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 153,
+                "uniques": 6
+            }
+        },
+        "2024-04-23T00:00:00Z": {
+            "views": {
+                "count": 118,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1069,
+                "uniques": 24
+            }
+        },
+        "2024-04-24T00:00:00Z": {
+            "views": {
+                "count": 107,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 1144,
+                "uniques": 21
+            }
+        },
+        "2024-04-25T00:00:00Z": {
+            "views": {
+                "count": 28,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 212,
+                "uniques": 9
+            }
+        },
+        "2024-04-26T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 4,
+                "uniques": 3
+            }
+        },
+        "2024-04-28T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 1
+            }
+        },
+        "2024-04-27T00:00:00Z": {
             "clones": {
                 "count": 1,
                 "uniques": 1
@@ -1112,8 +1174,8 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 171,
-                    "uniques": 2
+                    "count": 246,
+                    "uniques": 3
                 },
                 "b63bcfa9c9a75bfc518c20cb8b907c444d4086e8bed0ba7e7956366d7ebaf54a": {
                     "path": "\/hydephp\/cli\/actions\/runs\/7151552340",
@@ -1124,13 +1186,13 @@
                 "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
                     "path": "\/hydephp\/cli\/pulls",
                     "title": "Pull requests \u00b7 hydephp\/cli",
-                    "count": 129,
+                    "count": 155,
                     "uniques": 1
                 },
                 "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
                     "path": "\/hydephp\/cli\/actions",
                     "title": "Workflow runs \u00b7 hydephp\/cli",
-                    "count": 72,
+                    "count": 80,
                     "uniques": 1
                 },
                 "6f19f298d5528d4bd516dc40573422c8541103adafd130e074dcd91e1a1d8882": {
@@ -1154,7 +1216,7 @@
                 "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
                     "path": "\/hydephp\/cli\/issues",
                     "title": "Issues \u00b7 hydephp\/cli",
-                    "count": 15,
+                    "count": 21,
                     "uniques": 1
                 },
                 "3cc9d1a1984aa7147f4aa192f93af83c04a6e5a9b4d9a870bea44054da95beb0": {
@@ -1174,18 +1236,34 @@
                     "title": "Improve the self-update command by caendesilva \u00b7 Pull Request #72 \u00b7 hydephp\/cli",
                     "count": 9,
                     "uniques": 1
+                },
+                "d062d764aa0fed732ac820f975845487f1ad3f2f3b3de49d4aab30785d713297": {
+                    "path": "\/hydephp\/cli\/pull\/170",
+                    "title": "Internal: Improve test suite by caendesilva \u00b7 Pull Request #170 \u00b7 hydephp\/cli",
+                    "count": 22,
+                    "uniques": 1
+                },
+                "7714204a6f109e93a6640ed5bdb3ec21e21eaca710f647cba8287dac5920c9fa": {
+                    "path": "\/hydephp\/cli\/pull\/154",
+                    "title": "Verify Phar signatures on self update by caendesilva \u00b7 Pull Request #154 \u00b7 hy...",
+                    "count": 21,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "Google": {
-                    "count": 2,
+                    "count": 4,
                     "uniques": 2
                 },
                 "github.com": {
-                    "count": 8,
+                    "count": 18,
                     "uniques": 1
                 },
                 "packagist.org": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "app.codecov.io": {
                     "count": 1,
                     "uniques": 1
                 }
