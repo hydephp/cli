@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1714342052,
-        "content_hash": "02c695b932c443a746c1d1384d443a5b5e9d1745d965f0103203c7e7f95b969f",
-        "total_views": 3173,
-        "total_clones": 20712,
+        "last_updated": 1714946848,
+        "content_hash": "aba099ba025e42c795b486672638f2302cb326cb25adc7a957570224757231a2",
+        "total_views": 3192,
+        "total_clones": 20822,
         "total_installs": 153
     },
     "traffic": {
@@ -667,11 +667,49 @@
             "views": {
                 "count": 3,
                 "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
             }
         },
         "2024-04-27T00:00:00Z": {
             "clones": {
                 "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-04-29T00:00:00Z": {
+            "views": {
+                "count": 19,
+                "uniques": 4
+            },
+            "clones": {
+                "count": 98,
+                "uniques": 6
+            }
+        },
+        "2024-04-30T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-05-01T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-05-02T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-05-03T00:00:00Z": {
+            "clones": {
+                "count": 2,
                 "uniques": 1
             }
         }
@@ -1262,6 +1300,84 @@
                 "packagist.org": {
                     "count": 1,
                     "uniques": 1
+                },
+                "app.codecov.io": {
+                    "count": 1,
+                    "uniques": 1
+                }
+            }
+        },
+        "2024-05": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 59,
+                    "uniques": 3
+                },
+                "d062d764aa0fed732ac820f975845487f1ad3f2f3b3de49d4aab30785d713297": {
+                    "path": "\/hydephp\/cli\/pull\/170",
+                    "title": "Internal: Improve test suite by caendesilva \u00b7 Pull Request #170 \u00b7 hydephp\/cli",
+                    "count": 22,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 19,
+                    "uniques": 1
+                },
+                "7714204a6f109e93a6640ed5bdb3ec21e21eaca710f647cba8287dac5920c9fa": {
+                    "path": "\/hydephp\/cli\/pull\/154",
+                    "title": "Verify Phar signatures on self update by caendesilva \u00b7 Pull Request #154 \u00b7 hy...",
+                    "count": 17,
+                    "uniques": 1
+                },
+                "fc1c871f8a95b520a029c7977d185d301c62d1a9f2c04805896401e84b2e6b0e": {
+                    "path": "\/hydephp\/cli\/pull\/161",
+                    "title": "Use a more fault tolerant release file access by caendesilva \u00b7 Pull Request #...",
+                    "count": 12,
+                    "uniques": 1
+                },
+                "45f89a160a937b2f0f491c593e025c8f8006bfbe6c6b614cdef945a69b95cbcc": {
+                    "path": "\/hydephp\/cli\/pull\/165",
+                    "title": "Refactor self-update command code to extract helper classes by caendesilva \u00b7 ...",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "39a201890878dc65cbf96f718dfd87c3e4c24bb5bf41cbd4338749b285115910": {
+                    "path": "\/hydephp\/cli\/pull\/166",
+                    "title": "HydeCLI v0.7.64 by github-actions[bot] \u00b7 Pull Request #166 \u00b7 hydephp\/cli",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "ac3f834793221c3acde0d5b39aca81c05a8e7902262232dac6cae4c6cf94640c": {
+                    "path": "\/hydephp\/cli\/pull\/167",
+                    "title": "HydeCLI v0.7.65 by github-actions[bot] \u00b7 Pull Request #167 \u00b7 hydephp\/cli",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "2b74fd47ae6e9329bd017c92f7a7196f1c41061646692fd81a5c70d10c320d60": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/7150621171",
+                    "title": "Merge pull request #17 from caendesilva\/clean-up-bootstrapping \u00b7 hydephp\/cli@...",
+                    "count": 3,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 20,
+                    "uniques": 2
+                },
+                "Google": {
+                    "count": 4,
+                    "uniques": 2
                 },
                 "app.codecov.io": {
                     "count": 1,
