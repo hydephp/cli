@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1714946848,
-        "content_hash": "aba099ba025e42c795b486672638f2302cb326cb25adc7a957570224757231a2",
-        "total_views": 3192,
-        "total_clones": 20822,
+        "last_updated": 1715551645,
+        "content_hash": "a99c4b12b4ed86092c850e1a5d7742df70069318d313bf453df399c6fe499164",
+        "total_views": 3193,
+        "total_clones": 20837,
         "total_installs": 153
     },
     "traffic": {
@@ -712,6 +712,46 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-05-07T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-05T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-05-06T00:00:00Z": {
+            "clones": {
+                "count": 6,
+                "uniques": 3
+            }
+        },
+        "2024-05-08T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-09T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-10T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -1368,12 +1408,66 @@
                     "title": "Merge pull request #17 from caendesilva\/clean-up-bootstrapping \u00b7 hydephp\/cli@...",
                     "count": 3,
                     "uniques": 1
+                },
+                "21932193aa3f8d319cf56447026ce5934dcb78b622cd80b374dfa528fbb17090": {
+                    "path": "\/hydephp\/cli\/pull\/173",
+                    "title": "Fix source code line ending normalization by caendesilva \u00b7 Pull Request #173 ...",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "3a5aa25052ccb33574828e939276a5a679c570d7148d074d9e7bc9f52db78129": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/7440990821",
+                    "title": "Sync repository traffic \u00b7 hydephp\/cli@3830f89 \u00b7 GitHub",
+                    "count": 2,
+                    "uniques": 2
+                },
+                "dd46e2d8558a7b595ec63d154ef980dbc3fb8dd7810a35d689de12901a41f5d1": {
+                    "path": "\/hydephp\/cli\/blob\/8ce913da6ff18c5f94b72649d70004bc21f9ca9b\/.gitattributes",
+                    "title": "cli\/.gitattributes at 8ce913da6ff18c5f94b72649d70004bc21f9ca9b \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "b724298012e945597c4e7ffcf37d87556a72e3c5e21708c9382d53fa3c3e7217": {
+                    "path": "\/hydephp\/cli\/blob\/master\/.gitattributes",
+                    "title": "cli\/.gitattributes at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "8cc101e2cc2df3c8ce5ef666755d339761e3861eaf3ed6de817ab641276e16f2": {
+                    "path": "\/hydephp\/cli\/edit\/master\/.gitattributes",
+                    "title": "Editing cli\/.gitattributes at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "2c0190b1c9d2ce93187d216ff5d4650122c946fb58938758e6ad98fc69989d05": {
+                    "path": "\/hydephp\/cli\/commit\/4e2817a6219dd4473e7952b022eeaad3bf03d672",
+                    "title": "Temporarily try out development self-update version \u00b7 hydephp\/cli@4e2817a",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "cb6f4e6ee9ec6489c7b4500be4cd1dfc3891a5b847e3c3c5941b11e3aa4d137c": {
+                    "path": "\/hydephp\/cli\/compare\/master...fix-source-code-line-ending-normalization",
+                    "title": "Comparing master...fix-source-code-line-ending-normalization \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "6be2844a4aa1d525a964e278fa3bff6cffc0673916fe9d10c3572a2d2aefa760": {
+                    "path": "\/hydephp\/cli\/pull\/172",
+                    "title": "Bump peter-evans\/create-pull-request from 6.0.4 to 6.0.5 by dependabot[bot] \u00b7...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "4a71ade2d2d8f0f6f02c130abceda1077e3f695f9f59f28e22b7e5eedc111395": {
+                    "path": "\/hydephp\/cli\/pull\/173\/files",
+                    "title": "Fix source code line ending normalization by caendesilva \u00b7 Pull Request #173 ...",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "github.com": {
                     "count": 20,
-                    "uniques": 2
+                    "uniques": 3
                 },
                 "Google": {
                     "count": 4,
