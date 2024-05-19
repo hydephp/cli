@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1715551645,
-        "content_hash": "a99c4b12b4ed86092c850e1a5d7742df70069318d313bf453df399c6fe499164",
+        "last_updated": 1716156632,
+        "content_hash": "1bb15793f37ab3f9d6626dd1fd5e3135d567e66f1b52cc36ce58b58dc2f8919b",
         "total_views": 3193,
-        "total_clones": 20837,
-        "total_installs": 153
+        "total_clones": 20881,
+        "total_installs": 154
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -750,6 +750,48 @@
         "2024-05-10T00:00:00Z": {
             "clones": {
                 "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-12T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-05-13T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-14T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-15T00:00:00Z": {
+            "clones": {
+                "count": 5,
+                "uniques": 2
+            }
+        },
+        "2024-05-16T00:00:00Z": {
+            "clones": {
+                "count": 31,
+                "uniques": 2
+            }
+        },
+        "2024-05-17T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-19T00:00:00Z": {
+            "clones": {
+                "count": 1,
                 "uniques": 1
             }
         }
