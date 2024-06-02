@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1716761287,
-        "content_hash": "25289a8cad7000ff04240740c1c7321932e38bb713837bc8e7315abf93d0c743",
-        "total_views": 3195,
-        "total_clones": 20895,
+        "last_updated": 1717366075,
+        "content_hash": "1ac91dbfddbac672fae574287952dfda8dc1af0c2d46047a8b9ee40660d5bc75",
+        "total_views": 3198,
+        "total_clones": 20908,
         "total_installs": 154
     },
     "traffic": {
@@ -830,6 +830,46 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-05-31T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-26T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-05-27T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 2
+            }
+        },
+        "2024-05-28T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-29T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-05-30T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -1564,6 +1604,34 @@
                     "uniques": 2
                 },
                 "app.codecov.io": {
+                    "count": 1,
+                    "uniques": 1
+                }
+            }
+        },
+        "2024-06": {
+            "paths": {
+                "7d30bbe164fd54001a14c16ed8460e9ec02fdb57e0d3df7cea7641594f5f2790": {
+                    "path": "\/hydephp\/cli\/blob\/master\/README.md",
+                    "title": "cli\/README.md at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental global Hyde binary project",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "e3e85ae5da6dbbe42569da8780f45392f39b764ddbff1b3fe12e8284f05a964c": {
+                    "path": "\/hydephp\/cli\/commit\/1ef48af1b279f7c7f367842c002fd92d66b373d1",
+                    "title": "Revert \"Convert public key to PEM format (SHA256)\" \u00b7 hydephp\/cli@1ef48af \u00b7 Gi...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "ba7f14a1f3d5ee4369293d3e47ca5df2c824cba6249a8198ae74fc57466503c1": {
+                    "path": "\/hydephp\/cli\/commit\/8eb856ad4e95ed21fca452d6147cf70a5f5a290e",
+                    "title": "Convert public key to PEM format (SHA256) \u00b7 hydephp\/cli@8eb856a \u00b7 GitHub",
                     "count": 1,
                     "uniques": 1
                 }
