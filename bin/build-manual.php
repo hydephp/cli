@@ -15,6 +15,12 @@ task('getting|got', 'command list', function (&$commands): void {
     $commands = json_decode($commands, true);
 }, $commands);
 
+task('building|built', 'Html manual', function () use ($commands): void {
+    $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
+    $names = array_filter($names, fn (string $name): bool => ! str_starts_with($name, '_'));
+    $names = array_values($names);
+});
+
 task('building|built', 'XML manual', function (): void {
     $xml = hyde_exec('list --format=xml --no-ansi');
     file_put_contents('docs/manual/manual.xml', $xml);
@@ -23,12 +29,6 @@ task('building|built', 'XML manual', function (): void {
 task('building|built', 'Markdown manual', function (): void {
     $md = hyde_exec('list --format=md --no-ansi');
     file_put_contents('docs/manual/manual.md', $md);
-});
-
-task('building|built', 'Html manual', function () use ($commands): void {
-    $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
-    $names = array_filter($names, fn (string $name): bool => ! str_starts_with($name, '_'));
-    $names = array_values($names);
 });
 
 /** Execute a command in the Hyde CLI and return the output. */
