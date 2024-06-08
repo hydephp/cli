@@ -27,6 +27,7 @@ task('building|built', 'Markdown manual', function (): void {
 
 task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
+    $names = array_filter($names, fn (string $name): bool => ! str_starts_with($name, '_'));
 });
 
 /** Execute a command in the Hyde CLI and return the output. */
