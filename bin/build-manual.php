@@ -25,6 +25,10 @@ task('building|built', 'Markdown manual', function (): void {
     file_put_contents('docs/manual/manual.md', $md);
 });
 
+task('building|built', 'Html manual', function (): void {
+    //
+});
+
 /** Execute a command in the Hyde CLI and return the output. */
 function hyde_exec(string $command): string
 {
