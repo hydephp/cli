@@ -144,3 +144,8 @@ CSS;
 
     return rtrim($theme)."\n    ";
 }
+
+function get_ansi_theme(): ThemeInterface
+{
+    return new ClassicTheme();
+}
