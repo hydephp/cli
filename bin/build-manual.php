@@ -19,6 +19,10 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
     $names = array_filter($names, fn (string $name): bool => ! str_starts_with($name, '_'));
     $names = array_values($names);
+
+    foreach ($names as $name) {
+        //
+    }
 });
 
 task('building|built', 'XML manual', function (): void {
