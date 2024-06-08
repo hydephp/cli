@@ -10,22 +10,27 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       pages: write
       id-token: write
+
     steps:
       - uses: actions/checkout@v3
+
       - name: Create site from Readme
         run: |
-          mkdir _pages 
-          mv README.md _pages/index.md 
+          mkdir _pages
+          mv README.md _pages/index.md
           rm -rf !'_pages'
+
       - name: Create Hyde config
         run: |
           echo 'name: HydePHP Standalone CLI' >> hyde.yml
           echo 'load_app_styles_from_cdn: true' >> hyde.yml
           echo "scripts: '<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/atom-one-dark.min.css\"> <script src=\"https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js\"></script> <script>hljs.highlightAll();</script> <style>.prose :where(pre) { background-color: #282c34; } </style> <style>pre code.hljs { padding: 0; }</style>'" >> hyde.yml
+
       - uses: hydephp/action@master
         with:
           deploy-to: "pages"
