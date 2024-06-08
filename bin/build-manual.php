@@ -110,6 +110,18 @@ function ansi_to_html(string $output): string
     $output = preg_replace('/\e\[(\d+)(;\d+)*m/', '</span><span class="ansi-$1">', $output);
     $output = "<span class=\"ansi-0\">$output</span>";
 
+    $lines = explode("\n", $output);
+
+    foreach ($lines as $index => $line) {
+        // Check if plaintext line exceeds 120 characters.
+        $plaintext = strip_tags($line);
+        if (strlen($plaintext) > 120) {
+            $lines[$index] = wordwrap($line, 120, "\n", true);
+        }
+    }
+
+    $output = implode("\n", $lines);
+
     return <<<HTML
     <pre class="terminal-screen">$output</pre>
     HTML;
