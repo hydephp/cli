@@ -116,7 +116,24 @@ function ansi_to_html(string $output): string
         // Check if plaintext line exceeds 120 characters.
         $plaintext = strip_tags($line);
         if (strlen($plaintext) > 120) {
-            $lines[$index] = wordwrap($line, 120, "\n", true);
+            // Does not work due to it including formatting:
+            // $lines[$index] = wordwrap($line, 120, "\n", true);
+            // So we need to find the actual break points.
+
+            $words = explode(' ', $plaintext);
+            $line = '';
+            $length = 0;
+            foreach ($words as $word) {
+                $length += strlen($word) + 1;
+                if ($length > 120) {
+                    $line .= "\n$word";
+                    $length = strlen($word);
+                } else {
+                    $line .= " $word";
+                }
+            }
+
+            $lines[$index] = $line;
         }
     }
 
