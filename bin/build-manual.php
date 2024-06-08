@@ -15,3 +15,6 @@ function hyde_exec(string $command): string
 if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
 }
+
+$commands = hyde_exec('list --format=json');
+$commands = json_decode($commands, true);
