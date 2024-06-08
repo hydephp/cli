@@ -10,17 +10,17 @@ if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
 }
 
-task('Getting command list', 'Got command list', function (&$commands): void {
+task('getting|got', 'command list', function (&$commands): void {
     $commands = hyde_exec('list --format=json --no-ansi');
     $commands = json_decode($commands, true);
 }, $commands);
 
-task('Building XML manual', 'Built XML manual', function (): void {
+task('building|built', 'XML manual', function (): void {
     $xml = hyde_exec('list --format=xml --no-ansi');
     file_put_contents('docs/manual/manual.xml', $xml);
 });
 
-task('Building Markdown manual', 'Built Markdown manual', function (): void {
+task('building|built', 'Markdown manual', function (): void {
     $md = hyde_exec('list --format=md --no-ansi');
     file_put_contents('docs/manual/manual.md', $md);
 });
@@ -32,12 +32,20 @@ function hyde_exec(string $command): string
 }
 
 /** Run a task and output the time it took to complete. */
-function task(string $start, string $end, callable $task, &$output = null): void {
+function task(string $verb, string $subject, callable $task, &$output = null): void {
+    if (str_contains($verb, '|')) {
+        [$start, $end] = explode('|', $verb);
+    } else {
+        [$start, $end] = [$verb, $verb];
+    }
+
+    [$start, $end] = [ucfirst($start), ucfirst($end)];
+
     $timeStart = microtime(true);
-    echo "$start...";
+    echo "$start $subject...";
 
     $task($output);
 
     $time = round((microtime(true) - $timeStart) * 1000, 2);
-    echo "\r$end ($time ms)\n";
+    echo "\r$end $subject ($time ms)\n";
 }
