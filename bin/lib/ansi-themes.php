@@ -15,6 +15,11 @@ interface ThemeInterface {
      * @return string The background color to use for the terminal. (HTML color code
      */
     public static function background(): string;
+
+    /**
+     * @return string The default text color to use for the terminal. (HTML color code)
+     */
+    public static function textColor(): string;
 }
 
 class ClassicTheme implements ThemeInterface
@@ -41,5 +46,10 @@ class ClassicTheme implements ThemeInterface
     public static function background(): string
     {
         return '#000';
+    }
+
+    public static function textColor(): string
+    {
+        return '#fff';
     }
 }
