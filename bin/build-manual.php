@@ -141,5 +141,5 @@ CSS;
 
 function get_ansi_theme(): ThemeInterface
 {
-    return new ClassicTheme();
+    return new FiraTheme();
 }
