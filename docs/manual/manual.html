@@ -1,0 +1,549 @@
+<h1>build</h1>
+[33mDescription:[39m
+  Build the static site
+
+[33mUsage:[39m
+  build [options]
+
+[33mOptions:[39m
+  [32m    --run-dev[39m         Run the NPM dev script after build
+  [32m    --run-prod[39m        Run the NPM prod script after build
+  [32m    --run-prettier[39m    Format the output using NPM Prettier
+  [32m    --pretty-urls[39m     Should links in output use pretty URLs?
+  [32m    --no-api[39m          Disable API calls, for example, Torchlight
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>completion</h1>
+[33mDescription:[39m
+  Dump the shell completion script
+
+[33mUsage:[39m
+  completion [options] [--] [<shell>]
+
+[33mArguments:[39m
+  [32mshell[39m                 The shell type (e.g. "bash"), the value of the "$SHELL" env var will be used if this is not given
+
+[33mOptions:[39m
+  [32m    --debug[39m           Tail the completion debug log
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+[33mHelp:[39m
+  The [32mcompletion[39m command dumps the shell completion script required
+  to use shell autocompletion (currently, bash, fish, zsh completion are supported).
+
+  [33mStatic installation
+  -------------------[39m
+
+  Dump the script to a global completion file and restart your shell:
+
+      [32mhyde completion  | sudo tee /etc/bash_completion.d/hyde[39m
+
+  Or dump the script to a local file and source it:
+
+      [32mhyde completion  > completion.sh[39m
+
+      [33m# source the file whenever you use the project[39m
+      [32msource completion.sh[39m
+
+      [33m# or add this line at the end of your "~/.bashrc" file:[39m
+      [32msource /path/to/completion.sh[39m
+
+  [33mDynamic installation
+  --------------------[39m
+
+  Add this to the end of your shell configuration file (e.g. [32m"~/.bashrc"[39m):
+
+      [32meval "$(H:\hyde-global\hyde completion )"[39m
+
+<hr>
+
+<h1>debug</h1>
+[33mDescription:[39m
+  Print debug information
+
+[33mUsage:[39m
+  debug
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>help</h1>
+[33mDescription:[39m
+  Display help for a command
+
+[33mUsage:[39m
+  help [options] [--] [<command_name>]
+
+[33mArguments:[39m
+  [32mcommand_name[39m          The command name[33m [default: "help"][39m
+
+[33mOptions:[39m
+  [32m    --format=FORMAT[39m   The output format (txt, xml, json, or md)[33m [default: "txt"][39m
+  [32m    --raw[39m             To output raw command help
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+[33mHelp:[39m
+  The [32mhelp[39m command displays help for a given command:
+
+    [32mhyde help list[39m
+
+  You can also output the help in other formats by using the [33m--format[39m option:
+
+    [32mhyde help --format=xml list[39m
+
+  To display the list of available commands, please use the [32mlist[39m command.
+
+<hr>
+
+<h1>list</h1>
+[33mDescription:[39m
+  List commands
+
+[33mUsage:[39m
+  list [options] [--] [<namespace>]
+
+[33mArguments:[39m
+  [32mnamespace[39m             The namespace name
+
+[33mOptions:[39m
+  [32m    --raw[39m             To output raw command list
+  [32m    --format=FORMAT[39m   The output format (txt, xml, json, or md)[33m [default: "txt"][39m
+  [32m    --short[39m           To skip describing commands' arguments
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+[33mHelp:[39m
+  The [32mlist[39m command lists all commands:
+
+    [32mhyde list[39m
+
+  You can also display the commands for a specific namespace:
+
+    [32mhyde list test[39m
+
+  You can also output the information in other formats by using the [33m--format[39m option:
+
+    [32mhyde list --format=xml[39m
+
+  It's also possible to get raw list of commands (useful for embedding command runner):
+
+    [32mhyde list --raw[39m
+
+<hr>
+
+<h1>new</h1>
+[33mDescription:[39m
+  Create a new Hyde project.
+
+[33mUsage:[39m
+  new [<name>]
+
+[33mArguments:[39m
+  [32mname[39m                  The name of the project
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>rebuild</h1>
+[33mDescription:[39m
+  Run the static site builder for a single file
+
+[33mUsage:[39m
+  rebuild <path>
+
+[33mArguments:[39m
+  [32mpath[39m                  The relative file path (example: _posts/hello-world.md)
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>self-update</h1>
+[33mDescription:[39m
+  Update the standalone application to the latest version.
+
+[33mUsage:[39m
+  self-update [options]
+
+[33mOptions:[39m
+  [32m    --check[39m           Check for a new version without updating
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>serve</h1>
+[33mDescription:[39m
+  Start the realtime compiler server
+
+[33mUsage:[39m
+  serve [options]
+
+[33mOptions:[39m
+  [32m    --host[=HOST][39m                  [33m[default: "localhost"][39m
+  [32m    --port[=PORT][39m                  [33m[default: 8080][39m
+  [32m    --save-preview[=SAVE-PREVIEW][39m  Should the served page be saved to disk? (Overrides config setting)
+  [32m    --dashboard[=DASHBOARD][39m        Enable the realtime compiler dashboard. (Overrides config setting)
+  [32m    --pretty-urls[=PRETTY-URLS][39m    Enable pretty URLs. (Overrides config setting)
+  [32m    --play-cdn[=PLAY-CDN][39m          Enable the Tailwind Play CDN. (Overrides config setting)
+  [32m    --open[39m                         Open the site preview in the browser.
+  [32m-h, --help[39m                         Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m                        Do not output any message
+  [32m-V, --version[39m                      Display this application version
+  [32m    --ansi|--no-ansi[39m               Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m               Do not ask any interactive question
+  [32m    --env[=ENV][39m                    The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>validate</h1>
+[33mDescription:[39m
+  Test and validate your project to optimize your site
+
+[33mUsage:[39m
+  validate
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+[33mHelp:[39m
+  Run a series of tests to validate your setup and help you optimize your site
+
+<hr>
+
+<h1>build:rss</h1>
+[33mDescription:[39m
+  Generate the RSS feed
+
+[33mUsage:[39m
+  build:rss
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>build:search</h1>
+[33mDescription:[39m
+  Generate the documentation search index
+
+[33mUsage:[39m
+  build:search
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>build:sitemap</h1>
+[33mDescription:[39m
+  Generate the sitemap.xml
+
+[33mUsage:[39m
+  build:sitemap
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>change:sourceDirectory</h1>
+[33mDescription:[39m
+  Change the source directory for your project
+
+[33mUsage:[39m
+  change:sourceDirectory <name>
+
+[33mArguments:[39m
+  [32mname[39m                  The new source directory name
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>make:page</h1>
+[33mDescription:[39m
+  Scaffold a new Markdown, Blade, or documentation page file
+
+[33mUsage:[39m
+  make:page [options] [--] [<title>]
+
+[33mArguments:[39m
+  [32mtitle[39m                 The name of the page file to create. Will be used to generate the slug
+
+[33mOptions:[39m
+  [32m    --type[=TYPE][39m     The type of page to create (markdown, blade, or docs)[33m [default: "markdown"][39m
+  [32m    --blade[39m           Create a Blade page
+  [32m    --docs[39m            Create a Documentation page
+  [32m    --force[39m           Overwrite any existing files
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>make:post</h1>
+[33mDescription:[39m
+  Scaffold a new Markdown blog post file
+
+[33mUsage:[39m
+  make:post [options] [--] [<title>]
+
+[33mArguments:[39m
+  [32mtitle[39m                 The title for the Post. Will also be used to generate the filename
+
+[33mOptions:[39m
+  [32m    --force[39m           Should the generated file overwrite existing posts with the same filename?
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>package:discover</h1>
+[33mDescription:[39m
+  Rebuild the cached package manifest
+
+[33mUsage:[39m
+  package:discover
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>publish:configs</h1>
+[33mDescription:[39m
+  Publish the default configuration files
+
+[33mUsage:[39m
+  publish:configs
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>publish:homepage</h1>
+[33mDescription:[39m
+  Publish one of the default homepages to index.blade.php
+
+[33mUsage:[39m
+  publish:homepage [options] [--] [<homepage>]
+
+[33mArguments:[39m
+  [32mhomepage[39m              The name of the page to publish
+
+[33mOptions:[39m
+  [32m    --force[39m           Overwrite any existing files
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>publish:views</h1>
+[33mDescription:[39m
+  Publish the hyde components for customization. Note that existing files will be overwritten
+
+[33mUsage:[39m
+  publish:views [<category>]
+
+[33mArguments:[39m
+  [32mcategory[39m              The category to publish
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>route:list</h1>
+[33mDescription:[39m
+  Display all the registered routes
+
+[33mUsage:[39m
+  route:list
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>standalone:build</h1>
+[33mDescription:[39m
+  Build the standalone executable
+
+[33mUsage:[39m
+  standalone:build [options]
+
+[33mOptions:[39m
+  [32m    --build-version-suffix[=BUILD-VERSION-SUFFIX][39m  The optional build version suffix
+  [32m-h, --help[39m                                         Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m                                        Do not output any message
+  [32m-V, --version[39m                                      Display this application version
+  [32m    --ansi|--no-ansi[39m                               Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m                               Do not ask any interactive question
+  [32m    --env[=ENV][39m                                    The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m                               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>torchlight:install</h1>
+[33mDescription:[39m
+  Install the Torchlight config file into your app.
+
+[33mUsage:[39m
+  torchlight:install
+
+[33mOptions:[39m
+  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m           Do not output any message
+  [32m-V, --version[39m         Display this application version
+  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m  Do not ask any interactive question
+  [32m    --env[=ENV][39m       The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+<hr>
+
+<h1>vendor:publish</h1>
+[33mDescription:[39m
+  Publish any publishable assets from vendor packages
+
+[33mUsage:[39m
+  vendor:publish [options]
+
+[33mOptions:[39m
+  [32m    --existing[39m             Publish and overwrite only the files that have already been published
+  [32m    --force[39m                Overwrite any existing files
+  [32m    --all[39m                  Publish assets for all service providers without prompt
+  [32m    --provider[=PROVIDER][39m  The service provider that has assets you want to publish
+  [32m    --tag[=TAG][39m            One or many tags that have assets you want to publish[33m (multiple values allowed)[39m
+  [32m-h, --help[39m                 Display help for the given command. When no command is given display help for the [32mlist[39m command
+  [32m-q, --quiet[39m                Do not output any message
+  [32m-V, --version[39m              Display this application version
+  [32m    --ansi|--no-ansi[39m       Force (or disable --no-ansi) ANSI output
+  [32m-n, --no-interaction[39m       Do not ask any interactive question
+  [32m    --env[=ENV][39m            The environment the command should run under
+  [32m-v|vv|vvv, --verbose[39m       Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
