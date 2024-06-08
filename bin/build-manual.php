@@ -2,9 +2,9 @@
 
 /** @internal Build the documentation manual. */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
-chdir(__DIR__ . '/..');
+chdir(__DIR__.'/..');
 
 if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
@@ -65,7 +65,7 @@ task('building|built', 'Markdown manual', function (): void {
 /** Execute a command in the Hyde CLI and return the output. */
 function hyde_exec(string $command, bool $cache = false): string
 {
-    $cacheKey = "bin/cache/" . md5($command);
+    $cacheKey = 'bin/cache/'.md5($command);
 
     if ($cache && file_exists($cacheKey)) {
         return file_get_contents($cacheKey);
@@ -87,7 +87,8 @@ function hyde_exec(string $command, bool $cache = false): string
 }
 
 /** Run a task and output the time it took to complete. */
-function task(string $verb, string $subject, callable $task, &$output = null): void {
+function task(string $verb, string $subject, callable $task, &$output = null): void
+{
     [$start, $end] = str_contains($verb, '|')
         ? explode('|', $verb)
         : [$verb, $verb];
@@ -143,5 +144,5 @@ CSS;
         $theme .= "        .ansi-$code { color: $color; }\n";
     }
 
-    return rtrim($theme) . "\n    ";
+    return rtrim($theme)."\n    ";
 }
