@@ -36,6 +36,10 @@ function hyde_exec(string $command): string
 {
     $output = shell_exec("php hyde $command", $exitCode);
 
+    if ($exitCode !== 0) {
+        throw new Exception("Failed to execute command: $command");
+    }
+
     return $output;
 }
 
