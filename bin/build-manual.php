@@ -27,6 +27,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
         echo " > Building entry for command '$name'\n";
 
         $info = hyde_exec("help $name --ansi");
+        $manual[] = "<h1>$name</h1>\n$info";
     }
     echo "\n";
 });
