@@ -85,3 +85,35 @@ class FiraTheme implements ThemeInterface
         return 'Fira Code, monospace';
     }
 }
+
+class CampbellTheme implements ThemeInterface
+{
+    public static function colors(): array
+    {
+        return [
+            30 => '#0C0C0C', // Black
+            31 => '#C50F1F', // Red
+            32 => '#13A10E', // Green
+            33 => '#C19C00', // Yellow
+            34 => '#0037DA', // Blue
+            35 => '#881798', // Magenta
+            36 => '#3A96DD', // Cyan
+            37 => '#CCCCCC', // White
+        ];
+    }
+
+    public static function background(): string
+    {
+        return '#0C0C0C';
+    }
+
+    public static function textColor(): string
+    {
+        return '#CCCCCC';
+    }
+
+    public static function fontFamily(): string
+    {
+        return 'monospace';
+    }
+}
