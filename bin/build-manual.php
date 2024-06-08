@@ -6,12 +6,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 chdir(__DIR__ . '/..');
 
-/** Execute a command in the Hyde CLI and return the output. */
-function hyde_exec(string $command): string
-{
-    return shell_exec("php hyde $command");
-}
-
 if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
 }
@@ -30,6 +24,12 @@ task('Building Markdown manual', 'Built Markdown manual', function (): void {
     $md = hyde_exec('list --format=md --no-ansi');
     file_put_contents('docs/manual/manual.md', $md);
 });
+
+/** Execute a command in the Hyde CLI and return the output. */
+function hyde_exec(string $command): string
+{
+    return shell_exec("php hyde $command");
+}
 
 function task(string $start, string $end, callable $task, &$output = null): void {
     $timeStart = microtime(true);
