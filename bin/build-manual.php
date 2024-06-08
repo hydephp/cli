@@ -129,7 +129,14 @@ function ansi_html_theme(): string
         37 => '#fff',
     ];
 
-    $theme = "\n        .terminal-screen { font-family: monospace; background: #000; color: #fff; padding: 1em; }\n";
+    $theme = "\n".<<<CSS
+        .terminal-screen {
+             font-family: monospace; 
+             background: #000; 
+             color: #fff; 
+             padding: 1em;
+        }
+CSS;
 
     $theme .= "\n";
     foreach ($colors as $code => $color) {
