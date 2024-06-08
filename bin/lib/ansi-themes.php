@@ -7,12 +7,7 @@ interface ThemeInterface {
     public static function colors(): array;
 
     /**
-     * @return string The font family to use for the terminal. (CSS font-family)
-     */
-    public static function fontFamily(): string;
-
-    /**
-     * @return string The background color to use for the terminal. (HTML color code
+     * @return string The background color to use for the terminal. (HTML color code)
      */
     public static function background(): string;
 
@@ -20,6 +15,11 @@ interface ThemeInterface {
      * @return string The default text color to use for the terminal. (HTML color code)
      */
     public static function textColor(): string;
+
+    /**
+     * @return string The font family to use for the terminal. (CSS font-family)
+     */
+    public static function fontFamily(): string;
 }
 
 class ClassicTheme implements ThemeInterface
@@ -38,11 +38,6 @@ class ClassicTheme implements ThemeInterface
         ];
     }
 
-    public static function fontFamily(): string
-    {
-        return 'monospace';
-    }
-
     public static function background(): string
     {
         return '#000';
@@ -51,5 +46,10 @@ class ClassicTheme implements ThemeInterface
     public static function textColor(): string
     {
         return '#fff';
+    }
+
+    public static function fontFamily(): string
+    {
+        return 'monospace';
     }
 }
