@@ -34,7 +34,8 @@ task('building|built', 'Html manual', function () use ($commands): void {
     echo "\n";
 
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
-    $manual = implode("\n\n<hr>\n\n", $manual);
+    $entries = implode("\n\n<hr>\n\n", $manual);
+    $manual = $entries;
     file_put_contents('docs/manual/manual.html', $manual);
 });
 
