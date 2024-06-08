@@ -11,3 +11,7 @@ function hyde_exec(string $command): string
 {
     return shell_exec("php hyde $command");
 }
+
+if (! is_dir('docs/manual')) {
+    mkdir('docs/manual', recursive: true);
+}
