@@ -127,7 +127,7 @@ function ansi_html_theme(): string
                  background: {$theme::background()};
                  font-family: {$theme::fontFamily()};
                  font-size: 12px;
-                 width: 120ch;
+                 width: 128ch;
                  overflow-x: auto;
                  padding: 1em;
             }
