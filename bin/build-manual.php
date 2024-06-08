@@ -123,9 +123,9 @@ function ansi_html_theme(): string
 
     $theme = "\n".<<<CSS
         .terminal-screen {
-             font-family: monospace; 
-             background: #000; 
-             color: #fff; 
+             font-family: {$theme::fontFamily()}; 
+             background: {$theme::background()}; 
+             color: {$theme::textColor()};
              padding: 1em;
         }
 CSS;
