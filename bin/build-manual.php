@@ -34,13 +34,13 @@ task('building|built', 'Markdown manual', function (): void {
 /** Execute a command in the Hyde CLI and return the output. */
 function hyde_exec(string $command): string
 {
-    $output = shell_exec("php hyde $command", $exitCode);
+    exec("php hyde $command", $output, $exitCode);
 
     if ($exitCode !== 0) {
         throw new Exception("Failed to execute command: $command");
     }
 
-    return $output;
+    return implode("\n", $output);
 }
 
 /** Run a task and output the time it took to complete. */
