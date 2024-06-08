@@ -16,11 +16,9 @@ if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
 }
 
-$commands = task('Getting command list', 'Got command list', function (): array {
+task('Getting command list', 'Got command list', function (): void {
     $commands = hyde_exec('list --format=json --no-ansi');
     $commands = json_decode($commands, true);
-
-    return $commands;
 });
 
 task('Building XML manual', 'Built XML manual', function (): void {
@@ -33,14 +31,12 @@ task('Building Markdown manual', 'Built Markdown manual', function (): void {
     file_put_contents('docs/manual/manual.md', $md);
 });
 
-function task(string $start, string $end, callable $task): mixed {
+function task(string $start, string $end, callable $task): void {
     $timeStart = microtime(true);
     echo "$start...";
 
-    $output = $task();
+    $task();
 
     $time = round((microtime(true) - $timeStart) * 1000, 2);
     echo "\r$end ($time ms)\n";
-
-    return $output;
 }
