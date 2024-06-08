@@ -16,21 +16,27 @@ if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
 }
 
-$commands = hyde_exec('list --format=json --no-ansi');
-$commands = json_decode($commands, true);
+task('Getting command list', 'Got command list', function (): void {
+    $commands = hyde_exec('list --format=json --no-ansi');
+    $commands = json_decode($commands, true);
+});
 
-$xml = hyde_exec('list --format=xml --no-ansi');
-file_put_contents('docs/manual/manual.xml', $xml);
+task('Building XML manual', 'Built XML manual', function (): void {
+    $xml = hyde_exec('list --format=xml --no-ansi');
+    file_put_contents('docs/manual/manual.xml', $xml);
+});
 
-$md = hyde_exec('list --format=md --no-ansi');
-file_put_contents('docs/manual/manual.md', $md);
+task('Building Markdown manual', 'Built Markdown manual', function (): void {
+    $md = hyde_exec('list --format=md --no-ansi');
+    file_put_contents('docs/manual/manual.md', $md);
+});
 
-function task(string $name, callable $task): void {
+function task(string $start, string $end, callable $task): void {
     $timeStart = microtime(true);
-    echo "$name...";
+    echo "$start...";
 
     $task();
 
     $time = round((microtime(true) - $timeStart) * 1000, 2);
-    echo "\r$name ($time ms)\n";
+    echo "\r$end ($time ms)\n";
 }
