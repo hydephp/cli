@@ -110,7 +110,7 @@ function ansi_to_html(string $output): string
     $output = "<span class=\"ansi-0\">$output</span>";
 
     return <<<HTML
-    <pre style="font-family: monospace; white-space: pre-wrap; word-wrap: break-word; margin: 0; padding: 0;">
+    <pre class="terminal-screen">
         $output
     </pre>
     HTML;
@@ -129,7 +129,9 @@ function ansi_html_theme(): string
         37 => '#fff',
     ];
 
-    $theme = "\n";
+    $theme = "\n        .terminal-screen { font-family: monospace; background: #000; color: #fff; padding: 1em; }\n";
+
+    $theme .= "\n";
     foreach ($colors as $code => $color) {
         $theme .= "        .ansi-$code { color: $color; }\n";
     }
