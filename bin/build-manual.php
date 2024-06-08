@@ -111,9 +111,7 @@ function ansi_to_html(string $output): string
     $output = "<span class=\"ansi-0\">$output</span>";
 
     return <<<HTML
-    <pre class="terminal-screen">
-        $output
-    </pre>
+    <pre class="terminal-screen">$output</pre>
     HTML;
 }
 
