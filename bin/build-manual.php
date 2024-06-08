@@ -26,7 +26,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     foreach ($names as $name) {
         echo " > Building entry for command '$name'\n";
 
-        $info = hyde_exec("help $name --ansi");
+        $info = hyde_exec("help $name --ansi", true);
         $info = ansi_to_html($info);
         $info = nl2br($info);
         $manual[] = "<h1>$name</h1>\n$info";
@@ -61,8 +61,14 @@ task('building|built', 'Markdown manual', function (): void {
 });
 
 /** Execute a command in the Hyde CLI and return the output. */
-function hyde_exec(string $command): string
+function hyde_exec(string $command, bool $cache = false): string
 {
+    $cacheKey = "bin/cache/" . md5($command);
+
+    if ($cache && file_exists($cacheKey)) {
+        return file_get_contents($cacheKey);
+    }
+
     exec("php hyde $command", $output, $exitCode);
 
     if ($exitCode !== 0) {
@@ -70,6 +76,10 @@ function hyde_exec(string $command): string
     }
 
     $output = implode("\n", $output);
+
+    if ($cache) {
+        file_put_contents($cacheKey, $output);
+    }
 
     return $output;
 }
