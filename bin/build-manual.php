@@ -25,7 +25,7 @@ task('building|built', 'Markdown manual', function (): void {
     file_put_contents('docs/manual/manual.md', $md);
 });
 
-task('building|built', 'Html manual', function (): void {
+task('building|built', 'Html manual', function () use ($commands): void {
     //
 });
 
