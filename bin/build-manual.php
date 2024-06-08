@@ -74,3 +74,12 @@ function task(string $verb, string $subject, callable $task, &$output = null): v
     $time = round((microtime(true) - $timeStart) * 1000, 2);
     echo "\r$end $subject ($time ms)\n";
 }
+
+function ansi_to_html(string $output): string
+{
+    $output = htmlspecialchars($output);
+    $output = preg_replace('/\e\[(\d+)(;\d+)*m/', '</span><span class="ansi-$1">', $output);
+    $output = "<span class=\"ansi-0\">$output</span>";
+
+    return $output;
+}
