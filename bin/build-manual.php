@@ -117,14 +117,14 @@ function ansi_to_html(string $output): string
 function ansi_html_theme(): string
 {
     $colors = [
-        30 => '#000',
-        31 => '#f00',
-        32 => '#0f0',
-        33 => '#ff0',
-        34 => '#00f',
-        35 => '#f0f',
-        36 => '#0ff',
-        37 => '#fff',
+        30 => '#000', // Black
+        31 => '#f00', // Red
+        32 => '#0f0', // Green
+        33 => '#ff0', // Yellow
+        34 => '#00f', // Blue
+        35 => '#f0f', // Magenta
+        36 => '#0ff', // Cyan
+        37 => '#fff', // White
     ];
 
     $theme = "\n".<<<CSS
