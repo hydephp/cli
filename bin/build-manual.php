@@ -35,12 +35,14 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
     $entries = implode("\n\n<hr>\n\n", $manual);
+    $theme = ansi_html_theme();
     $manual = <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>HydePHP CLI Manual</title>
+    <style>$theme</style>
 </head>
 <body>
     $entries
@@ -108,4 +110,25 @@ function ansi_to_html(string $output): string
     $output = "<span class=\"ansi-0\">$output</span>";
 
     return $output;
+}
+
+function ansi_html_theme(): string
+{
+    $colors = [
+        30 => '#000',
+        31 => '#f00',
+        32 => '#0f0',
+        33 => '#ff0',
+        34 => '#00f',
+        35 => '#f0f',
+        36 => '#0ff',
+        37 => '#fff',
+    ];
+
+    $theme = "\n";
+    foreach ($colors as $code => $color) {
+        $theme .= "        .ansi-$code { color: $color; }\n";
+    }
+
+    return rtrim($theme) . "\n    ";
 }
