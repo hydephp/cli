@@ -129,6 +129,7 @@ function ansi_html_theme(): string
              font-size: 12px;
              width: 120ch;
              padding: 1em;
+             overflow-x: auto;
         }
 CSS;
 
