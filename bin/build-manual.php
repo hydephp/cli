@@ -1,3 +1,3 @@
 <?php
 
-/**  @internal Build the documentation manual. */
+/** @internal Build the documentation manual. */
