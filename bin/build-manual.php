@@ -31,6 +31,7 @@ function hyde_exec(string $command): string
     return shell_exec("php hyde $command");
 }
 
+/** Run a task and output the time it took to complete. */
 function task(string $start, string $end, callable $task, &$output = null): void {
     $timeStart = microtime(true);
     echo "$start...";
