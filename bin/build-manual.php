@@ -33,11 +33,9 @@ function hyde_exec(string $command): string
 
 /** Run a task and output the time it took to complete. */
 function task(string $verb, string $subject, callable $task, &$output = null): void {
-    if (str_contains($verb, '|')) {
-        [$start, $end] = explode('|', $verb);
-    } else {
-        [$start, $end] = [$verb, $verb];
-    }
+    [$start, $end] = str_contains($verb, '|')
+        ? explode('|', $verb)
+        : [$verb, $verb];
 
     [$start, $end] = [ucfirst($start), ucfirst($end)];
 
