@@ -35,7 +35,18 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
     $entries = implode("\n\n<hr>\n\n", $manual);
-    $manual = $entries;
+    $manual = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HydePHP CLI Manual</title>
+</head>
+<body>
+    $entries
+</body>
+</html>
+HTML;
     file_put_contents('docs/manual/manual.html', $manual);
 });
 
