@@ -69,7 +69,9 @@ function hyde_exec(string $command): string
         throw new Exception("Failed to execute command: $command");
     }
 
-    return implode("\n", $output);
+    $output = implode("\n", $output);
+
+    return $output;
 }
 
 /** Run a task and output the time it took to complete. */
