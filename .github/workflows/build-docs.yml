@@ -16,6 +16,11 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v3
+      - name: Create site from Readme
+        run: |
+          mkdir _pages 
+          mv README.md _pages/index.md 
+          rm -rf !'_pages'
       - uses: hydephp/action@master
         with:
           deploy-to: "pages"
