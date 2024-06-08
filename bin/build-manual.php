@@ -120,37 +120,20 @@ function ansi_to_html(string $output): string
             // $lines[$index] = wordwrap($line, 120, "\n", true);
             // So we need to find the actual break points.
 
-            try {
-                // We make the assumption that the long line is long documentation for an option or argument,
-                // so we split it to only operate on the right hand side of the line which is usually plaintext.
-                assert(str_contains($line, '<span class="ansi-'));
-
-                // Find where the last opening span tag is.
-                $lastSpan = strrpos($line, '<span class="ansi-');
-                // Find the nearest '>' after the last span tag.
-                $lastSpan = strpos($line, '>', $lastSpan);
-
-                // Split the line at the last span tag.
-                $left = substr($line, 0, $lastSpan + 1);
-                $right = substr($line, $lastSpan + 1);
-                assert($left && $right);
-                assert(substr_count($right, 'span') === 1 && str_ends_with($right, '</span>')); // Closing tag that we want to shift.
-                $right = substr($right, 0, -7); // Remove the closing span tag.
-                assert(! str_contains($right, 'span'));
-                $leftLength = strlen(strip_tags($left));
-                $rightLength = strlen(strip_tags($right));
-                assert($leftLength + $rightLength > 120);
-
-                // Find the last space before 120 characters.
-                $breakInsert = "\n".str_repeat(' ', 120 - $leftLength);
-                $breakPoint = strrpos($right, ' ', 120 - $leftLength);
-                $right = substr_replace($right, $breakInsert, $breakPoint, 1);
-
-                $lines[$index] = $left.$right.'</span>';
-            } catch (AssertionError) {
-                // If we fail to split the line, we just let it be.
-                $lines[$index] = $line;
+            $words = explode(' ', $plaintext);
+            $line = '';
+            $length = 0;
+            foreach ($words as $word) {
+                $length += strlen($word) + 1;
+                if ($length > 120) {
+                    $line .= "\n$word";
+                    $length = strlen($word);
+                } else {
+                    $line .= " $word";
+                }
             }
+
+            $lines[$index] = $line;
         }
     }
 
