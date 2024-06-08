@@ -23,6 +23,8 @@ task('building|built', 'Html manual', function () use ($commands): void {
     echo "\n\n";
     foreach ($names as $name) {
         echo " > Building entry for command '$name'\n";
+
+        $info = hyde_exec("help $name --ansi");
     }
     echo "\n";
 });
