@@ -20,9 +20,11 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_filter($names, fn (string $name): bool => ! str_starts_with($name, '_'));
     $names = array_values($names);
 
+    echo "\n\n";
     foreach ($names as $name) {
-        //
+        echo " > Building entry for command '$name'\n";
     }
+    echo "\n";
 });
 
 task('building|built', 'XML manual', function (): void {
