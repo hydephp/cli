@@ -24,3 +24,13 @@ file_put_contents('docs/manual/manual.xml', $xml);
 
 $md = hyde_exec('list --format=md --no-ansi');
 file_put_contents('docs/manual/manual.md', $md);
+
+function task(string $name, callable $task): void {
+    $timeStart = microtime(true);
+    echo "$name...";
+
+    $task();
+
+    $time = round((microtime(true) - $timeStart) * 1000, 2);
+    echo "\r$name ($time ms)\n";
+}
