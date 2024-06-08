@@ -128,6 +128,7 @@ function ansi_html_theme(): string
              font-family: {$theme::fontFamily()};
              font-size: 12px;
              width: 120ch;
+             white-space: pre-wrap;
              padding: 1em;
         }
 CSS;
