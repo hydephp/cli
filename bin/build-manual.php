@@ -126,6 +126,7 @@ function ansi_html_theme(): string
              color: {$theme::textColor()};
              background: {$theme::background()};
              font-family: {$theme::fontFamily()};
+             font-size: 12px;
              padding: 1em;
         }
 CSS;
