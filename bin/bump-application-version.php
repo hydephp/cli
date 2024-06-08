@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @interal Updates the version number in the app/Application.php file
+ * @internal Updates the version number in the app/Application.php file
  *
  * @usage php bin/bump-application-version.php [major|minor|patch]
  */
