@@ -1,549 +1,549 @@
 <h1>build</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Build the static site
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   build [options]
 
-[33mOptions:[39m
-  [32m    --run-dev[39m         Run the NPM dev script after build
-  [32m    --run-prod[39m        Run the NPM prod script after build
-  [32m    --run-prettier[39m    Format the output using NPM Prettier
-  [32m    --pretty-urls[39m     Should links in output use pretty URLs?
-  [32m    --no-api[39m          Disable API calls, for example, Torchlight
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --run-dev</span><span class="ansi-39">         Run the NPM dev script after build
+  </span><span class="ansi-32">    --run-prod</span><span class="ansi-39">        Run the NPM prod script after build
+  </span><span class="ansi-32">    --run-prettier</span><span class="ansi-39">    Format the output using NPM Prettier
+  </span><span class="ansi-32">    --pretty-urls</span><span class="ansi-39">     Should links in output use pretty URLs?
+  </span><span class="ansi-32">    --no-api</span><span class="ansi-39">          Disable API calls, for example, Torchlight
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>completion</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Dump the shell completion script
 
-[33mUsage:[39m
-  completion [options] [--] [<shell>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  completion [options] [--] [&lt;shell&gt;]
 
-[33mArguments:[39m
-  [32mshell[39m                 The shell type (e.g. "bash"), the value of the "$SHELL" env var will be used if this is not given
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">shell</span><span class="ansi-39">                 The shell type (e.g. &quot;bash&quot;), the value of the &quot;$SHELL&quot; env var will be used if this is not given
 
-[33mOptions:[39m
-  [32m    --debug[39m           Tail the completion debug log
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --debug</span><span class="ansi-39">           Tail the completion debug log
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
-[33mHelp:[39m
-  The [32mcompletion[39m command dumps the shell completion script required
+</span><span class="ansi-33">Help:</span><span class="ansi-39">
+  The </span><span class="ansi-32">completion</span><span class="ansi-39"> command dumps the shell completion script required
   to use shell autocompletion (currently, bash, fish, zsh completion are supported).
 
-  [33mStatic installation
-  -------------------[39m
+  </span><span class="ansi-33">Static installation
+  -------------------</span><span class="ansi-39">
 
   Dump the script to a global completion file and restart your shell:
 
-      [32mhyde completion  | sudo tee /etc/bash_completion.d/hyde[39m
+      </span><span class="ansi-32">hyde completion  | sudo tee /etc/bash_completion.d/hyde</span><span class="ansi-39">
 
   Or dump the script to a local file and source it:
 
-      [32mhyde completion  > completion.sh[39m
+      </span><span class="ansi-32">hyde completion  &gt; completion.sh</span><span class="ansi-39">
 
-      [33m# source the file whenever you use the project[39m
-      [32msource completion.sh[39m
+      </span><span class="ansi-33"># source the file whenever you use the project</span><span class="ansi-39">
+      </span><span class="ansi-32">source completion.sh</span><span class="ansi-39">
 
-      [33m# or add this line at the end of your "~/.bashrc" file:[39m
-      [32msource /path/to/completion.sh[39m
+      </span><span class="ansi-33"># or add this line at the end of your &quot;~/.bashrc&quot; file:</span><span class="ansi-39">
+      </span><span class="ansi-32">source /path/to/completion.sh</span><span class="ansi-39">
 
-  [33mDynamic installation
-  --------------------[39m
+  </span><span class="ansi-33">Dynamic installation
+  --------------------</span><span class="ansi-39">
 
-  Add this to the end of your shell configuration file (e.g. [32m"~/.bashrc"[39m):
+  Add this to the end of your shell configuration file (e.g. </span><span class="ansi-32">&quot;~/.bashrc&quot;</span><span class="ansi-39">):
 
-      [32meval "$(H:\hyde-global\hyde completion )"[39m
+      </span><span class="ansi-32">eval &quot;$(H:\hyde-global\hyde completion )&quot;</span><span class="ansi-39"></span>
 
 <hr>
 
 <h1>debug</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Print debug information
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   debug
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>help</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Display help for a command
 
-[33mUsage:[39m
-  help [options] [--] [<command_name>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  help [options] [--] [&lt;command_name&gt;]
 
-[33mArguments:[39m
-  [32mcommand_name[39m          The command name[33m [default: "help"][39m
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">command_name</span><span class="ansi-39">          The command name</span><span class="ansi-33"> [default: &quot;help&quot;]</span><span class="ansi-39">
 
-[33mOptions:[39m
-  [32m    --format=FORMAT[39m   The output format (txt, xml, json, or md)[33m [default: "txt"][39m
-  [32m    --raw[39m             To output raw command help
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --format=FORMAT</span><span class="ansi-39">   The output format (txt, xml, json, or md)</span><span class="ansi-33"> [default: &quot;txt&quot;]</span><span class="ansi-39">
+  </span><span class="ansi-32">    --raw</span><span class="ansi-39">             To output raw command help
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
-[33mHelp:[39m
-  The [32mhelp[39m command displays help for a given command:
+</span><span class="ansi-33">Help:</span><span class="ansi-39">
+  The </span><span class="ansi-32">help</span><span class="ansi-39"> command displays help for a given command:
 
-    [32mhyde help list[39m
+    </span><span class="ansi-32">hyde help list</span><span class="ansi-39">
 
-  You can also output the help in other formats by using the [33m--format[39m option:
+  You can also output the help in other formats by using the </span><span class="ansi-33">--format</span><span class="ansi-39"> option:
 
-    [32mhyde help --format=xml list[39m
+    </span><span class="ansi-32">hyde help --format=xml list</span><span class="ansi-39">
 
-  To display the list of available commands, please use the [32mlist[39m command.
+  To display the list of available commands, please use the </span><span class="ansi-32">list</span><span class="ansi-39"> command.</span>
 
 <hr>
 
 <h1>list</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   List commands
 
-[33mUsage:[39m
-  list [options] [--] [<namespace>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  list [options] [--] [&lt;namespace&gt;]
 
-[33mArguments:[39m
-  [32mnamespace[39m             The namespace name
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">namespace</span><span class="ansi-39">             The namespace name
 
-[33mOptions:[39m
-  [32m    --raw[39m             To output raw command list
-  [32m    --format=FORMAT[39m   The output format (txt, xml, json, or md)[33m [default: "txt"][39m
-  [32m    --short[39m           To skip describing commands' arguments
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --raw</span><span class="ansi-39">             To output raw command list
+  </span><span class="ansi-32">    --format=FORMAT</span><span class="ansi-39">   The output format (txt, xml, json, or md)</span><span class="ansi-33"> [default: &quot;txt&quot;]</span><span class="ansi-39">
+  </span><span class="ansi-32">    --short</span><span class="ansi-39">           To skip describing commands&#039; arguments
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
-[33mHelp:[39m
-  The [32mlist[39m command lists all commands:
+</span><span class="ansi-33">Help:</span><span class="ansi-39">
+  The </span><span class="ansi-32">list</span><span class="ansi-39"> command lists all commands:
 
-    [32mhyde list[39m
+    </span><span class="ansi-32">hyde list</span><span class="ansi-39">
 
   You can also display the commands for a specific namespace:
 
-    [32mhyde list test[39m
+    </span><span class="ansi-32">hyde list test</span><span class="ansi-39">
 
-  You can also output the information in other formats by using the [33m--format[39m option:
+  You can also output the information in other formats by using the </span><span class="ansi-33">--format</span><span class="ansi-39"> option:
 
-    [32mhyde list --format=xml[39m
+    </span><span class="ansi-32">hyde list --format=xml</span><span class="ansi-39">
 
-  It's also possible to get raw list of commands (useful for embedding command runner):
+  It&#039;s also possible to get raw list of commands (useful for embedding command runner):
 
-    [32mhyde list --raw[39m
+    </span><span class="ansi-32">hyde list --raw</span><span class="ansi-39"></span>
 
 <hr>
 
 <h1>new</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Create a new Hyde project.
 
-[33mUsage:[39m
-  new [<name>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  new [&lt;name&gt;]
 
-[33mArguments:[39m
-  [32mname[39m                  The name of the project
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">name</span><span class="ansi-39">                  The name of the project
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>rebuild</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Run the static site builder for a single file
 
-[33mUsage:[39m
-  rebuild <path>
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  rebuild &lt;path&gt;
 
-[33mArguments:[39m
-  [32mpath[39m                  The relative file path (example: _posts/hello-world.md)
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">path</span><span class="ansi-39">                  The relative file path (example: _posts/hello-world.md)
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>self-update</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Update the standalone application to the latest version.
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   self-update [options]
 
-[33mOptions:[39m
-  [32m    --check[39m           Check for a new version without updating
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --check</span><span class="ansi-39">           Check for a new version without updating
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>serve</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Start the realtime compiler server
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   serve [options]
 
-[33mOptions:[39m
-  [32m    --host[=HOST][39m                  [33m[default: "localhost"][39m
-  [32m    --port[=PORT][39m                  [33m[default: 8080][39m
-  [32m    --save-preview[=SAVE-PREVIEW][39m  Should the served page be saved to disk? (Overrides config setting)
-  [32m    --dashboard[=DASHBOARD][39m        Enable the realtime compiler dashboard. (Overrides config setting)
-  [32m    --pretty-urls[=PRETTY-URLS][39m    Enable pretty URLs. (Overrides config setting)
-  [32m    --play-cdn[=PLAY-CDN][39m          Enable the Tailwind Play CDN. (Overrides config setting)
-  [32m    --open[39m                         Open the site preview in the browser.
-  [32m-h, --help[39m                         Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m                        Do not output any message
-  [32m-V, --version[39m                      Display this application version
-  [32m    --ansi|--no-ansi[39m               Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m               Do not ask any interactive question
-  [32m    --env[=ENV][39m                    The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --host[=HOST]</span><span class="ansi-39">                  </span><span class="ansi-33">[default: &quot;localhost&quot;]</span><span class="ansi-39">
+  </span><span class="ansi-32">    --port[=PORT]</span><span class="ansi-39">                  </span><span class="ansi-33">[default: 8080]</span><span class="ansi-39">
+  </span><span class="ansi-32">    --save-preview[=SAVE-PREVIEW]</span><span class="ansi-39">  Should the served page be saved to disk? (Overrides config setting)
+  </span><span class="ansi-32">    --dashboard[=DASHBOARD]</span><span class="ansi-39">        Enable the realtime compiler dashboard. (Overrides config setting)
+  </span><span class="ansi-32">    --pretty-urls[=PRETTY-URLS]</span><span class="ansi-39">    Enable pretty URLs. (Overrides config setting)
+  </span><span class="ansi-32">    --play-cdn[=PLAY-CDN]</span><span class="ansi-39">          Enable the Tailwind Play CDN. (Overrides config setting)
+  </span><span class="ansi-32">    --open</span><span class="ansi-39">                         Open the site preview in the browser.
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">                         Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">                        Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">                      Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">               Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">               Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">                    The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>validate</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Test and validate your project to optimize your site
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   validate
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
-[33mHelp:[39m
-  Run a series of tests to validate your setup and help you optimize your site
+</span><span class="ansi-33">Help:</span><span class="ansi-39">
+  Run a series of tests to validate your setup and help you optimize your site</span>
 
 <hr>
 
 <h1>build:rss</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Generate the RSS feed
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   build:rss
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>build:search</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Generate the documentation search index
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   build:search
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>build:sitemap</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Generate the sitemap.xml
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   build:sitemap
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>change:sourceDirectory</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Change the source directory for your project
 
-[33mUsage:[39m
-  change:sourceDirectory <name>
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  change:sourceDirectory &lt;name&gt;
 
-[33mArguments:[39m
-  [32mname[39m                  The new source directory name
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">name</span><span class="ansi-39">                  The new source directory name
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>make:page</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Scaffold a new Markdown, Blade, or documentation page file
 
-[33mUsage:[39m
-  make:page [options] [--] [<title>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  make:page [options] [--] [&lt;title&gt;]
 
-[33mArguments:[39m
-  [32mtitle[39m                 The name of the page file to create. Will be used to generate the slug
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">title</span><span class="ansi-39">                 The name of the page file to create. Will be used to generate the slug
 
-[33mOptions:[39m
-  [32m    --type[=TYPE][39m     The type of page to create (markdown, blade, or docs)[33m [default: "markdown"][39m
-  [32m    --blade[39m           Create a Blade page
-  [32m    --docs[39m            Create a Documentation page
-  [32m    --force[39m           Overwrite any existing files
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --type[=TYPE]</span><span class="ansi-39">     The type of page to create (markdown, blade, or docs)</span><span class="ansi-33"> [default: &quot;markdown&quot;]</span><span class="ansi-39">
+  </span><span class="ansi-32">    --blade</span><span class="ansi-39">           Create a Blade page
+  </span><span class="ansi-32">    --docs</span><span class="ansi-39">            Create a Documentation page
+  </span><span class="ansi-32">    --force</span><span class="ansi-39">           Overwrite any existing files
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>make:post</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Scaffold a new Markdown blog post file
 
-[33mUsage:[39m
-  make:post [options] [--] [<title>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  make:post [options] [--] [&lt;title&gt;]
 
-[33mArguments:[39m
-  [32mtitle[39m                 The title for the Post. Will also be used to generate the filename
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">title</span><span class="ansi-39">                 The title for the Post. Will also be used to generate the filename
 
-[33mOptions:[39m
-  [32m    --force[39m           Should the generated file overwrite existing posts with the same filename?
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --force</span><span class="ansi-39">           Should the generated file overwrite existing posts with the same filename?
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>package:discover</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Rebuild the cached package manifest
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   package:discover
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>publish:configs</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish the default configuration files
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   publish:configs
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>publish:homepage</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish one of the default homepages to index.blade.php
 
-[33mUsage:[39m
-  publish:homepage [options] [--] [<homepage>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  publish:homepage [options] [--] [&lt;homepage&gt;]
 
-[33mArguments:[39m
-  [32mhomepage[39m              The name of the page to publish
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">homepage</span><span class="ansi-39">              The name of the page to publish
 
-[33mOptions:[39m
-  [32m    --force[39m           Overwrite any existing files
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --force</span><span class="ansi-39">           Overwrite any existing files
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>publish:views</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish the hyde components for customization. Note that existing files will be overwritten
 
-[33mUsage:[39m
-  publish:views [<category>]
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
+  publish:views [&lt;category&gt;]
 
-[33mArguments:[39m
-  [32mcategory[39m              The category to publish
+</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
+  </span><span class="ansi-32">category</span><span class="ansi-39">              The category to publish
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>route:list</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Display all the registered routes
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   route:list
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>standalone:build</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Build the standalone executable
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   standalone:build [options]
 
-[33mOptions:[39m
-  [32m    --build-version-suffix[=BUILD-VERSION-SUFFIX][39m  The optional build version suffix
-  [32m-h, --help[39m                                         Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m                                        Do not output any message
-  [32m-V, --version[39m                                      Display this application version
-  [32m    --ansi|--no-ansi[39m                               Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m                               Do not ask any interactive question
-  [32m    --env[=ENV][39m                                    The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m                               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --build-version-suffix[=BUILD-VERSION-SUFFIX]</span><span class="ansi-39">  The optional build version suffix
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">                                         Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">                                        Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">                                      Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">                               Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">                               Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">                                    The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">                               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>torchlight:install</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Install the Torchlight config file into your app.
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   torchlight:install
 
-[33mOptions:[39m
-  [32m-h, --help[39m            Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m           Do not output any message
-  [32m-V, --version[39m         Display this application version
-  [32m    --ansi|--no-ansi[39m  Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m  Do not ask any interactive question
-  [32m    --env[=ENV][39m       The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
 
 <hr>
 
 <h1>vendor:publish</h1>
-[33mDescription:[39m
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish any publishable assets from vendor packages
 
-[33mUsage:[39m
+</span><span class="ansi-33">Usage:</span><span class="ansi-39">
   vendor:publish [options]
 
-[33mOptions:[39m
-  [32m    --existing[39m             Publish and overwrite only the files that have already been published
-  [32m    --force[39m                Overwrite any existing files
-  [32m    --all[39m                  Publish assets for all service providers without prompt
-  [32m    --provider[=PROVIDER][39m  The service provider that has assets you want to publish
-  [32m    --tag[=TAG][39m            One or many tags that have assets you want to publish[33m (multiple values allowed)[39m
-  [32m-h, --help[39m                 Display help for the given command. When no command is given display help for the [32mlist[39m command
-  [32m-q, --quiet[39m                Do not output any message
-  [32m-V, --version[39m              Display this application version
-  [32m    --ansi|--no-ansi[39m       Force (or disable --no-ansi) ANSI output
-  [32m-n, --no-interaction[39m       Do not ask any interactive question
-  [32m    --env[=ENV][39m            The environment the command should run under
-  [32m-v|vv|vvv, --verbose[39m       Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+</span><span class="ansi-33">Options:</span><span class="ansi-39">
+  </span><span class="ansi-32">    --existing</span><span class="ansi-39">             Publish and overwrite only the files that have already been published
+  </span><span class="ansi-32">    --force</span><span class="ansi-39">                Overwrite any existing files
+  </span><span class="ansi-32">    --all</span><span class="ansi-39">                  Publish assets for all service providers without prompt
+  </span><span class="ansi-32">    --provider[=PROVIDER]</span><span class="ansi-39">  The service provider that has assets you want to publish
+  </span><span class="ansi-32">    --tag[=TAG]</span><span class="ansi-39">            One or many tags that have assets you want to publish</span><span class="ansi-33"> (multiple values allowed)</span><span class="ansi-39">
+  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">                 Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
+  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">                Do not output any message
+  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">              Display this application version
+  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">       Force (or disable --no-ansi) ANSI output
+  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">       Do not ask any interactive question
+  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">            The environment the command should run under
+  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">       Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span>
