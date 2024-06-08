@@ -122,15 +122,15 @@ function ansi_html_theme(): string
     $colors = $theme::colors();
 
     $theme = "\n".<<<CSS
-        .terminal-screen {
-             color: {$theme::textColor()};
-             background: {$theme::background()};
-             font-family: {$theme::fontFamily()};
-             font-size: 12px;
-             width: 120ch;
-             padding: 1em;
-        }
-CSS;
+            .terminal-screen {
+                 color: {$theme::textColor()};
+                 background: {$theme::background()};
+                 font-family: {$theme::fontFamily()};
+                 font-size: 12px;
+                 width: 120ch;
+                 padding: 1em;
+            }
+    CSS;
 
     $theme .= "\n";
     foreach ($colors as $code => $color) {
