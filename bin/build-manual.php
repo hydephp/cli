@@ -18,3 +18,6 @@ if (! is_dir('docs/manual')) {
 
 $commands = hyde_exec('list --format=json --no-ansi');
 $commands = json_decode($commands, true);
+
+$xml = hyde_exec('list --format=xml --no-ansi');
+file_put_contents('docs/manual/manual.xml', $xml);
