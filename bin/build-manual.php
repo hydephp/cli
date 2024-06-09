@@ -10,8 +10,6 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 
 chdir(__DIR__.'/..');
 
-echo hyde_exec('list');
-
 if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
 }
@@ -20,8 +18,6 @@ task('getting|got', 'command list', function (&$commands): void {
     $commands = hyde_exec('list --format=json --no-ansi');
     $commands = json_decode($commands, true);
 }, $commands);
-
-die(print_r($commands, true));
 
 task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
