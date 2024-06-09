@@ -226,6 +226,9 @@ function get_template(): string
                 font-size: 1.5em;
                 margin: 1em 0 0.5em;
             }
+            label {
+                font-size: 0.9em;
+            }
             .menubar {
                 background: #292d3e;
                 color: #fff;
