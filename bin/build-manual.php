@@ -239,7 +239,7 @@ function get_template(): string
                 margin-right: 0.25em;
             }
             a:hover {
-                color: cornflowerblue;
+                color: #82aaff;
             }
             menu {
                 text-align: right;
