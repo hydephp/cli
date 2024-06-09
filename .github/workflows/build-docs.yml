@@ -32,9 +32,9 @@ jobs:
 
       - name: Move manual
         run: |
-          mv docs/manual.html _site/manual.html
-          mv docs/manual.xml _site/manual.xml
-          mv docs/manual.md _site/manual.md
+          mv docs/manual/manual.html _site/manual.html
+          mv docs/manual/manual.xml _site/manual.xml
+          mv docs/manual/manual.md _site/manual.md
           cp .github/docs/asset/manual.xsl _site/manual.xsl
           sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual.xml
 
