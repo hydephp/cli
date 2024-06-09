@@ -30,8 +30,10 @@ jobs:
       - name: Build manual
         run: |
           php bin/build-manual.php
-          mv docs/manual _site/manual
-          mv _site/manual/manual.html _site/manual/index.html
+          mkdir _site/manual
+          mv docs/manual/manual.html _site/manual/index.html
+          mv docs/manual/manual.xml _site/manual/manual.xml
+          mv docs/manual/manual.md _site/manual/manual.md
           rm _site/manual.html # Remove the placeholder
 
       - name: Setup Pages
