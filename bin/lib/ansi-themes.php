@@ -35,7 +35,7 @@ enum Colors: int
     case White = 37;
 }
 
-class ClassicTheme implements ThemeInterface
+abstract class BaseTheme implements ThemeInterface
 {
     protected static array $colors = [
         'black' => '#000',
@@ -51,10 +51,30 @@ class ClassicTheme implements ThemeInterface
     public static function colors(): array
     {
         $keys = array_column(Colors::cases(), 'value');
-        $values = array_values(self::$colors);
+        $values = array_values(static::$colors);
 
         return array_combine($keys, $values);
     }
+
+    abstract public static function background(): string;
+
+    abstract public static function foreground(): string;
+
+    abstract public static function fontFamily(): string;
+}
+
+class ClassicTheme extends BaseTheme
+{
+    protected static array $colors = [
+        'black' => '#000',
+        'red' => '#f00',
+        'green' => '#0f0',
+        'yellow' => '#ff0',
+        'blue' => '#00f',
+        'magenta' => '#f0f',
+        'cyan' => '#0ff',
+        'white' => '#fff',
+    ];
 
     public static function background(): string
     {
@@ -72,21 +92,18 @@ class ClassicTheme implements ThemeInterface
     }
 }
 
-class FiraTheme implements ThemeInterface
+class FiraTheme extends BaseTheme
 {
-    public static function colors(): array
-    {
-        return [
-            30 => '#000', // Black
-            31 => '#ff5572', // Red
-            32 => '#c3e88d', // Green
-            33 => '#ffcb6b', // Yellow
-            34 => '#82aaff', // Blue
-            35 => '#c792ea', // Magenta
-            36 => '#89ddff', // Cyan
-            37 => '#bec5d4', // White
-        ];
-    }
+    protected static array $colors = [
+        'black' => '#000',
+        'red' => '#ff5572',
+        'green' => '#c3e88d',
+        'yellow' => '#ffcb6b',
+        'blue' => '#82aaff',
+        'magenta' => '#c792ea',
+        'cyan' => '#89ddff',
+        'white' => '#bec5d4',
+    ];
 
     public static function background(): string
     {
@@ -104,21 +121,18 @@ class FiraTheme implements ThemeInterface
     }
 }
 
-class CampbellTheme implements ThemeInterface
+class CampbellTheme extends BaseTheme
 {
-    public static function colors(): array
-    {
-        return [
-            30 => '#0C0C0C', // Black
-            31 => '#C50F1F', // Red
-            32 => '#13A10E', // Green
-            33 => '#C19C00', // Yellow
-            34 => '#0037DA', // Blue
-            35 => '#881798', // Magenta
-            36 => '#3A96DD', // Cyan
-            37 => '#CCCCCC', // White
-        ];
-    }
+    protected static array $colors = [
+        'black' => '#0C0C0C',
+        'red' => '#C50F1F',
+        'green' => '#13A10E',
+        'yellow' => '#C19C00',
+        'blue' => '#0037DA',
+        'magenta' => '#881798',
+        'cyan' => '#3A96DD',
+        'white' => '#CCCCCC',
+    ];
 
     public static function background(): string
     {
