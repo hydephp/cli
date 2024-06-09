@@ -154,7 +154,7 @@ function build_theme(ThemeInterface $theme): string
     $identifier = strtolower(str_replace('Theme', '', (new ReflectionClass($theme))->getShortName()));
 
     $theme = "\n".<<<CSS
-            main.theme-$identifier .terminal-screen {
+            .theme-$identifier .terminal-screen {
                  color: {$theme::textColor()};
                  background: {$theme::background()};
                  font-family: {$theme::fontFamily()};
@@ -167,7 +167,7 @@ function build_theme(ThemeInterface $theme): string
 
     $theme .= "\n";
     foreach ($colors as $code => $color) {
-        $theme .= "        .ansi-$code { color: $color; }\n";
+        $theme .= "        .theme-$identifier .ansi-$code { color: $color; }\n";
     }
 
     return rtrim($theme)."\n    ";
