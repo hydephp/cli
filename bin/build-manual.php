@@ -278,6 +278,10 @@ function get_template(): string
                 color: #999;
                 user-select: none;
             }
+            footer {
+                text-align: center;
+                font-size: 0.9em;
+            }
         </style>
     </head>
     <body class="theme-{{ theme }}">
@@ -304,7 +308,7 @@ function get_template(): string
     <main>{{ entries }}</main>
     <footer>
         <p>
-            Manual for the HydePHP Standalone CLI &mdash; Version {{ version }}
+            Manual for the HydePHP Standalone CLI - Version {{ version }}
         </p>
     </footer>
     </body>
