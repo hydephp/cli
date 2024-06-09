@@ -171,10 +171,6 @@ function build_theme(ThemeInterface $theme): string
                  color: {$theme::foreground()};
                  background: {$theme::background()};
                  font-family: {$theme::fontFamily()};
-                 font-size: 12px;
-                 width: 128ch;
-                 overflow-x: auto;
-                 padding: 1em;
             }
 
     CSS;
@@ -216,6 +212,12 @@ function get_template(): string
         <title>HydePHP Standalone CLI Manual</title>
         <style>{{ themes }}</style>
         <style>
+            .terminal-screen {
+                font-size: 12px;
+                width: 128ch;
+                overflow-x: auto;
+                padding: 1em;
+            }
             .signature {
                 background: rgba(0, 0, 0, 0.1);
                 padding: 1em 1em 0.75em;
