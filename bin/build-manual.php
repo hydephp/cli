@@ -39,19 +39,8 @@ task('building|built', 'Html manual', function () use ($commands): void {
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
     $entries = implode("\n\n<hr>\n\n", $manual);
     $theme = ansi_html_theme();
-    $manual = <<<HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>HydePHP Standalone CLI Manual</title>
-    <style>$theme</style>
-</head>
-<body>
-    $entries
-</body>
-</html>
-HTML;
+    $template = file_get_contents('.github/docs/templates/manual.blade.php');
+    $manual = str_replace(['{{ $theme }}', '{{ $entries }}'], [$theme, $entries], $template);
     file_put_contents('docs/manual/manual.html', $manual);
 });
 
