@@ -221,6 +221,10 @@ function get_template(): string
                 padding: 1em 1em 0.75em;
                 margin: -1em -1em -0.75em;
             }
+            .signature::before {
+                content: '$ ';
+                color: #999;
+            }
         </style>
     </head>
     <body class="theme-{{ theme }}">
