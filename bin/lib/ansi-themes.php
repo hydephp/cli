@@ -114,6 +114,6 @@ class CampbellTheme implements ThemeInterface
 
     public static function fontFamily(): string
     {
-        return 'monospace';
+        return "'Cascadia Mono', monospace";
     }
 }
