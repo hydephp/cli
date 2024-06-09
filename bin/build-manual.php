@@ -310,6 +310,9 @@ function get_template(): string
         <p>
             Manual for the HydePHP Standalone CLI - Version {{ version }}
         </p>
+        <p>
+            <small>Content distributed under the HydePHP MIT License</small>
+        </p>
     </footer>
     </body>
     </html>
