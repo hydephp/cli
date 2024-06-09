@@ -238,11 +238,14 @@ function get_template(): string
                 margin-left: 0.5em;
                 margin-right: 0.25em;
             }
+            menu {
+                text-align: right;
+                margin: 0;
+            }
             .menubar {
                 background: #292d3e;
                 color: #fff;
                 padding: 0.5em;
-                text-align: right;
             }
             .terminal-screen {
                 font-size: 12px;
@@ -264,9 +267,11 @@ function get_template(): string
     </head>
     <body class="theme-{{ theme }}">
     <nav class="menubar">
-        {{ themeSelector }}
-        <a href="manual.xml">XML Version</a>
-        <a href="manual.md">Markdown Version</a>
+        <menu>
+            {{ themeSelector }}
+            <a href="manual.xml">XML Version</a>
+            <a href="manual.md">Markdown Version</a>
+        </menu>
     </nav>
     <main>{{ entries }}</main>
     </body>
