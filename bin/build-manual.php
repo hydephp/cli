@@ -20,7 +20,6 @@ task('getting|got', 'command list', function (&$commands): void {
 }, $commands);
 
 task('building|built', 'Html manual', function () use ($commands): void {
-    dump($commands);
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
     $names = array_filter($names, fn (string $name): bool => ! in_array($name, ['_complete', 'completion', 'standalone:build']));
     $names = array_values($names);
