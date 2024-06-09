@@ -233,7 +233,7 @@ function get_template(): string
                 background: #292d3e;
                 color: #fff;
                 padding: 0.5em;
-                text-align: center;
+                text-align: right;
             }
             .terminal-screen {
                 font-size: 12px;
