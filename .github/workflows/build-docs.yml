@@ -16,11 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build manual
-        run: |
-          mv builds/hyde hyde # Using the latest version of Hyde, which also lets us run this without Composer which makes it much faster
-          php bin/build-manual.php
-
       - name: Create site from Readme
         run: |
           mkdir _pages
@@ -31,6 +26,11 @@ jobs:
         run: mv .github/docs/hyde.yml hyde.yml
 
       - uses: hydephp/action@master
+
+      - name: Build manual
+        run: |
+          mv builds/hyde hyde # Using the latest version of Hyde, which also lets us run this without Composer which makes it much faster
+          php bin/build-manual.php
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
