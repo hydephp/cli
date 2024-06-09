@@ -37,6 +37,10 @@ enum Colors: int
 
 abstract class BaseTheme implements ThemeInterface
 {
+    protected static string $background = '#000';
+    protected static string $foreground = '#fff';
+    protected static string $fontFamily = 'monospace';
+
     protected static array $colors = [
         'black' => '#000',
         'red' => '#f00',
@@ -47,10 +51,6 @@ abstract class BaseTheme implements ThemeInterface
         'cyan' => '#0ff',
         'white' => '#fff',
     ];
-
-    protected static string $background = '#000';
-    protected static string $foreground = '#fff';
-    protected static string $fontFamily = 'monospace';
 
     public static function colors(): array
     {
@@ -78,6 +78,10 @@ abstract class BaseTheme implements ThemeInterface
 
 class ClassicTheme extends BaseTheme
 {
+    protected static string $background = '#000000';
+    protected static string $foreground = '#ffffff';
+    protected static string $fontFamily = 'monospace';
+
     protected static array $colors = [
         'black' => '#000000',
         'red' => '#ff0000',
@@ -88,14 +92,14 @@ class ClassicTheme extends BaseTheme
         'cyan' => '#00ffff',
         'white' => '#ffffff',
     ];
-
-    protected static string $background = '#000000';
-    protected static string $foreground = '#ffffff';
-    protected static string $fontFamily = 'monospace';
 }
 
 class FiraTheme extends BaseTheme
 {
+    protected static string $background = '#292d3e';
+    protected static string $foreground = '#bfc7d5';
+    protected static string $fontFamily = "'Fira Code', monospace";
+
     protected static array $colors = [
         'black' => '#000000',
         'red' => '#ff5572',
@@ -106,14 +110,14 @@ class FiraTheme extends BaseTheme
         'cyan' => '#89ddff',
         'white' => '#bec5d4',
     ];
-
-    protected static string $background = '#292d3e';
-    protected static string $foreground = '#bfc7d5';
-    protected static string $fontFamily = "'Fira Code', monospace";
 }
 
 class CampbellTheme extends BaseTheme
 {
+    protected static string $background = '#0c0c0c';
+    protected static string $foreground = '#cccccc';
+    protected static string $fontFamily = "'Cascadia Mono', monospace";
+
     protected static array $colors = [
         'black' => '#0c0c0c',
         'red' => '#c50f1f',
@@ -124,8 +128,4 @@ class CampbellTheme extends BaseTheme
         'cyan' => '#3a96dd',
         'white' => '#cccccc',
     ];
-
-    protected static string $background = '#0c0c0c';
-    protected static string $foreground = '#cccccc';
-    protected static string $fontFamily = "'Cascadia Mono', monospace";
 }
