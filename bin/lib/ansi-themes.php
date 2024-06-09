@@ -60,29 +60,29 @@ class FiraTheme implements ThemeInterface
     {
         return [
             30 => '#000', // Black
-            31 => '#f44336', // Red
-            32 => '#4caf50', // Green
-            33 => '#ffeb3b', // Yellow
-            34 => '#2196f3', // Blue
-            35 => '#9c27b0', // Magenta
-            36 => '#00bcd4', // Cyan
-            37 => '#fff', // White
+            31 => '#ff5572', // Red
+            32 => '#c3e88d', // Green
+            33 => '#ffcb6b', // Yellow
+            34 => '#82aaff', // Blue
+            35 => '#c792ea', // Magenta
+            36 => '#89ddff', // Cyan
+            37 => '#bec5d4', // White
         ];
     }
 
     public static function background(): string
     {
-        return '#263238';
+        return '#292d3e';
     }
 
     public static function textColor(): string
     {
-        return '#fff';
+        return '#bfc7d5';
     }
 
     public static function fontFamily(): string
     {
-        return 'Fira Code, monospace';
+        return "'Fira Code', monospace";
     }
 }
 
