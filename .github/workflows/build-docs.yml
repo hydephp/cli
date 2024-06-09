@@ -32,7 +32,6 @@ jobs:
 
       - name: Move manual
         run: |
-          rm _site/manual.html # Remove the placeholder
           mv docs/manual.html _site/manual.html
           mv docs/manual.xml _site/manual.xml
           mv docs/manual.md _site/manual.md
