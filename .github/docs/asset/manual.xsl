@@ -8,6 +8,9 @@
         <html>
             <head>
                 <title>HydePHP CLI Command List</title>
+                <strong>
+                    You are viewing the raw command list data. Not all commands may be available in your application.
+                </strong>
                 <style>
                     body {
                     font-family: Arial, sans-serif;
