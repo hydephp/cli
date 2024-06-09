@@ -218,6 +218,8 @@ function get_template(): string
                 color: #292d3e;
                 margin: 0;
                 padding: 0;
+                display: flex;
+                flex-direction: column;
             }
             main {
                 margin: 1em;
