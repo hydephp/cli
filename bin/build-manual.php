@@ -42,7 +42,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
     $data = compact('themes', 'themeSelector', 'theme', 'entries', 'template');
 
-    $manual = spl_blade($template, $data);
+    $manual = view($template, $data);
 
     file_put_contents('docs/manual/manual.html', $manual);
 });
@@ -216,7 +216,7 @@ function get_template(): string
     BLADE;
 }
 
-function spl_blade(string $template, array $data): string
+function view(string $template, array $data): string
 {
     foreach ($data as $key => $value) {
         $template = str_replace("{{ $key }}", $value, $template);
