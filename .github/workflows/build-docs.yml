@@ -20,6 +20,7 @@ jobs:
         run: |
           mkdir _pages
           mv README.md _pages/index.md
+          touch _pages/manual.html # Make Hyde aware of the manual
 
       - name: Move Hyde config
         run: mv .github/docs/hyde.yml hyde.yml
