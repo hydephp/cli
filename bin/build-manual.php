@@ -217,7 +217,7 @@ function get_template(): string
                 width: 128ch;
                 overflow-x: auto;
                 padding: 1em;
-                border-radius: 0.5em;
+                border-radius: 0.25rem;
             }
             .signature {
                 background: rgba(0, 0, 0, 0.1);
