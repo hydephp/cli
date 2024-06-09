@@ -111,6 +111,11 @@ function ansi_html_theme(): string
 {
     $theme = get_ansi_theme();
 
+    return build_theme($theme);
+}
+
+function build_theme(ThemeInterface $theme): string
+{
     $colors = $theme::colors();
 
     $theme = "\n".<<<CSS
