@@ -16,6 +16,8 @@ task('getting|got', 'command list', function (&$commands): void {
     $commands = json_decode($commands, true);
 }, $commands);
 
+die(print_r($commands, true));
+
 task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
     $names = array_filter($names, fn (string $name): bool => ! in_array($name, ['_complete', 'completion', 'standalone:build']));
