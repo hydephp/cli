@@ -42,14 +42,14 @@ abstract class BaseTheme implements ThemeInterface
     protected static string $fontFamily = 'monospace';
 
     protected static array $colors = [
-        'black' => 'black',
-        'red' => 'red',
-        'green' => 'green',
-        'yellow' => 'yellow',
-        'blue' => 'blue',
-        'magenta' => 'magenta',
-        'cyan' => 'cyan',
-        'white' => 'white',
+        'black' => '',
+        'red' => '',
+        'green' => '',
+        'yellow' => '',
+        'blue' => '',
+        'magenta' => '',
+        'cyan' => '',
+        'white' => '',
     ];
 
     public static function colors(): array
