@@ -37,18 +37,23 @@ enum Colors: int
 
 class ClassicTheme implements ThemeInterface
 {
+    protected static array $colors = [
+        'black' => '#000',
+        'red' => '#f00',
+        'green' => '#0f0',
+        'yellow' => '#ff0',
+        'blue' => '#00f',
+        'magenta' => '#f0f',
+        'cyan' => '#0ff',
+        'white' => '#fff',
+    ];
+
     public static function colors(): array
     {
-        return [
-            30 => '#000', // Black
-            31 => '#f00', // Red
-            32 => '#0f0', // Green
-            33 => '#ff0', // Yellow
-            34 => '#00f', // Blue
-            35 => '#f0f', // Magenta
-            36 => '#0ff', // Cyan
-            37 => '#fff', // White
-        ];
+        $keys = array_column(Colors::cases(), 'value');
+        $values = array_values(self::$colors);
+
+        return array_combine($keys, $values);
     }
 
     public static function background(): string
