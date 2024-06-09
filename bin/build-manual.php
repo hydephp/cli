@@ -192,8 +192,8 @@ function get_themes(): array
 {
     return [
         new FiraTheme(),
-        new ClassicTheme(),
         new CampbellTheme(),
+        new ClassicTheme(),
     ];
 }
 

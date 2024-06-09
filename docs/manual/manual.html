@@ -19,21 +19,6 @@
         .theme-fira .ansi-36 { color: #89ddff; }
         .theme-fira .ansi-37 { color: #bec5d4; }
     
-        .theme-classic .terminal-screen {
-             color: #ffffff;
-             background: #000000;
-             font-family: monospace;
-        }
-
-        .theme-classic .ansi-30 { color: #000000; }
-        .theme-classic .ansi-31 { color: #ff0000; }
-        .theme-classic .ansi-32 { color: #00ff00; }
-        .theme-classic .ansi-33 { color: #ffff00; }
-        .theme-classic .ansi-34 { color: #0000ff; }
-        .theme-classic .ansi-35 { color: #ff00ff; }
-        .theme-classic .ansi-36 { color: #00ffff; }
-        .theme-classic .ansi-37 { color: #ffffff; }
-    
         .theme-campbell .terminal-screen {
              color: #cccccc;
              background: #0c0c0c;
@@ -48,6 +33,21 @@
         .theme-campbell .ansi-35 { color: #881798; }
         .theme-campbell .ansi-36 { color: #3a96dd; }
         .theme-campbell .ansi-37 { color: #cccccc; }
+    
+        .theme-classic .terminal-screen {
+             color: #ffffff;
+             background: #000000;
+             font-family: monospace;
+        }
+
+        .theme-classic .ansi-30 { color: #000000; }
+        .theme-classic .ansi-31 { color: #ff0000; }
+        .theme-classic .ansi-32 { color: #00ff00; }
+        .theme-classic .ansi-33 { color: #ffff00; }
+        .theme-classic .ansi-34 { color: #0000ff; }
+        .theme-classic .ansi-35 { color: #ff00ff; }
+        .theme-classic .ansi-36 { color: #00ffff; }
+        .theme-classic .ansi-37 { color: #ffffff; }
     </style>
     <style>
         .terminal-screen {
@@ -71,7 +71,7 @@
 <body class="theme-fira">
 <label for="theme-selector">Theme:</label>
 <select id="theme-selector">
-    <option value="Fira" selected>Fira</option><option value="classic">Classic</option><option value="campbell">Campbell</option>
+    <option value="Fira" selected>Fira</option><option value="campbell">Campbell</option><option value="classic">Classic</option>
 </select>
 
 <script>
