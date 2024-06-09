@@ -6,6 +6,8 @@
     <style>{{ $themes }}</style>
 </head>
 <body>
+<main>
     {{ $entries }}
+</main>
 </body>
 </html>
