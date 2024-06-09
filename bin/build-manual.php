@@ -254,7 +254,9 @@ function get_template(): string
         </style>
     </head>
     <body class="theme-{{ theme }}">
-    <nav class="menubar">{{ themeSelector }}</nav>
+    <nav class="menubar">
+        {{ themeSelector }}
+    </nav>
     <main>{{ entries }}</main>
     </body>
     </html>
