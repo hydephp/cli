@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>HydePHP Standalone CLI Manual</title>
     <style>
-        .terminal-screen {
+        .theme-fira .terminal-screen {
              color: #fff;
              background: #263238;
              font-family: Fira Code, monospace;
@@ -13,17 +13,67 @@
              overflow-x: auto;
              padding: 1em;
         }
-        .ansi-30 { color: #000; }
-        .ansi-31 { color: #f44336; }
-        .ansi-32 { color: #4caf50; }
-        .ansi-33 { color: #ffeb3b; }
-        .ansi-34 { color: #2196f3; }
-        .ansi-35 { color: #9c27b0; }
-        .ansi-36 { color: #00bcd4; }
-        .ansi-37 { color: #fff; }
+        .theme-fira .ansi-30 { color: #000; }
+        .theme-fira .ansi-31 { color: #f44336; }
+        .theme-fira .ansi-32 { color: #4caf50; }
+        .theme-fira .ansi-33 { color: #ffeb3b; }
+        .theme-fira .ansi-34 { color: #2196f3; }
+        .theme-fira .ansi-35 { color: #9c27b0; }
+        .theme-fira .ansi-36 { color: #00bcd4; }
+        .theme-fira .ansi-37 { color: #fff; }
+    
+
+        .theme-classic .terminal-screen {
+             color: #fff;
+             background: #000;
+             font-family: monospace;
+             font-size: 12px;
+             width: 128ch;
+             overflow-x: auto;
+             padding: 1em;
+        }
+        .theme-classic .ansi-30 { color: #000; }
+        .theme-classic .ansi-31 { color: #f00; }
+        .theme-classic .ansi-32 { color: #0f0; }
+        .theme-classic .ansi-33 { color: #ff0; }
+        .theme-classic .ansi-34 { color: #00f; }
+        .theme-classic .ansi-35 { color: #f0f; }
+        .theme-classic .ansi-36 { color: #0ff; }
+        .theme-classic .ansi-37 { color: #fff; }
+    
+
+        .theme-campbell .terminal-screen {
+             color: #CCCCCC;
+             background: #0C0C0C;
+             font-family: monospace;
+             font-size: 12px;
+             width: 128ch;
+             overflow-x: auto;
+             padding: 1em;
+        }
+        .theme-campbell .ansi-30 { color: #0C0C0C; }
+        .theme-campbell .ansi-31 { color: #C50F1F; }
+        .theme-campbell .ansi-32 { color: #13A10E; }
+        .theme-campbell .ansi-33 { color: #C19C00; }
+        .theme-campbell .ansi-34 { color: #0037DA; }
+        .theme-campbell .ansi-35 { color: #881798; }
+        .theme-campbell .ansi-36 { color: #3A96DD; }
+        .theme-campbell .ansi-37 { color: #CCCCCC; }
     </style>
 </head>
-<body>
+<body class="theme-fira">
+<select id="theme-selector">
+    <option value="Fira" selected>Fira</option><option value="ClassicTheme">Classic</option><option value="CampbellTheme">Campbell</option>
+</select>
+
+<script>
+    const selector = document.getElementById('theme-selector');
+    selector.addEventListener('change', () => {
+        const theme = selector.value;
+        document.body.className = '';
+        document.body.classList.add('theme-' + theme.toLowerCase().replace('theme', ''));
+    });
+</script>
 <main>
     <h1>build</h1>
 <pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
