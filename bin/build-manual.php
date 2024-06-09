@@ -218,10 +218,8 @@ function get_template(): string
         <style>
             .signature {
                 background: rgba(0, 0, 0, 0.1);
-                padding: 1em;
-                margin: -1em;
-                padding-bottom: 0.75em;
-                margin-bottom: -0.75em;
+                padding: 1em 1em 0.75em;
+                margin: -1em -1em -0.75em;
             }
         </style>
     </head>
