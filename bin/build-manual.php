@@ -39,8 +39,9 @@ task('building|built', 'Html manual', function () use ($commands): void {
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
     $entries = implode("\n\n<hr>\n\n", $manual);
     $themes = ansi_html_themes();
+    $themeSelector = theme_selector_widget();
     $template = file_get_contents('.github/docs/templates/manual.blade.php');
-    $manual = str_replace(['{{ $themes }}', '{{ $entries }}'], [$themes, $entries], $template);
+    $manual = str_replace(['{{ $themes }}', '{{ $themeSelector }}', '{{ $entries }}'], [$themes, $themeSelector, $entries], $template);
 
     file_put_contents('docs/manual/manual.html', $manual);
 });
@@ -115,6 +116,35 @@ function ansi_html_themes(): string
         new FiraTheme(),
         new CampbellTheme(),
     ]));
+}
+
+function theme_selector_widget(): string
+{
+    $themes = [
+        'Classic' => ClassicTheme::class,
+        'Fira' => FiraTheme::class,
+        'Campbell' => CampbellTheme::class,
+    ];
+
+    $options = '';
+    foreach ($themes as $name => $class) {
+        $options .= "<option value=\"$class\">$name</option>";
+    }
+
+    return <<<HTML
+    <select id="theme-selector">
+        $options
+    </select>
+
+    <script>
+        const selector = document.getElementById('theme-selector');
+        selector.addEventListener('change', () => {
+            const theme = selector.value;
+            document.body.className = '';
+            document.body.classList.add('theme-' + theme.toLowerCase().replace('theme', ''));
+        });
+    </script>
+    HTML;
 }
 
 function build_theme(ThemeInterface $theme): string
