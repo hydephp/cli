@@ -48,48 +48,56 @@ abstract class BaseTheme implements ThemeInterface
         'white' => '#fff',
     ];
 
+    protected static string $background = '#000';
+    protected static string $foreground = '#fff';
+    protected static string $fontFamily = 'monospace';
+
     public static function colors(): array
     {
         $keys = array_column(Colors::cases(), 'value');
         $values = array_values(static::$colors);
 
-        return array_combine($keys, $values);
+        return array_combine($keys, array_map('strtolower', $values));
+    }
+
+    public static function background(): string
+    {
+        return strtolower(static::$background);
+    }
+
+    public static function foreground(): string
+    {
+        return strtolower(static::$foreground);
+    }
+
+    public static function fontFamily(): string
+    {
+        return static::$fontFamily;
     }
 }
 
 class ClassicTheme extends BaseTheme
 {
     protected static array $colors = [
-        'black' => '#000',
-        'red' => '#f00',
-        'green' => '#0f0',
-        'yellow' => '#ff0',
-        'blue' => '#00f',
-        'magenta' => '#f0f',
-        'cyan' => '#0ff',
-        'white' => '#fff',
+        'black' => '#000000',
+        'red' => '#ff0000',
+        'green' => '#00ff00',
+        'yellow' => '#ffff00',
+        'blue' => '#0000ff',
+        'magenta' => '#ff00ff',
+        'cyan' => '#00ffff',
+        'white' => '#ffffff',
     ];
 
-    public static function background(): string
-    {
-        return '#000';
-    }
-
-    public static function foreground(): string
-    {
-        return '#fff';
-    }
-
-    public static function fontFamily(): string
-    {
-        return 'monospace';
-    }
+    protected static string $background = '#000000';
+    protected static string $foreground = '#ffffff';
+    protected static string $fontFamily = 'monospace';
 }
 
 class FiraTheme extends BaseTheme
 {
     protected static array $colors = [
-        'black' => '#000',
+        'black' => '#000000',
         'red' => '#ff5572',
         'green' => '#c3e88d',
         'yellow' => '#ffcb6b',
@@ -99,47 +107,25 @@ class FiraTheme extends BaseTheme
         'white' => '#bec5d4',
     ];
 
-    public static function background(): string
-    {
-        return '#292d3e';
-    }
-
-    public static function foreground(): string
-    {
-        return '#bfc7d5';
-    }
-
-    public static function fontFamily(): string
-    {
-        return "'Fira Code', monospace";
-    }
+    protected static string $background = '#292d3e';
+    protected static string $foreground = '#bfc7d5';
+    protected static string $fontFamily = "'Fira Code', monospace";
 }
 
 class CampbellTheme extends BaseTheme
 {
     protected static array $colors = [
-        'black' => '#0C0C0C',
-        'red' => '#C50F1F',
-        'green' => '#13A10E',
-        'yellow' => '#C19C00',
-        'blue' => '#0037DA',
+        'black' => '#0c0c0c',
+        'red' => '#c50f1f',
+        'green' => '#13a10e',
+        'yellow' => '#c19c00',
+        'blue' => '#0037da',
         'magenta' => '#881798',
-        'cyan' => '#3A96DD',
-        'white' => '#CCCCCC',
+        'cyan' => '#3a96dd',
+        'white' => '#cccccc',
     ];
 
-    public static function background(): string
-    {
-        return '#0C0C0C';
-    }
-
-    public static function foreground(): string
-    {
-        return '#CCCCCC';
-    }
-
-    public static function fontFamily(): string
-    {
-        return "'Cascadia Mono', monospace";
-    }
+    protected static string $background = '#0c0c0c';
+    protected static string $foreground = '#cccccc';
+    protected static string $fontFamily = "'Cascadia Mono', monospace";
 }
