@@ -195,7 +195,7 @@ function get_default_ansi_theme(): ThemeInterface
     return new FiraTheme();
 }
 
-function get_template(): string|false
+function get_template(): string
 {
     return <<<'BLADE'
     <!DOCTYPE html>
