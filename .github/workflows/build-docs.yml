@@ -33,5 +33,15 @@ jobs:
           echo '  prose_classes: "prose dark:prose-invert prose-img:inline"' >> hyde.yml
 
       - uses: hydephp/action@master
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          deploy-to: "pages"
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: pages-deployment
+        uses: actions/deploy-pages@v1
