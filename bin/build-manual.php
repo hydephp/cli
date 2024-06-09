@@ -40,7 +40,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $defaultTheme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
     $manual = str_replace(
-        ['{{ $themes }}', '{{ $themeSelector }}', '{{ $theme }}', '{{ $entries }}'],
+        ['{{ themes }}', '{{ themeSelector }}', '{{ theme }}', '{{ entries }}'],
         [$themes, $themeSelector, $defaultTheme, $entries],
         $template
     );
@@ -207,11 +207,11 @@ function get_template(): string
     <head>
         <meta charset="UTF-8">
         <title>HydePHP Standalone CLI Manual</title>
-        <style>{{ $themes }}</style>
+        <style>{{ themes }}</style>
     </head>
-    <body class="theme-{{ $theme }}">
-    {{ $themeSelector }}
-    <main>{{ $entries }}</main>
+    <body class="theme-{{ theme }}">
+    {{ themeSelector }}
+    <main>{{ entries }}</main>
     </body>
     </html>
     BLADE;
