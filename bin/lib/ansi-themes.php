@@ -14,7 +14,7 @@ interface ThemeInterface {
     /**
      * @return string The default text color to use for the terminal. (HTML color code)
      */
-    public static function textColor(): string;
+    public static function foreground(): string;
 
     /**
      * @return string The font family to use for the terminal. (CSS font-family)
@@ -43,7 +43,7 @@ class ClassicTheme implements ThemeInterface
         return '#000';
     }
 
-    public static function textColor(): string
+    public static function foreground(): string
     {
         return '#fff';
     }
@@ -75,7 +75,7 @@ class FiraTheme implements ThemeInterface
         return '#292d3e';
     }
 
-    public static function textColor(): string
+    public static function foreground(): string
     {
         return '#bfc7d5';
     }
@@ -107,7 +107,7 @@ class CampbellTheme implements ThemeInterface
         return '#0C0C0C';
     }
 
-    public static function textColor(): string
+    public static function foreground(): string
     {
         return '#CCCCCC';
     }

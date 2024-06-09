@@ -159,7 +159,7 @@ function build_theme(ThemeInterface $theme): string
 
     $theme = "\n".<<<CSS
             .theme-$identifier .terminal-screen {
-                 color: {$theme::textColor()};
+                 color: {$theme::foreground()};
                  background: {$theme::background()};
                  font-family: {$theme::fontFamily()};
                  font-size: 12px;
