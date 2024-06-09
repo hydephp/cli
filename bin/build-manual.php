@@ -215,12 +215,12 @@ function get_template(): string
             body {
                 font-family: sans-serif;
                 background: #f8f8f8;
-                color: #333;
+                color: #292d3e;
                 margin: 0;
                 padding: 0;
             }
             .menubar {
-                background: #333;
+                background: #292d3e;
                 color: #fff;
                 padding: 0.5em;
                 text-align: center;
