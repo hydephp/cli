@@ -286,6 +286,11 @@ function get_template(): string
             footer {
                 text-align: center;
                 font-size: 0.9em;
+                border-top: 1px solid #ddd;
+                padding: 0.5em 4em;
+                width: 80vw;
+                max-width: 720px;
+                margin: 0 auto;
             }
         </style>
     </head>
