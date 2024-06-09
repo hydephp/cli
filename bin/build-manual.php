@@ -223,6 +223,7 @@ function get_template(): string
             }
             .signature .caret {
                 color: #999;
+                user-select: none;
             }
         </style>
     </head>
