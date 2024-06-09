@@ -66,6 +66,9 @@ abstract class BaseTheme implements ThemeInterface
     }
 }
 
+/**
+ * The classic theme for a retro terminal look.
+ */
 class ClassicTheme extends BaseTheme
 {
     protected static string $background = '#000000';
@@ -84,6 +87,9 @@ class ClassicTheme extends BaseTheme
     ];
 }
 
+/**
+ * Theme inspired by the Visual Studio Code Palenight theme, also used by Torchlight.
+ */
 class FiraTheme extends BaseTheme
 {
     protected static string $background = '#292d3e';
@@ -102,6 +108,9 @@ class FiraTheme extends BaseTheme
     ];
 }
 
+/**
+ * Theme inspired by the Windows Terminal Campbell theme.
+ */
 class CampbellTheme extends BaseTheme
 {
     protected static string $background = '#0c0c0c';
