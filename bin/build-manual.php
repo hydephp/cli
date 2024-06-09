@@ -265,8 +265,8 @@ function get_template(): string
     <body class="theme-{{ theme }}">
     <nav class="menubar">
         {{ themeSelector }}
-        <a href="manual.xml">XML Manual</a>
-        <a href="manual.md">Markdown Manual</a>
+        <a href="manual.xml">XML Version</a>
+        <a href="manual.md">Markdown Version</a>
     </nav>
     <main>{{ entries }}</main>
     </body>
