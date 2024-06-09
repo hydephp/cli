@@ -222,7 +222,7 @@ function get_template(): string
                 flex-direction: column;
             }
             main {
-                margin: 1em;
+                margin: 1em auto;
             }
             h2 {
                 font-size: 1.5em;
