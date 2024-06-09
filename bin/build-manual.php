@@ -129,6 +129,7 @@ function theme_selector_widget(): string
     }
 
     return <<<HTML
+    <label for="theme-selector">Theme:</label>
     <select id="theme-selector">
         $options
     </select>
