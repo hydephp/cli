@@ -110,9 +110,11 @@ function ansi_to_html(string $output): string
 
 function ansi_html_themes(): string
 {
-    $theme = get_ansi_theme();
-
-    return build_theme($theme);
+    return implode("\n", array_map('build_theme', [
+        new ClassicTheme(),
+        new FiraTheme(),
+        new CampbellTheme(),
+    ]));
 }
 
 function build_theme(ThemeInterface $theme): string
