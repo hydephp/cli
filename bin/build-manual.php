@@ -238,6 +238,9 @@ function get_template(): string
                 margin-left: 0.5em;
                 margin-right: 0.25em;
             }
+            a:hover {
+                color: cornflowerblue;
+            }
             menu {
                 text-align: right;
                 margin: 0;
