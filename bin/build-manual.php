@@ -29,12 +29,12 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
         $info = hyde_exec("help $name --ansi", true);
         $info = ansi_to_html($info);
-        $signature = '$ hyde '.$name.' [options] [arguments]';
+        $signature = 'hyde '.$name.' [options] [arguments]';
         $manual[] = <<<HTML
         <section>
         <h2>$name</h2>
 
-        <pre class="terminal-screen"><div class="signature">$signature</div>
+        <pre class="terminal-screen"><div class="signature"><span class="caret">$</span> $signature</div>
         $info</pre>
 
         </section>
@@ -220,6 +220,9 @@ function get_template(): string
                 background: rgba(0, 0, 0, 0.1);
                 padding: 1em 1em 0.75em;
                 margin: -1em -1em -0.75em;
+            }
+            .signature .caret {
+                color: #999;
             }
         </style>
     </head>
