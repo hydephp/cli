@@ -40,8 +40,9 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $entries = implode("\n\n<hr>\n\n", $manual);
     $themes = ansi_html_themes();
     $themeSelector = theme_selector_widget();
+    $defaultTheme = strtolower(str_replace('Theme', '', (new ReflectionClass(get_default_ansi_theme()))->getShortName()));
     $template = file_get_contents('.github/docs/templates/manual.blade.php');
-    $manual = str_replace(['{{ $themes }}', '{{ $themeSelector }}', '{{ $entries }}'], [$themes, $themeSelector, $entries], $template);
+    $manual = str_replace(['{{ $themes }}', '{{ $themeSelector }}', '{{ $theme }}', '{{ $entries }}'], [$themes, $themeSelector, $defaultTheme, $entries], $template);
 
     file_put_contents('docs/manual/manual.html', $manual);
 });
@@ -128,7 +129,11 @@ function theme_selector_widget(): string
 
     $options = '';
     foreach ($themes as $name => $class) {
-        $options .= "<option value=\"$class\">$name</option>";
+        if ($class === get_default_ansi_theme()::class) {
+            $options .= "<option value=\"$name\" selected>$name</option>";
+        } else {
+            $options .= "<option value=\"$class\">$name</option>";
+        }
     }
 
     return <<<HTML
@@ -173,7 +178,7 @@ function build_theme(ThemeInterface $theme): string
     return rtrim($theme)."\n    ";
 }
 
-function get_ansi_theme(): ThemeInterface
+function get_default_ansi_theme(): ThemeInterface
 {
     return new FiraTheme();
 }

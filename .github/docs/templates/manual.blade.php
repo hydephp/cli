@@ -5,7 +5,7 @@
     <title>HydePHP Standalone CLI Manual</title>
     <style>{{ $themes }}</style>
 </head>
-<body>
+<body class="theme-{{ $theme }}">
 {{ $themeSelector }}
 <main>
     {{ $entries }}
