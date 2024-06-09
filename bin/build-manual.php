@@ -249,7 +249,7 @@ function get_template(): string
             .menubar {
                 background: #292d3e;
                 color: #fff;
-                padding: 0.75em 0.5em;
+                padding: 0.75em;
             }
             .menubar h2 {
                 margin: 0;
