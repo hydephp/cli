@@ -38,7 +38,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $themes = ansi_html_themes();
     $themeSelector = theme_selector_widget();
     $defaultTheme = get_theme_key(get_default_ansi_theme());
-    $template = file_get_contents('.github/docs/templates/manual.blade.php');
+    $template = get_template();
     $manual = str_replace(['{{ $themes }}', '{{ $themeSelector }}', '{{ $theme }}', '{{ $entries }}'], [$themes, $themeSelector, $defaultTheme, $entries], $template);
 
     file_put_contents('docs/manual/manual.html', $manual);
@@ -193,4 +193,9 @@ function get_themes(): array
 function get_default_ansi_theme(): ThemeInterface
 {
     return new FiraTheme();
+}
+
+function get_template(): string|false
+{
+    return file_get_contents('.github/docs/templates/manual.blade.php');
 }
