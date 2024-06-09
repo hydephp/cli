@@ -7,8 +7,6 @@
 </head>
 <body class="theme-{{ $theme }}">
 {{ $themeSelector }}
-<main>
-    {{ $entries }}
-</main>
+<main>{{ $entries }}</main>
 </body>
 </html>

@@ -29,12 +29,12 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
         $info = hyde_exec("help $name --ansi", true);
         $info = ansi_to_html($info);
-        $manual[] = "<h1>$name</h1>\n$info";
+        $manual[] = "<section>\n<h2>$name</h2>\n$info\n</section>\n";
     }
     echo "\n";
 
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
-    $entries = implode("\n\n<hr>\n\n", $manual);
+    $entries = "\n".implode("\n", $manual);
     $themes = ansi_html_themes();
     $themeSelector = theme_selector_widget();
     $defaultTheme = get_theme_key(get_default_ansi_theme());
@@ -109,7 +109,9 @@ function ansi_to_html(string $output): string
     $output = "<span class=\"ansi-0\">$output</span>";
 
     return <<<HTML
+    
     <pre class="terminal-screen">$output</pre>
+
     HTML;
 }
 
