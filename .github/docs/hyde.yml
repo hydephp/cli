@@ -1,0 +1,7 @@
+hyde:
+  name: HydePHP Standalone CLI
+  load_app_styles_from_cdn: true
+  scripts: '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/styles/atom-one-dark.min.css"> <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script> <script>hljs.highlightAll();</script> <style>.prose :where(pre) { background-color: #282c34; } </style> <style>pre code.hljs { padding: 0; }</style>'
+
+markdown:
+  prose_classes: "prose dark:prose-invert prose-img:inline"
