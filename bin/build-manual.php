@@ -301,6 +301,11 @@ function get_template(): string
         </menu>
     </nav>
     <main>{{ entries }}</main>
+    <footer>
+        <p>
+            HydePHP Standalone CLI Manual
+        </p>
+    </footer>
     </body>
     </html>
     BLADE;
