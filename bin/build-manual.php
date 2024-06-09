@@ -32,7 +32,9 @@ task('building|built', 'Html manual', function () use ($commands): void {
         $manual[] = <<<HTML
         <section>
         <h2>$name</h2>
-        $info
+
+        <pre class="terminal-screen">$info</pre>
+
         </section>
         HTML."\n";
     }
@@ -116,7 +118,7 @@ function ansi_to_html(string $output): string
     $output = preg_replace('/\e\[(\d+)(;\d+)*m/', '</span><span class="ansi-$1">', $output);
     $output = "<span class=\"ansi-0\">$output</span>";
 
-    return "\n<pre class=\"terminal-screen\">$output</pre>\n";
+    return $output;
 }
 
 function ansi_html_themes(): string
