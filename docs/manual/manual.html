@@ -47,56 +47,6 @@
 
 <hr>
 
-<h1>completion</h1>
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
-  Dump the shell completion script
-
-</span><span class="ansi-33">Usage:</span><span class="ansi-39">
-  completion [options] [--] [&lt;shell&gt;]
-
-</span><span class="ansi-33">Arguments:</span><span class="ansi-39">
-  </span><span class="ansi-32">shell</span><span class="ansi-39">                 The shell type (e.g. &quot;bash&quot;), the value of the &quot;$SHELL&quot; env var will be used if this is not given
-
-</span><span class="ansi-33">Options:</span><span class="ansi-39">
-  </span><span class="ansi-32">    --debug</span><span class="ansi-39">           Tail the completion debug log
-  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">            Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
-  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">           Do not output any message
-  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">         Display this application version
-  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">  Force (or disable --no-ansi) ANSI output
-  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
-  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
-  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
-
-</span><span class="ansi-33">Help:</span><span class="ansi-39">
-  The </span><span class="ansi-32">completion</span><span class="ansi-39"> command dumps the shell completion script required
-  to use shell autocompletion (currently, bash, fish, zsh completion are supported).
-
-  </span><span class="ansi-33">Static installation
-  -------------------</span><span class="ansi-39">
-
-  Dump the script to a global completion file and restart your shell:
-
-      </span><span class="ansi-32">hyde completion  | sudo tee /etc/bash_completion.d/hyde</span><span class="ansi-39">
-
-  Or dump the script to a local file and source it:
-
-      </span><span class="ansi-32">hyde completion  &gt; completion.sh</span><span class="ansi-39">
-
-      </span><span class="ansi-33"># source the file whenever you use the project</span><span class="ansi-39">
-      </span><span class="ansi-32">source completion.sh</span><span class="ansi-39">
-
-      </span><span class="ansi-33"># or add this line at the end of your &quot;~/.bashrc&quot; file:</span><span class="ansi-39">
-      </span><span class="ansi-32">source /path/to/completion.sh</span><span class="ansi-39">
-
-  </span><span class="ansi-33">Dynamic installation
-  --------------------</span><span class="ansi-39">
-
-  Add this to the end of your shell configuration file (e.g. </span><span class="ansi-32">&quot;~/.bashrc&quot;</span><span class="ansi-39">):
-
-      </span><span class="ansi-32">eval &quot;$(H:\hyde-global\hyde completion )&quot;</span><span class="ansi-39"></span></pre>
-
-<hr>
-
 <h1>debug</h1>
 <pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Print debug information
@@ -513,25 +463,6 @@
   </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">  Do not ask any interactive question
   </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">       The environment the command should run under
   </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span></pre>
-
-<hr>
-
-<h1>standalone:build</h1>
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
-  Build the standalone executable
-
-</span><span class="ansi-33">Usage:</span><span class="ansi-39">
-  standalone:build [options]
-
-</span><span class="ansi-33">Options:</span><span class="ansi-39">
-  </span><span class="ansi-32">    --build-version-suffix[=BUILD-VERSION-SUFFIX]</span><span class="ansi-39">  The optional build version suffix
-  </span><span class="ansi-32">-h, --help</span><span class="ansi-39">                                         Display help for the given command. When no command is given display help for the </span><span class="ansi-32">list</span><span class="ansi-39"> command
-  </span><span class="ansi-32">-q, --quiet</span><span class="ansi-39">                                        Do not output any message
-  </span><span class="ansi-32">-V, --version</span><span class="ansi-39">                                      Display this application version
-  </span><span class="ansi-32">    --ansi|--no-ansi</span><span class="ansi-39">                               Force (or disable --no-ansi) ANSI output
-  </span><span class="ansi-32">-n, --no-interaction</span><span class="ansi-39">                               Do not ask any interactive question
-  </span><span class="ansi-32">    --env[=ENV]</span><span class="ansi-39">                                    The environment the command should run under
-  </span><span class="ansi-32">-v|vv|vvv, --verbose</span><span class="ansi-39">                               Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug</span></pre>
 
 <hr>
 

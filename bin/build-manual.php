@@ -18,7 +18,7 @@ task('getting|got', 'command list', function (&$commands): void {
 
 task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
-    $names = array_filter($names, fn (string $name): bool => ! str_starts_with($name, '_'));
+    $names = array_filter($names, fn (string $name): bool => ! in_array($name, ['_complete', 'completion', 'standalone:build']));
     $names = array_values($names);
 
     $manual = [];
