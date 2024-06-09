@@ -229,6 +229,15 @@ function get_template(): string
             label {
                 font-size: 0.9em;
             }
+            a {
+                color: #fff;
+                text-decoration: none;
+                background: #292d3e;
+                border-radius: 0.25rem;
+                font-size: 0.9em;
+                margin-left: 0.5em;
+                margin-right: 0.25em;
+            }
             .menubar {
                 background: #292d3e;
                 color: #fff;
@@ -256,6 +265,8 @@ function get_template(): string
     <body class="theme-{{ theme }}">
     <nav class="menubar">
         {{ themeSelector }}
+        <a href="manual.xml">XML Manual</a>
+        <a href="manual.md">Markdown Manual</a>
     </nav>
     <main>{{ entries }}</main>
     </body>
