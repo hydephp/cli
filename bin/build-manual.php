@@ -316,7 +316,7 @@ function get_template(): string
             Manual for the <a href="https://hydephp.github.io/cli?ref=manual">HydePHP Standalone CLI</a> - Version {{ version }}
         </p>
         <p>
-            <small>Content distributed under the HydePHP MIT License dual-licensed as CC BY 4.0</small>
+            <small>Content distributed under the HydePHP <a href="https://hydephp.com/license" rel="nofollow">MIT License</a>, dual-licensed as <a href="https://creativecommons.org/licenses/by/4.0/" rel="nofollow">CC BY 4.0</a</small>
         </p>
     </footer>
     </body>
