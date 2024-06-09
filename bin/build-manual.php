@@ -48,7 +48,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $themeSelector = theme_selector_widget();
     $theme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
-    $version = trim(hyde_exec('--version --no-ansi', true));
+    $version = parse_version(trim(hyde_exec('--version --no-ansi', true)));
 
     $data = compact(['themes', 'themeSelector', 'theme', 'entries', 'template', 'version']);
 
@@ -319,4 +319,9 @@ function view(string $template, array $data): string
     }
 
     return $template;
+}
+
+function parse_version(string $version): string
+{
+    return $version; // Todo: Parse the version from the output.
 }
