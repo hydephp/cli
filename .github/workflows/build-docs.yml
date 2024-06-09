@@ -33,12 +33,12 @@ jobs:
       - name: Move manual
         run: |
           mkdir _site/manual
+          rm _site/manual.html # Remove the placeholder
           mv docs/manual/manual.html _site/manual.html
           mv docs/manual/manual.xml _site/manual/manual.xml
           mv docs/manual/manual.md _site/manual/manual.md
-          rm _site/manual.html # Remove the placeholder
-          cp .github/docs/asset/manual.xsl _site/manual.xsl
-          sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual.xml
+          cp .github/docs/asset/manual.xsl _site/manual/manual.xsl
+          sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual/manual.xml
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
