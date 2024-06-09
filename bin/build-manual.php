@@ -44,7 +44,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HydePHP CLI Manual</title>
+    <title>HydePHP Standalone CLI Manual</title>
     <style>$theme</style>
 </head>
 <body>
