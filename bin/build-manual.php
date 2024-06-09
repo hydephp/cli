@@ -34,7 +34,8 @@ task('building|built', 'Html manual', function () use ($commands): void {
         <section>
         <h2>$name</h2>
 
-        <pre class="terminal-screen">$info</pre>
+        <pre class="terminal-screen">$signature
+        $info</pre>
 
         </section>
         HTML."\n";
