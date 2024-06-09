@@ -47,7 +47,7 @@ abstract class BaseTheme implements ThemeInterface
         $keys = array_column(Colors::cases(), 'value');
         $values = array_values(static::$colors);
 
-        return array_combine($keys, array_map('strtolower', $values));
+        return array_combine($keys, $values);
     }
 
     public static function background(): string
