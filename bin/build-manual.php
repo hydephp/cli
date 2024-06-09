@@ -308,7 +308,7 @@ function get_template(): string
     <main>{{ entries }}</main>
     <footer>
         <p>
-            Manual for the HydePHP Standalone CLI - Version {{ version }}
+            Manual for the <a href="https://hydephp.github.io/cli">HydePHP Standalone CLI</a> - Version {{ version }}
         </p>
         <p>
             <small>Content distributed under the HydePHP MIT License</small>
