@@ -326,6 +326,11 @@ function get_template(): string
         <p>
             <small>Content distributed under the HydePHP <a href="https://hydephp.com/license" rel="nofollow">MIT License</a>, dual-licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow">CC BY 4.0</a>.</small>
         </p>
+        <p>
+            <small>
+                <a href="" download="manual.html">Download for offline use</a>
+            </small>
+        </p>
     </footer>
     </body>
     </html>
