@@ -37,11 +37,11 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $entries = "\n".implode("\n", $manual);
     $themes = ansi_html_themes();
     $themeSelector = theme_selector_widget();
-    $defaultTheme = get_theme_key(get_default_ansi_theme());
+    $theme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
     $manual = str_replace(
         ['{{ themes }}', '{{ themeSelector }}', '{{ theme }}', '{{ entries }}'],
-        [$themes, $themeSelector, $defaultTheme, $entries],
+        [$themes, $themeSelector, $theme, $entries],
         $template
     );
 
