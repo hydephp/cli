@@ -35,6 +35,7 @@ jobs:
           mv docs/manual/manual.xml _site/manual.xml
           mv docs/manual/manual.md _site/manual.md
           rm _site/manual.html # Remove the placeholder
+          cp .github/docs/asset/manual.xsl _site/manual.xsl
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
