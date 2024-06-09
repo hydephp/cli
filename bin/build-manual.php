@@ -113,8 +113,8 @@ function ansi_to_html(string $output): string
 function ansi_html_themes(): string
 {
     return implode("\n", array_map('build_theme', [
-        new ClassicTheme(),
         new FiraTheme(),
+        new ClassicTheme(),
         new CampbellTheme(),
     ]));
 }
@@ -122,8 +122,8 @@ function ansi_html_themes(): string
 function theme_selector_widget(): string
 {
     $themes = [
-        'Classic' => ClassicTheme::class,
         'Fira' => FiraTheme::class,
+        'Classic' => ClassicTheme::class,
         'Campbell' => CampbellTheme::class,
     ];
 
