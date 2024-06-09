@@ -212,6 +212,13 @@ function get_template(): string
         <title>HydePHP Standalone CLI Manual</title>
         <style>{{ themes }}</style>
         <style>
+            body {
+                font-family: sans-serif;
+                background: #f8f8f8;
+                color: #333;
+                margin: 0;
+                padding: 0;
+            }
             .terminal-screen {
                 font-size: 12px;
                 width: 128ch;
