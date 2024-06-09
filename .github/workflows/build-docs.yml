@@ -19,7 +19,6 @@ jobs:
       - name: Build manual
         run: |
           mv builds/hyde hyde # Using the latest version of Hyde, which also lets us run this without Composer which makes it much faster
-          php hyde
           php bin/build-manual.php
 
       - name: Create site from Readme

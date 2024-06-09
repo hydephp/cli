@@ -11,7 +11,6 @@ if (file_exists(__DIR__.'/../vendor/autoload.php')) {
 chdir(__DIR__.'/..');
 
 echo hyde_exec('list');
-die;
 
 if (! is_dir('docs/manual')) {
     mkdir('docs/manual', recursive: true);
