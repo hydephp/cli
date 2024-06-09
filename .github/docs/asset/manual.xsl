@@ -7,7 +7,7 @@
     <xsl:template match="/">
         <html>
             <head>
-                <title>Symfony Command List</title>
+                <title>HydePHP CLI Command List</title>
                 <style>
                     body {
                     font-family: Arial, sans-serif;
@@ -42,7 +42,7 @@
                 </style>
             </head>
             <body>
-                <h1>Symfony Command List</h1>
+                <h1>HydePHP CLI Command List</h1>
                 <div>
                     <xsl:apply-templates select="symfony/commands/command"/>
                 </div>
