@@ -71,7 +71,7 @@ function hyde_exec(string $command, bool $cache = false): string
         return file_get_contents($cacheKey);
     }
 
-    exec("php hyde $command", $output, $exitCode);
+    exec("php builds/hyde $command", $output, $exitCode);
 
     if ($exitCode !== 0) {
         throw new Exception("Failed to execute command: $command");
