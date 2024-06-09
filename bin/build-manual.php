@@ -121,8 +121,10 @@ function build_theme(ThemeInterface $theme): string
 {
     $colors = $theme::colors();
 
+    $identifier = strtolower(str_replace('Theme', '', (new ReflectionClass($theme))->getShortName()));
+
     $theme = "\n".<<<CSS
-            .terminal-screen {
+            main.theme-$identifier .terminal-screen {
                  color: {$theme::textColor()};
                  background: {$theme::background()};
                  font-family: {$theme::fontFamily()};
