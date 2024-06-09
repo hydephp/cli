@@ -40,7 +40,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $theme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
 
-    $data = compact('themes', 'themeSelector', 'theme', 'entries', 'template');
+    $data = compact(['themes', 'themeSelector', 'theme', 'entries', 'template']);
 
     $manual = view($template, $data);
 
