@@ -25,7 +25,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
     echo "\n\n";
     foreach ($names as $name) {
-        echo " > Building entry for command '$name'\n";
+        ansi_echo(" > Building entry for command '$name'\n", '37');
 
         $info = hyde_exec("help $name --ansi", true);
         $info = ansi_to_html($info);
@@ -78,6 +78,12 @@ function hyde_exec(string $command, bool $cache = false): string
     return $output;
 }
 
+/** Output a message with ANSI colors. */
+function ansi_echo(string $message, string $color): void
+{
+    echo "\e[{$color}m$message\e[0m";
+}
+
 /** Run a task and output the time it took to complete. */
 function task(string $verb, string $subject, callable $task, &$output = null): void
 {
@@ -88,12 +94,12 @@ function task(string $verb, string $subject, callable $task, &$output = null): v
     [$start, $end] = [ucfirst($start), ucfirst($end)];
 
     $timeStart = microtime(true);
-    echo "$start $subject...";
+    ansi_echo("$start $subject...", '36');
 
     $task($output);
 
     $time = round((microtime(true) - $timeStart) * 1000, 2);
-    echo "\r$end $subject ($time ms)\n";
+    ansi_echo("\r$end $subject ($time ms)\n", '32');
 }
 
 function ansi_to_html(string $output): string
