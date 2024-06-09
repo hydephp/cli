@@ -283,6 +283,9 @@ function get_template(): string
             {{ themeSelector }}
             <a href="manual.xml">XML Version</a>
             <a href="manual.md">Markdown Version</a>
+            <a href="https://hydephp.github.io/cli">
+                Exit
+            </a>
         </menu>
     </nav>
     <main>{{ entries }}</main>
