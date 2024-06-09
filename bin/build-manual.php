@@ -40,7 +40,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $entries = implode("\n\n<hr>\n\n", $manual);
     $themes = ansi_html_themes();
     $themeSelector = theme_selector_widget();
-    $defaultTheme = strtolower(str_replace('Theme', '', (new ReflectionClass(get_default_ansi_theme()))->getShortName()));
+    $defaultTheme = get_theme_key(get_default_ansi_theme());
     $template = file_get_contents('.github/docs/templates/manual.blade.php');
     $manual = str_replace(['{{ $themes }}', '{{ $themeSelector }}', '{{ $theme }}', '{{ $entries }}'], [$themes, $themeSelector, $defaultTheme, $entries], $template);
 
@@ -112,9 +112,7 @@ function ansi_to_html(string $output): string
 
 function ansi_html_themes(): string
 {
-    return implode("\n", array_map(function (string $theme): string {
-        return build_theme(new $theme());
-    }, get_themes()));
+    return implode("\n", array_map('build_theme', get_themes()));
 }
 
 function theme_selector_widget(): string
@@ -122,11 +120,14 @@ function theme_selector_widget(): string
     $themes = get_themes();
 
     $options = '';
-    foreach ($themes as $name => $class) {
-        if ($class === get_default_ansi_theme()::class) {
+    foreach ($themes as $theme) {
+        $key = get_theme_key($theme);
+        $name = ucfirst($key);
+
+        if ($theme::class === get_default_ansi_theme()::class) {
             $options .= "<option value=\"$name\" selected>$name</option>";
         } else {
-            $options .= "<option value=\"$class\">$name</option>";
+            $options .= "<option value=\"$key\">$name</option>";
         }
     }
 
@@ -172,12 +173,17 @@ function build_theme(ThemeInterface $theme): string
     return rtrim($theme)."\n    ";
 }
 
+function get_theme_key(ThemeInterface $theme): string
+{
+    return strtolower(str_replace('Theme', '', (new ReflectionClass($theme))->getShortName()));
+}
+
 function get_themes(): array
 {
     return [
-        'Fira' => FiraTheme::class,
-        'Classic' => ClassicTheme::class,
-        'Campbell' => CampbellTheme::class,
+        new FiraTheme(),
+        new ClassicTheme(),
+        new CampbellTheme(),
     ];
 }
 
