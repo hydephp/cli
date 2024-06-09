@@ -30,6 +30,7 @@ jobs:
         run: |
           php bin/build-manual.php
           mv docs/manual _site/manual
+          mv _site/manual/manual.html _site/manual/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
