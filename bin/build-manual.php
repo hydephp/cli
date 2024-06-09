@@ -115,7 +115,7 @@ function ansi_to_html(string $output): string
 
 function ansi_html_themes(): string
 {
-    return implode("\n", array_map('build_theme', get_themes()));
+    return "\n".implode("\n", array_map('build_theme', get_themes()));
 }
 
 function theme_selector_widget(): string
@@ -157,7 +157,7 @@ function build_theme(ThemeInterface $theme): string
 
     $identifier = strtolower(str_replace('Theme', '', (new ReflectionClass($theme))->getShortName()));
 
-    $theme = "\n".<<<CSS
+    $theme = <<<CSS
             .theme-$identifier .terminal-screen {
                  color: {$theme::foreground()};
                  background: {$theme::background()};
@@ -167,6 +167,7 @@ function build_theme(ThemeInterface $theme): string
                  overflow-x: auto;
                  padding: 1em;
             }
+
     CSS;
 
     $theme .= "\n";
