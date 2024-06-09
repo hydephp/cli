@@ -29,7 +29,12 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
         $info = hyde_exec("help $name --ansi", true);
         $info = ansi_to_html($info);
-        $manual[] = "<section>\n<h2>$name</h2>\n$info\n</section>\n";
+        $manual[] = <<<HTML
+        <section>
+        <h2>$name</h2>
+        $info
+        </section>
+        HTML."\n";
     }
     echo "\n";
 
