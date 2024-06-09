@@ -304,7 +304,7 @@ function get_template(): string
     <main>{{ entries }}</main>
     <footer>
         <p>
-            HydePHP Standalone CLI Manual &mdash; Version {{ version }}
+            Command Manual for the HydePHP Standalone CLI &mdash; Version {{ version }}
         </p>
     </footer>
     </body>
