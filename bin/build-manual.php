@@ -41,6 +41,7 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $themes = ansi_html_themes();
     $template = file_get_contents('.github/docs/templates/manual.blade.php');
     $manual = str_replace(['{{ $themes }}', '{{ $entries }}'], [$themes, $entries], $template);
+
     file_put_contents('docs/manual/manual.html', $manual);
 });
 
