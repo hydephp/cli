@@ -231,6 +231,9 @@ function get_template(): string
             label {
                 font-size: 0.9em;
             }
+            select {
+                border-radius: 0.25rem;
+            }
             a {
                 color: #fff;
                 text-decoration: none;
