@@ -39,7 +39,11 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $themeSelector = theme_selector_widget();
     $defaultTheme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
-    $manual = str_replace(['{{ $themes }}', '{{ $themeSelector }}', '{{ $theme }}', '{{ $entries }}'], [$themes, $themeSelector, $defaultTheme, $entries], $template);
+    $manual = str_replace(
+        ['{{ $themes }}', '{{ $themeSelector }}', '{{ $theme }}', '{{ $entries }}'],
+        [$themes, $themeSelector, $defaultTheme, $entries],
+        $template
+    );
 
     file_put_contents('docs/manual/manual.html', $manual);
 });
