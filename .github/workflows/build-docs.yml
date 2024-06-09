@@ -34,8 +34,8 @@ jobs:
         run: |
           mkdir _site/manual
           mv docs/manual/manual.html _site/manual/index.html
-          mv docs/manual/manual.xml _site/manual.xml
-          mv docs/manual/manual.md _site/manual.md
+          mv docs/manual/manual.xml _site/manual/manual.xml
+          mv docs/manual/manual.md _site/manual/manual.md
           rm _site/manual.html # Remove the placeholder
           cp .github/docs/asset/manual.xsl _site/manual.xsl
           sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual.xml
