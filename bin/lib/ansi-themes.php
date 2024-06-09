@@ -1,6 +1,7 @@
 <?php
 
-interface ThemeInterface {
+interface ThemeInterface
+{
     /**
      * @return array<int, string> The color codes to use for the terminal. (Ansi 30-37)
      */
@@ -22,7 +23,8 @@ interface ThemeInterface {
     public static function fontFamily(): string;
 }
 
-enum Colors: int {
+enum Colors: int
+{
     case Black = 30;
     case Red = 31;
     case Green = 32;
