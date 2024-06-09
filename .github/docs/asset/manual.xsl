@@ -8,9 +8,6 @@
         <html>
             <head>
                 <title>HydePHP CLI Command List</title>
-                <strong>
-                    You are viewing the raw command list data. Not all commands may be available in your application.
-                </strong>
                 <style>
                     body {
                     font-family: Arial, sans-serif;
@@ -46,6 +43,9 @@
             </head>
             <body>
                 <h1>HydePHP CLI Command List</h1>
+                <strong>
+                    You are viewing the raw command list data. Not all commands may be available in your application.
+                </strong>
                 <div>
                     <xsl:apply-templates select="symfony/commands/command"/>
                 </div>
