@@ -80,13 +80,19 @@
             color: #82aaff;
         }
         menu {
-            text-align: right;
+            float: right;
+            display: inline;
             margin: 0;
         }
         .menubar {
             background: #292d3e;
             color: #fff;
             padding: 0.5em;
+        }
+        .menubar h2 {
+            margin: 0;
+            display: inline;
+            font-size: 1em;
         }
         .terminal-screen {
             font-size: 12px;
@@ -108,6 +114,9 @@
 </head>
 <body class="theme-fira">
 <nav class="menubar">
+    <h2>
+        HydePHP Standalone CLI Manual
+    </h2>
     <menu>
         <label for="theme-selector">Theme:</label>
 <select id="theme-selector">
