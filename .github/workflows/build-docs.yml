@@ -20,7 +20,6 @@ jobs:
         run: |
           mkdir _pages
           mv README.md _pages/index.md
-          rm -rf !'_pages'
 
       - name: Move Hyde config
         run: mv .github/docs/hyde.yml hyde.yml
