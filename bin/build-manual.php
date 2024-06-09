@@ -270,6 +270,9 @@ function get_template(): string
     </head>
     <body class="theme-{{ theme }}">
     <nav class="menubar">
+        <h2>
+            HydePHP Standalone CLI Manual
+        </h2>
         <menu>
             {{ themeSelector }}
             <a href="manual.xml">XML Version</a>
