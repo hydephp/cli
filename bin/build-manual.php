@@ -39,11 +39,10 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $themeSelector = theme_selector_widget();
     $theme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
-    $manual = str_replace(
-        ['{{ themes }}', '{{ themeSelector }}', '{{ theme }}', '{{ entries }}'],
-        [$themes, $themeSelector, $theme, $entries],
-        $template
-    );
+
+    $data = compact('themes', 'themeSelector', 'theme', 'entries', 'template');
+
+    $manual = spl_blade($template, $data);
 
     file_put_contents('docs/manual/manual.html', $manual);
 });
@@ -215,4 +214,13 @@ function get_template(): string
     </body>
     </html>
     BLADE;
+}
+
+function spl_blade(string $template, array $data): string
+{
+    foreach ($data as $key => $value) {
+        $template = str_replace("{{ $key }}", $value, $template);
+    }
+
+    return $template;
 }
