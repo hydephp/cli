@@ -219,6 +219,12 @@ function get_template(): string
                 margin: 0;
                 padding: 0;
             }
+            .menubar {
+                background: #333;
+                color: #fff;
+                padding: 0.5em;
+                text-align: center;
+            }
             .terminal-screen {
                 font-size: 12px;
                 width: 128ch;
