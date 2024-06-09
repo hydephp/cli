@@ -116,9 +116,8 @@ function ansi_to_html(string $output): string
 {
     $output = htmlspecialchars($output);
     $output = preg_replace('/\e\[(\d+)(;\d+)*m/', '</span><span class="ansi-$1">', $output);
-    $output = "<span class=\"ansi-0\">$output</span>";
 
-    return $output;
+    return "<span class=\"ansi-0\">$output</span>";
 }
 
 function ansi_html_themes(): string
