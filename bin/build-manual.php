@@ -292,6 +292,9 @@ function get_template(): string
                 max-width: 720px;
                 margin: 0 auto;
             }
+            footer p {
+                margin: 0.5em 0;
+            }
         </style>
     </head>
     <body class="theme-{{ theme }}">
