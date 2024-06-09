@@ -19,6 +19,7 @@ jobs:
       - name: Build manual
         run: |
           mv builds/hyde hyde # Using the latest version of Hyde, which also lets us run this without Composer which makes it much faster
+          mkdir vendor && touch vendor/autoload.php # Autoloader is not needed for production, just for development to get the debug helpers
           php bin/build-manual.php
 
       - name: Create site from Readme
