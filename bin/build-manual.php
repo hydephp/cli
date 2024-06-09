@@ -197,5 +197,18 @@ function get_default_ansi_theme(): ThemeInterface
 
 function get_template(): string|false
 {
-    return file_get_contents('.github/docs/templates/manual.blade.php');
+    return <<<'BLADE'
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>HydePHP Standalone CLI Manual</title>
+        <style>{{ $themes }}</style>
+    </head>
+    <body class="theme-{{ $theme }}">
+    {{ $themeSelector }}
+    <main>{{ $entries }}</main>
+    </body>
+    </html>
+    BLADE;
 }
