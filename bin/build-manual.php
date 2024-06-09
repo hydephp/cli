@@ -112,20 +112,14 @@ function ansi_to_html(string $output): string
 
 function ansi_html_themes(): string
 {
-    return implode("\n", array_map('build_theme', [
-        new FiraTheme(),
-        new ClassicTheme(),
-        new CampbellTheme(),
-    ]));
+    return implode("\n", array_map(function (string $theme): string {
+        return build_theme(new $theme());
+    }, get_themes()));
 }
 
 function theme_selector_widget(): string
 {
-    $themes = [
-        'Fira' => FiraTheme::class,
-        'Classic' => ClassicTheme::class,
-        'Campbell' => CampbellTheme::class,
-    ];
+    $themes = get_themes();
 
     $options = '';
     foreach ($themes as $name => $class) {
@@ -176,6 +170,15 @@ function build_theme(ThemeInterface $theme): string
     }
 
     return rtrim($theme)."\n    ";
+}
+
+function get_themes(): array
+{
+    return [
+        'Fira' => FiraTheme::class,
+        'Classic' => ClassicTheme::class,
+        'Campbell' => CampbellTheme::class,
+    ];
 }
 
 function get_default_ansi_theme(): ThemeInterface
