@@ -242,13 +242,19 @@ function get_template(): string
                 color: #82aaff;
             }
             menu {
-                text-align: right;
+                float: right;
+                display: inline;
                 margin: 0;
             }
             .menubar {
                 background: #292d3e;
                 color: #fff;
                 padding: 0.5em;
+            }
+            .menubar h2 {
+                margin: 0;
+                display: inline;
+                font-size: 1em;
             }
             .terminal-screen {
                 font-size: 12px;
