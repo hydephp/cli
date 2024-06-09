@@ -323,5 +323,11 @@ function view(string $template, array $data): string
 
 function parse_version(string $version): string
 {
-    return $version; // Todo: Parse the version from the output.
+    // First we assert it matches the following format in case it's been changed: 'HydePHP v0.7.70 - Experimental Standalone - (HydePHP v1.6.0)'
+    assert(preg_match('/HydePHP v(\d+\.\d+\.\d+) - Experimental Standalone - \(HydePHP v(\d+\.\d+\.\d+)\)/', $version, $matches));
+
+    $cliVersion = $matches[1];
+    $hydeVersion = $matches[2];
+
+    return "v$hydeVersion (CLI v$cliVersion)";
 }
