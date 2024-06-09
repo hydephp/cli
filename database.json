@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1717366075,
-        "content_hash": "1ac91dbfddbac672fae574287952dfda8dc1af0c2d46047a8b9ee40660d5bc75",
-        "total_views": 3198,
-        "total_clones": 20908,
-        "total_installs": 154
+        "last_updated": 1717970924,
+        "content_hash": "2737bc6e51899acefee1042d7051a64d9891ce90f1eba93b84e7e3f200fdbc3e",
+        "total_views": 3347,
+        "total_clones": 22460,
+        "total_installs": 156
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -870,6 +870,66 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-06-06T00:00:00Z": {
+            "views": {
+                "count": 4,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-06-08T00:00:00Z": {
+            "views": {
+                "count": 32,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 228,
+                "uniques": 8
+            }
+        },
+        "2024-06-09T00:00:00Z": {
+            "views": {
+                "count": 113,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1310,
+                "uniques": 13
+            }
+        },
+        "2024-06-02T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-06-03T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-06-04T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-06-05T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-06-07T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -1620,7 +1680,7 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 1,
+                    "count": 10,
                     "uniques": 1
                 },
                 "e3e85ae5da6dbbe42569da8780f45392f39b764ddbff1b3fe12e8284f05a964c": {
@@ -1632,6 +1692,54 @@
                 "ba7f14a1f3d5ee4369293d3e47ca5df2c824cba6249a8198ae74fc57466503c1": {
                     "path": "\/hydephp\/cli\/commit\/8eb856ad4e95ed21fca452d6147cf70a5f5a290e",
                     "title": "Convert public key to PEM format (SHA256) \u00b7 hydephp\/cli@8eb856a \u00b7 GitHub",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "ef37f6e2da590b6351b65037bae9a9a4987535c34339d7df74024e28b4864f81": {
+                    "path": "\/hydephp\/cli\/blob\/master\/.github\/workflows\/build-docs.yml",
+                    "title": "cli\/.github\/workflows\/build-docs.yml at master \u00b7 hydephp\/cli",
+                    "count": 4,
+                    "uniques": 1
+                },
+                "c99dc7c5c46e2bf5693a56c6ca278aab2a21a7b5e925327169468f43f6a10cd4": {
+                    "path": "\/hydephp\/cli\/tree\/master\/.github",
+                    "title": "cli\/.github at master \u00b7 hydephp\/cli",
+                    "count": 4,
+                    "uniques": 1
+                },
+                "68c5caa96aaab8c5cc13f934a1c80df3f4cbd18b30dba15efab4ba4e203af0d1": {
+                    "path": "\/hydephp\/cli\/tree\/master\/.github\/workflows",
+                    "title": "cli\/.github\/workflows at master \u00b7 hydephp\/cli",
+                    "count": 4,
+                    "uniques": 1
+                },
+                "0723b655ac4f7ae520b39ff5371ff33b8d3aea555664ece667944df79e462763": {
+                    "path": "\/hydephp\/cli\/edit\/master\/.github\/workflows\/build-docs.yml",
+                    "title": "Editing cli\/.github\/workflows\/build-docs.yml at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "76ac6e1dac3f8650f81a3722b83bef99a30a0b43a29ec4d03d429062da826d0c": {
+                    "path": "\/hydephp\/cli\/pull\/178\/files",
+                    "title": "Create new CLI manual generator by caendesilva \u00b7 Pull Request #178 \u00b7 hydephp\/...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "544878e31a70136494a7b430dcbfdb12d8e984a82250715d63241d0f9d15dbcd": {
+                    "path": "\/hydephp\/cli\/tree\/master\/bin",
+                    "title": "cli\/bin at master \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "54b7b4a2febc59192e5bf53fd76a400b9ea0f4ae4512fa8b5a6ac15c3f7969ca": {
+                    "path": "\/hydephp\/cli\/compare\/add-documentation-site",
+                    "title": "Comparing master...add-documentation-site \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "1c95cfea70b9a2d75b2bc53992f6901107abfc88a08bccae54c3f0ddf1f4af1c": {
+                    "path": "\/hydephp\/cli\/compare\/build-manual",
+                    "title": "Comparing master...build-manual \u00b7 hydephp\/cli",
                     "count": 1,
                     "uniques": 1
                 }
