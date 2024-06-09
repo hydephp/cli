@@ -219,6 +219,9 @@ function get_template(): string
                 margin: 0;
                 padding: 0;
             }
+            main {
+                margin: 1em;
+            }
             .menubar {
                 background: #292d3e;
                 color: #fff;
