@@ -61,6 +61,16 @@
         .theme-campbell .ansi-36 { color: #3a96dd; }
         .theme-campbell .ansi-37 { color: #cccccc; }
     </style>
+    <style>
+        .signature {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 1em 1em 0.75em;
+            margin: -1em -1em -0.75em;
+        }
+        .signature .caret {
+            color: #999;
+        }
+    </style>
 </head>
 <body class="theme-fira">
 <label for="theme-selector">Theme:</label>
@@ -80,7 +90,8 @@
 <section>
 <h2>build</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde build [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Build the static site
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -105,7 +116,8 @@
 <section>
 <h2>debug</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde debug [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Print debug information
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -125,7 +137,8 @@
 <section>
 <h2>help</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde help [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Display help for a command
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -161,7 +174,8 @@
 <section>
 <h2>list</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde list [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   List commands
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -204,7 +218,8 @@
 <section>
 <h2>new</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde new [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Create a new Hyde project.
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -227,7 +242,8 @@
 <section>
 <h2>rebuild</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde rebuild [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Run the static site builder for a single file
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -250,7 +266,8 @@
 <section>
 <h2>self-update</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde self-update [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Update the standalone application to the latest version.
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -271,7 +288,8 @@
 <section>
 <h2>serve</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde serve [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Start the realtime compiler server
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -298,7 +316,8 @@
 <section>
 <h2>validate</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde validate [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Test and validate your project to optimize your site
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -321,7 +340,8 @@
 <section>
 <h2>build:rss</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde build:rss [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Generate the RSS feed
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -341,7 +361,8 @@
 <section>
 <h2>build:search</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde build:search [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Generate the documentation search index
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -361,7 +382,8 @@
 <section>
 <h2>build:sitemap</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde build:sitemap [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Generate the sitemap.xml
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -381,7 +403,8 @@
 <section>
 <h2>change:sourceDirectory</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde change:sourceDirectory [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Change the source directory for your project
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -404,7 +427,8 @@
 <section>
 <h2>make:page</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde make:page [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Scaffold a new Markdown, Blade, or documentation page file
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -431,7 +455,8 @@
 <section>
 <h2>make:post</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde make:post [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Scaffold a new Markdown blog post file
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -455,7 +480,8 @@
 <section>
 <h2>package:discover</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde package:discover [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Rebuild the cached package manifest
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -475,7 +501,8 @@
 <section>
 <h2>publish:configs</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde publish:configs [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish the default configuration files
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -495,7 +522,8 @@
 <section>
 <h2>publish:homepage</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde publish:homepage [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish one of the default homepages to index.blade.php
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -519,7 +547,8 @@
 <section>
 <h2>publish:views</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde publish:views [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish the hyde components for customization. Note that existing files will be overwritten
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -542,7 +571,8 @@
 <section>
 <h2>route:list</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde route:list [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Display all the registered routes
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -562,7 +592,8 @@
 <section>
 <h2>torchlight:install</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde torchlight:install [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Install the Torchlight config file into your app.
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
@@ -582,7 +613,8 @@
 <section>
 <h2>vendor:publish</h2>
 
-<pre class="terminal-screen"><span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
+<pre class="terminal-screen"><div class="signature"><span class="caret">$</span> hyde vendor:publish [options] [arguments]</div>
+<span class="ansi-0"></span><span class="ansi-33">Description:</span><span class="ansi-39">
   Publish any publishable assets from vendor packages
 
 </span><span class="ansi-33">Usage:</span><span class="ansi-39">
