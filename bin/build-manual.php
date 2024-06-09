@@ -38,9 +38,9 @@ task('building|built', 'Html manual', function () use ($commands): void {
 
     // In the future, we could save each entry to a separate file, but now we just implode them into one.
     $entries = implode("\n\n<hr>\n\n", $manual);
-    $theme = ansi_html_theme();
+    $themes = ansi_html_themes();
     $template = file_get_contents('.github/docs/templates/manual.blade.php');
-    $manual = str_replace(['{{ $theme }}', '{{ $entries }}'], [$theme, $entries], $template);
+    $manual = str_replace(['{{ $themes }}', '{{ $entries }}'], [$themes, $entries], $template);
     file_put_contents('docs/manual/manual.html', $manual);
 });
 
@@ -107,7 +107,7 @@ function ansi_to_html(string $output): string
     HTML;
 }
 
-function ansi_html_theme(): string
+function ansi_html_themes(): string
 {
     $theme = get_ansi_theme();
 
