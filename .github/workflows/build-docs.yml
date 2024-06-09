@@ -36,6 +36,7 @@ jobs:
           mv docs/manual/manual.md _site/manual.md
           rm _site/manual.html # Remove the placeholder
           cp .github/docs/asset/manual.xsl _site/manual.xsl
+          sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual.xml
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
