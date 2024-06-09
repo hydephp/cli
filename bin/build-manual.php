@@ -222,6 +222,10 @@ function get_template(): string
             main {
                 margin: 1em;
             }
+            h2 {
+                font-size: 1.5em;
+                margin: 1em 0 0.5em;
+            }
             .menubar {
                 background: #292d3e;
                 color: #fff;
