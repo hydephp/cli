@@ -15,7 +15,7 @@ if (! is_dir('docs/manual')) {
 }
 
 task('getting|got', 'command list', function (&$commands): void {
-    $commands = hyde_exec('list --format=json --no-ansi');
+    $commands = hyde_exec('list --format=json --no-ansi', true);
     $commands = json_decode($commands, true);
 }, $commands);
 
@@ -47,12 +47,12 @@ task('building|built', 'Html manual', function () use ($commands): void {
 });
 
 task('building|built', 'XML manual', function (): void {
-    $xml = hyde_exec('list --format=xml --no-ansi');
+    $xml = hyde_exec('list --format=xml --no-ansi', true);
     file_put_contents('docs/manual/manual.xml', $xml);
 });
 
 task('building|built', 'Markdown manual', function (): void {
-    $md = hyde_exec('list --format=md --no-ansi');
+    $md = hyde_exec('list --format=md --no-ansi', true);
     file_put_contents('docs/manual/manual.md', $md);
 });
 
