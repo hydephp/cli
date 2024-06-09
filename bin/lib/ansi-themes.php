@@ -55,12 +55,6 @@ abstract class BaseTheme implements ThemeInterface
 
         return array_combine($keys, $values);
     }
-
-    abstract public static function background(): string;
-
-    abstract public static function foreground(): string;
-
-    abstract public static function fontFamily(): string;
 }
 
 class ClassicTheme extends BaseTheme
