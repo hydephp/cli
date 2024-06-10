@@ -266,17 +266,7 @@ class SelfUpdateCommand extends Command
         if (! extension_loaded('openssl') || config('app.openssl_verify') === false) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
-            $signature = $tempPath.'.sig';
-            $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
-
-            $this->debug('Verifying the signature...');
-            $isValid = $this->verifySignature($phar, $signature);
-
-            if ($isValid) {
-                $this->debug('Signature is valid!');
-            } else {
-                throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
-            }
+            $this->performSignatureValidation($tempPath, $phar);
         }
 
         // Make the downloaded file executable
@@ -299,6 +289,29 @@ class SelfUpdateCommand extends Command
 
         curl_close($ch);
         fclose($file);
+    }
+
+    /**
+     * Perform the signature validation of the downloaded file.
+     *
+     * @param  string  $tempPath The path to the temporary file
+     * @param  string  $phar The path to the downloaded PHAR file
+     *
+     * @throws RuntimeException If the signature is invalid
+     */
+    protected function performSignatureValidation(string $tempPath, string $phar): void
+    {
+        $signature = $tempPath.'.sig';
+        $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
+
+        $this->debug('Verifying the signature...');
+        $isValid = $this->verifySignature($phar, $signature);
+
+        if ($isValid) {
+            $this->debug('Signature is valid!');
+        } else {
+            throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
+        }
     }
 
     /**
