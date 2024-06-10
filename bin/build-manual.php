@@ -300,6 +300,9 @@ function get_template(): string
             footer p {
                 margin: 0.5em 0;
             }
+            footer a[download] {
+                color: #0037da;
+            }
         </style>
     </head>
     <body class="theme-{{ theme }}">
@@ -333,7 +336,7 @@ function get_template(): string
         </p>
         <p>
             <small>
-                <a href="" download="hydephp-manual.html">Download for offline use</a>
+                <a href="" download="hydephp-manual.html">Download HTML manual for offline use</a>
             </small>
         </p>
     </footer>
