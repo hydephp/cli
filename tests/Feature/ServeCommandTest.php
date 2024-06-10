@@ -6,15 +6,15 @@ use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-const HYDE_WORKING_DIR = '/path/to/working/dir';
-const HYDE_TEMP_DIR = '/path/to/temp/dir';
+const HYDE_WORKING_DIR = './path/to/working/dir';
+const HYDE_TEMP_DIR = './path/to/temp/dir';
 
 test('getExecutablePath method proxies server executable', function () {
     HydeKernel::setInstance(new HydeKernel(HYDE_WORKING_DIR));
     File::shouldReceive('exists')->once()->andReturnFalse();
-    File::shouldReceive('ensureDirectoryExists')->once()->with('/path/to/temp/dir/bin');
+    File::shouldReceive('ensureDirectoryExists')->once()->with('./path/to/temp/dir/bin');
     File::shouldReceive('put')->once()->withArgs(function ($path, $contents) {
-        expect($path)->toBe('/path/to/temp/dir/bin/server.php')
+        expect($path)->toBe('./path/to/temp/dir/bin/server.php')
             ->and($contents)->toContain("putenv('HYDE_AUTOLOAD_PATH=phar://hyde.phar/vendor/autoload.php')");
 
         return true;
@@ -23,7 +23,7 @@ test('getExecutablePath method proxies server executable', function () {
     $command = Mockery::mock(TestableServeCommand::class)->makePartial();
     $command->shouldAllowMockingProtectedMethods();
 
-    expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
+    expect($command->getExecutablePath())->toBe('./path/to/temp/dir/bin/server.php');
 });
 
 test('getExecutablePath method uses existing default executable when available', function () {
@@ -36,7 +36,7 @@ test('getExecutablePath method uses existing default executable when available',
 
     $command->shouldNotReceive('proxyPharServer');
 
-    expect($command->getExecutablePath())->toBe('/path/to/working/dir/vendor/hyde/realtime-compiler/bin/server.php');
+    expect($command->getExecutablePath())->toBe('./path/to/working/dir/vendor/hyde/realtime-compiler/bin/server.php');
 });
 
 test('getExecutablePath method uses cached executable proxy when available', function () {
@@ -48,7 +48,7 @@ test('getExecutablePath method uses cached executable proxy when available', fun
 
     $command->shouldAllowMockingProtectedMethods();
 
-    expect($command->getExecutablePath())->toBe('/path/to/temp/dir/bin/server.php');
+    expect($command->getExecutablePath())->toBe('./path/to/temp/dir/bin/server.php');
 });
 
 it('merges in environment variables', function () {
@@ -56,8 +56,8 @@ it('merges in environment variables', function () {
         'HYDE_SERVER_REQUEST_OUTPUT' => false,
         'HYDE_PHAR_PATH' => realpath(__DIR__.'/../../builds/hyde') ?: 'false',
         'HYDE_BOOTSTRAP_PATH' => realpath(__DIR__.'/../../app/bootstrap.php'),
-        'HYDE_WORKING_DIR' => '/path/to/working/dir',
-        'HYDE_TEMP_DIR' => '/path/to/temp/dir',
+        'HYDE_WORKING_DIR' => './path/to/working/dir',
+        'HYDE_TEMP_DIR' => './path/to/temp/dir',
     ]);
 });
 

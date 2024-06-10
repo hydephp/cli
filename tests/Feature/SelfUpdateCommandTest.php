@@ -8,8 +8,12 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Hyde\Foundation\HydeKernel;
+use Illuminate\Config\Repository;
 use App\Commands\SelfUpdateCommand;
+use Illuminate\Http\Client\Factory;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\BufferedConsoleOutput;
 use Illuminate\Container\Container;
@@ -47,7 +51,6 @@ test('handle when up to date', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
@@ -61,15 +64,13 @@ test('handle when ahead of latest version', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
 test('handle when behind latest version', function () {
     $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
     $command->mockApiResponse('https://github.com/hydephp/cli/releases/download/v1.2.3/hyde', '<?php echo "Hyde v1.2.3";');
-//    $command->mockApiResponse('https://github.com/hydephp/cli/releases/download/v1.2.3/signature.bin', 'signature');
-    app()->shouldReceive('make')->with('config', [])->andReturn(new \Illuminate\Config\Repository([
+    app()->shouldReceive('make')->with('config', [])->andReturn(new Repository([
         'app.openssl_verify' => false,
     ]));
 
@@ -89,6 +90,85 @@ The application has been updated successfully.';
     $command->teardown($this);
 });
 
+test('handle when verbose', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.0.0');
+
+    $command->makeVerbose();
+
+    expect($command->handle())->toBe(0);
+
+    $outputs = [
+        'Checking for a new version...',
+        'DEBUG: Application path: ',
+        'DEBUG: Update strategy: Direct download',
+        'DEBUG: Getting the latest release information from GitHub...',
+        'DEBUG: Current version: v1.0.0',
+        'DEBUG: Latest version: v1.0.0',
+        'You are already using the latest version (v1.0.0)',
+    ];
+
+    $actual = trim($command->output->fetch());
+
+    foreach ($outputs as $output) {
+        expect($actual)->toContain($output);
+    }
+
+    $this->assertTrue($command->madeApiRequest);
+    $command->teardown($this);
+});
+
+test('handle when checking for new updates', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.0.0', ['getOption' => true]);
+
+    expect($command->handle())->toBe(0);
+
+    $output = 'Checking for updates... You are already using the latest version (v1.0.0)';
+
+    expect(trim($command->output->fetch()))->toBe($output);
+
+    $this->assertTrue($command->madeApiRequest);
+    $command->teardown($this);
+});
+
+test('handle catching exceptions', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
+    $command->shouldThrow(new RuntimeException('Something went wrong!'));
+
+    expect($command->handle())->toBe(1);
+
+    $output = 'Something went wrong while updating the application!';
+
+    expect(trim($command->output->fetch()))->toContain($output);
+
+    $this->assertTrue($command->madeApiRequest);
+    $command->teardown($this);
+});
+
+test('handle throws exceptions when verbose', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
+    $command->shouldThrow(new RuntimeException('Something went wrong!'));
+    $command->makeVerbose();
+
+    $command->handle();
+})->throws(RuntimeException::class, 'Something went wrong!');
+
+test('GitHub API connection call', function () {
+    Http::swap(new Factory());
+    Http::fake(['github.com/*' => Http::response(['foo' => 'bar'])]);
+
+    $command = new MockSelfUpdateCommand();
+    $response = $command->makeRealGitHubApiResponse();
+
+    expect($response)->toBeString()->toBe('{"foo":"bar"}');
+
+    /** @var Request $request */
+    $request = Http::recorded()[0][0];
+
+    expect($request->url())->toBe('https://api.github.com/repos/hydephp/cli/releases/latest')
+        ->and($request->header('Accept'))->toBe(['application/vnd.github.v3+json'])
+        ->and($request->header('User-Agent'))->toBe(['HydePHP CLI updater v1.0.0 (github.com/hydephp/cli)']);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
@@ -105,15 +185,16 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
     protected bool $hasBeenTearedDown = false;
     protected ?int $exitedWithCode = null;
+    protected Throwable $throw;
 
-    public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0')
+    public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0', array $input = ['getOption' => false])
     {
         parent::__construct();
 
         $this->appVersion = $mockAppVersion;
         $this->latestVersion = $mockLatestVersion;
 
-        $this->input = Mockery::mock(ArrayInput::class, ['getOption' => false]);
+        $this->input = Mockery::mock(ArrayInput::class, $input);
         $this->output = new MockBufferedOutput();
 
         file_put_contents(base_path().'/hyde.phar', '<?php echo "Hyde '.$mockAppVersion.'";');
@@ -126,9 +207,24 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $this->hasBeenTearedDown = true;
     }
 
+    public function makeVerbose(): void
+    {
+        $this->output->setVerbosity(MockBufferedOutput::VERBOSITY_VERBOSE);
+    }
+
+    public function shouldThrow(Throwable $exception): void
+    {
+        $this->throw = $exception;
+    }
+
     public function mockApiResponse(string $url, string $contents): void
     {
         $this->responseMocks[$url] = $contents;
+    }
+
+    public function makeRealGitHubApiResponse(): string
+    {
+        return parent::makeGitHubApiResponse();
     }
 
     protected function findApplicationPath(): string
@@ -156,6 +252,15 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         file_put_contents($destination, $this->responseMocks[$url] ?? throw new RuntimeException('No mock response for '.$url));
 
         unset($this->responseMocks[$url]);
+    }
+
+    protected function updateApplication(string $strategy): void
+    {
+        if (isset($this->throw)) {
+            throw $this->throw;
+        }
+
+        parent::updateApplication($strategy);
     }
 
     protected function exit(int $exitCode): void

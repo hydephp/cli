@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Process\Factory;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
@@ -280,6 +282,73 @@ test('debug helper does not print debug when not verbose', function () {
     $class->output->shouldNotReceive('writeln');
 
     $class->debug('Debug message');
+});
+
+test('determineUpdateStrategy method', function () {
+    $command = new InspectableSelfUpdateCommand();
+
+    $command->setProperty('applicationPath', '/usr/local/bin/hyde');
+    $this->assertSame('direct', $command->determineUpdateStrategy());
+
+    $command->setProperty('applicationPath', '/home/user/.config/composer/vendor/bin/hyde');
+    $this->assertSame('composer', $command->determineUpdateStrategy());
+});
+
+test('Composer process', function () {
+    Process::swap(new Factory());
+    Process::fake();
+
+    $command = new InspectableSelfUpdateCommand();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'writeln' => null,
+    ]));
+
+    [$exitCode, $output] = $command->runComposerProcess();
+
+    expect($exitCode)->toBeInt()->toBe(0)
+        ->and($output)->toBeArray()->toBeEmpty();
+
+    Process::assertRan('composer global require hyde/cli');
+})->skipOnWindows();
+
+test('Windows Composer update process', function () {
+    Process::swap(new Factory());
+    Process::fake();
+
+    $command = new InspectableSelfUpdateCommand();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'writeln' => null,
+    ]));
+
+    $exitCode = $command->runComposerWindowsProcess();
+    expect($exitCode)->toBeInt()->toBe(0);
+
+    # We need to assemble the command here as it may be escaped differently on different systems
+    Process::assertRan(sprintf('powershell -Command "%s"', sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg('composer global require hyde/cli'))));
+});
+
+test('failing Windows Composer update process', function () {
+    $command = sprintf('powershell -Command "%s"', sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg('composer global require hyde/cli')));
+
+    Process::swap(new Factory());
+    Process::fake([
+        $command => Process::result(
+            output: 'Test output',
+            errorOutput: 'Test error output',
+            exitCode: 1,
+        ),
+    ]);
+
+    $command = new InspectableSelfUpdateCommand();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'writeln' => null,
+    ]));
+
+    $exitCode = $command->runComposerWindowsProcess();
+    expect($exitCode)->toBeInt()->toBe(1);
 });
 
 /**
