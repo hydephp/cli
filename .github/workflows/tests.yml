@@ -53,12 +53,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo ${{ github.sha }} # Debugging
+          # We need to find the correct commit SHA as pull requests have a different SHA
+          if [ -z "${{ github.event.pull_request.head.sha }}" ]; then
+              COMMIT_SHA=${{ github.sha }}
+          else
+              COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+          fi
+        
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/hydephp/cli/statuses/${{ github.sha }} \
+            /repos/hydephp/cli/statuses/${COMMIT_SHA} \
              -f "state=success" -f "target_url=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
              -f "description=Code coverage is $(cat coverage.txt)%" -f "context=Code Coverage"
 
