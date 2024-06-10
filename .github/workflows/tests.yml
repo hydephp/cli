@@ -51,7 +51,7 @@ jobs:
         with:
           # https://stackoverflow.com/questions/67919168/github-checks-api-vs-check-runs-vs-check-suites
           script: |
-            await github.rest.checks.create({
+            github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head_sha: context.sha,
