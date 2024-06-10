@@ -217,7 +217,7 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     {
         $this->throw = $exception;
     }
-    
+
     public function mockApiResponse(string $url, string $contents): void
     {
         $this->responseMocks[$url] = $contents;
