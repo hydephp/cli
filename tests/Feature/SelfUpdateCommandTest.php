@@ -146,6 +146,19 @@ test('handle catching exceptions', function () {
     $command->teardown($this);
 });
 
+test('GitHub API connection call', function () {
+    $command = new MockSelfUpdateCommand();
+
+    expect(ini_get('user_agent'))->toBe('');
+
+    $response = $command->makeRealGitHubApiResponse();
+
+    expect(ini_get('user_agent'))->toContain('HydePHP CLI updater');
+
+    expect($response)->toBeString();
+    expect($response)->toContain('https://api.github.com/repos/hydephp/cli/releases');
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
@@ -197,6 +210,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     public function mockApiResponse(string $url, string $contents): void
     {
         $this->responseMocks[$url] = $contents;
+    }
+
+    public function makeRealGitHubApiResponse(): string
+    {
+        return parent::makeGitHubApiResponse();
     }
 
     protected function findApplicationPath(): string
