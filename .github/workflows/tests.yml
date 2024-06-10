@@ -42,17 +42,26 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Send GitHub status check
-        run: |
-          curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.event.workflow_run.head_commit.id }} \
-          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --header 'content-type: application/json' \
-          --data '{
-            "state": "${{ github.event.workflow_run.conclusion }}",
-            "context": "unit test (kube)",
-            "target_url": "${{ github.event.workflow_run.html_url }}"
-            }' \
-          --fail
+        uses: actions/github-script@v6
+        env:
+          parameter_url: '${{ github.event.workflow_run.html_url }}'
+        with:
+          debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
+          script: |
+            await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head_sha: context.sha,
+              name: "my-check-name",
+              status: "completed",
+              conclusion: "${{ github.event.workflow_run.conclusion }}",
+              details_url: process.env.parameter_url,
+              output: {
+                title: "Coverage report",
+                summary: "Coverage report completed.",
+                text: "Coverage report has been uploaded to Codecov.",
+              },
+            });
 
   run-tests:
     needs: coverage-tests
