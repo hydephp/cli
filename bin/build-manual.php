@@ -336,7 +336,7 @@ function get_template(): string
         </p>
         <p class="footer-links">
             <small>
-                <a href="" download="hydephp-manual.html">Download HTML manual for offline use</a>
+                <a href="" download="hydephp-manual.html" title="Download the HTML manual for offline use">Download for offline use</a>
             </small>
         </p>
     </footer>
