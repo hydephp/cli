@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
-use function exec;
 use function chmod;
 use function umask;
 use function rename;
