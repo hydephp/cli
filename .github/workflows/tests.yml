@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "master", "develop", "stable", "release/**" ]
 
+permissions:
+  statuses: write
+
 jobs:
   coverage-tests:
     runs-on: ubuntu-latest
