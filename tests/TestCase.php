@@ -10,7 +10,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        putenv('HYDE_WORKING_DIR=/path/to/working/dir');
-        putenv('HYDE_TEMP_DIR=/path/to/temp/dir');
+        putenv('HYDE_WORKING_DIR=./path/to/working/dir');
+        putenv('HYDE_TEMP_DIR=./path/to/temp/dir');
     }
 }

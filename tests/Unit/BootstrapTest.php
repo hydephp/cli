@@ -4,6 +4,7 @@ use Hyde\Foundation\Application;
 use Hyde\Foundation\ConsoleKernel;
 use Hyde\Foundation\HydeKernel;
 use Illuminate\Config\Repository;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
@@ -18,11 +19,11 @@ test('anonymous bootstrapper returns application', function () {
 });
 
 it('has correct base path', function () {
-    expect($this->app->basePath())->toBe('/path/to/working/dir');
+    expect($this->app->basePath())->toBe('./path/to/working/dir');
 });
 
 it('has correct config path', function () {
-    expect($this->app->configPath())->toBe('/path/to/working/dir'.DIRECTORY_SEPARATOR.'config');
+    expect($this->app->configPath())->toBe('./path/to/working/dir'.DIRECTORY_SEPARATOR.'config');
 });
 
 it('binds console kernel', function () {
@@ -46,11 +47,11 @@ it('sets Hyde kernel instance', function () {
 });
 
 it('sets Hyde kernel path', function () {
-    expect(HydeKernel::getInstance()->path())->toBe('/path/to/working/dir');
+    expect(HydeKernel::getInstance()->path())->toBe('./path/to/working/dir');
 });
 
 it('sets the cached packages path', function () {
-    expect($this->app->getCachedPackagesPath())->toBe('/path/to/temp/dir/app/storage/framework/cache/packages.php');
+    expect($this->app->getCachedPackagesPath())->toBe('./path/to/temp/dir/app/storage/framework/cache/packages.php');
 });
 
 it('sets the cache path for the compiled views', function () {
@@ -58,5 +59,19 @@ it('sets the cache path for the compiled views', function () {
 
     ($this->app['events']->getListeners('bootstrapped: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
 
-    expect($this->app['config']->get('view.compiled'))->toBe('/path/to/temp/dir/views');
+    expect($this->app['config']->get('view.compiled'))->toBe('./path/to/temp/dir/views');
+});
+
+it('creates the temp directory if it does not exist', function () {
+    (new Filesystem())->deleteDirectory('./path/to/temp/');
+
+    expect(is_dir('./path/to/temp/dir'))->toBeFalse()
+        ->and(is_dir('./path/to/temp/dir/config'))->toBeFalse()
+        ->and(is_dir('./path/to/temp/dir/app/storage/framework/cache'))->toBeFalse();
+
+    $this->app = require __DIR__.'/../../app/bootstrap.php';
+
+    expect(is_dir('./path/to/temp/dir'))->toBeTrue()
+        ->and(is_dir('./path/to/temp/dir/config'))->toBeTrue()
+        ->and(is_dir('./path/to/temp/dir/app/storage/framework/cache'))->toBeTrue();
 });

@@ -6,10 +6,15 @@ on:
   pull_request:
     branches: [ "master", "develop", "stable", "release/**" ]
 
+permissions:
+  statuses: write
+
 jobs:
   coverage-tests:
     runs-on: ubuntu-latest
     name: Run tests with coverage
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
 
     steps:
       - uses: shivammathur/setup-php@v2
@@ -26,7 +31,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: "${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}"
           restore-keys: |
             ${{ runner.os }}-php-
 
@@ -36,11 +41,28 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via Pest
         run: vendor/bin/pest --coverage --coverage-clover ./coverage.xml
 
+      - name: Parse coverage report
+        id: coverage
+        run: |
+          php -r '$xml = simplexml_load_file("coverage.xml"); echo round($xml->project->metrics["coveredelements"] / $xml->project->metrics["elements"] * 100, 2);' > coverage.txt
+          echo "coverage=$(cat coverage.txt)" >> $$GITHUB_OUTPUT
+
+      - name: Send GitHub status check
+        uses: hkusu/status-create-action@v1
+        env:
+          COVERAGE: ${{ steps.coverage.outputs.coverage }}
+        with:
+          sha: ${{ github.sha }}
+          github-token: ${{ github.token }}
+          state: success
+          target-url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+          description: 'Code coverage is ${{ env.COVERAGE }}%'
+          context: 'code-coverage'
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
 
   run-tests:
     needs: coverage-tests
@@ -71,7 +93,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: "${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}"
           restore-keys: |
             ${{ runner.os }}-php-
 
@@ -93,7 +115,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          key: "${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}"
           restore-keys: |
             ${{ runner.os }}-php-
 

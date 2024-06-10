@@ -11,19 +11,16 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
-use function exec;
-use function fopen;
 use function chmod;
 use function umask;
-use function fclose;
 use function rename;
 use function filled;
 use function explode;
-use function ini_set;
 use function sprintf;
 use function implode;
 use function tempnam;
@@ -32,12 +29,8 @@ use function defined;
 use function passthru;
 use function in_array;
 use function array_map;
-use function curl_init;
-use function curl_exec;
-use function curl_close;
 use function json_decode;
 use function is_writable;
-use function curl_setopt;
 use function str_contains;
 use function array_combine;
 use function clearstatcache;
@@ -156,28 +149,28 @@ class SelfUpdateCommand extends Command
 
     protected function makeGitHubApiResponse(): string
     {
-        // Set the user agent as required by the GitHub API
-        ini_set('user_agent', $this->getUserAgent());
-
-        return file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
+        return Http::withHeaders([
+            'User-Agent' => $this->getUserAgent(),
+            'Accept' => 'application/vnd.github.v3+json',
+        ])->get('https://api.github.com/repos/hydephp/cli/releases/latest')->body();
     }
 
     protected function getUserAgent(): string
     {
-        return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', $this->getAppVersion());
+        return sprintf('HydePHP CLI updater %s (github.com/hydephp/cli)', $this->getAppVersion());
     }
 
     /** @return array{major: int, minor: int, patch: int} */
     protected function parseVersion(string $semver): array
     {
         return array_combine(['major', 'minor', 'patch'],
-            array_map('intval', explode('.', $semver))
+            array_map('intval', explode('.', ltrim($semver, 'v')))
         );
     }
 
     protected function getAppVersion(): string
     {
-        return Application::APP_VERSION;
+        return 'v'.Application::APP_VERSION;
     }
 
     /** @return self::STATE_* */
@@ -265,17 +258,7 @@ class SelfUpdateCommand extends Command
         if (! extension_loaded('openssl') || config('app.openssl_verify') === false) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
-            $signature = $tempPath.'.sig';
-            $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
-
-            $this->debug('Verifying the signature...');
-            $isValid = $this->verifySignature($phar, $signature);
-
-            if ($isValid) {
-                $this->debug('Signature is valid!');
-            } else {
-                throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
-            }
+            $this->performSignatureValidation($tempPath, $phar);
         }
 
         // Make the downloaded file executable
@@ -289,15 +272,32 @@ class SelfUpdateCommand extends Command
     {
         $this->debug("Downloading $url to $destination");
 
-        $file = fopen($destination, 'wb');
-        $ch = curl_init($url);
+        Http::withHeaders([
+            'User-Agent' => $this->getUserAgent(),
+        ])->sink($destination)->get($url)->throw();
+    }
 
-        curl_setopt($ch, CURLOPT_FILE, $file);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($ch);
+    /**
+     * Perform the signature validation of the downloaded file.
+     *
+     * @param  string  $tempPath The path to the temporary file
+     * @param  string  $phar The path to the downloaded PHAR file
+     *
+     * @throws RuntimeException If the signature is invalid
+     */
+    protected function performSignatureValidation(string $tempPath, string $phar): void
+    {
+        $signature = $tempPath.'.sig';
+        $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
 
-        curl_close($ch);
-        fclose($file);
+        $this->debug('Verifying the signature...');
+        $isValid = $this->verifySignature($phar, $signature);
+
+        if ($isValid) {
+            $this->debug('Signature is valid!');
+        } else {
+            throw new RuntimeException('The signature is invalid! The downloaded file may be corrupted or tampered with.');
+        }
     }
 
     /**
@@ -416,11 +416,14 @@ class SelfUpdateCommand extends Command
         $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
         $command = 'powershell -Command "'.$powerShell.'"';
         $this->debug("Running command: $command");
-        exec($command, $output, $exitCode);
+
+        $result = Process::run($command);
+
+        $exitCode = $result->exitCode();
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
-            $this->output->writeln($output);
+            $this->output->writeln($result->errorOutput());
         } else {
             $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
         }
@@ -520,7 +523,10 @@ class SelfUpdateCommand extends Command
         TXT;
     }
 
-    /** @noinspection PhpNoReturnAttributeCanBeAddedInspection */
+    /**
+     * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+     * @codeCoverageIgnore Cannot be tested as it exits the application
+     */
     protected function exit(int $exitCode): void
     {
         exit($exitCode);
