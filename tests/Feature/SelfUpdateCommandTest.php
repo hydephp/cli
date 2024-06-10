@@ -117,6 +117,20 @@ test('handle when verbose', function () {
     $command->teardown($this);
 });
 
+test('handle when checking for new updates', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.0.0', ['getOption' => true]);
+
+    expect($command->handle())->toBe(0);
+
+    $output = 'Checking for updates... You are already using the latest version (v1.0.0)';
+
+    expect(trim($command->output->fetch()))->toBe($output);
+
+    $this->assertTrue($command->madeApiRequest);
+
+    $command->teardown($this);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
