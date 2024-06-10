@@ -294,6 +294,24 @@ test('determineUpdateStrategy method', function () {
     $this->assertSame('composer', $command->determineUpdateStrategy());
 });
 
+test('Composer process', function () {
+    Process::swap(new Factory());
+    Process::fake();
+
+    $command = new InspectableSelfUpdateCommand();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'writeln' => null,
+    ]));
+
+    [$exitCode, $output] = $command->runComposerProcess();
+
+    expect($exitCode)->toBeInt()->toBe(0)
+        ->and($output)->toBeArray()->toBeEmpty();
+
+    Process::assertRan('composer global require hyde/cli');
+})->skipOnWindows();
+
 test('Windows Composer update process', function () {
     Process::swap(new Factory());
     Process::fake();
