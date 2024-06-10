@@ -13,6 +13,7 @@ jobs:
   coverage-tests:
     runs-on: ubuntu-latest
     name: Run tests with coverage
+
     outputs:
       coverage: ${{ steps.coverage.outputs.coverage }}
 
@@ -45,19 +46,26 @@ jobs:
         id: coverage
         run: |
           php -r '$xml = simplexml_load_file("coverage.xml"); echo round($xml->project->metrics["coveredelements"] / $xml->project->metrics["elements"] * 100, 2);' > coverage.txt
-          echo "coverage=$(cat coverage.txt)" >> $$GITHUB_OUTPUT
+          echo "coverage=$(cat coverage.txt)" >> $GITHUB_OUTPUT
 
       - name: Send GitHub status check
-        uses: hkusu/status-create-action@v1
         env:
-          COVERAGE: ${{ steps.coverage.outputs.coverage }}
-        with:
-          sha: ${{ github.sha }}
-          github-token: ${{ github.token }}
-          state: success
-          target-url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-          description: 'Code coverage is ${{ env.COVERAGE }}%'
-          context: 'code-coverage'
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # We need to find the correct commit SHA as pull requests have a different SHA
+          if [ -z "${{ github.event.pull_request.head.sha }}" ]; then
+              COMMIT_SHA=${{ github.sha }}
+          else
+              COMMIT_SHA=${{ github.event.pull_request.head.sha }}
+          fi
+
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/hydephp/cli/statuses/${COMMIT_SHA} \
+             -f "state=success" -f "target_url=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+             -f "description=Coverage is $(cat coverage.txt)%" -f "context=Code Coverage"
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
