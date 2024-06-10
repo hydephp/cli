@@ -45,18 +45,13 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Send GitHub status check
-        uses: actions/github-script@v7
+        uses: hkusu/status-create-action@v1
         with:
-          script: |
-            github.rest.statuses.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              context: "code-coverage",
-              state: "success",
-              target_url: "https://github.com/hydephp/cli",
-              description: "Coverage report has been uploaded to Codecov.",
-            });
+          sha: ${{ github.sha }}
+          state: success
+          target-url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+          description: 'Code coverage report has been uploaded to Codecov.'
+          context: 'code-coverage'
 
   run-tests:
     needs: coverage-tests
