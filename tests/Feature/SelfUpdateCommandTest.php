@@ -126,6 +126,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $this->hasBeenTearedDown = true;
     }
 
+    public function makeVerbose(): void
+    {
+        $this->output->setVerbosity(MockBufferedOutput::VERBOSITY_VERBOSE);
+    }
+
     public function mockApiResponse(string $url, string $contents): void
     {
         $this->responseMocks[$url] = $contents;
