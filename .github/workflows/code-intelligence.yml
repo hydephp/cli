@@ -9,7 +9,7 @@ on:
 jobs:
   coverage-report:
     runs-on: ubuntu-latest
-    name: Create HTML coverage and code insight report
+    name: Coverage and code insight report
 
     steps:
       - uses: shivammathur/setup-php@v2
