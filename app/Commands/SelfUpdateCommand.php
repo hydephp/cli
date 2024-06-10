@@ -280,15 +280,9 @@ class SelfUpdateCommand extends Command
     {
         $this->debug("Downloading $url to $destination");
 
-        $file = fopen($destination, 'wb');
-        $ch = curl_init($url);
-
-        curl_setopt($ch, CURLOPT_FILE, $file);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_exec($ch);
-
-        curl_close($ch);
-        fclose($file);
+        Http::withHeaders([
+            'User-Agent' => $this->getUserAgent(),
+        ])->sink($destination)->get($url)->throw();
     }
 
     /**
