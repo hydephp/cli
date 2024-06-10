@@ -157,9 +157,15 @@ class SelfUpdateCommand extends Command
     protected function makeGitHubApiResponse(): string
     {
         // Set the user agent as required by the GitHub API
-        $ua = $this->getUserAgent();
-        $url = 'https://api.github.com/repos/hydephp/cli/releases/latest';
-        $response = file_get_contents($url, false, stream_context_create(['http' => ['header' => "User-Agent: $ua"]]));
+        ini_set('user_agent', $this->getUserAgent());
+
+        $response = file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
+
+        if ($response === false) {
+            throw new RuntimeException('Failed to get the latest release information from GitHub.');
+        }
+
+        return $response;
     }
 
     protected function getUserAgent(): string
