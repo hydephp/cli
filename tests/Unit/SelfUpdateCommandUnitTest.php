@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Process\Factory;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
@@ -290,6 +292,20 @@ test('determineUpdateStrategy method', function () {
 
     $command->setProperty('applicationPath', '/home/user/.config/composer/vendor/bin/hyde');
     $this->assertSame('composer', $command->determineUpdateStrategy());
+});
+
+test('Windows Composer update process', function () {
+    Process::swap(new Factory());
+    Process::fake();
+
+    $command = new InspectableSelfUpdateCommand();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class));
+    $command->output->shouldReceive('isVerbose')->andReturnFalse();
+    $command->output->shouldReceive('writeln')->once();
+
+    $command->runComposerWindowsProcess();
+
+    Process::assertRan('powershell -Command "Start-Process -Verb RunAs powershell -ArgumentList \'-Command "composer global require hyde/cli"\'"');
 });
 
 /**
