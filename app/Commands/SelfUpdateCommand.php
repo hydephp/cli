@@ -417,6 +417,7 @@ class SelfUpdateCommand extends Command
         $command = 'powershell -Command "'.$powerShell.'"';
         $this->debug("Running command: $command");
 
+        $output = '';
         $result = Process::run($command, function (string $type, string $buffer) use (&$output): void {
             $output .= $buffer;
         });
