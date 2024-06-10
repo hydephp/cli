@@ -303,7 +303,8 @@ test('Windows Composer update process', function () {
     $command->output->shouldReceive('isVerbose')->andReturnFalse();
     $command->output->shouldReceive('writeln')->once();
 
-    $command->runComposerWindowsProcess();
+    $exitCode = $command->runComposerWindowsProcess();
+    expect($exitCode)->toBeInt()->toBe(0);
 
     Process::assertRan('powershell -Command "Start-Process -Verb RunAs powershell -ArgumentList \'-Command "composer global require hyde/cli"\'"');
 });
