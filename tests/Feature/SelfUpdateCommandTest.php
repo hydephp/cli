@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Hyde\Foundation\HydeKernel;
+use Illuminate\Config\Repository;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\Request;
@@ -50,7 +51,6 @@ test('handle when up to date', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
@@ -64,15 +64,13 @@ test('handle when ahead of latest version', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
 test('handle when behind latest version', function () {
     $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
     $command->mockApiResponse('https://github.com/hydephp/cli/releases/download/v1.2.3/hyde', '<?php echo "Hyde v1.2.3";');
-//    $command->mockApiResponse('https://github.com/hydephp/cli/releases/download/v1.2.3/signature.bin', 'signature');
-    app()->shouldReceive('make')->with('config', [])->andReturn(new \Illuminate\Config\Repository([
+    app()->shouldReceive('make')->with('config', [])->andReturn(new Repository([
         'app.openssl_verify' => false,
     ]));
 
@@ -116,7 +114,6 @@ test('handle when verbose', function () {
     }
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
@@ -130,7 +127,6 @@ test('handle when checking for new updates', function () {
     expect(trim($command->output->fetch()))->toBe($output);
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
@@ -145,27 +141,21 @@ test('handle catching exceptions', function () {
     expect(trim($command->output->fetch()))->toContain($output);
 
     $this->assertTrue($command->madeApiRequest);
-
     $command->teardown($this);
 });
 
 test('GitHub API connection call', function () {
-    $command = new MockSelfUpdateCommand();
-
     Http::swap(new Factory());
+    Http::fake(['github.com/*' => Http::response(['foo' => 'bar'])]);
 
-    Http::fake([
-        'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
-    ]);
-
+    $command = new MockSelfUpdateCommand();
     $response = $command->makeRealGitHubApiResponse();
 
     expect($response)->toBeString()->toBe('{"foo":"bar"}');
 
-    $recorded = Http::recorded();
-
     /** @var Request $request */
-    $request = $recorded[0][0];
+    $request = Http::recorded()[0][0];
+
     expect($request->url())->toBe('https://api.github.com/repos/hydephp/cli/releases/latest')
         ->and($request->header('Accept'))->toBe(['application/vnd.github.v3+json'])
         ->and($request->header('User-Agent'))->toBe(['HydePHP CLI updater v1.0.0 (github.com/hydephp/cli)']);
