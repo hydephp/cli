@@ -64,13 +64,13 @@ it('sets the cache path for the compiled views', function () {
 it('creates the temp directory if it does not exist', function () {
     (new \Illuminate\Filesystem\Filesystem())->deleteDirectory('./path/to/temp/');
 
-    expect(is_dir('./path/to/temp/dir'))->toBeFalse();
-    expect(is_dir('./path/to/temp/dir/config'))->toBeFalse();
-    expect(is_dir('./path/to/temp/dir/app/storage/framework/cache'))->toBeFalse();
+    expect(is_dir('./path/to/temp/dir'))->toBeFalse()
+        ->and(is_dir('./path/to/temp/dir/config'))->toBeFalse()
+        ->and(is_dir('./path/to/temp/dir/app/storage/framework/cache'))->toBeFalse();
 
     $this->app = require __DIR__.'/../../app/bootstrap.php';
 
-    expect(is_dir('./path/to/temp/dir'))->toBeTrue();
-    expect(is_dir('./path/to/temp/dir/config'))->toBeTrue();
-    expect(is_dir('./path/to/temp/dir/app/storage/framework/cache'))->toBeTrue();
+    expect(is_dir('./path/to/temp/dir'))->toBeTrue()
+        ->and(is_dir('./path/to/temp/dir/config'))->toBeTrue()
+        ->and(is_dir('./path/to/temp/dir/app/storage/framework/cache'))->toBeTrue();
 });
