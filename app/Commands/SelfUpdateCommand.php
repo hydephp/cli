@@ -520,7 +520,9 @@ class SelfUpdateCommand extends Command
         TXT;
     }
 
-    /** @noinspection PhpNoReturnAttributeCanBeAddedInspection */
+    /**
+     * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+     */
     protected function exit(int $exitCode): void
     {
         exit($exitCode);
