@@ -144,6 +144,15 @@ test('handle catching exceptions', function () {
     $command->teardown($this);
 });
 
+
+test('handle throws exceptions when verbose', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
+    $command->shouldThrow(new RuntimeException('Something went wrong!'));
+    $command->makeVerbose();
+
+    $command->handle();
+})->throws(RuntimeException::class, 'Something went wrong!');
+
 test('GitHub API connection call', function () {
     Http::swap(new Factory());
     Http::fake(['github.com/*' => Http::response(['foo' => 'bar'])]);
