@@ -353,8 +353,11 @@ function view(string $template, array $data): string
 
 function parse_version(string $version): string
 {
-    // First we assert it matches the following format in case it's been changed: 'HydePHP v0.7.70 - Experimental Standalone - (HydePHP v1.6.0)'
-    assert(preg_match('/HydePHP v(\d+\.\d+\.\d+) - Experimental Standalone - \(HydePHP v(\d+\.\d+\.\d+)\)/', $version, $matches));
+    preg_match('/HydePHP v(\d+\.\d+\.\d+) - Experimental Standalone - \(HydePHP v(\d+\.\d+\.\d+)\)/', $version, $matches);
+
+    if (! $matches) {
+        throw new Exception("Failed to parse version: $version");
+    }
 
     $cliVersion = $matches[1];
     $hydeVersion = $matches[2];
