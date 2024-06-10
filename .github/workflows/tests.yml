@@ -13,6 +13,8 @@ jobs:
   coverage-tests:
     runs-on: ubuntu-latest
     name: Run tests with coverage
+    outputs:
+      coverage: ${{ steps.coverage.outputs.coverage }}
 
     steps:
       - uses: shivammathur/setup-php@v2
@@ -41,8 +43,6 @@ jobs:
 
       - name: Parse coverage report
         id: coverage
-        outputs:
-          coverage: ${{ steps.coverage.outputs.coverage }}
         run: |
           php -r '$xml = simplexml_load_file("coverage.xml"); echo round($xml->project->metrics["coveredelements"] / $xml->project->metrics["elements"] * 100, 2);' > coverage.txt
           echo "coverage=$(cat coverage.txt)" >> $$GITHUB_OUTPUT
