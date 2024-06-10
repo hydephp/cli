@@ -55,7 +55,7 @@ jobs:
               repo: context.repo.repo,
               head_sha: context.sha,
               name: "Coverage report",
-              status: "success",
+              status: "completed",
               conclusion: "${{ github.event.workflow_run.conclusion }}",
               details_url: process.env.parameter_url,
               output: {
