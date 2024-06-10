@@ -417,7 +417,12 @@ class SelfUpdateCommand extends Command
         $powerShell = sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg($command));
         $command = 'powershell -Command "'.$powerShell.'"';
         $this->debug("Running command: $command");
-        exec($command, $output, $exitCode);
+
+        $result = Process::run($command, function (string $type, string $buffer) use (&$output): void {
+            $output .= $buffer;
+        });
+
+        $exitCode = $result->exitCode();
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
