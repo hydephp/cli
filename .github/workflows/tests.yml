@@ -44,6 +44,11 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
+      - name: Parse coverage report
+        id: coverage
+        run: |
+          php -r '$xml = simplexml_load_file("coverage.xml"); echo round($xml->project->metrics["coveredelements"] / $xml->project->metrics["elements"] * 100, 2);' > coverage.txt
+
       - name: Send GitHub status check
         uses: hkusu/status-create-action@v1
         with:
