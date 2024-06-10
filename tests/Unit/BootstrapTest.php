@@ -4,6 +4,7 @@ use Hyde\Foundation\Application;
 use Hyde\Foundation\ConsoleKernel;
 use Hyde\Foundation\HydeKernel;
 use Illuminate\Config\Repository;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
@@ -62,7 +63,7 @@ it('sets the cache path for the compiled views', function () {
 });
 
 it('creates the temp directory if it does not exist', function () {
-    (new \Illuminate\Filesystem\Filesystem())->deleteDirectory('./path/to/temp/');
+    (new Filesystem())->deleteDirectory('./path/to/temp/');
 
     expect(is_dir('./path/to/temp/dir'))->toBeFalse()
         ->and(is_dir('./path/to/temp/dir/config'))->toBeFalse()
