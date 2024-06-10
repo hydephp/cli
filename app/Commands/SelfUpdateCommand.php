@@ -165,7 +165,7 @@ class SelfUpdateCommand extends Command
 
     protected function getUserAgent(): string
     {
-        return sprintf('HydePHP CLI updater v%s (github.com/hydephp/cli)', $this->getAppVersion());
+        return sprintf('HydePHP CLI updater %s (github.com/hydephp/cli)', $this->getAppVersion());
     }
 
     /** @return array{major: int, minor: int, patch: int} */
@@ -178,7 +178,7 @@ class SelfUpdateCommand extends Command
 
     protected function getAppVersion(): string
     {
-        return Application::APP_VERSION;
+        return 'v'.Application::APP_VERSION;
     }
 
     /** @return self::STATE_* */

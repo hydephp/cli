@@ -168,7 +168,7 @@ test('GitHub API connection call', function () {
     $request = $recorded[0][0];
     expect($request->url())->toBe('https://api.github.com/repos/hydephp/cli/releases/latest');
     expect($request->header('Accept'))->toBe(['application/vnd.github.v3+json']);
-    expect($request->header('User-Agent'))->toBe(['HydePHP CLI updater vv1.0.0 (github.com/hydephp/cli)']); // Todo: Fix double vv bug in test setup
+    expect($request->header('User-Agent'))->toBe(['HydePHP CLI updater v1.0.0 (github.com/hydephp/cli)']);
 });
 
 /** Class that uses mocks instead of making real API and binary path calls */
