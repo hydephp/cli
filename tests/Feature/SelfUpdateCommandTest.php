@@ -134,14 +134,14 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
     protected bool $hasBeenTearedDown = false;
     protected ?int $exitedWithCode = null;
 
-    public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0')
+    public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0', array $input = ['getOption' => false])
     {
         parent::__construct();
 
         $this->appVersion = $mockAppVersion;
         $this->latestVersion = $mockLatestVersion;
 
-        $this->input = Mockery::mock(ArrayInput::class, ['getOption' => false]);
+        $this->input = Mockery::mock(ArrayInput::class, $input);
         $this->output = new MockBufferedOutput();
 
         file_put_contents(base_path().'/hyde.phar', '<?php echo "Hyde '.$mockAppVersion.'";');
