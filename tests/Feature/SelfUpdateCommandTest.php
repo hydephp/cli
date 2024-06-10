@@ -144,7 +144,6 @@ test('handle catching exceptions', function () {
     $command->teardown($this);
 });
 
-
 test('handle throws exceptions when verbose', function () {
     $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
     $command->shouldThrow(new RuntimeException('Something went wrong!'));
