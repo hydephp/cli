@@ -305,8 +305,6 @@ test('Windows Composer update process', function () {
 
     $exitCode = $command->runComposerWindowsProcess();
     expect($exitCode)->toBeInt()->toBe(0);
-
-    Process::assertRan(fn ($process) => dd($process));
 });
 
 /**
