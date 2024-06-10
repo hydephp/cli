@@ -47,20 +47,15 @@ jobs:
       - name: Send GitHub status check
         uses: actions/github-script@v7
         with:
-          # https://stackoverflow.com/questions/67919168/github-checks-api-vs-check-runs-vs-check-suites
           script: |
-            github.rest.checks.create({
+            github.rest.statuses.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
               head_sha: context.sha,
-              name: "code-coverage",
-              conclusion: "success",
-              details_url: "https://github.com/hydephp/cli",
-              output: {
-                title: "Coverage report",
-                summary: "Coverage report completed.",
-                text: "Coverage report has been uploaded to Codecov.",
-              },
+              context: "code-coverage",
+              state: "success",
+              target_url: "https://github.com/hydephp/cli",
+              description: "Coverage report has been uploaded to Codecov.",
             });
 
   run-tests:
