@@ -18,11 +18,11 @@ test('anonymous bootstrapper returns application', function () {
 });
 
 it('has correct base path', function () {
-    expect($this->app->basePath())->toBe('/path/to/working/dir');
+    expect($this->app->basePath())->toBe('./path/to/working/dir');
 });
 
 it('has correct config path', function () {
-    expect($this->app->configPath())->toBe('/path/to/working/dir'.DIRECTORY_SEPARATOR.'config');
+    expect($this->app->configPath())->toBe('./path/to/working/dir'.DIRECTORY_SEPARATOR.'config');
 });
 
 it('binds console kernel', function () {
@@ -46,11 +46,11 @@ it('sets Hyde kernel instance', function () {
 });
 
 it('sets Hyde kernel path', function () {
-    expect(HydeKernel::getInstance()->path())->toBe('/path/to/working/dir');
+    expect(HydeKernel::getInstance()->path())->toBe('./path/to/working/dir');
 });
 
 it('sets the cached packages path', function () {
-    expect($this->app->getCachedPackagesPath())->toBe('/path/to/temp/dir/app/storage/framework/cache/packages.php');
+    expect($this->app->getCachedPackagesPath())->toBe('./path/to/temp/dir/app/storage/framework/cache/packages.php');
 });
 
 it('sets the cache path for the compiled views', function () {
@@ -58,5 +58,5 @@ it('sets the cache path for the compiled views', function () {
 
     ($this->app['events']->getListeners('bootstrapped: '.Hyde\Foundation\Internal\LoadConfiguration::class)[0])($this->app, []);
 
-    expect($this->app['config']->get('view.compiled'))->toBe('/path/to/temp/dir/views');
+    expect($this->app['config']->get('view.compiled'))->toBe('./path/to/temp/dir/views');
 });
