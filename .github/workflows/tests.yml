@@ -54,12 +54,14 @@ jobs:
 
       - name: Send GitHub status check
         uses: hkusu/status-create-action@v1
+        env:
+          COVERAGE: ${{ steps.coverage.outputs.coverage }}
         with:
           sha: ${{ github.sha }}
           github-token: ${{ github.token }}
           state: success
           target-url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-          description: 'Code coverage report has been uploaded to Codecov.'
+          description: 'Code coverage is ${{ env.COVERAGE }}%'
           context: 'code-coverage'
 
   run-tests:
