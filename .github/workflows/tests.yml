@@ -43,7 +43,8 @@ jobs:
 
       - name: Send GitHub status check
         uses: actions/github-script@v6
-        permissions: checks
+        permissions:
+          checks: write
         env:
           parameter_url: '${{ github.event.workflow_run.html_url }}'
         with:
