@@ -172,7 +172,7 @@ class SelfUpdateCommand extends Command
     protected function parseVersion(string $semver): array
     {
         return array_combine(['major', 'minor', 'patch'],
-            array_map('intval', explode('.', $semver))
+            array_map('intval', explode('.', ltrim($semver, 'v')))
         );
     }
 

@@ -91,7 +91,7 @@ The application has been updated successfully.';
 });
 
 test('handle when verbose', function () {
-    $command = new MockSelfUpdateCommand();
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.0.0');
 
     $command->makeVerbose();
 
@@ -102,8 +102,8 @@ test('handle when verbose', function () {
         'DEBUG: Application path: ',
         'DEBUG: Update strategy: Direct download',
         'DEBUG: Getting the latest release information from GitHub...',
-        'DEBUG: Current version: v0.0.0',
-        'DEBUG: Latest version: v0.0.0',
+        'DEBUG: Current version: v1.0.0',
+        'DEBUG: Latest version: v1.0.0',
         'You are already using the latest version (v1.0.0)',
     ];
 
