@@ -46,8 +46,6 @@ jobs:
 
       - name: Send GitHub status check
         uses: actions/github-script@v7
-        env:
-          parameter_url: '${{ github.event.workflow_run.html_url }}'
         with:
           # https://stackoverflow.com/questions/67919168/github-checks-api-vs-check-runs-vs-check-suites
           script: |
