@@ -48,10 +48,10 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.checks.create({
+            github.rest.statuses.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              head_sha: context.sha,
+              sha: context.sha,
               context: "code-coverage",
               state: "success",
               target_url: "https://github.com/hydephp/cli",
