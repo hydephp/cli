@@ -300,7 +300,7 @@ function get_template(): string
             footer p {
                 margin: 0.5em 0;
             }
-            footer a[download] {
+            footer .footer-links a {
                 color: #0037da;
             }
         </style>
@@ -334,7 +334,7 @@ function get_template(): string
         <p>
             <small>Content distributed under the HydePHP <a href="https://hydephp.com/license" rel="nofollow">MIT License</a>, dual-licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow">CC BY 4.0</a>.</small>
         </p>
-        <p>
+        <p class="footer-links">
             <small>
                 <a href="" download="hydephp-manual.html">Download HTML manual for offline use</a>
             </small>
