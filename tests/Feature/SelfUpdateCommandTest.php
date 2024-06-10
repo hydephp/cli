@@ -89,6 +89,34 @@ The application has been updated successfully.';
     $command->teardown($this);
 });
 
+test('handle when verbose', function () {
+    $command = new MockSelfUpdateCommand();
+
+    $command->makeVerbose();
+
+    expect($command->handle())->toBe(0);
+
+    $outputs = [
+        'Checking for a new version...',
+        'DEBUG: Application path: ',
+        'DEBUG: Update strategy: Direct download',
+        'DEBUG: Getting the latest release information from GitHub...',
+        'DEBUG: Current version: v0.0.0',
+        'DEBUG: Latest version: v0.0.0',
+        'You are already using the latest version (v1.0.0)',
+    ];
+
+    $actual = trim($command->output->fetch());
+
+    foreach ($outputs as $output) {
+        expect($actual)->toContain($output);
+    }
+
+    $this->assertTrue($command->madeApiRequest);
+
+    $command->teardown($this);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
