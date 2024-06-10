@@ -50,16 +50,14 @@ jobs:
           echo "coverage=$(cat coverage.txt)" >> $GITHUB_OUTPUT
 
       - name: Send GitHub status check
-        uses: hkusu/status-create-action@v1
-        env:
-          COVERAGE: ${{ steps.coverage.outputs.coverage }}
-        with:
-          sha: ${{ github.sha }}
-          github-token: ${{ github.token }}
-          state: success
-          target-url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-          description: 'Code coverage is ${{ env.COVERAGE }}%'
-          context: 'Code Coverage'
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/hydephp/cli/statuses/${{ github.sha }} \
+             -f "state=success" -f "target_url=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+             -f "description=Code coverage is $(cat coverage.txt)%" -f "context=Code Coverage"
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
