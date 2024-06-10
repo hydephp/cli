@@ -161,6 +161,10 @@ class SelfUpdateCommand extends Command
 
         $response = file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
 
+        if ($response === false) {
+            throw new RuntimeException('Failed to get the latest release information from GitHub.');
+        }
+
         return $response;
     }
 
