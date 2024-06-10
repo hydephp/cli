@@ -355,12 +355,12 @@ function parse_version(string $version): string
 {
     preg_match('/HydePHP v(\d+\.\d+\.\d+) - Experimental Standalone - \(HydePHP v(\d+\.\d+\.\d+)\)/', $version, $matches);
 
-    if (! $matches) {
-        throw new Exception("Failed to parse version: $version");
-    }
-
     $cliVersion = $matches[1];
     $hydeVersion = $matches[2];
+
+    if (! $matches || ! $cliVersion || ! $hydeVersion) {
+        throw new Exception("Failed to parse version: $version");
+    }
 
     return "v$hydeVersion (CLI v$cliVersion)";
 }
