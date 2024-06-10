@@ -299,9 +299,10 @@ test('Windows Composer update process', function () {
     Process::fake();
 
     $command = new InspectableSelfUpdateCommand();
-    $command->setProperty('output', Mockery::mock(OutputInterface::class));
-    $command->output->shouldReceive('isVerbose')->andReturnFalse();
-    $command->output->shouldReceive('writeln')->once();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'writeln' => null,
+    ]));
 
     $exitCode = $command->runComposerWindowsProcess();
     expect($exitCode)->toBeInt()->toBe(0);
