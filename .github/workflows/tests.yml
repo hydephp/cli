@@ -13,6 +13,7 @@ jobs:
   coverage-tests:
     runs-on: ubuntu-latest
     name: Run tests with coverage
+
     outputs:
       coverage: ${{ steps.coverage.outputs.coverage }}
 
