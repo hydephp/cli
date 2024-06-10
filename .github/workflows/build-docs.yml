@@ -20,12 +20,23 @@ jobs:
         run: |
           mkdir _pages
           mv README.md _pages/index.md
-          rm -rf !'_pages'
+          touch _pages/manual.html # Make Hyde aware of the manual
 
       - name: Move Hyde config
         run: mv .github/docs/hyde.yml hyde.yml
 
       - uses: hydephp/action@master
+
+      - name: Build manual
+        run: php bin/build-manual.php
+
+      - name: Move manual
+        run: |
+          mv docs/manual/manual.html _site/manual.html
+          mv docs/manual/manual.xml _site/manual.xml
+          mv docs/manual/manual.md _site/manual.md
+          cp .github/docs/asset/manual.xsl _site/manual.xsl
+          sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual.xml
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
