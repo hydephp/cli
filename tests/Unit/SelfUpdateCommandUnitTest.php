@@ -311,6 +311,28 @@ test('Windows Composer update process', function () {
     Process::assertRan(sprintf('powershell -Command "%s"', sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg('composer global require hyde/cli'))));
 });
 
+test('failing Windows Composer update process', function () {
+    $command = sprintf('powershell -Command "%s"', sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg('composer global require hyde/cli')));
+
+    Process::swap(new Factory());
+    Process::fake([
+        $command => Process::result(
+            output: 'Test output',
+            errorOutput: 'Test error output',
+            exitCode: 1,
+        ),
+    ]);
+
+    $command = new InspectableSelfUpdateCommand();
+    $command->setProperty('output', Mockery::mock(OutputInterface::class, [
+        'isVerbose' => false,
+        'writeln' => null,
+    ]));
+
+    $exitCode = $command->runComposerWindowsProcess();
+    expect($exitCode)->toBeInt()->toBe(1);
+});
+
 /**
  * @noinspection PhpIllegalPsrClassPathInspection
  *
