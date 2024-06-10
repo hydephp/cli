@@ -58,7 +58,7 @@ jobs:
               name: "Coverage report",
               status: "completed",
               conclusion: "success",
-              details_url: process.env.parameter_url,
+              #details_url: process.env.parameter_url,
               output: {
                 title: "Coverage report",
                 summary: "Coverage report completed.",
