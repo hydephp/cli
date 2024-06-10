@@ -57,7 +57,7 @@ jobs:
               head_sha: context.sha,
               name: "Coverage report",
               status: "success",
-              conclusion: "${{ github.event.workflow_run.conclusion }}",
+              conclusion: "completed",
               details_url: process.env.parameter_url,
               output: {
                 title: "Coverage report",
