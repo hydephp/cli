@@ -306,7 +306,8 @@ test('Windows Composer update process', function () {
     $exitCode = $command->runComposerWindowsProcess();
     expect($exitCode)->toBeInt()->toBe(0);
 
-    Process::assertRan('powershell -Command "Start-Process -Verb RunAs powershell -ArgumentList \'-Command "composer global require hyde/cli"\'"');
+    # We need to assemble the command here as it may be escaped differently on different systems
+    Process::assertRan(sprintf('powershell -Command "%s"', sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg('composer global require hyde/cli'))));
 });
 
 /**
