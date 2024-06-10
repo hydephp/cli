@@ -522,6 +522,7 @@ class SelfUpdateCommand extends Command
 
     /**
      * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+     * @codeCoverageIgnore Cannot be tested as it exits the application
      */
     protected function exit(int $exitCode): void
     {
