@@ -131,6 +131,21 @@ test('handle when checking for new updates', function () {
     $command->teardown($this);
 });
 
+test('handle catching exceptions', function () {
+    $command = new MockSelfUpdateCommand('v1.0.0', 'v1.2.3');
+    $command->shouldThrow(new RuntimeException('Something went wrong!'));
+
+    expect($command->handle())->toBe(1);
+
+    $output = 'Something went wrong while updating the application!';
+
+    expect(trim($command->output->fetch()))->toContain($output);
+
+    $this->assertTrue($command->madeApiRequest);
+
+    $command->teardown($this);
+});
+
 /** Class that uses mocks instead of making real API and binary path calls */
 class MockSelfUpdateCommand extends SelfUpdateCommand
 {
@@ -147,6 +162,7 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
 
     protected bool $hasBeenTearedDown = false;
     protected ?int $exitedWithCode = null;
+    protected Throwable $throw;
 
     public function __construct(string $mockAppVersion = 'v1.0.0', string $mockLatestVersion = 'v1.0.0', array $input = ['getOption' => false])
     {
@@ -173,6 +189,11 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         $this->output->setVerbosity(MockBufferedOutput::VERBOSITY_VERBOSE);
     }
 
+    public function shouldThrow(Throwable $exception): void
+    {
+        $this->throw = $exception;
+    }
+    
     public function mockApiResponse(string $url, string $contents): void
     {
         $this->responseMocks[$url] = $contents;
@@ -203,6 +224,15 @@ class MockSelfUpdateCommand extends SelfUpdateCommand
         file_put_contents($destination, $this->responseMocks[$url] ?? throw new RuntimeException('No mock response for '.$url));
 
         unset($this->responseMocks[$url]);
+    }
+
+    protected function updateApplication(string $strategy): void
+    {
+        if (isset($this->throw)) {
+            throw $this->throw;
+        }
+
+        parent::updateApplication($strategy);
     }
 
     protected function exit(int $exitCode): void
