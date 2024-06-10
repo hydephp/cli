@@ -54,7 +54,6 @@ jobs:
               repo: context.repo.repo,
               head_sha: context.sha,
               name: "code-coverage",
-              status: "completed",
               conclusion: "success",
               details_url: "https://github.com/hydephp/cli",
               output: {
