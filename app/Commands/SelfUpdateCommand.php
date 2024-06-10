@@ -417,16 +417,13 @@ class SelfUpdateCommand extends Command
         $command = 'powershell -Command "'.$powerShell.'"';
         $this->debug("Running command: $command");
 
-        $output = '';
-        $result = Process::run($command, function (string $type, string $buffer) use (&$output): void {
-            $output .= $buffer;
-        });
+        $result = Process::run($command);
 
         $exitCode = $result->exitCode();
 
         if ($exitCode !== 0) {
             $this->error('The Composer command failed with exit code '.$exitCode);
-            $this->output->writeln($output);
+            $this->output->writeln($result->errorOutput());
         } else {
             $this->info('The installation will continue in a new window as you may need to provide administrator permissions.');
         }
