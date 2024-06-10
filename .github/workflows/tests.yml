@@ -59,7 +59,7 @@ jobs:
           state: success
           target-url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}'
           description: 'Code coverage is ${{ env.COVERAGE }}%'
-          context: 'code-coverage'
+          context: 'Code Coverage'
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
