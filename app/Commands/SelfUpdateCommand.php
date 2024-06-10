@@ -11,6 +11,7 @@ use App\Application;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
 use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
@@ -156,16 +157,10 @@ class SelfUpdateCommand extends Command
 
     protected function makeGitHubApiResponse(): string
     {
-        // Set the user agent as required by the GitHub API
-        ini_set('user_agent', $this->getUserAgent());
-
-        $response = file_get_contents('https://api.github.com/repos/hydephp/cli/releases/latest');
-
-        if ($response === false) {
-            throw new RuntimeException('Failed to get the latest release information from GitHub.');
-        }
-
-        return $response;
+        return Http::withHeaders([
+            'User-Agent' => $this->getUserAgent(),
+            'Accept' => 'application/vnd.github.v3+json',
+        ])->get('https://api.github.com/repos/hydephp/cli/releases/latest')->body();
     }
 
     protected function getUserAgent(): string

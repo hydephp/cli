@@ -9,7 +9,10 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 use Hyde\Foundation\HydeKernel;
 use App\Commands\SelfUpdateCommand;
+use Illuminate\Http\Client\Factory;
+use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\BufferedConsoleOutput;
 use Illuminate\Container\Container;
@@ -149,14 +152,23 @@ test('handle catching exceptions', function () {
 test('GitHub API connection call', function () {
     $command = new MockSelfUpdateCommand();
 
-    expect(ini_get('user_agent'))->toBe('');
+    Http::swap(new Factory());
+
+    Http::fake([
+        'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
+    ]);
 
     $response = $command->makeRealGitHubApiResponse();
 
-    expect(ini_get('user_agent'))->toContain('HydePHP CLI updater');
+    expect($response)->toBeString()->toBe('{"foo":"bar"}');
 
-    expect($response)->toBeString();
-    expect($response)->toContain('https://api.github.com/repos/hydephp/cli/releases');
+    $recorded = Http::recorded();
+
+    /** @var Request $request */
+    $request = $recorded[0][0];
+    expect($request->url())->toBe('https://api.github.com/repos/hydephp/cli/releases/latest');
+    expect($request->header('Accept'))->toBe(['application/vnd.github.v3+json']);
+    expect($request->header('User-Agent'))->toBe(['HydePHP CLI updater vv1.0.0 (github.com/hydephp/cli)']); // Todo: Fix double vv bug in test setup
 });
 
 /** Class that uses mocks instead of making real API and binary path calls */
