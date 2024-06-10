@@ -282,6 +282,16 @@ test('debug helper does not print debug when not verbose', function () {
     $class->debug('Debug message');
 });
 
+test('determineUpdateStrategy method', function () {
+    $command = new InspectableSelfUpdateCommand();
+
+    $command->setProperty('applicationPath', '/usr/local/bin/hyde');
+    $this->assertSame('direct', $command->determineUpdateStrategy());
+
+    $command->setProperty('applicationPath', '/home/user/.config/composer/vendor/bin/hyde');
+    $this->assertSame('composer', $command->determineUpdateStrategy());
+});
+
 /**
  * @noinspection PhpIllegalPsrClassPathInspection
  *
