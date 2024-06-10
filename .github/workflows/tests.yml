@@ -58,6 +58,7 @@ jobs:
               name: "Coverage report",
               status: "completed",
               conclusion: "success",
+              details_url: "https://github.com/hydephp/cli",
               output: {
                 title: "Coverage report",
                 summary: "Coverage report completed.",
