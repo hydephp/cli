@@ -58,7 +58,7 @@ jobs:
           else
               COMMIT_SHA=${{ github.event.pull_request.head.sha }}
           fi
-        
+
           gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
