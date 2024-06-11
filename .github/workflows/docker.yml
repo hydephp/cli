@@ -23,11 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Experimental cleanup
-        run: |
-          rm builds/hyde.sig
-          rm builds/signature.bin
-
       # Install the cosign tool
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
@@ -52,7 +47,7 @@ jobs:
 
       # Get the current version
       - name: Get current version
-        id: get_version
+        id: get-version
         run: echo "VERSION=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
 
       # Extract metadata (tags, labels) for Docker
@@ -78,6 +73,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          provenance: false
 
       # Sign the resulting Docker image digests.
       # This will only write to the public Rekor transparency log when the Docker
