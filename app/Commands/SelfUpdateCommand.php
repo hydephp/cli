@@ -19,9 +19,11 @@ use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 use function chmod;
 use function ltrim;
 use function umask;
+use function fopen;
 use function config;
 use function filled;
 use function rename;
+use function fclose;
 use function defined;
 use function dirname;
 use function explode;
@@ -358,6 +360,7 @@ class SelfUpdateCommand extends Command
 
         // Release the file handle
         clearstatcache(true, $applicationPath);
+        fclose(fopen($applicationPath, 'r'));
     }
 
     protected function updateViaComposer(): void
