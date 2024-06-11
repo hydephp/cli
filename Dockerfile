@@ -3,6 +3,6 @@ FROM php:8.2-cli-alpine
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions zlib
 
-COPY hyde.phar /hyde.phar
+COPY builds/hyde /hyde.phar
 
 ENTRYPOINT ["/hyde.phar"]
