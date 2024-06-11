@@ -42,6 +42,7 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via Pest
         run: vendor/bin/pest --coverage --coverage-clover ./coverage.xml
 
+      # Todo: Could be extracted to a separate action
       - name: Parse coverage report
         id: coverage
         run: |
