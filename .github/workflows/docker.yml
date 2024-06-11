@@ -23,6 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Experimental cleanup
+        run: |
+          rm builds/hyde.sig
+          rm builds/signature.bin
+
       # Install the cosign tool
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
