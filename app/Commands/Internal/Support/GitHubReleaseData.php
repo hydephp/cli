@@ -7,11 +7,11 @@ namespace App\Commands\Internal\Support;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
-use function array_combine;
+use function implode;
+use function array_map;
 use function array_diff;
 use function array_keys;
-use function array_map;
-use function implode;
+use function array_combine;
 
 /**
  * @internal Helper class for the self-update command to wrap the GitHub release data API response.

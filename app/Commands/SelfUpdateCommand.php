@@ -6,41 +6,41 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
+use Throwable;
 use App\Application;
-use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
-use App\Commands\Internal\Support\GitHubReleaseData;
+use RuntimeException;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
-use Illuminate\Support\Str;
-use RuntimeException;
-use Throwable;
+use App\Commands\Internal\Support\GitHubReleaseData;
+use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
-use function array_combine;
-use function array_map;
 use function chmod;
-use function clearstatcache;
+use function umask;
+use function filled;
+use function rename;
 use function defined;
 use function dirname;
-use function escapeshellarg;
 use function explode;
-use function extension_loaded;
-use function file_get_contents;
-use function filled;
-use function get_included_files;
 use function implode;
+use function sprintf;
+use function tempnam;
 use function in_array;
+use function passthru;
+use function array_map;
 use function is_writable;
 use function json_decode;
-use function openssl_pkey_get_public;
-use function openssl_verify;
-use function passthru;
-use function rename;
-use function sprintf;
 use function str_contains;
+use function array_combine;
+use function clearstatcache;
+use function escapeshellarg;
+use function openssl_verify;
+use function extension_loaded;
 use function sys_get_temp_dir;
-use function tempnam;
-use function umask;
+use function file_get_contents;
+use function get_included_files;
+use function openssl_pkey_get_public;
 
 /**
  * @experimental This command is highly experimental and may contain bugs.

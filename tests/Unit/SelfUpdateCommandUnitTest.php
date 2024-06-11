@@ -1,12 +1,12 @@
 <?php
 
-use App\Commands\Internal\Support\GitHubReleaseData;
+use Illuminate\Process\Factory;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
-use Illuminate\Process\Factory;
 use Illuminate\Support\Facades\Process;
-use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use App\Commands\Internal\Support\GitHubReleaseData;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],

@@ -6,17 +6,17 @@
 
 declare(strict_types=1);
 
-use App\Commands\SelfUpdateCommand;
 use Hyde\Foundation\HydeKernel;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Config\Repository;
-use Illuminate\Console\BufferedConsoleOutput;
+use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Console\BufferedConsoleOutput;
 use Symfony\Component\Console\Input\ArrayInput;
 
 // We want to run everything in a clean temporary directory

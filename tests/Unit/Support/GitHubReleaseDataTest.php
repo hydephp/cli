@@ -1,7 +1,7 @@
 <?php
 
-use App\Commands\Internal\Support\GitHubReleaseAsset;
 use App\Commands\Internal\Support\GitHubReleaseData;
+use App\Commands\Internal\Support\GitHubReleaseAsset;
 
 beforeEach(function () {
     $this->data = fixture('github-release-api-sample-response.json');

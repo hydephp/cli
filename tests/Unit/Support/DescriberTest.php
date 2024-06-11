@@ -1,7 +1,7 @@
 <?php
 
-use App\Commands\Internal\Describer;
 use Illuminate\Console\Command;
+use App\Commands\Internal\Describer;
 use PHPUnit\Framework\MockObject\MockObject;
 
 it('sorts the commands properly', function () {

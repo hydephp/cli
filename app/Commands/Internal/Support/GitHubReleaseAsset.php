@@ -7,9 +7,9 @@ namespace App\Commands\Internal\Support;
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
+use function implode;
 use function array_diff;
 use function array_keys;
-use function implode;
 
 /**
  * @internal Helper class to provide a typed representation of a GitHub release asset in the GitHubReleaseData class.

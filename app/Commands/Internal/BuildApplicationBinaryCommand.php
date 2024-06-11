@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Commands\Internal;
 
-use Illuminate\Support\Facades\File;
-use LaravelZero\Framework\Commands\BuildCommand;
-use LaravelZero\Framework\Commands\Command;
-use LogicException;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
+use LogicException;
+use Illuminate\Support\Facades\File;
+use LaravelZero\Framework\Commands\Command;
+use LaravelZero\Framework\Commands\BuildCommand;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @internal Wrapper for {@see \LaravelZero\Framework\Commands\BuildCommand}

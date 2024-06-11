@@ -1,10 +1,10 @@
 <?php
 
 use App\Commands\ServeCommand;
-use App\Providers\AppServiceProvider;
 use Hyde\Foundation\Application;
-use Illuminate\Console\Application as Artisan;
+use App\Providers\AppServiceProvider;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Console\Application as Artisan;
 
 it('registers commands', function () {
     $app = tap(new Application(), function (Application $app) {
