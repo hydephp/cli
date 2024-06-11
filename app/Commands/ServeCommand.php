@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
-use Hyde\Console\Commands\ServeCommand as BaseServeCommand;
-use Illuminate\Support\Facades\File;
 use Phar;
+use Illuminate\Support\Facades\File;
+use Hyde\Console\Commands\ServeCommand as BaseServeCommand;
+
+use function dirname;
+use function realpath;
+use function array_merge;
 
 /**
  * Extended serve command that can run from the standalone executable.

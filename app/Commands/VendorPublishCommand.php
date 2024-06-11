@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
+use Illuminate\Support\Str;
 use Hyde\Foundation\PharSupport;
 use Illuminate\Foundation\Console\VendorPublishCommand as BaseVendorPublishCommand;
-use Illuminate\Support\Str;
 
 use function Hyde\normalize_slashes;
 
