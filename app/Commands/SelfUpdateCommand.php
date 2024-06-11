@@ -17,7 +17,9 @@ use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function chmod;
+use function ltrim;
 use function umask;
+use function config;
 use function filled;
 use function rename;
 use function defined;

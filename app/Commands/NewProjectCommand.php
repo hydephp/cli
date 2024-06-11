@@ -9,6 +9,11 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Hyde\Console\ConsoleServiceProvider;
 
+use function app;
+use function trim;
+use function substr;
+use function sprintf;
+use function strrpos;
 use function Laravel\Prompts\text;
 
 /**

@@ -7,6 +7,9 @@ namespace App\Commands\Internal;
 use Illuminate\Console\Command;
 use NunoMaduro\LaravelConsoleSummary\Describer as BaseDescriber;
 
+use function usort;
+use function strcmp;
+
 /**
  * @internal Custom Laravel summary command describer implementation.
  *

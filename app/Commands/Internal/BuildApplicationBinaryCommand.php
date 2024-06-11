@@ -11,6 +11,12 @@ use LaravelZero\Framework\Commands\Command;
 use LaravelZero\Framework\Commands\BuildCommand;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+use function copy;
+use function rename;
+use function unlink;
+use function sprintf;
+use function var_export;
+
 /**
  * @internal Wrapper for {@see \LaravelZero\Framework\Commands\BuildCommand}
  *

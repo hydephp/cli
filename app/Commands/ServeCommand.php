@@ -8,6 +8,10 @@ use Phar;
 use Illuminate\Support\Facades\File;
 use Hyde\Console\Commands\ServeCommand as BaseServeCommand;
 
+use function dirname;
+use function realpath;
+use function array_merge;
+
 /**
  * Extended serve command that can run from the standalone executable.
  */
