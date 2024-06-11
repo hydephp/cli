@@ -17,7 +17,7 @@
 */
 
 // If the current directory contains a Hyde binary (that is not this file), run in proxy mode
-if (file_exists(getcwd().'/hyde') && realpath(getcwd().'/hyde') !== realpath(__FILE__)) {
+if ((file_exists(getcwd().'/hyde') && ! is_dir(getcwd().'/hyde')) && realpath(getcwd().'/hyde') !== realpath(__FILE__)) {
     return require_once getcwd().'/hyde';
 }
 
