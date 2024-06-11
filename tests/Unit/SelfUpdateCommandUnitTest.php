@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Process\Factory;
+use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\SelfUpdateCommand;
 use Illuminate\Container\Container;
+use Illuminate\Process\Factory;
 use Illuminate\Support\Facades\Process;
-use App\Commands\Internal\Support\GitHubReleaseData;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 $versions = [
     ['1.2.3', ['major' => 1, 'minor' => 2, 'patch' => 3]],
@@ -325,7 +325,7 @@ test('Windows Composer update process', function () {
     $exitCode = $command->runComposerWindowsProcess();
     expect($exitCode)->toBeInt()->toBe(0);
 
-    # We need to assemble the command here as it may be escaped differently on different systems
+    // We need to assemble the command here as it may be escaped differently on different systems
     Process::assertRan(sprintf('powershell -Command "%s"', sprintf("Start-Process -Verb RunAs powershell -ArgumentList '-Command %s'", escapeshellarg('composer global require hyde/cli'))));
 });
 

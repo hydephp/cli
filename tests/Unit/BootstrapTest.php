@@ -4,9 +4,9 @@ use Hyde\Foundation\Application;
 use Hyde\Foundation\ConsoleKernel;
 use Hyde\Foundation\HydeKernel;
 use Illuminate\Config\Repository;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Exceptions\Handler;
 
 beforeEach(function () {

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Console\Command;
 use App\Commands\Internal\Describer;
+use Illuminate\Console\Command;
 use PHPUnit\Framework\MockObject\MockObject;
 
 it('sorts the commands properly', function () {
@@ -35,7 +35,7 @@ function createCommandMocks(array $names): array
 
 function commandNames(array $commands): array
 {
-    return array_map(fn (Command $command):   string => $command->getName(), $commands);
+    return array_map(fn (Command $command): string => $command->getName(), $commands);
 }
 
 class TestDescriber extends Describer

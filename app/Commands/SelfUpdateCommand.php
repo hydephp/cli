@@ -6,41 +6,41 @@ declare(strict_types=1);
 
 namespace App\Commands;
 
-use Throwable;
 use App\Application;
-use RuntimeException;
-use Illuminate\Support\Str;
+use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
+use App\Commands\Internal\Support\GitHubReleaseData;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Process;
-use App\Commands\Internal\Support\GitHubReleaseData;
-use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
+use Illuminate\Support\Str;
+use RuntimeException;
+use Throwable;
 
-use function chmod;
-use function umask;
-use function rename;
-use function filled;
-use function explode;
-use function sprintf;
-use function implode;
-use function tempnam;
-use function dirname;
-use function defined;
-use function passthru;
-use function in_array;
-use function array_map;
-use function json_decode;
-use function is_writable;
-use function str_contains;
 use function array_combine;
+use function array_map;
+use function chmod;
 use function clearstatcache;
+use function defined;
+use function dirname;
 use function escapeshellarg;
-use function openssl_verify;
-use function sys_get_temp_dir;
+use function explode;
 use function extension_loaded;
 use function file_get_contents;
+use function filled;
 use function get_included_files;
+use function implode;
+use function in_array;
+use function is_writable;
+use function json_decode;
 use function openssl_pkey_get_public;
+use function openssl_verify;
+use function passthru;
+use function rename;
+use function sprintf;
+use function str_contains;
+use function sys_get_temp_dir;
+use function tempnam;
+use function umask;
 
 /**
  * @experimental This command is highly experimental and may contain bugs.
@@ -528,6 +528,7 @@ class SelfUpdateCommand extends Command
 
     /**
      * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+     *
      * @codeCoverageIgnore Cannot be tested as it exits the application
      */
     protected function exit(int $exitCode): void

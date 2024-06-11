@@ -3,16 +3,15 @@
 namespace App\Commands\Internal;
 
 use Throwable;
-use App\Application;
 
-use function getenv;
-use function sprintf;
-use function implode;
-use function urlencode;
+use function array_keys;
 use function array_map;
 use function base_path;
-use function array_keys;
+use function getenv;
+use function implode;
+use function sprintf;
 use function str_replace;
+use function urlencode;
 
 /**
  * @internal Single use trait for the experimental/internal self-update command.
