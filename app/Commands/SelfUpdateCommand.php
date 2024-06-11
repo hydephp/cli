@@ -440,7 +440,7 @@ class SelfUpdateCommand extends Command
     protected function printNewApplicationVersion(): void
     {
         // Verify the application version (// Fixme: This sometimes shows the old version when using direct install {@see https://github.com/hydephp/cli/issues/97})
-        passthru('hyde --version --ansi');
+        passthru("$this->applicationPath --version --ansi");
     }
 
     protected function debug(string $message): void
