@@ -515,6 +515,8 @@ class SelfUpdateCommand extends Command
      * @link https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
      *
      * @return string The public key in ASCII-armored format
+     *
+     * @noinspection SpellCheckingInspection
      */
     final protected static function publicKey(): string
     {
