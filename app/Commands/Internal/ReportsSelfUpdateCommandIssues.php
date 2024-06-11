@@ -81,8 +81,6 @@ trait ReportsSelfUpdateCommandIssues
         $markdown = str_replace(getenv('USER') ?: getenv('USERNAME'), '<USERNAME>', $markdown);
 
         // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
-        $markdown = str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
-
-        return $markdown;
+        return str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
     }
 }
