@@ -359,7 +359,7 @@ class SelfUpdateCommand extends Command
 
         // Release the file handle
         clearstatcache(true, $applicationPath);
-        gc_collect_cycles();
+        gc_collect_cycles(); // Force the lock to be released
     }
 
     protected function updateViaComposer(): void
