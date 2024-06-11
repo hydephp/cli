@@ -53,7 +53,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch,ref=refs/heads/stable
             type=raw,value=latest
 
       # Build and push Docker image with Buildx
