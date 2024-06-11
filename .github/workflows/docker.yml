@@ -47,7 +47,7 @@ jobs:
 
       # Get the current version
       - name: Get current version
-        id: get_version
+        id: get-version
         run: echo "VERSION=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
 
       # Extract metadata (tags, labels) for Docker
