@@ -35,6 +35,24 @@ curl -L https://github.com/hydephp/cli/releases/latest/download/hyde -o hyde
 chmod +x hyde && sudo mv hyde /usr/local/bin/hyde
 ```
 
+### Docker (Highly Experimental)
+
+> [!WARNING]
+> The HydePHP CLI Docker image is under development and is highly experimental. Proceed with caution and report the bugs you will certainly encounter.
+
+```bash
+docker pull ghcr.io/hydephp/cli:latest
+docker run --rm -it ghcr.io/hydephp/cli:latest <command>
+```
+
+Using the Docker image allows you to run the HydePHP CLI without installing any other dependencies like PHP or Composer on your local machine.
+
+If you want to use the HydePHP CLI Docker image as a global command, you can create a shell alias:
+
+```bash
+alias hyde='docker run --rm -it -v $(pwd):/app ghcr.io/hydephp/cli:latest'
+```
+
 ## Usage
 
 ```bash
