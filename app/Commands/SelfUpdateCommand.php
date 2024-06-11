@@ -19,11 +19,9 @@ use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 use function chmod;
 use function ltrim;
 use function umask;
-use function fopen;
 use function config;
 use function filled;
 use function rename;
-use function fclose;
 use function defined;
 use function dirname;
 use function explode;
@@ -43,6 +41,7 @@ use function openssl_verify;
 use function extension_loaded;
 use function sys_get_temp_dir;
 use function file_get_contents;
+use function gc_collect_cycles;
 use function get_included_files;
 use function openssl_pkey_get_public;
 
@@ -360,7 +359,7 @@ class SelfUpdateCommand extends Command
 
         // Release the file handle
         clearstatcache(true, $applicationPath);
-        fclose(fopen($applicationPath, 'r'));
+        gc_collect_cycles();
     }
 
     protected function updateViaComposer(): void
@@ -515,6 +514,8 @@ class SelfUpdateCommand extends Command
      * @link https://github.com/hydephp/certificates/tree/master/EE5FC423177F61B096D768E3B3D3CA94C5435426
      *
      * @return string The public key in ASCII-armored format
+     *
+     * @noinspection SpellCheckingInspection
      */
     final protected static function publicKey(): string
     {
