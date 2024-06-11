@@ -107,7 +107,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: signature
-          path: builds/hyde.sig, builds/signature.bin
+          path: |
+            builds/hyde.sig
+            builds/signature.bin
 
       - name: Reset Composer file changes
         run: git restore composer.json composer.lock
