@@ -354,6 +354,9 @@ class SelfUpdateCommand extends Command
         chmod($downloadedFile, 0777 - umask()); // Using the same permissions as Laravel
 
         rename($downloadedFile, $applicationPath);
+
+        // Release the file handle
+        clearstatcache(true, $applicationPath);
     }
 
     protected function updateViaComposer(): void
