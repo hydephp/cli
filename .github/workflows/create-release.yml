@@ -18,6 +18,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
+  attestations: write
 
 jobs:
 
@@ -110,6 +112,11 @@ jobs:
           path: |
             builds/hyde.sig
             builds/signature.bin
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: builds/hyde
 
       - name: Reset Composer file changes
         run: git restore composer.json composer.lock
