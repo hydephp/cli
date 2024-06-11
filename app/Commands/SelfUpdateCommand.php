@@ -129,8 +129,7 @@ class SelfUpdateCommand extends Command
 
             $this->info('The application has been updated successfully.');
 
-            // Verify the application version (// Fixme: This sometimes shows the old version when using direct install {@see https://github.com/hydephp/cli/issues/97})
-            passthru('hyde --version --ansi');
+            $this->printNewApplicationVersion();
 
             // Now we can exit the application, we do this manually to avoid issues when Laravel tries to clean up the application
             $this->exit(0);
@@ -434,6 +433,12 @@ class SelfUpdateCommand extends Command
         }
 
         return $exitCode;
+    }
+
+    protected function printNewApplicationVersion(): void
+    {
+        // Verify the application version (// Fixme: This sometimes shows the old version when using direct install {@see https://github.com/hydephp/cli/issues/97})
+        passthru('hyde --version --ansi');
     }
 
     protected function debug(string $message): void
