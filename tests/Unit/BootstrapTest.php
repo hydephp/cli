@@ -1,13 +1,13 @@
 <?php
 
-use Hyde\Foundation\Application;
-use Hyde\Foundation\ConsoleKernel;
 use Hyde\Foundation\HydeKernel;
+use Hyde\Foundation\Application;
 use Illuminate\Config\Repository;
+use Hyde\Foundation\ConsoleKernel;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 
 beforeEach(function () {
     $this->app = require __DIR__.'/../../app/bootstrap.php';

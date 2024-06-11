@@ -8,8 +8,8 @@ use Illuminate\Support\Arr;
 use InvalidArgumentException;
 
 use function implode;
-use function array_keys;
 use function array_diff;
+use function array_keys;
 
 /**
  * @internal Helper class to provide a typed representation of a GitHub release asset in the GitHubReleaseData class.

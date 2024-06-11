@@ -1,7 +1,7 @@
 <?php
 
-use App\Commands\VendorPublishCommand;
 use Illuminate\Filesystem\Filesystem;
+use App\Commands\VendorPublishCommand;
 
 it('rewrites vendor paths to lead to phar path', function () {
     $command = new VendorPublishCommandTestClass(new Filesystem());

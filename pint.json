@@ -1,6 +1,10 @@
 {
     "preset": "laravel",
     "rules": {
-        "class_attributes_separation" : false
+        "class_attributes_separation" : false,
+        "ordered_imports": {
+            "sort_algorithm": "length",
+            "imports_order": ["class", "function", "const"]
+        }
     }
 }

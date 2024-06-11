@@ -17,27 +17,29 @@ use App\Commands\Internal\Support\GitHubReleaseData;
 use App\Commands\Internal\ReportsSelfUpdateCommandIssues;
 
 use function chmod;
+use function ltrim;
 use function umask;
-use function rename;
+use function config;
 use function filled;
-use function explode;
-use function sprintf;
-use function implode;
-use function tempnam;
-use function dirname;
+use function rename;
 use function defined;
-use function passthru;
+use function dirname;
+use function explode;
+use function implode;
+use function sprintf;
+use function tempnam;
 use function in_array;
+use function passthru;
 use function array_map;
-use function json_decode;
 use function is_writable;
+use function json_decode;
 use function str_contains;
 use function array_combine;
 use function clearstatcache;
 use function escapeshellarg;
 use function openssl_verify;
-use function sys_get_temp_dir;
 use function extension_loaded;
+use function sys_get_temp_dir;
 use function file_get_contents;
 use function get_included_files;
 use function openssl_pkey_get_public;
@@ -528,6 +530,7 @@ class SelfUpdateCommand extends Command
 
     /**
      * @noinspection PhpNoReturnAttributeCanBeAddedInspection
+     *
      * @codeCoverageIgnore Cannot be tested as it exits the application
      */
     protected function exit(int $exitCode): void
