@@ -1,1 +1,197 @@
-TODO: Create analytics page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repository Analytics Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .dashboard-section {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>GitHub Repository Analytics Dashboard</h1>
+
+    <!-- Total Statistics Section -->
+    <div class="dashboard-section">
+        <h2>Total Statistics</h2>
+        <table>
+            <tr>
+                <th>Last Updated</th>
+                <th>Total Views</th>
+                <th>Total Clones</th>
+                <th>Total Installs</th>
+            </tr>
+            <tr>
+                <td id="last-updated"></td>
+                <td id="total-views"></td>
+                <td id="total-clones"></td>
+                <td id="total-installs"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Daily Traffic Section -->
+    <div class="dashboard-section">
+        <h2>Daily Traffic</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>View Count</th>
+                    <th>Unique Views</th>
+                    <th>Clone Count</th>
+                    <th>Unique Clones</th>
+                </tr>
+            </thead>
+            <tbody id="daily-traffic"></tbody>
+        </table>
+    </div>
+
+    <!-- Popular Paths Section -->
+    <div class="dashboard-section">
+        <h2>Popular Paths</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Path</th>
+                    <th>Title</th>
+                    <th>Count</th>
+                    <th>Unique Count</th>
+                </tr>
+            </thead>
+            <tbody id="popular-paths"></tbody>
+        </table>
+    </div>
+
+    <!-- Referrers Section -->
+    <div class="dashboard-section">
+        <h2>Referrers</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Referrer</th>
+                    <th>Count</th>
+                    <th>Unique Count</th>
+                </tr>
+            </thead>
+            <tbody id="referrers"></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const data = {
+                "_database": {
+                    "last_updated": 1717970924,
+                    "total_views": 3347,
+                    "total_clones": 22460,
+                    "total_installs": 156
+                },
+                "traffic": {
+                    "2023-12-01T00:00:00Z": { "views": { "count": 18, "uniques": 1 }, "clones": { "count": 7, "uniques": 6 } },
+                    "2023-12-02T00:00:00Z": { "views": { "count": 154, "uniques": 1 }, "clones": { "count": 170, "uniques": 16 } },
+                    "2023-12-03T00:00:00Z": { "views": { "count": 109, "uniques": 1 }, "clones": { "count": 369, "uniques": 15 } }
+                },
+                "popular": {
+                    "2023-12": {
+                        "paths": {
+                            "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                                "path": "\/hydephp\/cli",
+                                "title": "hydephp\/cli: Experimental global Hyde binary project",
+                                "count": 147,
+                                "uniques": 2
+                            }
+                        },
+                        "referrers": {
+                            "github.com": { "count": 128, "uniques": 8 },
+                            "Google": { "count": 5, "uniques": 4 }
+                        }
+                    }
+                }
+            };
+
+            const lastUpdatedElem = document.getElementById('last-updated');
+            const totalViewsElem = document.getElementById('total-views');
+            const totalClonesElem = document.getElementById('total-clones');
+            const totalInstallsElem = document.getElementById('total-installs');
+            const dailyTrafficElem = document.getElementById('daily-traffic');
+            const popularPathsElem = document.getElementById('popular-paths');
+            const referrersElem = document.getElementById('referrers');
+
+            const formatDate = timestamp => {
+                const date = new Date(timestamp * 1000);
+                return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+            };
+
+            lastUpdatedElem.textContent = formatDate(data._database.last_updated);
+            totalViewsElem.textContent = data._database.total_views;
+            totalClonesElem.textContent = data._database.total_clones;
+            totalInstallsElem.textContent = data._database.total_installs;
+
+            Object.entries(data.traffic).forEach(([date, trafficData]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${date}</td>
+                    <td>${trafficData.views.count}</td>
+                    <td>${trafficData.views.uniques}</td>
+                    <td>${trafficData.clones.count}</td>
+                    <td>${trafficData.clones.uniques}</td>
+                `;
+                dailyTrafficElem.appendChild(row);
+            });
+
+            Object.entries(data.popular).forEach(([month, popularData]) => {
+                Object.entries(popularData.paths).forEach(([pathHash, pathData]) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${month}</td>
+                        <td>${pathData.path}</td>
+                        <td>${pathData.title}</td>
+                        <td>${pathData.count}</td>
+                        <td>${pathData.uniques}</td>
+                    `;
+                    popularPathsElem.appendChild(row);
+                });
+
+                Object.entries(popularData.referrers).forEach(([referrer, referrerData]) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${month}</td>
+                        <td>${referrer}</td>
+                        <td>${referrerData.count}</td>
+                        <td>${referrerData.uniques}</td>
+                    `;
+                    referrersElem.appendChild(row);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
