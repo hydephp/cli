@@ -48,6 +48,7 @@
             align-items: center;
             flex-direction: column;
             z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
     
         .spinner {
@@ -62,6 +63,11 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+    
+        #loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
         }
     </style>
 </head>
@@ -219,9 +225,14 @@
             populateTrafficChart(data);
             populatePopularPaths(data);
             populateReferrers(data);
-
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('content').style.display = 'block';
+        
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.add('fade-out');
+        
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }, 500); // Match this duration with the transition duration in the CSS
         });
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
