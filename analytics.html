@@ -76,7 +76,7 @@
         <div class="spinner"></div>
         <p>Loading data, please wait...</p>
     </div>
-    <div id="content" style="display: none;">
+    <div id="content" style="opacity: 0;">
         <h1>GitHub Analytics Dashboard</h1>
         <div class="container">
             <h2>General Statistics</h2>
@@ -231,7 +231,7 @@
         
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
-                document.getElementById('content').style.display = 'block';
+                document.getElementById('content').style.opacity = 1;
             }, 500); // Match this duration with the transition duration in the CSS
         });
     </script>
