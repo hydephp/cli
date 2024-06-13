@@ -35,61 +35,96 @@
             margin: 20px 0;
         }
     </style>
+    <style>
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+        }
+    
+        .spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+    
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    <h1>GitHub Analytics Dashboard</h1>
-    <div class="container">
-        <h2>General Statistics</h2>
-        <table id="general-stats">
-            <thead>
-                <tr>
-                    <th>Total Views</th>
-                    <th>Total Clones</th>
-                    <th>Total Installs</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id="total-views"></td>
-                    <td id="total-clones"></td>
-                    <td id="total-installs"></td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading data, please wait...</p>
+    </div>
+    <div id="content" style="display: none;">
+        <h1>GitHub Analytics Dashboard</h1>
+        <div class="container">
+            <h2>General Statistics</h2>
+            <table id="general-stats">
+                <thead>
+                    <tr>
+                        <th>Total Views</th>
+                        <th>Total Clones</th>
+                        <th>Total Installs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="total-views"></td>
+                        <td id="total-clones"></td>
+                        <td id="total-installs"></td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <h2>Traffic Data</h2>
-        <div class="chart-container">
-            <canvas id="traffic-chart"></canvas>
+            <h2>Traffic Data</h2>
+            <div class="chart-container">
+                <canvas id="traffic-chart"></canvas>
+            </div>
+
+            <h2>Popular Paths</h2>
+            <table id="popular-paths">
+                <thead>
+                    <tr>
+                        <th>Path</th>
+                        <th>Title</th>
+                        <th>Views</th>
+                        <th>Unique Views</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+
+            <h2>Referrers</h2>
+            <table id="referrers">
+                <thead>
+                    <tr>
+                        <th>Referrer</th>
+                        <th>Views</th>
+                        <th>Unique Views</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
         </div>
-
-        <h2>Popular Paths</h2>
-        <table id="popular-paths">
-            <thead>
-                <tr>
-                    <th>Path</th>
-                    <th>Title</th>
-                    <th>Views</th>
-                    <th>Unique Views</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Populated by JavaScript -->
-            </tbody>
-        </table>
-
-        <h2>Referrers</h2>
-        <table id="referrers">
-            <thead>
-                <tr>
-                    <th>Referrer</th>
-                    <th>Views</th>
-                    <th>Unique Views</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Populated by JavaScript -->
-            </tbody>
-        </table>
     </div>
 
     <script>
@@ -183,6 +218,9 @@
             populateTrafficChart(data);
             populatePopularPaths(data);
             populateReferrers(data);
+
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
         });
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
