@@ -230,7 +230,7 @@
             loadingScreen.classList.add('fade-out');
         
             setTimeout(() => {
-                loadingScreen.style.display = 'none';
+                loadingScreen.remove();
                 document.getElementById('content').style.opacity = 1;
             }, 500); // Match this duration with the transition duration in the CSS
         });
