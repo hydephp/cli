@@ -238,10 +238,7 @@
                 let promise = isResourceCached('https://raw.githubusercontent.com/hydephp/cli/traffic/database.json');
                 promise.then(isCached => {
                     if (! isCached) {
-                        console.log('Resource not cached')
                         document.getElementById('loading-hint').style.opacity = '1';
-                    } else {
-                        console.log('Resource cached')
                     }
                 });
             }
