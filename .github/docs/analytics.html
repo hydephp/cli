@@ -69,7 +69,7 @@
     <div id="loading-screen">
         <p id="loading-hint" style="opacity: 0;">
             Loading data, please wait...
-            <span id="loading-stage">0</span>/3
+            <span id="loading-stage">0</span>/8
         </p>
         <noscript>Please enable JavaScript to use this dashboard.</noscript>
     </div>
@@ -252,17 +252,22 @@
         document.addEventListener('DOMContentLoaded', async () => {
             bumpLoadingStage();
             const data = await fetchData();
+            bumpLoadingStage();
 
             populateGeneralStats(data);
+            bumpLoadingStage();
             populateTrafficChart(data);
             bumpLoadingStage();
             populatePopularPaths(data);
+            bumpLoadingStage();
             populateReferrers(data);
+            bumpLoadingStage();
 
             document.getElementById('content').style.opacity = '1';
             document.getElementById('loading-screen').classList.add('fade-out');
 
             await new Promise(r => setTimeout(r, 500));
+            bumpLoadingStage();
             document.getElementById('loading-screen').remove();
         });
 
