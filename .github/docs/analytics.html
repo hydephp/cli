@@ -43,8 +43,7 @@
             width: 100%;
             margin: 20px 0;
         }
-    </style>
-    <style>
+
         #loading-screen {
             position: fixed;
             top: 0;
@@ -149,7 +148,7 @@
             const labels = Object.keys(traffic);
             const views = labels.map(date => traffic[date].views ? traffic[date].views.count : 0);
             const clones = labels.map(date => traffic[date].clones ? traffic[date].clones.count : 0);
-        
+
             const ctx = document.getElementById('traffic-chart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
