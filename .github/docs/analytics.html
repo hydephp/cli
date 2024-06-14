@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Analytics Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,7 +57,7 @@
             align-items: center;
             flex-direction: column;
             z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
 
         #loading-screen.fade-out {
@@ -70,6 +69,7 @@
 <body>
     <div id="loading-screen">
         <p>Loading data, please wait...</p>
+        <noscript>Please enable JavaScript to use this dashboard.</noscript>
     </div>
     <div id="content" style="opacity: 0;">
         <h1>HydePHP/CLI GitHub Analytics Dashboard</h1>
@@ -112,7 +112,6 @@
                 </thead>
                 <tbody>
                     <!-- Populated by JavaScript -->
-                    <noscript>Please enable JavaScript to use this dashboard.</noscript>
                 </tbody>
             </table>
 
@@ -127,7 +126,6 @@
                 </thead>
                 <tbody>
                     <!-- Populated by JavaScript -->
-                    <noscript>Please enable JavaScript to use this dashboard.</noscript>
                 </tbody>
             </table>
         </div>
@@ -230,16 +228,15 @@
             populateTrafficChart(data);
             populatePopularPaths(data);
             populateReferrers(data);
-        
-            const loadingScreen = document.getElementById('loading-screen');
-            loadingScreen.classList.add('fade-out');
-        
-            setTimeout(() => {
-                loadingScreen.remove();
-                document.getElementById('content').style.opacity = 1;
-            }, 500); // Match this duration with the transition duration in the CSS
+
+            document.getElementById('content').style.opacity = '1';
+            document.getElementById('loading-screen').classList.add('fade-out');
+
+            await new Promise(r => setTimeout(r, 500));
+            document.getElementById('loading-screen').remove();
         });
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 </body>
 </html>
