@@ -205,7 +205,11 @@
                     scales: {
                         x: {
                             type: 'time',
-                            time: {unit: 'day'}
+                            time: {
+                                unit: 'day',
+                                tooltipFormat: 'LLL dd, yyyy',
+                            },
+
                         },
                         y: {beginAtZero: true}
                     }
