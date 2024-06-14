@@ -232,17 +232,12 @@
                 return false; // Resource is fetched from network
             }
 
-            const databaseUrl = 'https://raw.githubusercontent.com/hydephp/cli/traffic/database.json';
-            const chartJsUrl = 'https://cdn.jsdelivr.net/npm/chart.js';
-            const chartJsAdapterUrl = 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js';
-
             // Check if the resources are fetched from the cache
-            const isChartJsCached = isResourceCached(chartJsUrl);
-            const isChartJsAdapterCached = isResourceCached(chartJsAdapterUrl);
+            const isChartJsCached = isResourceCached('https://cdn.jsdelivr.net/npm/chart.js');
             // We can't check if the database is cached, but we can assume that if the other resources are cached, the database is cached too
 
             // If any of the resources is not cached, show the loading hint
-            if (!isChartJsCached || !isChartJsAdapterCached) {
+            if (!isChartJsCached) {
                 document.getElementById('loading-hint').style.opacity = '1';
             }
 
