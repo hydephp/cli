@@ -237,12 +237,12 @@
             const chartJsAdapterUrl = 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js';
 
             // Check if the resources are fetched from the cache
-            const isDatabaseCached = isResourceCached(databaseUrl);
             const isChartJsCached = isResourceCached(chartJsUrl);
             const isChartJsAdapterCached = isResourceCached(chartJsAdapterUrl);
+            // We can't check if the database is cached, but we can assume that if the other resources are cached, the database is cached too
 
             // If any of the resources is not cached, show the loading hint
-            if (!isDatabaseCached || !isChartJsCached || !isChartJsAdapterCached) {
+            if (!isChartJsCached || !isChartJsAdapterCached) {
                 const loadingHintTimeout = setTimeout(() => {
                     document.getElementById('loading-hint').style.opacity = '1';
                 }, 100);
