@@ -119,7 +119,7 @@
             </table>
 
             <h2>Traffic Data</h2>
-            <div class="chart-container">
+            <div class="chart-container" style="height: 400px;">
                 <canvas id="traffic-chart"></canvas>
             </div>
 
@@ -195,6 +195,7 @@
                 },
                 options: {
                     animation: false, // Disable animation
+                    maintainAspectRatio: false,
                     scales: {
                         x: { type: 'time', time: { unit: 'day' } },
                         y: { beginAtZero: true }
