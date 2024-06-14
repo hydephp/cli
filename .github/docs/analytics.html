@@ -214,8 +214,12 @@
                     if (counter >= limit) break;
                     const row = document.createElement('tr');
                     const pathData = paths[pathHash];
+
+                    let path = pathData.path;
+                    // Trim leading and trailing slashes
+                    path = path.replace(/^\/|\/$/g, '');
                     row.innerHTML = `
-                        <td>${pathData.path}</td>
+                        <td>${path}</td>
                         <td>${pathData.title}</td>
                         <td>${pathData.count}</td>
                         <td>${pathData.uniques}</td>
