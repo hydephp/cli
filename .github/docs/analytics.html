@@ -63,13 +63,28 @@
             opacity: 0;
             visibility: hidden;
         }
+
+        #loading-hint {
+            font-size: 1.5em;
+            transition: opacity 0.25s ease;
+        }
+
+        #loading-stage-container {
+            font-size: 0.8em;
+            color: #666;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <div id="loading-screen">
         <p id="loading-hint" style="opacity: 0;">
             Loading data, please wait...
-            <span id="loading-stage">0</span>/3
+            <span id="loading-stage-container">
+                <span id="loading-stage">0</span>/3
+            </span>
         </p>
         <noscript>Please enable JavaScript to use this dashboard.</noscript>
     </div>
