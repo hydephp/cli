@@ -38,6 +38,11 @@ jobs:
           cp .github/docs/asset/manual.xsl _site/manual.xsl
           sed -i '1a<?xml-stylesheet type="text/xsl" href="manual.xsl"?>' _site/manual.xml
 
+      - name: Move analytics page
+        run: |
+          mkdir _site/repo
+          cp .github/docs/analytics.html _site/repo/analytics.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
