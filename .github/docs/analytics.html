@@ -162,9 +162,9 @@
         }
 
         function populateGeneralStats(data) {
-            document.getElementById('total-views').textContent = data._database.total_views;
-            document.getElementById('total-clones').textContent = data._database.total_clones;
-            document.getElementById('total-installs').textContent = data._database.total_installs;
+            document.getElementById('total-views').textContent = data._database.total_views.toLocaleString();
+            document.getElementById('total-clones').textContent = data._database.total_clones.toLocaleString();
+            document.getElementById('total-installs').textContent = data._database.total_installs.toLocaleString();
         }
 
         function populateTrafficChart(data) {
