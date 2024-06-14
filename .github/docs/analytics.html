@@ -69,6 +69,7 @@
     <div id="loading-screen">
         <p id="loading-hint" style="opacity: 0;">
             Loading data, please wait...
+            <span id="loading-stage">0</span>/3
         </p>
         <noscript>Please enable JavaScript to use this dashboard.</noscript>
     </div>
@@ -225,6 +226,8 @@
 
         document.addEventListener('readystatechange', () => {
             if (document.readyState === 'interactive') {
+                bumpLoadingStage();
+
                 // If the fetch is returned in the short amount of time it's certainly cached.
                 async function isResourceCached(url, waitTimeMs = 10) {
                     const ac = new AbortController()
@@ -247,10 +250,12 @@
         });
 
         document.addEventListener('DOMContentLoaded', async () => {
+            bumpLoadingStage();
             const data = await fetchData();
 
             populateGeneralStats(data);
             populateTrafficChart(data);
+            bumpLoadingStage();
             populatePopularPaths(data);
             populateReferrers(data);
 
@@ -260,6 +265,12 @@
             await new Promise(r => setTimeout(r, 500));
             document.getElementById('loading-screen').remove();
         });
+
+        function bumpLoadingStage() {
+            const hint = document.getElementById('loading-hint');
+            const stage = parseInt(hint.querySelector('#loading-stage').textContent);
+            hint.querySelector('#loading-stage').textContent = stage + 1;
+        }
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
