@@ -221,7 +221,7 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', async () => {
+        document.addEventListener('readystatechange', () => {
             function isResourceCached(url) {
                 const resources = performance.getEntriesByName(url);
                 for (let resource of resources) {
@@ -240,7 +240,9 @@
             if (!isChartJsCached) {
                 document.getElementById('loading-hint').style.opacity = '1';
             }
+        });
 
+        document.addEventListener('DOMContentLoaded', async () => {
             const data = await fetchData();
 
             populateGeneralStats(data);
