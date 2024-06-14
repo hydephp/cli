@@ -132,17 +132,8 @@
 
     <script>
         async function fetchData() {
-            const time = Date.now();
-            function timeDebug(event) {
-                const currentTime = Date.now();
-                console.log(` > Time taken to ${event}: ${currentTime - time}ms`);
-            }
-            timeDebug('Fetching data... ')
             const response = await fetch('https://raw.githubusercontent.com/hydephp/cli/traffic/database.json');
-
-            timeDebug('Data fetched')
             const data = await response.json();
-            timeDebug('Data parsed')
             return data;
         }
 
