@@ -67,7 +67,7 @@
 </head>
 <body>
     <div id="loading-screen">
-        <p>Loading data, please wait...</p>
+        <p id="loading-hint" style="opacity: 0;">Loading data, please wait...</p>
         <noscript>Please enable JavaScript to use this dashboard.</noscript>
     </div>
     <div id="content" style="opacity: 0;">
@@ -222,7 +222,16 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // Start a timeout to show the loading hint after 0.1 seconds
+            const loadingHintTimeout = setTimeout(() => {
+                document.getElementById('loading-hint').style.opacity = '1';
+            }, 100);
+
             const data = await fetchData();
+
+            // If the data is fetched before 0.1 seconds, clear the timeout
+            clearTimeout(loadingHintTimeout);
+
             populateGeneralStats(data);
             populateTrafficChart(data);
             populatePopularPaths(data);
