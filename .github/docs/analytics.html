@@ -183,11 +183,12 @@
         function populatePopularPaths(data) {
             const popular = data.popular;
             const tbody = document.getElementById('popular-paths').getElementsByTagName('tbody')[0];
+            const limit = 15;
             let counter = 0;
             for (const month in popular) {
                 const paths = popular[month].paths;
                 for (const pathHash in paths) {
-                    if (counter >= 15) break;
+                    if (counter >= limit) break;
                     const row = document.createElement('tr');
                     const pathData = paths[pathHash];
                     row.innerHTML = `
@@ -199,7 +200,7 @@
                     tbody.appendChild(row);
                     counter++;
                 }
-                if (counter >= 15) break;
+                if (counter >= limit) break;
             }
         }
 
