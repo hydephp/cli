@@ -222,31 +222,23 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            const clockStart = Date.now();
+            // Start a timeout to show the loading hint after 0.1 seconds
+            const loadingHintTimeout = setTimeout(() => {
+                document.getElementById('loading-hint').style.opacity = '1';
+            }, 100);
 
-            function timeDebug(event) {
-                const clockEnd = Date.now();
-                const time = clockEnd - clockStart;
-                console.log(`Time taken to ${event}: ${time}ms`);
-            }
-
-            timeDebug('load the page');
             const data = await fetchData();
-            timeDebug('fetch data');
+
+            // If the data is fetched before 0.1 seconds, clear the timeout
+            clearTimeout(loadingHintTimeout);
 
             populateGeneralStats(data);
-            timeDebug('populate general stats');
             populateTrafficChart(data);
-            timeDebug('populate traffic chart');
             populatePopularPaths(data);
-            timeDebug('populate popular paths');
             populateReferrers(data);
-            timeDebug('populate referrers');
 
             document.getElementById('content').style.opacity = '1';
             document.getElementById('loading-screen').classList.add('fade-out');
-
-            timeDebug('finish loading');
 
             await new Promise(r => setTimeout(r, 500));
             document.getElementById('loading-screen').remove();
