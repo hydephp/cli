@@ -243,9 +243,7 @@
 
             // If any of the resources is not cached, show the loading hint
             if (!isChartJsCached || !isChartJsAdapterCached) {
-                const loadingHintTimeout = setTimeout(() => {
-                    document.getElementById('loading-hint').style.opacity = '1';
-                }, 100);
+                document.getElementById('loading-hint').style.opacity = '1';
             }
 
             const data = await fetchData();
