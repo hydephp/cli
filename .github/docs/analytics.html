@@ -222,15 +222,33 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Start a timeout to show the loading hint after 0.1 seconds
-            const loadingHintTimeout = setTimeout(() => {
-                document.getElementById('loading-hint').style.opacity = '1';
-            }, 100);
+            function isResourceCached(url) {
+                const resources = performance.getEntriesByName(url);
+                for (let resource of resources) {
+                    if (resource.transferSize === 0) {
+                        return true; // Resource is fetched from cache
+                    }
+                }
+                return false; // Resource is fetched from network
+            }
+
+            const databaseUrl = 'https://raw.githubusercontent.com/hydephp/cli/traffic/database.json';
+            const chartJsUrl = 'https://cdn.jsdelivr.net/npm/chart.js';
+            const chartJsAdapterUrl = 'https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js';
+
+            // Check if the resources are fetched from the cache
+            const isDatabaseCached = isResourceCached(databaseUrl);
+            const isChartJsCached = isResourceCached(chartJsUrl);
+            const isChartJsAdapterCached = isResourceCached(chartJsAdapterUrl);
+
+            // If any of the resources is not cached, show the loading hint
+            if (!isDatabaseCached || !isChartJsCached || !isChartJsAdapterCached) {
+                const loadingHintTimeout = setTimeout(() => {
+                    document.getElementById('loading-hint').style.opacity = '1';
+                }, 100);
+            }
 
             const data = await fetchData();
-
-            // If the data is fetched before 0.1 seconds, clear the timeout
-            clearTimeout(loadingHintTimeout);
 
             populateGeneralStats(data);
             populateTrafficChart(data);
