@@ -196,6 +196,12 @@
                 options: {
                     animation: false, // Disable animation
                     maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
                     scales: {
                         x: { type: 'time', time: { unit: 'day' } },
                         y: { beginAtZero: true }
