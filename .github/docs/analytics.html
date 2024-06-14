@@ -233,19 +233,30 @@
 
         function populateReferrers(data) {
             const popular = data.popular;
-            const tbody = document.getElementById('referrers').getElementsByTagName('tbody')[0];
+            const referrerData = {};
+
+            // Aggregate referrer data across all months
             for (const month in popular) {
                 const referrers = popular[month].referrers;
                 for (const referrer in referrers) {
-                    const row = document.createElement('tr');
-                    const referrerData = referrers[referrer];
-                    row.innerHTML = `
-                        <td>${referrer}</td>
-                        <td>${referrerData.count}</td>
-                        <td>${referrerData.uniques}</td>
-                    `;
-                    tbody.appendChild(row);
+                    if (!referrerData[referrer]) {
+                        referrerData[referrer] = { count: 0, uniques: 0 };
+                    }
+                    referrerData[referrer].count += referrers[referrer].count;
+                    referrerData[referrer].uniques += referrers[referrer].uniques;
                 }
+            }
+
+            // Populate the table with aggregated data
+            const tbody = document.getElementById('referrers').getElementsByTagName('tbody')[0];
+            for (const referrer in referrerData) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${referrer}</td>
+                    <td>${referrerData[referrer].count}</td>
+                    <td>${referrerData[referrer].uniques}</td>
+                `;
+                tbody.appendChild(row);
             }
         }
 
