@@ -82,6 +82,15 @@
             width: 0;
             transition: width 0.25s ease;
         }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: 40px;
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -152,6 +161,9 @@
                 </tbody>
             </table>
         </div>
+        <footer id="footer">
+            <!-- Footer content will be populated by JavaScript -->
+        </footer>
     </div>
 
     <script>
@@ -273,6 +285,20 @@
             }
         }
 
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleString();
+        }
+
+        function populateFooter(data) {
+            const lastUpdated = formatTimestamp(data._database.last_updated);
+            const footer = document.getElementById('footer');
+            footer.innerHTML = `
+                <p>Data collected from public GitHub traffic data, retained beyond the standard 14-day window.</p>
+                <p>Last database sync: ${lastUpdated}</p>
+            `;
+        }
+
         document.addEventListener('readystatechange', () => {
             if (document.readyState === 'interactive') {
                 bumpLoadingStage();
@@ -316,6 +342,7 @@
             bumpLoadingStage();
             populatePopularPaths(data);
             populateReferrers(data);
+            populateFooter(data);
 
             document.getElementById('content').style.opacity = '1';
             document.getElementById('loading-screen').classList.add('fade-out');
