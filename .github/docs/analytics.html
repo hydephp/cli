@@ -81,7 +81,7 @@
 <body>
     <div id="loading-screen">
         <p id="loading-hint" style="opacity: 0;">
-            Loading data, please wait...
+            Loading data, please wait<span id="ellipsis"></span>
             <span id="loading-stage-container">
                 <span id="loading-stage">0</span>/3
             </span>
@@ -259,6 +259,15 @@
                 promise.then(isCached => {
                     if (! isCached) {
                         document.getElementById('loading-hint').style.opacity = '1';
+
+                        const ellipsis = document.getElementById('ellipsis');
+                        let ellipsisInterval = setInterval(() => {
+                            if (ellipsis.textContent.length < 3) {
+                                ellipsis.textContent = ellipsis.textContent + '.';
+                            } else {
+                                clearInterval(ellipsisInterval);
+                            }
+                        }, 50);
                     }
                 });
             }
