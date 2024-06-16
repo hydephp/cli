@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1717970924,
-        "content_hash": "2737bc6e51899acefee1042d7051a64d9891ce90f1eba93b84e7e3f200fdbc3e",
-        "total_views": 3347,
-        "total_clones": 22460,
-        "total_installs": 156
+        "last_updated": 1718575789,
+        "content_hash": "dc276019acd5899f4129002fa9757148b3d42459c84f61634456c92d4ba93743",
+        "total_views": 4310,
+        "total_clones": 28596,
+        "total_installs": 198
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -893,12 +893,12 @@
         },
         "2024-06-09T00:00:00Z": {
             "views": {
-                "count": 113,
+                "count": 118,
                 "uniques": 1
             },
             "clones": {
-                "count": 1310,
-                "uniques": 13
+                "count": 1375,
+                "uniques": 14
             }
         },
         "2024-06-02T00:00:00Z": {
@@ -928,6 +928,62 @@
         "2024-06-07T00:00:00Z": {
             "clones": {
                 "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-06-10T00:00:00Z": {
+            "views": {
+                "count": 291,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1640,
+                "uniques": 18
+            }
+        },
+        "2024-06-11T00:00:00Z": {
+            "views": {
+                "count": 532,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 3758,
+                "uniques": 48
+            }
+        },
+        "2024-06-12T00:00:00Z": {
+            "views": {
+                "count": 35,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 194,
+                "uniques": 6
+            }
+        },
+        "2024-06-13T00:00:00Z": {
+            "views": {
+                "count": 70,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 284,
+                "uniques": 8
+            }
+        },
+        "2024-06-14T00:00:00Z": {
+            "views": {
+                "count": 29,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 195,
+                "uniques": 8
+            }
+        },
+        "2024-06-15T00:00:00Z": {
+            "views": {
+                "count": 1,
                 "uniques": 1
             }
         }
@@ -1679,9 +1735,9 @@
                 },
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "hydephp\/cli: Experimental global Hyde binary project",
-                    "count": 10,
-                    "uniques": 1
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 168,
+                    "uniques": 2
                 },
                 "e3e85ae5da6dbbe42569da8780f45392f39b764ddbff1b3fe12e8284f05a964c": {
                     "path": "\/hydephp\/cli\/commit\/1ef48af1b279f7c7f367842c002fd92d66b373d1",
@@ -1742,6 +1798,66 @@
                     "title": "Comparing master...build-manual \u00b7 hydephp\/cli",
                     "count": 1,
                     "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 85,
+                    "uniques": 1
+                },
+                "6dcfb92c3604fc3622934239d314a7d036cc4219cdbf95c54f42c354af067acc": {
+                    "path": "\/hydephp\/cli\/pull\/180",
+                    "title": "Add more tests by caendesilva \u00b7 Pull Request #180 \u00b7 hydephp\/cli",
+                    "count": 72,
+                    "uniques": 1
+                },
+                "61df975a9b5046d02d1b152ae0e0ea59e7d5f6c7e1e4944dd311aad40b2af998": {
+                    "path": "\/hydephp\/cli\/pull\/178",
+                    "title": "Create new CLI manual generator by caendesilva \u00b7 Pull Request #178 \u00b7 hydephp\/...",
+                    "count": 60,
+                    "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "count": 47,
+                    "uniques": 1
+                },
+                "40bf2ba97da83ce2297e05940e37695d34658938f15e9c53eb5c91c62aeea51f": {
+                    "path": "\/hydephp\/cli\/actions\/workflows\/create-release.yml",
+                    "title": "Create a new release PR \u00b7 Workflow runs \u00b7 hydephp\/cli",
+                    "count": 39,
+                    "uniques": 3
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "Issues \u00b7 hydephp\/cli",
+                    "count": 37,
+                    "uniques": 1
+                },
+                "858eb342c90d27a46de5897fc9ecc4494378d2186a054cf3d08849c797cc74d0": {
+                    "path": "\/hydephp\/cli\/attestations",
+                    "title": "Attestations \u00b7 hydephp\/cli",
+                    "count": 14,
+                    "uniques": 1
+                },
+                "97a527c9979d52b0e828957feb24fbe9b922c44ce54b39018205d511c03e2e7c": {
+                    "path": "\/hydephp\/cli\/pull\/181",
+                    "title": "Improve test suite by caendesilva \u00b7 Pull Request #181 \u00b7 hydephp\/cli",
+                    "count": 13,
+                    "uniques": 1
+                },
+                "b37948901f17a07bdf491a1851ac5aad08c0220702055a89ecea24ac9fc81481": {
+                    "path": "\/hydephp\/cli\/issues\/192",
+                    "title": "Error `sh: 1: hyde: Text file busy` after Linux direct self-update \u00b7 Issue #1...",
+                    "count": 10,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 13,
+                    "uniques": 4
                 }
             }
         }
