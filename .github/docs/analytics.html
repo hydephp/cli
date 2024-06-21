@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Repository Analytics Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px 20px 0;
+            overflow-y: scroll;
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+        .lead {
+            text-align: center;
+            max-width: 800px;
+            font-size: 1.2em;
+            margin: 0 auto;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 40px;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .chart-container {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 9999;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        #loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #loading-hint {
+            font-size: 1.5em;
+            transition: opacity 0.25s ease;
+        }
+
+        #loading-stage-container {
+            font-size: 0.8em;
+            color: #666;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #ellipsis {
+            display: inline-block;
+            width: 0;
+            transition: width 0.25s ease;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            margin-top: 40px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            margin-bottom: 0;
+            padding: 10px 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-screen">
+        <p id="loading-hint" style="opacity: 0;">
+            Loading data, please wait<span id="ellipsis"></span>
+            <span id="loading-stage-container"><span id="loading-stage">0</span>/3</span>
+        </p>
+        <noscript>Please enable JavaScript to use this dashboard.</noscript>
+    </div>
+    <div id="content" style="opacity: 0;">
+        <h1>HydePHP/CLI GitHub Analytics Dashboard</h1>
+        <p class="lead">This dashboard displays the public GitHub analytics data for the <a href="https://github.com/hydephp/cli">HydePHP/CLI</a> repository.</p>
+        <div class="container">
+            <h2>General Statistics</h2>
+            <table id="general-stats">
+                <thead>
+                    <tr>
+                        <th>Total Views</th>
+                        <th>Total Clones</th>
+                        <th>Total Installs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="total-views"></td>
+                        <td id="total-clones"></td>
+                        <td id="total-installs"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Traffic Data</h2>
+            <div class="chart-container" style="height: 400px;">
+                <canvas id="traffic-chart"></canvas>
+            </div>
+
+            <h2>Popular Paths</h2>
+            <table id="popular-paths">
+                <thead>
+                    <tr>
+                        <th>Path</th>
+                        <th>Title</th>
+                        <th>Views</th>
+                        <th>Unique Views</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+
+            <h2>Referrers</h2>
+            <table id="referrers">
+                <thead>
+                    <tr>
+                        <th>Referrer</th>
+                        <th>Views</th>
+                        <th>Unique Views</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        <footer id="footer">
+            <!-- Footer content will be populated by JavaScript -->
+        </footer>
+    </div>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch('https://raw.githubusercontent.com/hydephp/cli/traffic/database.json');
+            const data = await response.json();
+            return data;
+        }
+
+        function populateGeneralStats(data) {
+            document.getElementById('total-views').textContent = data._database.total_views.toLocaleString();
+            document.getElementById('total-clones').textContent = data._database.total_clones.toLocaleString();
+            document.getElementById('total-installs').textContent = data._database.total_installs.toLocaleString();
+        }
+
+        function populateTrafficChart(data) {
+            const traffic = data.traffic;
+            const labels = Object.keys(traffic);
+            const views = labels.map(date => traffic[date].views ? traffic[date].views.count : 0);
+            const clones = labels.map(date => traffic[date].clones ? traffic[date].clones.count : 0);
+
+            const ctx = document.getElementById('traffic-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Views',
+                            data: views,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            fill: false
+                        },
+                        {
+                            label: 'Clones',
+                            data: clones,
+                            borderColor: 'rgba(153, 102, 255, 1)',
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    animation: false,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'day',
+                                tooltipFormat: 'LLL dd, yyyy',
+                            },
+                        },
+                        y: {beginAtZero: true}
+                    }
+                }
+            });
+        }
+
+        function populatePopularPaths(data) {
+            const popular = data.popular;
+            const tbody = document.getElementById('popular-paths').getElementsByTagName('tbody')[0];
+            const limit = 15;
+            let counter = 0;
+            for (const month in popular) {
+                const paths = popular[month].paths;
+                for (const pathHash in paths) {
+                    if (counter >= limit) break;
+                    const row = document.createElement('tr');
+                    const pathData = paths[pathHash];
+
+                    let path = pathData.path;
+                    // Trim leading and trailing slashes
+                    path = path.replace(/^\/|\/$/g, '');
+                    row.innerHTML = `
+                        <td>${path}</td>
+                        <td>${pathData.title}</td>
+                        <td>${pathData.count}</td>
+                        <td>${pathData.uniques}</td>
+                    `;
+                    tbody.appendChild(row);
+                    counter++;
+                }
+                if (counter >= limit) break;
+            }
+        }
+
+        function populateReferrers(data) {
+            const popular = data.popular;
+            const referrerData = {};
+
+            // Aggregate referrer data across all months
+            for (const month in popular) {
+                const referrers = popular[month].referrers;
+                for (const referrer in referrers) {
+                    if (!referrerData[referrer]) {
+                        referrerData[referrer] = { count: 0, uniques: 0 };
+                    }
+                    referrerData[referrer].count += referrers[referrer].count;
+                    referrerData[referrer].uniques += referrers[referrer].uniques;
+                }
+            }
+
+            // Populate the table with aggregated data
+            const tbody = document.getElementById('referrers').getElementsByTagName('tbody')[0];
+            for (const referrer in referrerData) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${referrer}</td>
+                    <td>${referrerData[referrer].count}</td>
+                    <td>${referrerData[referrer].uniques}</td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp * 1000);
+            return date.toLocaleString();
+        }
+
+        function populateFooter(data) {
+            const lastUpdated = formatTimestamp(data._database.last_updated);
+            const footer = document.getElementById('footer');
+            footer.innerHTML = `
+                <p>Data collected from public GitHub traffic data, retained beyond the standard 14-day window.</p>
+                <p>Last database sync: ${lastUpdated} - <a href="https://github.com/hydephp/cli">View on GitHub</a></p>
+            `;
+        }
+
+        document.addEventListener('readystatechange', () => {
+            if (document.readyState === 'interactive') {
+                bumpLoadingStage();
+
+                // If the fetch is returned in the short amount of time it's certainly cached.
+                async function isResourceCached(url, waitTimeMs = 10) {
+                    const ac = new AbortController()
+                    const cachePromise = fetch(url, {signal: ac.signal})
+                        .then(() => true)
+                        .catch(() => false)
+                    setTimeout(() => ac.abort(), waitTimeMs)
+
+                    return cachePromise
+                }
+
+                // Check if the resources are fetched from the cache
+                let promise = isResourceCached('https://raw.githubusercontent.com/hydephp/cli/traffic/database.json');
+                promise.then(isCached => {
+                    if (! isCached) {
+                        document.getElementById('loading-hint').style.opacity = '1';
+
+                        const ellipsis = document.getElementById('ellipsis');
+                        let ellipsisInterval = setInterval(() => {
+                            if (ellipsis.textContent.length < 3) {
+                                ellipsis.textContent = ellipsis.textContent + '.';
+                            } else {
+                                clearInterval(ellipsisInterval);
+                            }
+                        }, 50);
+                    }
+                });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            bumpLoadingStage();
+            const data = await fetchData();
+
+            populateGeneralStats(data);
+            populateTrafficChart(data);
+            bumpLoadingStage();
+            populatePopularPaths(data);
+            populateReferrers(data);
+            populateFooter(data);
+
+            document.getElementById('content').style.opacity = '1';
+            document.getElementById('loading-screen').classList.add('fade-out');
+
+            await new Promise(r => setTimeout(r, 500));
+            document.getElementById('loading-screen').remove();
+        });
+
+        function bumpLoadingStage() {
+            const hint = document.getElementById('loading-hint');
+            const stage = parseInt(hint.querySelector('#loading-stage').textContent);
+            hint.querySelector('#loading-stage').textContent = stage + 1;
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</body>
+</html>
