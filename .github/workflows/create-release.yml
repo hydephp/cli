@@ -114,7 +114,6 @@ jobs:
             builds/signature.bin
 
       - name: Attest build provenance
-        if: false # Disabled pending issue https://github.com/actions/attest-build-provenance/issues/110
         uses: actions/attest-build-provenance@v1
         with:
           subject-path: builds/hyde
