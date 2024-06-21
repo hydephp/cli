@@ -2,6 +2,8 @@
 
 This branch tracks public GitHub traffic data, as it is otherwise lost after 14 days.
 
+This data can be viewed through the public analytics dashboard at https://hydephp.github.io/cli/repo/analytics
+
 ## Example data
 
 This is an example of the data that is stored in this branch.
