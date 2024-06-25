@@ -74,7 +74,7 @@ Please see [CHANGELOG](https://github.com/hydephp/cli/blob/master/CHANGELOG.md) 
 
 ### Contributing
 
-HydePHP is an open-source project, contributions are very welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidance.
+HydePHP is an open-source project, contributions are very welcome! See [CONTRIBUTING.md](https://github.com/hydephp/cli/blob/master/CONTRIBUTING.md) for guidance.
 
 
 ### Security
@@ -85,8 +85,8 @@ All vulnerabilities will be promptly addressed.
 ### Credits
 
 -   [Caen De Silva](https://github.com/caendesilva), feel free to buy me a coffee! https://www.buymeacoffee.com/caen
--   [All Contributors](../../contributors)
+-   [All Contributors](https://github.com/hydephp/cli/graphs/contributors)
 
 ### License
 
-The MIT License. Please see the [License File](LICENSE.md) for more information.
+The MIT License. Please see the [License File](https://github.com/hydephp/cli/blob/master/LICENSE.md) for more information.
