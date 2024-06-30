@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1719180492,
-        "content_hash": "e47e0f18f014e4b229b219bb4f1c763e66cac4fe6e4051737d6ee206a4c2f75c",
-        "total_views": 4311,
-        "total_clones": 28991,
-        "total_installs": 195
+        "last_updated": 1719785317,
+        "content_hash": "a616003ab8b2d9e1ed65819d9249576454171e18eb15bcce32023534e3eb26f3",
+        "total_views": 4349,
+        "total_clones": 29163,
+        "total_installs": 194
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -1029,8 +1029,70 @@
         },
         "2024-06-23T00:00:00Z": {
             "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2024-06-24T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-06-25T00:00:00Z": {
+            "views": {
+                "count": 13,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 98,
+                "uniques": 5
+            }
+        },
+        "2024-06-27T00:00:00Z": {
+            "views": {
+                "count": 10,
+                "uniques": 4
+            },
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-06-28T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 34,
+                "uniques": 3
+            }
+        },
+        "2024-06-29T00:00:00Z": {
+            "views": {
+                "count": 6,
+                "uniques": 1
+            },
+            "clones": {
                 "count": 1,
                 "uniques": 1
+            }
+        },
+        "2024-06-30T00:00:00Z": {
+            "views": {
+                "count": 4,
+                "uniques": 1
+            }
+        },
+        "2024-06-26T00:00:00Z": {
+            "clones": {
+                "count": 33,
+                "uniques": 3
             }
         }
     },
@@ -1865,7 +1927,7 @@
                 },
                 "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
                     "path": "\/hydephp\/cli\/actions",
-                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "title": "Workflow runs \u00b7 hydephp\/cli \u00b7 GitHub",
                     "count": 47,
                     "uniques": 1
                 },
@@ -1898,6 +1960,48 @@
                     "title": "Error `sh: 1: hyde: Text file busy` after Linux direct self-update \u00b7 Issue #1...",
                     "count": 10,
                     "uniques": 1
+                },
+                "92829ead4ecc6fec500263e0543c70239f7dd6140260c481ce4617c0d2084146": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/9466300050\/job\/26077668879",
+                    "title": "Create a new release PR \u00b7 hydephp\/cli@446eb17",
+                    "count": 4,
+                    "uniques": 3
+                },
+                "f5433b8dca1278e8149e25740e63aa433fc8deffa13a6b30aa8dcf0e52d310e1": {
+                    "path": "\/hydephp\/cli\/pull\/238",
+                    "title": "HydeCLI v0.10.13 by github-actions[bot] \u00b7 Pull Request #238 \u00b7 hydephp\/cli",
+                    "count": 4,
+                    "uniques": 1
+                },
+                "1ed5172ba10e5378db729fd5fa4de20ca205346bdb6e61976cc59e74f22a6009": {
+                    "path": "\/hydephp\/cli\/tree\/traffic",
+                    "title": "hydephp\/cli at traffic",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "2ccdf503d153992f77d04ebc142e14153edb3c8c07de88580a4c3d99be140d71": {
+                    "path": "\/hydephp\/cli\/pull\/220",
+                    "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 2,
+                    "uniques": 2
+                },
+                "c242448c58340881a70022450ac96dc46cb88a80c267b7a2bf44f6da30e5355d": {
+                    "path": "\/hydephp\/cli\/compare\/traffic-dashboard",
+                    "title": "Comparing master...traffic-dashboard \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "541c8148ad25be69600067e7ad3d00d90ea8a71bafc2389325d92ece8c86d571": {
+                    "path": "\/hydephp\/cli\/issues\/241",
+                    "title": "Add properly standalone version with bundled PHP \u00b7 Issue #241 \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "de2ed71f0394ce2694e6746a644a10fb5652884186fff092c11af2028bbd54c1": {
+                    "path": "\/hydephp\/cli\/pull\/239",
+                    "title": "Bump docker\/build-push-action from 6.0.2 to 6.1.0 by dependabot[bot] \u00b7 Pull R...",
+                    "count": 2,
+                    "uniques": 1
                 }
             },
             "referrers": {
@@ -1906,7 +2010,11 @@
                     "uniques": 4
                 },
                 "Google": {
-                    "count": 1,
+                    "count": 2,
+                    "uniques": 2
+                },
+                "hydephp.github.io": {
+                    "count": 2,
                     "uniques": 1
                 }
             }
