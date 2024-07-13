@@ -291,7 +291,7 @@
             const lastUpdated = formatTimestamp(data._database.last_updated);
             const footer = document.getElementById('footer');
             footer.innerHTML = `
-                <p>Data collected from public GitHub traffic data, retained beyond the standard 14-day window.</p>
+                <p>Data collected from public GitHub traffic data, retained beyond the standard 14-day window through a public <a href="https://raw.githubusercontent.com/hydephp/cli/traffic/database.json">database</a></p>
                 <p>Last database sync: ${lastUpdated} - <a href="https://github.com/hydephp/cli">View on GitHub</a></p>
             `;
         }
