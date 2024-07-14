@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1720390155,
-        "content_hash": "8337d497ee30a06bacc41b67dcc47869b9d9387de3ddec9ff5f9045bae68e1e9",
-        "total_views": 4354,
-        "total_clones": 29298,
+        "last_updated": 1720994977,
+        "content_hash": "aef93f894da38c091b7cd1577bcb4e4b4d923c3a20454236d79364fb028a96d2",
+        "total_views": 4404,
+        "total_clones": 29463,
         "total_installs": 195
     },
     "traffic": {
@@ -1136,6 +1136,60 @@
                 "count": 32,
                 "uniques": 2
             }
+        },
+        "2024-07-08T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-07-12T00:00:00Z": {
+            "views": {
+                "count": 6,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-07-13T00:00:00Z": {
+            "views": {
+                "count": 41,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 94,
+                "uniques": 2
+            }
+        },
+        "2024-07-07T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-07-09T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-07-10T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-07-11T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
         }
     },
     "popular": {
@@ -2084,13 +2138,13 @@
                 "2ccdf503d153992f77d04ebc142e14153edb3c8c07de88580a4c3d99be140d71": {
                     "path": "\/hydephp\/cli\/pull\/220",
                     "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
-                    "count": 3,
-                    "uniques": 2
+                    "count": 4,
+                    "uniques": 3
                 },
                 "1ed5172ba10e5378db729fd5fa4de20ca205346bdb6e61976cc59e74f22a6009": {
                     "path": "\/hydephp\/cli\/tree\/traffic",
                     "title": "hydephp\/cli at traffic",
-                    "count": 3,
+                    "count": 5,
                     "uniques": 1
                 },
                 "c242448c58340881a70022450ac96dc46cb88a80c267b7a2bf44f6da30e5355d": {
@@ -2122,19 +2176,61 @@
                     "title": "Bump docker\/build-push-action from 6.0.2 to 6.1.0 by dependabot[bot] \u00b7 Pull R...",
                     "count": 2,
                     "uniques": 1
+                },
+                "39d633865c381578dce2a376118947b51544ce75727a485a979014076fcee452": {
+                    "path": "\/hydephp\/cli\/blob\/master\/.github\/docs\/analytics.html",
+                    "title": "cli\/.github\/docs\/analytics.html at master \u00b7 hydephp\/cli",
+                    "count": 9,
+                    "uniques": 1
+                },
+                "fa58ab768bbbadaf7ecfa7f30c817012b47bdd29315819244b85ae9f7fd358c2": {
+                    "path": "\/hydephp\/cli\/edit\/master\/.github\/docs\/analytics.html",
+                    "title": "Editing cli\/.github\/docs\/analytics.html at master \u00b7 hydephp\/cli",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "1369d67c093f80fd18b01087f6a8db611839923f464e68a8afc5fbe276d876ca": {
+                    "path": "\/hydephp\/cli\/tree\/traffic\/.github\/workflows",
+                    "title": "cli\/.github\/workflows at traffic \u00b7 hydephp\/cli",
+                    "count": 5,
+                    "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli \u00b7 GitHub",
+                    "count": 4,
+                    "uniques": 4
+                },
+                "c99dc7c5c46e2bf5693a56c6ca278aab2a21a7b5e925327169468f43f6a10cd4": {
+                    "path": "\/hydephp\/cli\/tree\/master\/.github",
+                    "title": "cli\/.github at master \u00b7 hydephp\/cli",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "7b08cff0031906fcdbb2ad45dc1696f83b817fba16fc8d17fa41e9cd51a69c3f": {
+                    "path": "\/hydephp\/cli\/blob\/traffic\/database.json",
+                    "title": "cli\/database.json at traffic \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "9634b5c4514917690ebd6224ed6bd58cfadab0d98523df1facd56b4dac07e1c7": {
+                    "path": "\/hydephp\/cli\/blob\/traffic\/SyncTraffic.php",
+                    "title": "cli\/SyncTraffic.php at traffic \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "github.com": {
                     "count": 11,
-                    "uniques": 3
+                    "uniques": 6
                 },
                 "Google": {
-                    "count": 2,
+                    "count": 6,
                     "uniques": 2
                 },
                 "hydephp.github.io": {
-                    "count": 2,
+                    "count": 3,
                     "uniques": 1
                 }
             }
