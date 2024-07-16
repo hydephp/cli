@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc4028704e3f555bae5e2b48b4dfe826",
+    "content-hash": "d55b8d1fab03257b8781088e27951599",
     "packages": [],
     "packages-dev": [
         {
@@ -1290,16 +1290,16 @@
         },
         {
             "name": "hyde/framework",
-            "version": "v1.6.0",
+            "version": "v1.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/framework.git",
-                "reference": "86fb1ae089afbb41f917a2aee12a795ced703894"
+                "reference": "4512c1ec8a45b9ab81ab3f97efb1c1184e91ced6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/framework/zipball/86fb1ae089afbb41f917a2aee12a795ced703894",
-                "reference": "86fb1ae089afbb41f917a2aee12a795ced703894",
+                "url": "https://api.github.com/repos/hydephp/framework/zipball/4512c1ec8a45b9ab81ab3f97efb1c1184e91ced6",
+                "reference": "4512c1ec8a45b9ab81ab3f97efb1c1184e91ced6",
                 "shasum": ""
             },
             "require": {
@@ -1307,7 +1307,7 @@
                 "illuminate/view": "^10.0",
                 "league/commonmark": "^2.2",
                 "php": "^8.1",
-                "spatie/yaml-front-matter": "^2.0.7",
+                "spatie/yaml-front-matter": "^2.0.9",
                 "symfony/yaml": "^6.0",
                 "torchlight/torchlight-commonmark": "^0.5.5"
             },
@@ -1338,7 +1338,7 @@
             "description": "The HydePHP Framework",
             "support": {
                 "issues": "https://github.com/hydephp/framework/issues",
-                "source": "https://github.com/hydephp/framework/tree/v1.6.0"
+                "source": "https://github.com/hydephp/framework/tree/v1.7.2"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-04-17T12:58:59+00:00"
+            "time": "2024-07-08T18:47:43+00:00"
         },
         {
             "name": "hyde/realtime-compiler",
