@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1720994977,
-        "content_hash": "aef93f894da38c091b7cd1577bcb4e4b4d923c3a20454236d79364fb028a96d2",
-        "total_views": 4404,
-        "total_clones": 29463,
+        "last_updated": 1721599744,
+        "content_hash": "2ab78844d0049814a1878f876538d4f00998b700b165a7079b15b260e8bdb934",
+        "total_views": 4426,
+        "total_clones": 29695,
         "total_installs": 195
     },
     "traffic": {
@@ -1190,6 +1190,56 @@
                 "count": 32,
                 "uniques": 2
             }
+        },
+        "2024-07-15T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 65,
+                "uniques": 4
+            }
+        },
+        "2024-07-16T00:00:00Z": {
+            "views": {
+                "count": 17,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 128,
+                "uniques": 5
+            }
+        },
+        "2024-07-20T00:00:00Z": {
+            "views": {
+                "count": 4,
+                "uniques": 2
+            }
+        },
+        "2024-07-14T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-07-17T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-07-18T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-07-19T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -2216,6 +2266,18 @@
                 "9634b5c4514917690ebd6224ed6bd58cfadab0d98523df1facd56b4dac07e1c7": {
                     "path": "\/hydephp\/cli\/blob\/traffic\/SyncTraffic.php",
                     "title": "cli\/SyncTraffic.php at traffic \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 5,
+                    "uniques": 1
+                },
+                "77eaef43e8999cd7d384f3ce1048bb9b35250a1bc99f3f638bab49cdfda54b9d": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/9847643952\/job\/27188049978",
+                    "title": "Bump hyde\/framework from 1.6.0 to 1.7.2 \u00b7 hydephp\/cli@2efd698",
                     "count": 2,
                     "uniques": 1
                 }
