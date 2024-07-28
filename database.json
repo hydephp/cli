@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1721599744,
-        "content_hash": "2ab78844d0049814a1878f876538d4f00998b700b165a7079b15b260e8bdb934",
-        "total_views": 4426,
-        "total_clones": 29695,
+        "last_updated": 1722204569,
+        "content_hash": "28ecb5e82b6d05956d2443aa37e9a1e3c89c0a53cb918e587690de4d956b4e83",
+        "total_views": 4434,
+        "total_clones": 29983,
         "total_installs": 195
     },
     "traffic": {
@@ -1240,6 +1240,50 @@
                 "count": 3,
                 "uniques": 1
             }
+        },
+        "2024-07-23T00:00:00Z": {
+            "views": {
+                "count": 7,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 159,
+                "uniques": 5
+            }
+        },
+        "2024-07-24T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-07-21T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-07-22T00:00:00Z": {
+            "clones": {
+                "count": 122,
+                "uniques": 2
+            }
+        },
+        "2024-07-25T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-07-26T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -2272,13 +2316,61 @@
                 "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
                     "path": "\/hydephp\/cli\/pulls",
                     "title": "Pull requests \u00b7 hydephp\/cli",
-                    "count": 5,
+                    "count": 6,
                     "uniques": 1
                 },
                 "77eaef43e8999cd7d384f3ce1048bb9b35250a1bc99f3f638bab49cdfda54b9d": {
                     "path": "\/hydephp\/cli\/actions\/runs\/9847643952\/job\/27188049978",
                     "title": "Bump hyde\/framework from 1.6.0 to 1.7.2 \u00b7 hydephp\/cli@2efd698",
                     "count": 2,
+                    "uniques": 1
+                },
+                "3ca92590e1458a93c95ae0968c034d47b198a5ecd43ba324b24ccad83b145347": {
+                    "path": "\/hydephp\/cli\/pull\/252",
+                    "title": "Bump docker\/login-action from 3.2.0 to 3.3.0 by dependabot[bot] \u00b7 Pull Reques...",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "7c21601650fb26ffccb3cc4754fa14cfbf7f88336907b0c9be4cefb3e795fafd": {
+                    "path": "\/hydephp\/cli\/pull\/245",
+                    "title": "Bump hyde\/framework from 1.6.0 to 1.7.2 by dependabot[bot] \u00b7 Pull Request #24...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "415093958a7cc2cb6c29f620188c854114b544267b55feb6c2f7d54eb90a03bb": {
+                    "path": "\/hydephp\/cli\/pull\/247",
+                    "title": "Bump hyde\/realtime-compiler from 3.3.1 to 3.6.0 by dependabot[bot] \u00b7 Pull Req...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "9b62fec03400c032c0d0f2f265bf2e90c89c14bdcc8c051b6d9cfdf67c180747": {
+                    "path": "\/hydephp\/cli\/pull\/248",
+                    "title": "Bump docker\/build-push-action from 6.2.0 to 6.4.0 by dependabot[bot] \u00b7 Pull R...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "b2130110f3b1b44b7efa835ee6f9cd33c416486873ac302211e466c62b1dab79": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/9847643950\/job\/27188066500",
+                    "title": "Bump hyde\/framework from 1.6.0 to 1.7.2 \u00b7 hydephp\/cli@2efd698",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "1d7ff0941a4dd3dc6daae12cd54c20c8d2e751f2bd9b305ff0bd6d9688b7e85a": {
+                    "path": "\/hydephp\/cli\/commit\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7",
+                    "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "31131d699a27e4b8dd48734694836a7df77b226ba600a7ce92319da8c8de950d": {
+                    "path": "\/hydephp\/cli\/commit\/1a50a32a754e944d8663e50910654c9d78303dc9",
+                    "title": "Disable Docker build provenance \u00b7 hydephp\/cli@1a50a32",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "4883f465484cdb3bcc383ac78881fcc3a8d73fd1fd32e827438a68dac86979f3": {
+                    "path": "\/hydephp\/cli\/commit\/8c77ac85279cee58f806d2bc7468b8b8e5930e5e",
+                    "title": "Hotpatch setup PHP action \u00b7 hydephp\/cli@8c77ac8",
+                    "count": 1,
                     "uniques": 1
                 }
             },
