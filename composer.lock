@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dc4028704e3f555bae5e2b48b4dfe826",
+    "content-hash": "8ce417cce7801c50ae8ca22a553fffed",
     "packages": [],
     "packages-dev": [
         {
@@ -1290,16 +1290,16 @@
         },
         {
             "name": "hyde/framework",
-            "version": "v1.6.0",
+            "version": "v1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hydephp/framework.git",
-                "reference": "86fb1ae089afbb41f917a2aee12a795ced703894"
+                "reference": "d5b2f5c547d44f83e39bc6e58c130af3b3f618e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hydephp/framework/zipball/86fb1ae089afbb41f917a2aee12a795ced703894",
-                "reference": "86fb1ae089afbb41f917a2aee12a795ced703894",
+                "url": "https://api.github.com/repos/hydephp/framework/zipball/d5b2f5c547d44f83e39bc6e58c130af3b3f618e8",
+                "reference": "d5b2f5c547d44f83e39bc6e58c130af3b3f618e8",
                 "shasum": ""
             },
             "require": {
@@ -1307,7 +1307,7 @@
                 "illuminate/view": "^10.0",
                 "league/commonmark": "^2.2",
                 "php": "^8.1",
-                "spatie/yaml-front-matter": "^2.0.7",
+                "spatie/yaml-front-matter": "^2.0.9",
                 "symfony/yaml": "^6.0",
                 "torchlight/torchlight-commonmark": "^0.5.5"
             },
@@ -1338,7 +1338,7 @@
             "description": "The HydePHP Framework",
             "support": {
                 "issues": "https://github.com/hydephp/framework/issues",
-                "source": "https://github.com/hydephp/framework/tree/v1.6.0"
+                "source": "https://github.com/hydephp/framework/tree/v1.7.3"
             },
             "funding": [
                 {
@@ -1350,7 +1350,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-04-17T12:58:59+00:00"
+            "time": "2024-07-23T18:50:21+00:00"
         },
         {
             "name": "hyde/realtime-compiler",
@@ -1417,7 +1417,7 @@
         },
         {
             "name": "illuminate/bus",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/bus.git",
@@ -1470,7 +1470,7 @@
         },
         {
             "name": "illuminate/cache",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
@@ -1532,7 +1532,7 @@
         },
         {
             "name": "illuminate/collections",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/collections.git",
@@ -1587,7 +1587,7 @@
         },
         {
             "name": "illuminate/conditionable",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/conditionable.git",
@@ -1681,7 +1681,7 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
@@ -1746,7 +1746,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -1797,7 +1797,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -1845,7 +1845,7 @@
         },
         {
             "name": "illuminate/events",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -1900,7 +1900,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -1967,7 +1967,7 @@
         },
         {
             "name": "illuminate/http",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
@@ -2027,7 +2027,7 @@
         },
         {
             "name": "illuminate/macroable",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/macroable.git",
@@ -2073,7 +2073,7 @@
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
@@ -2172,7 +2172,7 @@
         },
         {
             "name": "illuminate/session",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
@@ -2229,7 +2229,7 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
@@ -2359,7 +2359,7 @@
         },
         {
             "name": "illuminate/view",
-            "version": "v10.48.16",
+            "version": "v10.48.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
