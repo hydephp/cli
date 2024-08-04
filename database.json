@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1722204569,
-        "content_hash": "28ecb5e82b6d05956d2443aa37e9a1e3c89c0a53cb918e587690de4d956b4e83",
-        "total_views": 4434,
-        "total_clones": 29983,
-        "total_installs": 195
+        "last_updated": 1722809386,
+        "content_hash": "61b41814229768883f4740a6c25e6842566d18c1a19db80b6a5c5e2f34edf980",
+        "total_views": 4455,
+        "total_clones": 30086,
+        "total_installs": 196
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -1284,6 +1284,68 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-07-29T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-07-30T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-07-31T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-08-01T00:00:00Z": {
+            "views": {
+                "count": 6,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-08-03T00:00:00Z": {
+            "views": {
+                "count": 12,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-07-28T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-08-02T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
         }
     },
     "popular": {
@@ -2385,6 +2447,80 @@
                 },
                 "hydephp.github.io": {
                     "count": 3,
+                    "uniques": 1
+                }
+            }
+        },
+        "2024-08": {
+            "paths": {
+                "7b08cff0031906fcdbb2ad45dc1696f83b817fba16fc8d17fa41e9cd51a69c3f": {
+                    "path": "\/hydephp\/cli\/blob\/traffic\/database.json",
+                    "title": "cli\/database.json at traffic \u00b7 hydephp\/cli",
+                    "count": 4,
+                    "uniques": 1
+                },
+                "2ccdf503d153992f77d04ebc142e14153edb3c8c07de88580a4c3d99be140d71": {
+                    "path": "\/hydephp\/cli\/pull\/220",
+                    "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 3,
+                    "uniques": 3
+                },
+                "3ca92590e1458a93c95ae0968c034d47b198a5ecd43ba324b24ccad83b145347": {
+                    "path": "\/hydephp\/cli\/pull\/252",
+                    "title": "Bump docker\/login-action from 3.2.0 to 3.3.0 by dependabot[bot] \u00b7 Pull Reques...",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "1ed5172ba10e5378db729fd5fa4de20ca205346bdb6e61976cc59e74f22a6009": {
+                    "path": "\/hydephp\/cli\/tree\/traffic",
+                    "title": "hydephp\/cli at traffic",
+                    "count": 3,
+                    "uniques": 1
+                },
+                "180045b92b7f51d9953f999562de40efe35d6866623364b6d518916b771a609c": {
+                    "path": "\/hydephp\/cli\/commit\/80d4c858012171756b8380a0fd7774ece08ab5ea",
+                    "title": "Load the Composer autoloader from the Phar archive \u00b7 hydephp\/cli@80d4c85",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "0bec4662daaa79862f8f752342f9229c9c39b5cb103b96b0e73854a37d8ad360": {
+                    "path": "\/hydephp\/cli\/issues\/257",
+                    "title": "Internal: Add database size (binary and lines) to traffic dashboard \u00b7 Issue #...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "31131d699a27e4b8dd48734694836a7df77b226ba600a7ce92319da8c8de950d": {
+                    "path": "\/hydephp\/cli\/commit\/1a50a32a754e944d8663e50910654c9d78303dc9",
+                    "title": "Disable Docker build provenance \u00b7 hydephp\/cli@1a50a32",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "Issues \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "6f19f298d5528d4bd516dc40573422c8541103adafd130e074dcd91e1a1d8882": {
+                    "path": "\/hydephp\/cli\/issues\/new",
+                    "title": "New Issue \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 9,
+                    "uniques": 5
+                },
+                "Google": {
+                    "count": 1,
                     "uniques": 1
                 }
             }
