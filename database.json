@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1725228606,
-        "content_hash": "504f93e4c7953d09cc2de88a8165cf4f89ab30743763318115d6640fe7998fe0",
-        "total_views": 4495,
-        "total_clones": 30354,
-        "total_installs": 196
+        "last_updated": 1725833339,
+        "content_hash": "1d2f73ab765bbacb8c006eddea4d99abdea2bd4e5a12d5d569335200d8c7c47b",
+        "total_views": 4512,
+        "total_clones": 30489,
+        "total_installs": 198
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -1526,6 +1526,62 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2024-09-03T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-09-05T00:00:00Z": {
+            "views": {
+                "count": 5,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 95,
+                "uniques": 3
+            }
+        },
+        "2024-09-07T00:00:00Z": {
+            "views": {
+                "count": 4,
+                "uniques": 2
+            }
+        },
+        "2024-09-08T00:00:00Z": {
+            "views": {
+                "count": 7,
+                "uniques": 2
+            }
+        },
+        "2024-09-01T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-09-02T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-09-04T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-09-06T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
         }
     },
     "popular": {
@@ -2758,8 +2814,8 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
-                    "count": 3,
-                    "uniques": 2
+                    "count": 5,
+                    "uniques": 3
                 },
                 "c99dc7c5c46e2bf5693a56c6ca278aab2a21a7b5e925327169468f43f6a10cd4": {
                     "path": "\/hydephp\/cli\/tree\/master\/.github",
@@ -2802,6 +2858,36 @@
                     "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
                     "count": 1,
                     "uniques": 1
+                },
+                "b3f6d124afdd15932be066ca9f4a17ec2873d98fe93eca5218bb5925be638394": {
+                    "path": "\/hydephp\/cli\/pull\/262",
+                    "title": "Bump peter-evans\/create-pull-request from 6.1.0 to 7.0.0 by dependabot[bot] \u00b7...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "1ed5172ba10e5378db729fd5fa4de20ca205346bdb6e61976cc59e74f22a6009": {
+                    "path": "\/hydephp\/cli\/tree\/traffic",
+                    "title": "hydephp\/cli at traffic",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "31131d699a27e4b8dd48734694836a7df77b226ba600a7ce92319da8c8de950d": {
+                    "path": "\/hydephp\/cli\/commit\/1a50a32a754e944d8663e50910654c9d78303dc9",
+                    "title": "Disable Docker build provenance \u00b7 hydephp\/cli@1a50a32",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "1ab821705e958bba40d4fb269719a94c0dd6cf5aa2ba0fe1f4aee60a7d555d30": {
+                    "path": "\/hydephp\/cli\/pull\/261",
+                    "title": "Bump pestphp\/pest from 2.35.0 to 2.35.1 by dependabot[bot] \u00b7 Pull Request #26...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
@@ -2811,6 +2897,10 @@
                 },
                 "github.com": {
                     "count": 2,
+                    "uniques": 1
+                },
+                "support.github.com": {
+                    "count": 1,
                     "uniques": 1
                 }
             }
