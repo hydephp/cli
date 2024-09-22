@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1726438221,
-        "content_hash": "5a79cd54a79bd8012ddb5188aebcba22a2f2f98aea4b1e60c296b34b82028ccf",
-        "total_views": 4518,
-        "total_clones": 30563,
-        "total_installs": 198
+        "last_updated": 1727042997,
+        "content_hash": "783e5c38e2ca0f6c7da8af0b5f1638c6b690487dd48abb9c6d5ad790544af17e",
+        "total_views": 4528,
+        "total_clones": 30667,
+        "total_installs": 374
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -1607,6 +1607,10 @@
             "views": {
                 "count": 1,
                 "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
             }
         },
         "2024-09-10T00:00:00Z": {
@@ -1628,6 +1632,52 @@
             }
         },
         "2024-09-13T00:00:00Z": {
+            "clones": {
+                "count": 34,
+                "uniques": 3
+            }
+        },
+        "2024-09-16T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 33,
+                "uniques": 3
+            }
+        },
+        "2024-09-17T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 3
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-09-18T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-09-20T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-09-19T00:00:00Z": {
             "clones": {
                 "count": 34,
                 "uniques": 3
@@ -2863,7 +2913,7 @@
                 },
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
                     "count": 5,
                     "uniques": 3
                 },
@@ -2954,8 +3004,8 @@
                 "074e2d8d1b697106074e6f62307452ba26573d11df74a078df1d045ec5f90f33": {
                     "path": "\/hydephp\/cli\/blob\/master\/CONTRIBUTING.md",
                     "title": "cli\/CONTRIBUTING.md at master \u00b7 hydephp\/cli \u00b7 GitHub",
-                    "count": 2,
-                    "uniques": 1
+                    "count": 8,
+                    "uniques": 6
                 },
                 "fa7ec803ad9c41beac5fa4ccfbbfb7cd53f7ab673e7f8f56412c1603f58ac103": {
                     "path": "\/hydephp\/cli\/tree\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7\/.github\/workflows",
@@ -2974,6 +3024,12 @@
                     "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5",
                     "count": 1,
                     "uniques": 1
+                },
+                "c417c305e8a219cf192371a3cac44fd892dfa2828e3f2bd38e95cab150cd26ab": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/10226723122\/workflow",
+                    "title": "Merge pull request #256 from hydephp\/dependabot\/composer\/pestphp\/pest-2.35.0 ...",
+                    "count": 3,
+                    "uniques": 3
                 }
             },
             "referrers": {
