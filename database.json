@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1727647749,
-        "content_hash": "9a465f4f706149a86b59839df842236942aa5d8b5d93ebe5cc34343c12ce9e4e",
-        "total_views": 4528,
-        "total_clones": 30742,
+        "last_updated": 1728252562,
+        "content_hash": "44679182a7af5eb7b8e53cb9ed4d6131f2a83041925bdce01e00c1c0aa3a84f0",
+        "total_views": 4533,
+        "total_clones": 31001,
         "total_installs": 375
     },
     "traffic": {
@@ -1724,6 +1724,60 @@
                 "count": 33,
                 "uniques": 3
             }
+        },
+        "2024-10-01T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 33,
+                "uniques": 2
+            }
+        },
+        "2024-10-02T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-03T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 33,
+                "uniques": 3
+            }
+        },
+        "2024-09-29T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-09-30T00:00:00Z": {
+            "clones": {
+                "count": 33,
+                "uniques": 3
+            }
+        },
+        "2024-10-04T00:00:00Z": {
+            "clones": {
+                "count": 94,
+                "uniques": 3
+            }
+        },
+        "2024-10-05T00:00:00Z": {
+            "clones": {
+                "count": 63,
+                "uniques": 2
+            }
         }
     },
     "popular": {
@@ -3086,6 +3140,46 @@
                 "support.github.com": {
                     "count": 1,
                     "uniques": 1
+                }
+            }
+        },
+        "2024-10": {
+            "paths": {
+                "180045b92b7f51d9953f999562de40efe35d6866623364b6d518916b771a609c": {
+                    "path": "\/hydephp\/cli\/commit\/80d4c858012171756b8380a0fd7774ece08ab5ea",
+                    "title": "Load the Composer autoloader from the Phar archive \u00b7 hydephp\/cli@80d4c85",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "2ccdf503d153992f77d04ebc142e14153edb3c8c07de88580a4c3d99be140d71": {
+                    "path": "\/hydephp\/cli\/pull\/220",
+                    "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "9dbbfd93fdfe050d1dd77a7df82a5e618b5f3dc42021cdc002ec40820825a795": {
+                    "path": "\/hydephp\/cli\/pull\/220\/files",
+                    "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "c6271056682d012da7cc3390916c46634fbe8968126fb98c52069796536d03ea": {
+                    "path": "\/hydephp\/cli\/pull\/268",
+                    "title": "Bump docker\/build-push-action from 6.8.0 to 6.9.0 by dependabot[bot] \u00b7 Pull R...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 5,
+                    "uniques": 3
                 }
             }
         }
