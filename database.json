@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1728252562,
-        "content_hash": "44679182a7af5eb7b8e53cb9ed4d6131f2a83041925bdce01e00c1c0aa3a84f0",
-        "total_views": 4533,
-        "total_clones": 31001,
+        "last_updated": 1728857358,
+        "content_hash": "6db9e6421712b416270194dbbdacc05723c79e7f223c686c0b49952410d6f116",
+        "total_views": 4534,
+        "total_clones": 31015,
         "total_installs": 375
     },
     "traffic": {
@@ -1778,6 +1778,48 @@
                 "count": 63,
                 "uniques": 2
             }
+        },
+        "2024-10-12T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-10-06T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-10-07T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-10-08T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-09T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-10T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-11T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -3174,12 +3216,22 @@
                     "title": "Pull requests \u00b7 hydephp\/cli",
                     "count": 1,
                     "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "github.com": {
                     "count": 5,
                     "uniques": 3
+                },
+                "Google": {
+                    "count": 1,
+                    "uniques": 1
                 }
             }
         }
