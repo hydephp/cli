@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1728857358,
-        "content_hash": "6db9e6421712b416270194dbbdacc05723c79e7f223c686c0b49952410d6f116",
-        "total_views": 4534,
-        "total_clones": 31015,
-        "total_installs": 375
+        "last_updated": 1729462173,
+        "content_hash": "97c4296e8ac8b6b55f2c4ebbb05455d16bda5eb0b694493d25e35c55e9c43680",
+        "total_views": 4537,
+        "total_clones": 31027,
+        "total_installs": 376
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -1820,6 +1820,50 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-10-15T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-16T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-13T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2024-10-14T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-17T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-18T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -3222,6 +3266,18 @@
                     "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli",
                     "count": 1,
                     "uniques": 1
+                },
+                "13015b0f3026a6b81596b170b2a167e566b6b28f844829b6fca02029ddf2bc03": {
+                    "path": "\/hydephp\/cli\/pull\/220\/commits\/1a50a32a754e944d8663e50910654c9d78303dc9",
+                    "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "6646cba24c74a2c8613b5be208f4fdfbcaf4bb57c040e84d149972d358fbabe9": {
+                    "path": "\/hydephp\/cli\/pull\/55",
+                    "title": "Add an experimental self update feature by caendesilva \u00b7 Pull Request #55 \u00b7 h...",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
@@ -3230,6 +3286,10 @@
                     "uniques": 3
                 },
                 "Google": {
+                    "count": 3,
+                    "uniques": 2
+                },
+                "laravel-zero.com": {
                     "count": 1,
                     "uniques": 1
                 }
