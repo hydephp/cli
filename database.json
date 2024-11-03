@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1730067030,
-        "content_hash": "e142035310365cb7e3a6cc59139320abd08b83ec28a76067ec3f7c812cc8e1d4",
-        "total_views": 4539,
-        "total_clones": 31039,
+        "last_updated": 1730671884,
+        "content_hash": "80c66fd0e458eab92291e2c45e7b2f6831ff8465c915a9443353de56a91676f3",
+        "total_views": 4543,
+        "total_clones": 31080,
         "total_installs": 376
     },
     "traffic": {
@@ -1904,6 +1904,54 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-10-30T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-31T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-11-01T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-10-27T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-10-28T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-10-29T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -3342,6 +3390,60 @@
                     "uniques": 2
                 },
                 "laravel-zero.com": {
+                    "count": 1,
+                    "uniques": 1
+                }
+            }
+        },
+        "2024-11": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "63daeac81b21100fa1699c70dc637f5dd841ffd81ce722c8c79527c400a4d6e1": {
+                    "path": "\/hydephp\/cli\/blob\/150b348ff004146d3500e4b68d49cd4f51216015\/composer.lock",
+                    "title": "cli\/composer.lock at 150b348ff004146d3500e4b68d49cd4f51216015 \u00b7 hydephp\/cli \u00b7...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "c7e617b4422ee914e39eed330e56e944f2f5ee641f77a374eb0c863af65ded0b": {
+                    "path": "\/hydephp\/cli\/blob\/249c7edced4c3c50fe907c1ca302cdeff58cca1b\/composer.json",
+                    "title": "cli\/composer.json at 249c7edced4c3c50fe907c1ca302cdeff58cca1b \u00b7 hydephp\/cli \u00b7...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "16a87907c58715da05aaefdc1166a390e0502b1ec19aa604e48fb9a090cd1ad0": {
+                    "path": "\/hydephp\/cli\/blob\/ead8bdd8e693ec9f2860f2704120967711e012f5\/app\/bootstrap.php",
+                    "title": "File not found",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "31131d699a27e4b8dd48734694836a7df77b226ba600a7ce92319da8c8de950d": {
+                    "path": "\/hydephp\/cli\/commit\/1a50a32a754e944d8663e50910654c9d78303dc9",
+                    "title": "Disable Docker build provenance \u00b7 hydephp\/cli@1a50a32 \u00b7 GitHub",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "2ccdf503d153992f77d04ebc142e14153edb3c8c07de88580a4c3d99be140d71": {
+                    "path": "\/hydephp\/cli\/pull\/220",
+                    "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "Google": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "m.sogou.com": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "github.com": {
                     "count": 1,
                     "uniques": 1
                 }
