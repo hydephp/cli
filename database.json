@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1731276560,
-        "content_hash": "bfe1120e5eeb4fece62e298e88e5675acc89f8459e8ecc90d966c89f39792e0c",
-        "total_views": 4543,
-        "total_clones": 31223,
-        "total_installs": 376
+        "last_updated": 1731881388,
+        "content_hash": "1cf695fece3b950a0320dd27f002338b73dd12b691c05ee65fe0fdefca905ba9",
+        "total_views": 4547,
+        "total_clones": 31266,
+        "total_installs": 377
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -1988,6 +1988,50 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-11-11T00:00:00Z": {
+            "views": {
+                "count": 3,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-11-13T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-11-10T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2024-11-12T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-11-14T00:00:00Z": {
+            "clones": {
+                "count": 33,
+                "uniques": 3
+            }
+        },
+        "2024-11-15T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -3436,7 +3480,7 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
-                    "count": 1,
+                    "count": 2,
                     "uniques": 1
                 },
                 "63daeac81b21100fa1699c70dc637f5dd841ffd81ce722c8c79527c400a4d6e1": {
@@ -3466,6 +3510,18 @@
                 "2ccdf503d153992f77d04ebc142e14153edb3c8c07de88580a4c3d99be140d71": {
                     "path": "\/hydephp\/cli\/pull\/220",
                     "title": "Disable Docker build provenance in an attempt to fix GHCR adding ghost images...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "95e0e2fefcee776e21009a8aef7a18fcc5501f753ccd38092851572e4e09b084": {
+                    "path": "\/hydephp\/cli\/blob\/master\/Dockerfile",
+                    "title": "cli\/Dockerfile at master \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli \u00b7 GitHub",
                     "count": 1,
                     "uniques": 1
                 }
