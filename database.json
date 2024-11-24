@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1731881388,
-        "content_hash": "1cf695fece3b950a0320dd27f002338b73dd12b691c05ee65fe0fdefca905ba9",
-        "total_views": 4547,
-        "total_clones": 31266,
+        "last_updated": 1732486189,
+        "content_hash": "526f6efc514b323fcd2ecf7bfdaeb756fd878c5298c2285634b9292222d6b11b",
+        "total_views": 4565,
+        "total_clones": 31406,
         "total_installs": 377
     },
     "traffic": {
@@ -2032,6 +2032,50 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-11-18T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-11-20T00:00:00Z": {
+            "views": {
+                "count": 16,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 101,
+                "uniques": 7
+            }
+        },
+        "2024-11-17T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-11-19T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2024-11-21T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-11-22T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -3480,7 +3524,7 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
-                    "count": 2,
+                    "count": 5,
                     "uniques": 1
                 },
                 "63daeac81b21100fa1699c70dc637f5dd841ffd81ce722c8c79527c400a4d6e1": {
@@ -3524,12 +3568,54 @@
                     "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli \u00b7 GitHub",
                     "count": 1,
                     "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "30f329d6de8205ef4d2375468d6ed13dc11405291687656bc599e708b276af17": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/11930310208\/job\/33250853767",
+                    "title": "Merge pull request #272 from hydephp\/dependabot\/github_actions\/crazy-\u2026 \u00b7 hyde...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "96844d6b77299cba0aeda740eabb3d0be9058af6c267541deda829c7a3816663": {
+                    "path": "\/hydephp\/cli\/commits\/master",
+                    "title": "Commits \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "9d1a548962d7d6750e0d6df0f866e967e57d016e3b09072c22bad88351365cc8": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/11930310208",
+                    "title": "Merge pull request #272 from hydephp\/dependabot\/github_actions\/crazy-\u2026 \u00b7 hyde...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "1d7ff0941a4dd3dc6daae12cd54c20c8d2e751f2bd9b305ff0bd6d9688b7e85a": {
+                    "path": "\/hydephp\/cli\/commit\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7",
+                    "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5 \u00b7 GitHub",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "180045b92b7f51d9953f999562de40efe35d6866623364b6d518916b771a609c": {
+                    "path": "\/hydephp\/cli\/commit\/80d4c858012171756b8380a0fd7774ece08ab5ea",
+                    "title": "Load the Composer autoloader from the Phar archive \u00b7 hydephp\/cli@80d4c85 \u00b7 Gi...",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "Google": {
-                    "count": 1,
-                    "uniques": 1
+                    "count": 2,
+                    "uniques": 2
                 },
                 "m.sogou.com": {
                     "count": 1,
@@ -3537,6 +3623,10 @@
                 },
                 "github.com": {
                     "count": 1,
+                    "uniques": 1
+                },
+                "hydephp.github.io": {
+                    "count": 3,
                     "uniques": 1
                 }
             }
