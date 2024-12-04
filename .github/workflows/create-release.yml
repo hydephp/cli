@@ -114,7 +114,7 @@ jobs:
             builds/signature.bin
 
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v2
         with:
           subject-path: builds/hyde
 
