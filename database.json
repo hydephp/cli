@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1733091001,
-        "content_hash": "56a74a8cfe65ad48aba920b3d45d9e242414bf4a7f69b1519920e58c0278f09e",
-        "total_views": 4567,
-        "total_clones": 31479,
+        "last_updated": 1733695808,
+        "content_hash": "c0b84059a9f49da070ef1ff892d28570b9a69391189874262cb02e4a7d723541",
+        "total_views": 4572,
+        "total_clones": 31523,
         "total_installs": 378
     },
     "traffic": {
@@ -2123,8 +2123,42 @@
         },
         "2024-12-01T00:00:00Z": {
             "clones": {
-                "count": 32,
+                "count": 34,
+                "uniques": 3
+            }
+        },
+        "2024-12-05T00:00:00Z": {
+            "views": {
+                "count": 5,
                 "uniques": 2
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-12-02T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 2
+            }
+        },
+        "2024-12-03T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-12-04T00:00:00Z": {
+            "clones": {
+                "count": 33,
+                "uniques": 3
+            }
+        },
+        "2024-12-06T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
             }
         }
     },
@@ -3685,7 +3719,7 @@
             "paths": {
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
                     "count": 3,
                     "uniques": 1
                 },
@@ -3727,7 +3761,7 @@
                 },
                 "1d7ff0941a4dd3dc6daae12cd54c20c8d2e751f2bd9b305ff0bd6d9688b7e85a": {
                     "path": "\/hydephp\/cli\/commit\/0b9e4f5d1ceb4866292d66b6d03b432e84e8b2c7",
-                    "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5 \u00b7 GitHub",
+                    "title": "Update tests.yml \u00b7 hydephp\/cli@0b9e4f5",
                     "count": 1,
                     "uniques": 1
                 },
@@ -3740,6 +3774,24 @@
                 "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
                     "path": "\/hydephp\/cli\/issues\/227",
                     "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "6a4370386d4a51d7d8d622321e4bff3fe8a64c05f4fe0bd8841102e2182216c7": {
+                    "path": "\/hydephp\/cli\/blob\/master\/app\/Commands\/NewProjectCommand.php",
+                    "title": "cli\/app\/Commands\/NewProjectCommand.php at master \u00b7 hydephp\/cli \u00b7 GitHub",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "3769e62e55bf4bb0920892d67ba5c88c65c9b2828ac0bb78873af678227513d2": {
+                    "path": "\/hydephp\/cli\/tree\/master\/app",
+                    "title": "cli\/app at master \u00b7 hydephp\/cli \u00b7 GitHub",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "f435868657884f90ca778ee861738f439c0d520fb0cf1e373d47615f124bc338": {
+                    "path": "\/hydephp\/cli\/tree\/master\/app\/Commands",
+                    "title": "cli\/app\/Commands at master \u00b7 hydephp\/cli \u00b7 GitHub",
                     "count": 1,
                     "uniques": 1
                 }
@@ -3758,6 +3810,14 @@
                     "uniques": 1
                 },
                 "github.com": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "laravel-news.com": {
+                    "count": 4,
+                    "uniques": 1
+                },
+                "DuckDuckGo": {
                     "count": 1,
                     "uniques": 1
                 }
