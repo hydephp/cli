@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1733695808,
-        "content_hash": "c0b84059a9f49da070ef1ff892d28570b9a69391189874262cb02e4a7d723541",
-        "total_views": 4572,
-        "total_clones": 31523,
+        "last_updated": 1734300620,
+        "content_hash": "d908b6d935fa01cc1df06ec7cfe45310462efe070355dbc925fef0a4871bf3cb",
+        "total_views": 4575,
+        "total_clones": 31632,
         "total_installs": 378
     },
     "traffic": {
@@ -2160,6 +2160,52 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2024-12-11T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2024-12-15T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-12-08T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2024-12-09T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 2
+            }
+        },
+        "2024-12-10T00:00:00Z": {
+            "clones": {
+                "count": 97,
+                "uniques": 3
+            }
+        },
+        "2024-12-12T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2024-12-13T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -3719,9 +3765,9 @@
             "paths": {
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
                     "count": 3,
-                    "uniques": 1
+                    "uniques": 3
                 },
                 "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
                     "path": "\/hydephp\/cli\/actions",
