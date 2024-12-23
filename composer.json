@@ -57,7 +57,7 @@
         "builds/hyde"
     ],
     "require-dev": {
-        "hyde/framework": "v1.6",
+        "hyde/framework": "v1.7.5",
         "hyde/realtime-compiler": "^3.2",
         "laravel-zero/framework": "^10.0",
         "mockery/mockery": "^1.6",
