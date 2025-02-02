@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1737929339,
-        "content_hash": "768f94962730a276c38609dd43cbc0c692b86e986ec9dbb7f096c68fe69b1a5c",
+        "last_updated": 1738534157,
+        "content_hash": "adbda9ab08b2146f849c0c5f3ab45977be1768ad131118b8734ca2c27456a2bf",
         "total_views": 4577,
-        "total_clones": 32046,
+        "total_clones": 32058,
         "total_installs": 383
     },
     "traffic": {
@@ -2444,6 +2444,42 @@
         "2025-01-25T00:00:00Z": {
             "clones": {
                 "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-01-26T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-01-27T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2025-01-28T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-01-29T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-01-30T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-01-31T00:00:00Z": {
+            "clones": {
+                "count": 2,
                 "uniques": 1
             }
         }
