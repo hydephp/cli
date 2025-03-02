@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1740348563,
-        "content_hash": "f2ed5ebc84f88722e86d0d14af174941edb90faa797ad3aaad68762766948954",
-        "total_views": 4580,
-        "total_clones": 32221,
+        "last_updated": 1740953369,
+        "content_hash": "c0db5356df458cbe66a6e6b9ed8420ac1c4cef3cd189d422b6a5f6fe96eb4690",
+        "total_views": 4582,
+        "total_clones": 32439,
         "total_installs": 383
     },
     "traffic": {
@@ -2606,6 +2606,52 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2025-02-24T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 62,
+                "uniques": 2
+            }
+        },
+        "2025-02-23T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 3
+            }
+        },
+        "2025-02-25T00:00:00Z": {
+            "clones": {
+                "count": 6,
+                "uniques": 3
+            }
+        },
+        "2025-02-26T00:00:00Z": {
+            "clones": {
+                "count": 63,
+                "uniques": 3
+            }
+        },
+        "2025-02-27T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-02-28T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2025-03-02T00:00:00Z": {
+            "clones": {
+                "count": 78,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -4303,6 +4349,28 @@
             "referrers": {
                 "github.com": {
                     "count": 3,
+                    "uniques": 1
+                }
+            }
+        },
+        "2025-03": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "07325179e3bfe4ed164c39145031372fe02b8da93066d7db7dd3d70c29b05145": {
+                    "path": "\/hydephp\/cli\/blob\/master\/composer.json",
+                    "title": "cli\/composer.json at master \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 2,
                     "uniques": 1
                 }
             }
