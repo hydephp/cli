@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1740953369,
-        "content_hash": "c0db5356df458cbe66a6e6b9ed8420ac1c4cef3cd189d422b6a5f6fe96eb4690",
-        "total_views": 4582,
-        "total_clones": 32439,
-        "total_installs": 383
+        "last_updated": 1741558147,
+        "content_hash": "3b0545e93ab12d6dcab546019a01e89115547fec7b7649c8d2b5579bfe784d0c",
+        "total_views": 4586,
+        "total_clones": 32572,
+        "total_installs": 384
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -2649,8 +2649,62 @@
         },
         "2025-03-02T00:00:00Z": {
             "clones": {
-                "count": 78,
+                "count": 79,
+                "uniques": 2
+            }
+        },
+        "2025-03-04T00:00:00Z": {
+            "views": {
+                "count": 1,
                 "uniques": 1
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2025-03-05T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 8,
+                "uniques": 4
+            }
+        },
+        "2025-03-09T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2025-03-03T00:00:00Z": {
+            "clones": {
+                "count": 79,
+                "uniques": 2
+            }
+        },
+        "2025-03-06T00:00:00Z": {
+            "clones": {
+                "count": 5,
+                "uniques": 3
+            }
+        },
+        "2025-03-07T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 1
+            }
+        },
+        "2025-03-08T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
             }
         }
     },
@@ -4358,18 +4412,34 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
-                    "count": 1,
-                    "uniques": 1
+                    "count": 2,
+                    "uniques": 2
                 },
                 "07325179e3bfe4ed164c39145031372fe02b8da93066d7db7dd3d70c29b05145": {
                     "path": "\/hydephp\/cli\/blob\/master\/composer.json",
                     "title": "cli\/composer.json at master \u00b7 hydephp\/cli",
                     "count": 1,
                     "uniques": 1
+                },
+                "95e0e2fefcee776e21009a8aef7a18fcc5501f753ccd38092851572e4e09b084": {
+                    "path": "\/hydephp\/cli\/blob\/master\/Dockerfile",
+                    "title": "cli\/Dockerfile at master \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "github.com": {
+                    "count": 3,
+                    "uniques": 2
+                },
+                "Google": {
                     "count": 2,
                     "uniques": 1
                 }
