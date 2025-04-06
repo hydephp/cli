@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1743372621,
-        "content_hash": "7eb53e61de6bd145f19638c39b2aa16579d3c5dc38a357e07be75a2652436337",
-        "total_views": 4615,
-        "total_clones": 32937,
-        "total_installs": 0
+        "last_updated": 1743977416,
+        "content_hash": "1ef2b5178497404624280f9d0a61957c1255bfd779fcb4b3f4616e36bcb268a5",
+        "total_views": 4616,
+        "total_clones": 32983,
+        "total_installs": 384
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -2829,8 +2829,54 @@
         },
         "2025-03-30T00:00:00Z": {
             "clones": {
+                "count": 4,
+                "uniques": 3
+            }
+        },
+        "2025-04-04T00:00:00Z": {
+            "views": {
                 "count": 1,
                 "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-03-31T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2025-04-01T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-04-02T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 3
+            }
+        },
+        "2025-04-03T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-04-05T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-04-06T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
             }
         }
     },
@@ -4645,6 +4691,22 @@
                 },
                 "Google": {
                     "count": 3,
+                    "uniques": 1
+                }
+            }
+        },
+        "2025-04": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "hydephp.com": {
+                    "count": 1,
                     "uniques": 1
                 }
             }
