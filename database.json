@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1745187019,
-        "content_hash": "aa4ee74050a6a7dc873a9b81f0e940c1bc963a9c48f6da814abbfc933f61435d",
-        "total_views": 4617,
-        "total_clones": 33034,
+        "last_updated": 1745791821,
+        "content_hash": "a44f72f0da881036a668f8e2fccb6ff3671c0d92704f0786f1a528135e38e92c",
+        "total_views": 4623,
+        "total_clones": 33105,
         "total_installs": 385
     },
     "traffic": {
@@ -2921,8 +2921,8 @@
                 "uniques": 1
             },
             "clones": {
-                "count": 33,
-                "uniques": 3
+                "count": 36,
+                "uniques": 4
             }
         },
         "2025-04-13T00:00:00Z": {
@@ -2956,6 +2956,46 @@
             }
         },
         "2025-04-18T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-04-24T00:00:00Z": {
+            "views": {
+                "count": 6,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 31,
+                "uniques": 2
+            }
+        },
+        "2025-04-21T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2025-04-22T00:00:00Z": {
+            "clones": {
+                "count": 31,
+                "uniques": 2
+            }
+        },
+        "2025-04-23T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2025-04-25T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-04-26T00:00:00Z": {
             "clones": {
                 "count": 1,
                 "uniques": 1
@@ -4784,12 +4824,52 @@
                     "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
                     "count": 1,
                     "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "Issue",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "f64ee58607a6327a64d98ce0ea44cb8a70cb07bb11a56e8c1b4319b2b48045d9": {
+                    "path": "\/hydephp\/cli\/blob\/935063031461990cbd313b99279623509c485a5d\/.github\/workflows\/docker.yml",
+                    "title": "cli\/.github\/workflows\/docker.yml at 935063031461990cbd313b99279623509c485a5d ...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "be09f4eb9a536ec28ab842bd9bcfdae04e2c83c6b8035cb50bb905a318181379": {
+                    "path": "\/hydephp\/cli\/pull\/228",
+                    "title": "Revert \"Disable Docker build provenance in an attempt to fix GHCR adding ghos...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "6a1ea1808617009dd120d2e68a69c6d6a5e77b738f0d9209edd2c53c815bfafc": {
+                    "path": "\/hydephp\/cli\/pull\/229",
+                    "title": "Disable Docker image Cosign by caendesilva \u00b7 Pull Request #229 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "08b40a11440a8d442b9185e06259556d66a8e2a54c2375639ab75353297d0096": {
+                    "path": "\/hydephp\/cli\/pull\/229\/files",
+                    "title": "Disable Docker image Cosign by caendesilva \u00b7 Pull Request #229 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "48fac8948c7165a07403fedfc19858a2ab5bc20cc349bb724d6ccceb71e88ff5": {
+                    "path": "\/hydephp\/cli\/pull\/299",
+                    "title": "Bump crazy-max\/ghaction-import-gpg from 6.2.0 to 6.3.0 by dependabot[bot] \u00b7 P...",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "hydephp.com": {
                     "count": 1,
                     "uniques": 1
+                },
+                "github.com": {
+                    "count": 7,
+                    "uniques": 2
                 }
             }
         }
