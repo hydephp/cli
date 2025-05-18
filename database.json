@@ -1,10 +1,10 @@
 {
     "_database": {
-        "last_updated": 1747001439,
-        "content_hash": "a75aafc07f9d412c2d73e9327a3043dcf2aed76547f6b19aae95170611e42656",
-        "total_views": 4623,
-        "total_clones": 33188,
-        "total_installs": 386
+        "last_updated": 1747606246,
+        "content_hash": "49b42fd794ea16661135b5d17ca24c73ddaa8b3c7c9fa41d22eb959d18854df3",
+        "total_views": 4647,
+        "total_clones": 33375,
+        "total_installs": 389
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -3075,8 +3075,54 @@
         },
         "2025-05-11T00:00:00Z": {
             "clones": {
-                "count": 1,
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2025-05-17T00:00:00Z": {
+            "views": {
+                "count": 24,
                 "uniques": 1
+            },
+            "clones": {
+                "count": 132,
+                "uniques": 7
+            }
+        },
+        "2025-05-12T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-05-13T00:00:00Z": {
+            "clones": {
+                "count": 5,
+                "uniques": 2
+            }
+        },
+        "2025-05-14T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-05-15T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2025-05-16T00:00:00Z": {
+            "clones": {
+                "count": 6,
+                "uniques": 3
+            }
+        },
+        "2025-05-18T00:00:00Z": {
+            "clones": {
+                "count": 7,
+                "uniques": 5
             }
         }
     },
@@ -4980,6 +5026,66 @@
                 "08b40a11440a8d442b9185e06259556d66a8e2a54c2375639ab75353297d0096": {
                     "path": "\/hydephp\/cli\/pull\/229\/files",
                     "title": "Disable Docker image Cosign by caendesilva \u00b7 Pull Request #229 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "a40b5c50621735f276fab22c120650dca11795a4d3f5724d0be332a7547fd509": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/15089147106",
+                    "title": "Merge pull request #300 from hydephp\/dependabot\/github_actions\/sigsto\u2026 \u00b7 hyde...",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "Pull requests \u00b7 hydephp\/cli",
+                    "count": 5,
+                    "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "Workflow runs \u00b7 hydephp\/cli",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "9bd55521e8cba11b877616c748fa1ae235303b5a3ec127f2c0589bcc66c69ae4": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/15089147106\/job\/42415774350",
+                    "title": "Merge pull request #300 from hydephp\/dependabot\/github_actions\/sigsto\u2026 \u00b7 hyde...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "d99ffb04bfc6a9e917b732f743678bced0faa1789e54b470d244d83fdbc9aa16": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/15089300606",
+                    "title": "Merge pull request #304 from hydephp\/dependabot\/github_actions\/docker\u2026 \u00b7 hyde...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "ed460259c04f0434a57f82ec64cec7c3a9c2b0ac8c0ae1b9000c93c490d8940f": {
+                    "path": "\/hydephp\/cli\/pull\/300",
+                    "title": "Bump sigstore\/cosign-installer from 3.8.1 to 3.8.2 by dependabot[bot] \u00b7 Pull ...",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "fe85062a33e6121ad7c43fd61909663d355607163b27d2cae14575068428dc97": {
+                    "path": "\/hydephp\/cli\/compare\/master...revert-300-dependabot\/github_actions\/sigstore\/cosign-installer-3.8.2",
+                    "title": "Comparing master...revert-300-dependabot\/github_actions\/sigstore\/cosign-insta...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "5fe45ac8ee110668f2050b6e85e3a5a7360c0111bab463406e7bc46c8f325bc9": {
+                    "path": "\/hydephp\/cli\/pull\/304",
+                    "title": "Bump docker\/build-push-action from 6.15.0 to 6.17.0 by dependabot[bot] \u00b7 Pull...",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "56bed4bb3e673d95b0a24e7a95a8959aa71f6d23de8e537cce2f0e0a612bba37": {
+                    "path": "\/hydephp\/cli\/pull\/305",
+                    "title": "Revert \"Bump sigstore\/cosign-installer from 3.8.1 to 3.8.2\" by caendesilva \u00b7 ...",
                     "count": 1,
                     "uniques": 1
                 }
