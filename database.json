@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1748211056,
-        "content_hash": "94ae7aee94d86aab2c46f574fbc29bbfe1d64ef609ba9024e0210f853e391a8a",
-        "total_views": 4647,
-        "total_clones": 33427,
+        "last_updated": 1748815883,
+        "content_hash": "99b81fdf16d37a2d8092f61aeeebe5b4989872ed341b488baa8eab630a944762",
+        "total_views": 4648,
+        "total_clones": 33509,
         "total_installs": 391
     },
     "traffic": {
@@ -3163,6 +3163,48 @@
         },
         "2025-05-25T00:00:00Z": {
             "clones": {
+                "count": 5,
+                "uniques": 4
+            }
+        },
+        "2025-05-31T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-05-26T00:00:00Z": {
+            "clones": {
+                "count": 34,
+                "uniques": 4
+            }
+        },
+        "2025-05-27T00:00:00Z": {
+            "clones": {
+                "count": 35,
+                "uniques": 4
+            }
+        },
+        "2025-05-28T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-05-29T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-05-30T00:00:00Z": {
+            "clones": {
+                "count": 4,
+                "uniques": 3
+            }
+        },
+        "2025-06-01T00:00:00Z": {
+            "clones": {
                 "count": 1,
                 "uniques": 1
             }
@@ -5135,6 +5177,16 @@
             "referrers": {
                 "github.com": {
                     "count": 6,
+                    "uniques": 1
+                }
+            }
+        },
+        "2025-06": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
                     "uniques": 1
                 }
             }
