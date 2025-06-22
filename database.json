@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1750025478,
-        "content_hash": "87893874d59e85ff59c18a071367e3b6263c9276499d8513410ca1865aa2d7f1",
-        "total_views": 4650,
-        "total_clones": 33626,
+        "last_updated": 1750630263,
+        "content_hash": "ef508eb84992e8c16a44f2027d6157ea9334217017faf0cc0ba1202fea2b3abd",
+        "total_views": 4651,
+        "total_clones": 34044,
         "total_installs": 392
     },
     "traffic": {
@@ -3297,8 +3297,42 @@
         },
         "2025-06-15T00:00:00Z": {
             "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2025-06-20T00:00:00Z": {
+            "views": {
                 "count": 1,
                 "uniques": 1
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-06-16T00:00:00Z": {
+            "clones": {
+                "count": 83,
+                "uniques": 4
+            }
+        },
+        "2025-06-17T00:00:00Z": {
+            "clones": {
+                "count": 297,
+                "uniques": 9
+            }
+        },
+        "2025-06-18T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2025-06-19T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
             }
         }
     },
@@ -5277,7 +5311,7 @@
             "paths": {
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
-                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
                     "count": 2,
                     "uniques": 2
                 },
@@ -5290,8 +5324,8 @@
             },
             "referrers": {
                 "github.com": {
-                    "count": 1,
-                    "uniques": 1
+                    "count": 2,
+                    "uniques": 2
                 }
             }
         }
