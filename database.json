@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1751235083,
-        "content_hash": "6e03909ebbfbbd5cfa23e2077593f12aaa27e7bb37854672f9f18189fb3dcad3",
-        "total_views": 4652,
-        "total_clones": 34086,
+        "last_updated": 1751839935,
+        "content_hash": "de11004b109fae17cf576e9dc3095405588e18b472f25e5567c238ba0902f78e",
+        "total_views": 4653,
+        "total_clones": 34170,
         "total_installs": 392
     },
     "traffic": {
@@ -3374,6 +3374,46 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2025-07-03T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 37,
+                "uniques": 6
+            }
+        },
+        "2025-06-29T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 3
+            }
+        },
+        "2025-06-30T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-07-01T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2025-07-02T00:00:00Z": {
+            "clones": {
+                "count": 8,
+                "uniques": 3
+            }
+        },
+        "2025-07-04T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -5367,6 +5407,28 @@
                     "count": 2,
                     "uniques": 2
                 },
+                "Google": {
+                    "count": 1,
+                    "uniques": 1
+                }
+            }
+        },
+        "2025-07": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "GitHub - hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "591dd7fe1e59bc201e0d10b32fdd1293e8efe04a0db1a2e4f4c9401430f81741": {
+                    "path": "\/hydephp\/cli\/pull\/313",
+                    "title": "Bump ncipollo\/release-action from 1.16.0 to 1.18.0 by dependabot[bot] \u00b7 Pull ...",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
                 "Google": {
                     "count": 1,
                     "uniques": 1
