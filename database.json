@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1751839935,
-        "content_hash": "de11004b109fae17cf576e9dc3095405588e18b472f25e5567c238ba0902f78e",
-        "total_views": 4653,
-        "total_clones": 34170,
+        "last_updated": 1752444707,
+        "content_hash": "0ac46ee4a06dc5a8476b1b748fd5bfa5e8081daed2397d5ffa3c689b9d5f6427",
+        "total_views": 4654,
+        "total_clones": 34187,
         "total_installs": 392
     },
     "traffic": {
@@ -3414,6 +3414,58 @@
                 "count": 2,
                 "uniques": 1
             }
+        },
+        "2025-07-10T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2025-07-06T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2025-07-07T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2025-07-08T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-07-09T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-07-11T00:00:00Z": {
+            "clones": {
+                "count": 3,
+                "uniques": 2
+            }
+        },
+        "2025-07-12T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-07-13T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -5426,10 +5478,20 @@
                     "title": "Bump ncipollo\/release-action from 1.16.0 to 1.18.0 by dependabot[bot] \u00b7 Pull ...",
                     "count": 1,
                     "uniques": 1
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "GHCR adding ghost images to Docker package \u00b7 Issue #227 \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "Google": {
+                    "count": 1,
+                    "uniques": 1
+                },
+                "DuckDuckGo": {
                     "count": 1,
                     "uniques": 1
                 }
