@@ -1,9 +1,9 @@
 {
     "_database": {
-        "last_updated": 1753654338,
-        "content_hash": "3ec794bbfdd62d16a98b782a5332a12b2c308bcdaba0bceadbd202bf0df045dc",
-        "total_views": 4655,
-        "total_clones": 34241,
+        "last_updated": 1754259157,
+        "content_hash": "98030f33d0b579d677c4ae50ab01a2a0d9f05b8b608271e0fd9b4813862a8e83",
+        "total_views": 4657,
+        "total_clones": 34285,
         "total_installs": 392
     },
     "traffic": {
@@ -3539,6 +3539,46 @@
         },
         "2025-07-27T00:00:00Z": {
             "clones": {
+                "count": 3,
+                "uniques": 3
+            }
+        },
+        "2025-07-29T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 4,
+                "uniques": 2
+            }
+        },
+        "2025-07-28T00:00:00Z": {
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2025-07-30T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-07-31T00:00:00Z": {
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
+        },
+        "2025-08-01T00:00:00Z": {
+            "clones": {
+                "count": 32,
+                "uniques": 2
+            }
+        },
+        "2025-08-02T00:00:00Z": {
+            "clones": {
                 "count": 1,
                 "uniques": 1
             }
@@ -5579,6 +5619,28 @@
                 },
                 "github.com": {
                     "count": 1,
+                    "uniques": 1
+                }
+            }
+        },
+        "2025-08": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "hydephp\/cli: Experimental HydePHP Standalone Executable Project",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "95e0e2fefcee776e21009a8aef7a18fcc5501f753ccd38092851572e4e09b084": {
+                    "path": "\/hydephp\/cli\/blob\/master\/Dockerfile",
+                    "title": "cli\/Dockerfile at master \u00b7 hydephp\/cli",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "Google": {
+                    "count": 2,
                     "uniques": 1
                 }
             }
