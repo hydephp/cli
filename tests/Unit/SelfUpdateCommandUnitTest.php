@@ -107,6 +107,23 @@ it('strips personal and path information from markdown', function () {
         ->and($result)->toContain('<project>');
 });
 
+it('strips a project path however the platform spells its separators', function () {
+    // The project root is canonical (`C:/projects/site`), while a Windows stack trace is
+    // not (`C:\projects\site\app\...`). Redacting only the spelling the root happens
+    // to be in would publish every absolute path in the trace verbatim.
+    mockContainerPath('C:/projects/site');
+
+    $class = new InspectableSelfUpdateCommand();
+
+    $result = $class->stripPersonalInformation(
+        "Error occurred in C:\\projects\\site\\app\\file.php\nStack trace:\nC:/projects/site/app/file.php:10"
+    );
+
+    expect($result)->not->toContain('C:\\projects\\site')
+        ->and($result)->not->toContain('C:/projects/site')
+        ->and($result)->toContain('<project>');
+});
+
 it('does not modify markdown without personal information', function () {
     mockContainerPath('/home/foo/project');
 

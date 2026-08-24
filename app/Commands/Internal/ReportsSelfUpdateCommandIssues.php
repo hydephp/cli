@@ -80,7 +80,18 @@ trait ReportsSelfUpdateCommandIssues
         // As the stacktrace may contain the user's name, we remove it to protect their privacy
         $markdown = str_replace(getenv('USER') ?: getenv('USERNAME'), '<USERNAME>', $markdown);
 
-        // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
-        return str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
+        // We also convert absolute paths to relative paths to avoid leaking the user's directory
+        // structure. The project root is held in the launcher's canonical representation,
+        // while a stack trace carries whatever separator the platform writes its paths
+        // with, so both spellings are redacted: on Windows the root reads
+        // `C:/Users/emma/site` and the trace reads `C:\Users\emma\site\app`,
+        // and matching only the first would publish the second verbatim.
+        $root = rtrim(base_path(), '/\\');
+
+        foreach ([$root.'/', str_replace('/', '\\', $root).'\\'] as $prefix) {
+            $markdown = str_replace($prefix, '<project>'.DIRECTORY_SEPARATOR, $markdown);
+        }
+
+        return $markdown;
     }
 }
