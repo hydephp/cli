@@ -1,0 +1,4 @@
+/vendor/
+/_site/
+/composer.lock
+/composer.json

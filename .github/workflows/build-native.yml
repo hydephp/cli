@@ -1,0 +1,101 @@
+name: Build Native Executables
+
+# Called by other workflows only. Building five artifacts means compiling PHP five times,
+# so it runs once per pipeline rather than once per trigger.
+on:
+  workflow_call:
+    inputs:
+      build-id:
+        description: A short identifier recorded inside the executable.
+        type: string
+        required: false
+        default: ''
+
+# Build CI. Every job here may install whatever it needs: PHP, Composer, compilers and
+# the static-php-cli toolchain. What comes out is a single self-contained executable
+# per platform, which runtime.yml then exercises on machines that have none of it.
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-latest
+            artifact: hyde-linux-x86_64
+          - platform: linux-arm64
+            runner: ubuntu-24.04-arm
+            artifact: hyde-linux-arm64
+          - platform: macos-x86_64
+            runner: macos-15-intel
+            artifact: hyde-macos-x86_64
+          - platform: macos-arm64
+            runner: macos-latest
+            artifact: hyde-macos-arm64
+          - platform: windows-x86_64
+            runner: windows-latest
+            artifact: hyde-windows-x86_64.exe
+
+    runs-on: ${{ matrix.runner }}
+    name: Build ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          # The host PHP only assembles the archive. The PHP that ends up inside the
+          # executable is the one static-php-cli compiles, pinned in build/runtime.json.
+          php-version: "8.4"
+          extensions: fileinfo, mbstring, dom, simplexml, xmlwriter
+          ini-values: phar.readonly=0
+
+      # static-php-cli downloads and compiles PHP and every library it links against,
+      # which is by far the slowest part of the build.
+      - name: Cache the static-php-cli workspace
+        uses: actions/cache@v6
+        with:
+          path: |
+            .build/downloads
+            .build/buildroot
+          key: spc-${{ matrix.platform }}-${{ hashFiles('build/runtime.json') }}
+          restore-keys: |
+            spc-${{ matrix.platform }}-
+
+      # HydePHP v3 is unreleased and untagged, so `hyde/framework` and
+      # `hyde/realtime-compiler` resolve from a develop@master checkout through a
+      # Composer path repository. The build scripts run Composer themselves, so the
+      # checkout has to be in place before either of them starts.
+      - name: Check out the HydePHP v3 development line
+        shell: bash
+        run: bin/sync-develop.sh
+
+      - name: Build the executable (POSIX)
+        if: ${{ matrix.platform != 'windows-x86_64' }}
+        run: bin/build-native.sh --build="${GITHUB_SHA::7}"
+
+      - name: Build the executable (Windows)
+        if: ${{ matrix.platform == 'windows-x86_64' }}
+        shell: pwsh
+        run: pwsh bin/build-native.ps1 -Build "$($env:GITHUB_SHA.Substring(0,7))"
+
+      - name: Verify the executable reports its version
+        if: ${{ matrix.platform != 'windows-x86_64' }}
+        run: |
+          chmod +x "builds/${{ matrix.artifact }}"
+          "./builds/${{ matrix.artifact }}" --version --no-ansi
+
+      - name: Verify the executable reports its version (Windows)
+        if: ${{ matrix.platform == 'windows-x86_64' }}
+        shell: pwsh
+        run: |
+          & ".\builds\${{ matrix.artifact }}" --version --no-ansi
+
+      - name: Upload the executable
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.artifact }}
+          path: builds/${{ matrix.artifact }}
+          if-no-files-found: error
+          retention-days: 7

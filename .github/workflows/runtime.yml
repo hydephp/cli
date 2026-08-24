@@ -1,0 +1,188 @@
+name: Runtime Acceptance
+
+# `stable` is deliberately absent: publish-release.yml owns that branch, and building five
+# artifacts means compiling PHP five times, so it happens once per pipeline.
+on:
+  push:
+    branches: [ "master", "v3", "release/**" ]
+  pull_request:
+    branches: [ "master", "v3", "release/**" ]
+
+# Runtime CI. Nothing here may install PHP, Composer, or a vendor directory. The whole
+# point of these jobs is that the artifact works on a machine that has none of them.
+#
+# The authoritative Linux acceptance test runs the hyde-linux-x86_64 artifact inside a
+# minimal container on a native x86_64 runner, where PHP is never installed. macOS
+# and Windows get native smoke tests on their own runners.
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-native.yml
+
+  linux-acceptance:
+    needs: build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            artifact: hyde-linux-x86_64
+          - runner: ubuntu-24.04-arm
+            artifact: hyde-linux-arm64
+
+    runs-on: ${{ matrix.runner }}
+    name: Linux acceptance (${{ matrix.artifact }})
+
+    steps:
+      # Only the acceptance script is checked out: no application sources, no vendor
+      # directory, nothing the executable could accidentally lean on.
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/acceptance.sh
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: artifact
+
+      - name: Prepare the artifact
+        run: chmod +x "artifact/${{ matrix.artifact }}"
+
+      # alpine has no PHP, no Composer, and no glibc. The Linux artifacts are statically
+      # linked against musl by static-php-cli, so this is the harshest honest host.
+      - name: Run the acceptance suite in a container with no PHP
+        run: |
+          docker run --rm \
+            -v "$PWD:/work" -w /work \
+            alpine:3.20 \
+            sh -c 'apk add --no-cache curl >/dev/null && sh tests/System/acceptance.sh "/work/artifact/${{ matrix.artifact }}"'
+
+  macos-smoke:
+    needs: build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            artifact: hyde-macos-arm64
+          - runner: macos-15-intel
+            artifact: hyde-macos-x86_64
+
+    runs-on: ${{ matrix.runner }}
+    name: macOS smoke (${{ matrix.artifact }})
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/acceptance.sh
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: artifact
+
+      # The runner image ships a PHP. Removing it from the search path is what makes this
+      # a test of the artifact rather than a test of the runner.
+      - name: Run the acceptance suite with no PHP on the search path
+        run: |
+          chmod +x "artifact/${{ matrix.artifact }}"
+          env -i PATH=/usr/bin:/bin HOME="$HOME" \
+            sh tests/System/acceptance.sh "$PWD/artifact/${{ matrix.artifact }}"
+
+  windows-smoke:
+    needs: build
+
+    runs-on: windows-latest
+    name: Windows smoke (hyde-windows-x86_64.exe)
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/acceptance.ps1
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: hyde-windows-x86_64.exe
+          path: artifact
+
+      - name: Run the acceptance suite with no PHP on the search path
+        shell: pwsh
+        run: |
+          # Strip anything PHP-shaped out of PATH so the executable cannot lean on it.
+          $env:PATH = ($env:PATH -split ';' | Where-Object { $_ -notmatch 'php|composer|chocolatey' }) -join ';'
+          pwsh tests/System/acceptance.ps1 -Hyde "$PWD\artifact\hyde-windows-x86_64.exe"
+
+  composer-dispatch:
+    needs: build
+
+    runs-on: ubuntu-latest
+    name: Composer project dispatch (no PHP for the CLI)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # The *project* is allowed to have its dependencies installed: that is what makes it
+      # a Composer project. The CLI still gets an environment with no PHP at all.
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: fileinfo, mbstring, dom, simplexml, xmlwriter
+
+      # The fixture resolves the framework from the v3 monorepo, the same way the CLI
+      # does, so that what it dispatches into is a real v3 dependency graph.
+      - name: Check out the HydePHP v3 development line
+        run: bin/sync-develop.sh
+
+      - name: Install the fixture project's own dependency graph
+        run: composer install --no-interaction --no-progress --prefer-dist --working-dir=tests/Fixtures/composer-project
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: hyde-linux-x86_64
+          path: artifact
+
+      - name: Dispatch into the project with no PHP on the search path
+        run: |
+          chmod +x artifact/hyde-linux-x86_64
+          HYDE="$PWD/artifact/hyde-linux-x86_64"
+          cd tests/Fixtures/composer-project
+
+          # A command that exists only in the project's own dependency graph must run,
+          # and must run out of the project's vendor directory.
+          OUTPUT="$(env -i PATH=/usr/bin:/bin HOME="$HOME" "$HYDE" test:addon --no-ansi)"
+          echo "$OUTPUT"
+          echo "$OUTPUT" | grep -q 'Addon command executed'
+          echo "$OUTPUT" | grep -q 'vendor/hyde/cli-test-addon'
+
+          # A failing project command must come back as a failure.
+          set +e
+          env -i PATH=/usr/bin:/bin HOME="$HOME" "$HYDE" test:fail --code=17 --no-ansi
+          STATUS=$?
+          set -e
+          test "$STATUS" -eq 17
+
+      - name: Prove the same command does not exist in a portable project
+        run: |
+          HYDE="$PWD/artifact/hyde-linux-x86_64"
+          mkdir -p /tmp/portable/_pages
+          echo '# Portable' > /tmp/portable/_pages/index.md
+          cd /tmp/portable
+
+          env -i PATH=/usr/bin:/bin HOME="$HOME" "$HYDE" list --no-ansi | grep -qv 'test:addon'
+
+          set +e
+          OUTPUT="$(env -i PATH=/usr/bin:/bin HOME="$HOME" "$HYDE" test:addon --no-ansi 2>&1)"
+          STATUS=$?
+          set -e
+
+          echo "$OUTPUT"
+          test "$STATUS" -ne 0
+          echo "$OUTPUT" | grep -q 'no commands defined in the "test" namespace'

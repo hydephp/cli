@@ -1,4 +1,4 @@
-# Experimental Standalone HydePHP Executable
+# The HydePHP CLI
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hyde/cli?include_prereleases)](https://packagist.org/packages/hyde/cli)
 [![Total Installs on GitHub and Packagist](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhydephp%2Fcli%2Ftraffic%2Fdatabase.json&query=%24._database.total_installs&label=Installs)](https://github.com/hydephp/cli)
@@ -9,16 +9,72 @@
 
 ## About
 
-This is an experimental standalone executable for the static site generator HydePHP.
+The HydePHP CLI is a single-file executable for the static site generator HydePHP.
 
-With this global binary, you can use the HydePHP CLI to generate quality static sites faster than ever before!
+It carries its own PHP runtime and its own copy of the framework, so you can build a site on a
+machine with **no PHP and no Composer installed**. Point it at a directory of Markdown files
+and it will build a site; point it at a full HydePHP Composer project and it will run that
+project through its own dependencies.
 
-### ⚠ Beta software notice
+## The two kinds of project
 
-Please note that the standalone HydePHP version is **experimental**, and that there may be breaking changes and bugs until the 1.0 release.
-- In the meantime, you may want to use the standard HydePHP project: https://github.com/hydephp/hyde
+**Portable** — content and configuration only:
+
+```
+_pages/
+_posts/
+_media/
+hyde.yml     # optional
+```
+
+No `composer.json`, no `vendor/`, nothing to install. The framework, the runtime, and every
+dependency come from the executable itself. Fastest builds and easiest deployment.
+
+**Composer** — a full HydePHP project with a `composer.json` that declares Hyde. The project
+owns its dependency graph: its own Hyde version and its own addons. The executable supplies
+the PHP runtime and hands control to the project's own `hyde` entry point.
+
+The CLI works out which one it is looking at before it does anything else. `hyde info` will
+tell you what it decided:
+
+```
+$ hyde info
+
+Hyde CLI:     3.0.0
+Project type: Portable
+Framework:    2.0.3 (embedded)
+PHP:          8.4.24 (bundled)
+Root:         /Users/emma/Sites/foo
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full model.
 
 ## Installation
+
+### Direct download
+
+Download the executable for your platform from the [latest release](https://github.com/hydephp/cli/releases/latest):
+
+| Platform | Asset |
+| --- | --- |
+| Linux (x86_64) | `hyde-linux-x86_64` |
+| Linux (arm64) | `hyde-linux-arm64` |
+| macOS (Apple Silicon) | `hyde-macos-arm64` |
+| macOS (Intel) | `hyde-macos-x86_64` |
+| Windows (x86_64) | `hyde-windows-x86_64.exe` |
+
+```bash
+# macOS, Apple Silicon
+curl -L https://github.com/hydephp/cli/releases/latest/download/hyde-macos-arm64 -o hyde
+chmod +x hyde && sudo mv hyde /usr/local/bin/hyde
+```
+
+> On macOS, download with `curl` rather than through a browser. A browser marks the file as
+> quarantined, and Gatekeeper will refuse to run it until you clear that with
+> `xattr -d com.apple.quarantine hyde`.
+
+Every asset is published with a detached GPG signature (`<asset>.sig`) and an OpenSSL
+signature (`<asset>.sig.bin`), which is the one `hyde self-update` verifies.
 
 ### Using Composer <a href="https://packagist.org/packages/hyde/cli"><img alt="Total Installs on Packagist" src="https://img.shields.io/packagist/dt/hyde/cli?label=installs" align="right"></a>
 
@@ -28,30 +84,15 @@ composer global require hyde/cli
 
 Make sure to place the Composer system-wide vendor bin directory in your `$PATH` so the `hyde` executable can be located by your system. This directory is typically located at `$HOME/.composer/vendor/bin`.
 
-### Direct Download (Unix) <a href="https://github.com/hydephp/cli/releases/latest"><img alt="Total Installs on GitHub" src="https://img.shields.io/github/downloads/hydephp/cli/total.svg" align="right"></a>
-
-```bash
-curl -L https://github.com/hydephp/cli/releases/latest/download/hyde -o hyde
-chmod +x hyde && sudo mv hyde /usr/local/bin/hyde
-```
-
-### Docker (Highly Experimental)
-
-> [!WARNING]
-> The HydePHP CLI Docker image is under development and is highly experimental. Proceed with caution and report the bugs you will certainly encounter.
+### Docker
 
 ```bash
 docker pull ghcr.io/hydephp/cli:latest
-docker run --rm -it ghcr.io/hydephp/cli:latest <command>
+docker run --rm -it -v "$(pwd):/site" ghcr.io/hydephp/cli:latest build
 ```
 
-Using the Docker image allows you to run the HydePHP CLI without installing any other dependencies like PHP or Composer on your local machine.
-
-If you want to use the HydePHP CLI Docker image as a global command, you can create a shell alias:
-
-```bash
-alias hyde='docker run --rm -it -v $(pwd):/app ghcr.io/hydephp/cli:latest'
-```
+The image is a bare Alpine with the Linux executable in it: it needs no PHP layer, because
+the executable brings its own.
 
 ## Usage
 
@@ -59,11 +100,19 @@ alias hyde='docker run --rm -it -v $(pwd):/app ghcr.io/hydephp/cli:latest'
 # List available commands
 hyde
 
-# Create a new full HydePHP project
-hyde new
+# See what the CLI is, and what it is about to run against
+hyde info
+
+# Create a new site
+hyde new my-site                # asks which kind you want
+hyde new my-site --portable     # content only, nothing to install
+hyde new my-site --composer     # a full Composer project (requires Composer)
 
 # Build a site using source files in the working directory
 hyde build
+
+# Preview it, with live recompilation
+hyde serve
 ```
 
 ## Resources

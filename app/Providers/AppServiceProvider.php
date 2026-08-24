@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Commands\InfoCommand;
 use App\Commands\ServeCommand;
 use App\Commands\NewProjectCommand;
 use App\Commands\SelfUpdateCommand;
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->commands([
+            InfoCommand::class,
             NewProjectCommand::class,
             SelfUpdateCommand::class,
         ]);

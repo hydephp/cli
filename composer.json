@@ -1,6 +1,6 @@
 {
     "name": "hyde/cli",
-    "description": "Experimental Standalone Version of HydePHP - The Static Site Generator You've Been Waiting For",
+    "description": "The HydePHP CLI - a portable static site generator that runs without PHP or Composer.",
     "keywords": [
         "framework",
         "hyde",
@@ -25,7 +25,10 @@
         }
     ],
     "require": {
-        "php": "^8.1"
+        "php": "^8.2",
+        "hyde/framework": "dev-master",
+        "hyde/realtime-compiler": "dev-master",
+        "laravel-zero/framework": "^11.0"
     },
     "autoload": {
         "psr-4": {
@@ -34,15 +37,19 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Hyde\\Testing\\": "tests/"
+            "Tests\\": "tests/"
         }
     },
-    "scripts": {
-        "post-autoload-dump": [
-            "@php -r \"@unlink('./app/storage/framework/cache/packages.php');\"",
-            "@php hyde package:discover --ansi"
-        ]
-    },
+    "_release_checklist": "PRE-RELEASE SCAFFOLDING. HydePHP v3 is unreleased, so hyde/framework and hyde/realtime-compiler are resolved from a local develop@master checkout through the path repository below. When v3 is tagged: replace the dev-master constraints with ^3.0, delete the `repositories` block, and delete bin/sync-develop.sh, bin/verify-v3-graph.php and tests/Fixtures/project-template. See docs/ARCHITECTURE.md, 'Where the framework comes from'.",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../develop/packages/*",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
@@ -57,11 +64,8 @@
         "builds/hyde"
     ],
     "require-dev": {
-        "hyde/framework": "v1.6",
-        "hyde/realtime-compiler": "^3.2",
-        "laravel-zero/framework": "^10.0",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^2.26"
+        "pestphp/pest": "^3.0"
     },
     "suggest": {
         "ext-curl": "Required for using the self-update feature when not installing through Composer."

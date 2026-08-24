@@ -37,8 +37,8 @@ return [
     |
     */
 
-    'version' => sprintf('v%s <fg=gray>-</> <comment>Experimental Standalone</comment> <fg=gray>-</> <fg=gray>(HydePHP v%s)</>',
-        \App\Application::APP_VERSION, \Hyde\Foundation\HydeKernel::VERSION
+    'version' => sprintf('v%s <fg=gray>-</> <fg=gray>(HydePHP v%s)</>',
+        \App\Application::APP_VERSION, \App\Support\FrameworkGeneration::describe()
     ),
 
     /*
@@ -75,7 +75,12 @@ return [
         Hyde\Foundation\Providers\ConfigurationServiceProvider::class,
         Hyde\Framework\HydeServiceProvider::class,
         Hyde\Foundation\Providers\ViewServiceProvider::class,
+        Hyde\Foundation\Providers\NavigationServiceProvider::class,
         Hyde\Console\ConsoleServiceProvider::class,
+
+        // The realtime compiler is bundled with the executable rather than discovered from a
+        // project vendor directory, since a Portable project has no vendor directory at all.
+        Hyde\RealtimeCompiler\RealtimeCompilerServiceProvider::class,
     ],
 
     /*
@@ -93,19 +98,24 @@ return [
         'Hyde' => Hyde\Hyde::class,
         'Site' => \Hyde\Facades\Site::class,
         'Meta' => \Hyde\Facades\Meta::class,
+        'Vite' => \Hyde\Facades\Vite::class,
         'Asset' => \Hyde\Facades\Asset::class,
         'Author' => \Hyde\Facades\Author::class,
+        'HydeFront' => \Hyde\Facades\HydeFront::class,
         'Features' => \Hyde\Facades\Features::class,
         'Config' => \Hyde\Facades\Config::class,
         'Filesystem' => \Hyde\Facades\Filesystem::class,
+        'Navigation' => \Hyde\Facades\Navigation::class,
         'Routes' => \Hyde\Foundation\Facades\Routes::class,
         'HtmlPage' => \Hyde\Pages\HtmlPage::class,
         'BladePage' => \Hyde\Pages\BladePage::class,
         'MarkdownPage' => \Hyde\Pages\MarkdownPage::class,
         'MarkdownPost' => \Hyde\Pages\MarkdownPost::class,
         'DocumentationPage' => \Hyde\Pages\DocumentationPage::class,
-        'DataCollections' => \Hyde\Support\DataCollections::class,
+        'MediaFile' => \Hyde\Support\Filesystem\MediaFile::class,
+        'DataCollection' => \Hyde\Support\DataCollection::class,
         'Includes' => \Hyde\Support\Includes::class,
+        'Feature' => \Hyde\Enums\Feature::class,
     ],
 
 ];

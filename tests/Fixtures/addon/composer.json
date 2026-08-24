@@ -1,0 +1,21 @@
+{
+    "name": "hyde/cli-test-addon",
+    "description": "A fixture addon package proving that a Composer project's own packages are registered, and that a Portable project's are not.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hyde\\CliTestAddon\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Hyde\\CliTestAddon\\TestAddonServiceProvider"
+            ]
+        }
+    }
+}
