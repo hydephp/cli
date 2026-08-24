@@ -129,13 +129,10 @@ function guardAgainstDevelopmentDependencies(): void
  */
 function guardAgainstAPublishedFramework(): void
 {
-    $status = 0;
-    $output = [];
-
-    exec(escapeshellarg(PHP_BINARY).' '.escapeshellarg(ROOT.'/bin/verify-v3-graph.php').' 2>&1', $output, $status);
+    [$status, $output] = run([PHP_BINARY, ROOT.'/bin/verify-v3-graph.php'], captureErrors: true);
 
     if ($status !== 0) {
-        fail(implode(PHP_EOL, $output));
+        fail(trim($output));
     }
 
     info('Framework', 'HydePHP v3 (develop@master)');
@@ -188,13 +185,45 @@ function embedRuntime(string $runtime, string $micro, Platform $platform): strin
 
 function runtimeVersion(string $runtime): string
 {
-    exec(escapeshellarg($runtime).' -r "echo PHP_VERSION;" 2>/dev/null', $output, $status);
+    [$status, $output] = run([$runtime, '-r', 'echo PHP_VERSION;']);
 
-    if ($status !== 0 || ! isset($output[0])) {
+    $version = trim($output);
+
+    if ($status !== 0 || $version === '') {
         fail("Unable to determine the version of the PHP runtime at $runtime");
     }
 
-    return trim($output[0]);
+    return $version;
+}
+
+/**
+ * Run a program and capture what it printed, without going through a shell.
+ *
+ * An array command bypasses the shell on both platforms, which is the whole point. A
+ * shell command line has to be quoted for the shell that will read it, and `cmd.exe`
+ * and `sh` do not agree on how — nor on where a discarded stream goes. `2>/dev/null`
+ * names a path Windows does not have, and cmd fails the redirection with "The
+ * system cannot find the path specified" before the program is ever started.
+ *
+ * @param  list<string>  $command The program, then its arguments, each unquoted.
+ * @return array{0: int, 1: string} The exit status, and standard output — with standard
+ *                                  error appended when the caller wants to report it.
+ */
+function run(array $command, bool $captureErrors = false): array
+{
+    $process = @proc_open($command, [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
+
+    if ($process === false) {
+        return [1, ''];
+    }
+
+    $output = (string) stream_get_contents($pipes[1]);
+    $errors = (string) stream_get_contents($pipes[2]);
+
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+
+    return [proc_close($process), $captureErrors ? $output.$errors : $output];
 }
 
 /** Record how this executable was built, so `hyde info -v` can report it. */
