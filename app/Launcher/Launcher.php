@@ -207,21 +207,31 @@ final class Launcher
         $override = getenv('HYDE_TEMP_DIR');
 
         if (is_string($override) && $override !== '') {
-            return Project::normalize($override);
+            return Project::canonicalize($override);
         }
 
-        return sprintf('%s/hyde/%s', Project::normalize(sys_get_temp_dir()), md5($project->root.'-'.$project->type->value));
+        return sprintf('%s/hyde/%s', Project::canonicalize(sys_get_temp_dir()), md5($project->root.'-'.$project->type->value));
     }
 
+    /**
+     * The directory the CLI was invoked from, or the one it was pointed at.
+     *
+     * The path is canonicalized rather than merely normalized, because the detector
+     * canonicalizes what it is handed: leaving this one short of that would give the
+     * same directory two spellings — the short `C:/Users/RUNNER~1/site` a Windows
+     * `TEMP` hands out, and the resolved `C:/Users/runneradmin/site` the project
+     * root would then carry — and comparing them would say they are not the same
+     * directory. There is one representation, and this is the way in.
+     */
     public function workingDirectory(): string
     {
         $override = getenv('HYDE_WORKING_DIR');
 
         if (is_string($override) && $override !== '') {
-            return Project::normalize($override);
+            return Project::canonicalize($override);
         }
 
-        return Project::normalize(getcwd() ?: '.');
+        return Project::canonicalize(getcwd() ?: '.');
     }
 
     private function define(string $name, string $value): void

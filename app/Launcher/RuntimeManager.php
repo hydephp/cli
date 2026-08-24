@@ -499,9 +499,19 @@ final class RuntimeManager
         return is_string($actual) && hash_equals($checksum, $actual);
     }
 
+    /**
+     * Make the extracted runtime executable, where the host has such a thing.
+     *
+     * The question is about the filesystem the binary was just written to, so it is asked
+     * of the *host* rather than of `$this->platform`, which describes the runtime being
+     * extracted. The two are the same in a released executable. They differ under test,
+     * where a Linux runtime is extracted on whatever machine the suite runs on, and
+     * asking the wrong one turns "this host has no executable bit" into a hard
+     * failure: no file NTFS holds is `is_executable()` unless it ends in .exe.
+     */
     private function ensureExecutable(string $path): void
     {
-        if ($this->platform->isWindows()) {
+        if (Platform::current()->isWindows()) {
             return; // Windows has no executable bit; the .exe extension is what matters.
         }
 
@@ -543,28 +553,31 @@ final class RuntimeManager
         $override = getenv('HYDE_CACHE_DIR');
 
         if (is_string($override) && $override !== '') {
-            return Project::normalize($override);
+            return Project::canonicalize($override);
         }
 
+        // Unlike the executable bit, this asks the platform the runtime was built for. It
+        // only chooses a directory, so a fake platform picks a conventional path rather
+        // than failing — which is what lets the Windows branch be covered anywhere.
         if ($this->platform->isWindows()) {
             $appData = getenv('LOCALAPPDATA') ?: getenv('APPDATA');
 
-            return Project::normalize(is_string($appData) && $appData !== '' ? $appData : sys_get_temp_dir());
+            return Project::canonicalize(is_string($appData) && $appData !== '' ? $appData : sys_get_temp_dir());
         }
 
         $xdg = getenv('XDG_CACHE_HOME');
 
         if (is_string($xdg) && $xdg !== '') {
-            return Project::normalize($xdg);
+            return Project::canonicalize($xdg);
         }
 
         $home = getenv('HOME');
 
         if (is_string($home) && $home !== '') {
-            return Project::normalize($home).'/.cache';
+            return Project::canonicalize($home).'/.cache';
         }
 
-        return Project::normalize(sys_get_temp_dir()).'/hyde-cache';
+        return Project::canonicalize(sys_get_temp_dir()).'/hyde-cache';
     }
 
     public function applicationRoot(): string
