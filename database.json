@@ -1,10 +1,11 @@
 {
     "_database": {
-        "last_updated": 1764540713,
-        "content_hash": "f0244e9887ea4e7fcc0213247e82c7b01eb54a2b5a9e257cc5c6a29932e84de2",
-        "total_views": 4704,
-        "total_clones": 34774,
-        "total_installs": 392
+        "last_updated": 1787607937,
+        "content_hash": "48da7b0881b5a98d219ee403105a1d6bbd7766edb8bd1b9cc4a3a5d496c39530",
+        "total_views": 4710,
+        "total_clones": 35350,
+        "total_installs": 410,
+        "total_binary_downloads": 0
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -4322,6 +4323,146 @@
                 "count": 1,
                 "uniques": 1
             }
+        },
+        "2026-08-10T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2026-08-11T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2026-08-12T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2026-08-13T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2026-08-14T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 3,
+                "uniques": 3
+            }
+        },
+        "2026-08-15T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 0,
+                "uniques": 0
+            }
+        },
+        "2026-08-16T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2026-08-17T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2026-08-18T00:00:00Z": {
+            "views": {
+                "count": 5,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 32,
+                "uniques": 3
+            }
+        },
+        "2026-08-19T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2026-08-20T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 203,
+                "uniques": 8
+            }
+        },
+        "2026-08-21T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 175,
+                "uniques": 16
+            }
+        },
+        "2026-08-22T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 149,
+                "uniques": 6
+            }
+        },
+        "2026-08-23T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 4,
+                "uniques": 4
+            }
         }
     },
     "popular": {
@@ -6381,6 +6522,52 @@
             "referrers": {
                 "Google": {
                     "count": 2,
+                    "uniques": 1
+                }
+            }
+        },
+        "2026-08": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "Overview",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "1459001c20ba21cac666ff5b07c4482f961edc35752e211f6955a04d3fb51a7f": {
+                    "path": "\/hydephp\/cli\/blob\/master\/app\/Application.php",
+                    "title": "\/blob\/master\/app\/Application.php",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "\/issues",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "f65e071d284ca396f87346c4e08029cf429616f5730acff06a0dc6aa11cc78c5": {
+                    "path": "\/hydephp\/cli\/pull\/331",
+                    "title": "\/pull\/331",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
+                    "path": "\/hydephp\/cli\/pulls",
+                    "title": "\/pulls",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "3769e62e55bf4bb0920892d67ba5c88c65c9b2828ac0bb78873af678227513d2": {
+                    "path": "\/hydephp\/cli\/tree\/master\/app",
+                    "title": "\/tree\/master\/app",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "github.com": {
+                    "count": 5,
                     "uniques": 1
                 }
             }
