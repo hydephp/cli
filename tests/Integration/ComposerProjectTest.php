@@ -33,10 +33,13 @@ beforeEach(function () {
 it('dispatches into the project rather than running the embedded application', function () {
     $result = Executable::run(['--version', '--no-ansi'], FIXTURE);
 
-    // The project prints its own version, which is the framework's, not the CLI's.
+    // The project prints its own version banner, built by its own application. The
+    // executable's banner names both versions at once, so that composite is what has to
+    // be absent — the numbers themselves are no longer a discriminator now that the CLI
+    // and the framework are both on 3.0.
     expect($result['status'])->toBe(0)
         ->and($result['output'])->toContain(Hyde\Foundation\HydeKernel::VERSION)
-        ->and($result['output'])->not->toContain('v'.App\Application::APP_VERSION);
+        ->and($result['output'])->not->toContain('- (HydePHP');
 });
 
 it('executes a command that only the project\'s own dependency graph provides', function () {

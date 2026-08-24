@@ -93,6 +93,18 @@ foreach ([
     }
 }
 
+// The version was deliberately unbumped for most of v3's development, reading 2.0.3 on
+// both lines. Now that it distinguishes them it is worth checking, but only alongside the
+// structural checks above: a constant states what the code claims to be, while the `path`
+// dist type is what proves the local monorepo won the resolution.
+$kernel = "$framework/src/Foundation/HydeKernel.php";
+
+if (is_file($kernel) && preg_match("/const VERSION = '([^']+)'/", (string) file_get_contents($kernel), $matches) === 1) {
+    if (! str_starts_with($matches[1], '3.')) {
+        $fail("The installed framework reports version {$matches[1]}, which is not a v3 version");
+    }
+}
+
 $provider = "$framework/src/Console/ConsoleServiceProvider.php";
 
 if (is_file($provider) && str_contains((string) file_get_contents($provider), 'RebuildPageCommand')) {

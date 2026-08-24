@@ -128,10 +128,9 @@ fi
 
 echo "==> HydePHP v3"
 
-# v3 does not bump the version number, so the artifact is proven to carry the v3
-# development line by behaviour that the released v2 line does not have.
+# The version constant is a claim about the code; the checks after it are the evidence.
 
-assert_contains "info reports the v3 development line" "$INFO_OUTPUT" "v3 development line"
+assert_contains "info reports a v3 framework version" "$INFO_OUTPUT" "3.0.0-dev"
 
 LIST_OUTPUT="$(cd "$SITE" && "$HYDE" list --no-ansi 2>&1)"
 

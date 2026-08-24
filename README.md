@@ -42,7 +42,7 @@ $ hyde info
 
 Hyde CLI:     3.0.0
 Project type: Portable
-Framework:    2.0.3 (embedded)
+Framework:    3.0.0-dev (embedded)
 PHP:          8.4.24 (bundled)
 Root:         /Users/emma/Sites/foo
 ```

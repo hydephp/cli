@@ -54,11 +54,16 @@ composer install --working-dir=tests/Fixtures/composer-project
 ```
 
 HydePHP v3 is unreleased and untagged. `hyde/framework` and `hyde/realtime-compiler` are
-resolved from a sibling `develop@master` checkout through Composer path repositories, and
-`HydeKernel::VERSION` reads `2.0.3` on both the v2 and the v3 line — so **no test may
-assert on a version string to establish which framework is embedded**. Use behaviour that
-differs; `tests/Feature/EmbeddedFrameworkIsV3Test.php` is where those live.
+resolved from a sibling `develop@master` checkout through Composer path repositories.
+
+`HydeKernel::VERSION` reads `3.0.0-dev`, but it read `2.0.3` on both lines for most of v3's
+development, and a constant is a claim rather than evidence either way — so **no test may
+rest on a version string alone to establish which framework is embedded**. Use behaviour
+that differs; `tests/Feature/EmbeddedFrameworkIsV3Test.php` is where those live.
 `bin/verify-v3-graph.php` fails the build if the graph is not v3.
+
+Updating the `develop` checkout does not refresh `vendor/`: path packages are mirrored, and
+Composer sees no version change. Run `composer reinstall hyde/framework hyde/realtime-compiler`.
 
 Fixture projects must be created **outside** the repository. This repository is itself a
 Hyde Composer project, so a fixture placed inside it with no portable marker of its own is

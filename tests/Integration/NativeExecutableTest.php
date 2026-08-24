@@ -47,7 +47,7 @@ it('reports a bundled PHP runtime', function () {
     expect($result['output'])
         ->toContain('Project type: Portable')
         ->toContain('Framework:')
-        ->toContain(App\Support\FrameworkGeneration::describe().' (embedded)')
+        ->toContain(Hyde\Foundation\HydeKernel::VERSION.' (embedded)')
         ->toContain('(bundled)');
 });
 

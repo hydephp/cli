@@ -38,7 +38,7 @@ return [
     */
 
     'version' => sprintf('v%s <fg=gray>-</> <fg=gray>(HydePHP v%s)</>',
-        \App\Application::APP_VERSION, \App\Support\FrameworkGeneration::describe()
+        \App\Application::APP_VERSION, \Hyde\Foundation\HydeKernel::VERSION
     ),
 
     /*

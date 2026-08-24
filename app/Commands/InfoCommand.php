@@ -10,7 +10,7 @@ use App\Launcher\Platform;
 use App\Launcher\ProjectType;
 use App\Launcher\RuntimeManager;
 use App\Launcher\ComposerManifest;
-use App\Support\FrameworkGeneration;
+use Hyde\Foundation\HydeKernel;
 use Illuminate\Console\Command;
 
 use function max;
@@ -87,7 +87,7 @@ class InfoCommand extends Command
     protected function framework(Project $project): string
     {
         if ($project->type === ProjectType::Portable) {
-            return sprintf('%s (embedded)', FrameworkGeneration::describe());
+            return sprintf('%s (embedded)', HydeKernel::VERSION);
         }
 
         $version = ComposerManifest::lockedVersion($project->root.'/composer.lock');

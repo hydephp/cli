@@ -9,12 +9,12 @@ use Tests\Support\TemporaryProject;
 | Proving the embedded framework is HydePHP v3
 |--------------------------------------------------------------------------
 |
-| HydePHP v3 is unreleased, and its version numbers have deliberately not been
-| bumped: `HydeKernel::VERSION` reads `2.0.3` on both the released v2 line and
-| the v3 development line. Asserting on the version string would therefore pass
-| against either, and prove nothing about which framework is embedded.
+| HydePHP v3 is unreleased. `HydeKernel::VERSION` now reads `3.0.0-dev`, but a
+| version constant is a claim about the code rather than evidence of it, and for
+| most of v3's development it read `2.0.3` on both lines and distinguished
+| nothing at all.
 |
-| These tests assert on behaviour that differs between the two lines instead.
+| These tests therefore assert on behaviour that differs between the two lines.
 | Each one fails against a CLI built from a published v2 package, which is what
 | makes them evidence rather than documentation.
 |
@@ -138,14 +138,14 @@ it('copies _static files to the site root, which survives the emptying', functio
         ->and($path.'/_site/.well-known/probe.json')->toBeFile();
 });
 
-it('reports the framework as the v3 development line rather than as v2', function () {
+it('reports a v3 framework version', function () {
     $this->boot(TemporaryProject::portable());
 
     expect($this->runCommand('info', ['--no-ansi' => true]))->toBe(0);
 
-    // The framework's own version number is still 2.0.3 on the v3 branch, so reporting it
-    // unqualified would tell a user running a v3 build that they are running v2.
-    expect($this->consoleOutput())
-        ->toContain('v3 development line')
-        ->toContain('(embedded)');
+    // The version was ambiguous for most of v3's development, reading 2.0.3 on both
+    // lines, and is now bumped. It is a claim rather than evidence — the checks above
+    // are what establish the code is v3 — but a v2 framework could not make it.
+    expect(Hyde\Foundation\HydeKernel::VERSION)->toStartWith('3.')
+        ->and($this->consoleOutput())->toContain(Hyde\Foundation\HydeKernel::VERSION.' (embedded)');
 });

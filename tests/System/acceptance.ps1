@@ -105,10 +105,9 @@ try {
 
     Write-Host '==> HydePHP v3'
 
-    # v3 does not bump the version number, so the artifact is proven to carry the v3
-    # development line by behaviour that the released v2 line does not have.
+    # The version constant is a claim about the code; the checks after it are the evidence.
 
-    Assert-Contains 'info reports the v3 development line' $info.Output 'v3 development line'
+    Assert-Contains 'info reports a v3 framework version' $info.Output '3.0.0-dev'
 
     $listed = Invoke-Hyde $site @('list', '--no-ansi')
 

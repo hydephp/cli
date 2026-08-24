@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Support\FrameworkGeneration;
+use Hyde\Foundation\HydeKernel;
 use Tests\Support\TemporaryProject;
 
 
@@ -28,7 +28,7 @@ it('reports a portable project and the embedded framework', function () {
         ->toContain('3.0.0')
         ->toContain('Project type: Portable')
         ->toContain('Framework:')
-        ->toContain(FrameworkGeneration::describe().' (embedded)')
+        ->toContain(HydeKernel::VERSION.' (embedded)')
         ->toContain('PHP:')
         ->toContain(PHP_VERSION)
         ->toContain('Root:')

@@ -204,11 +204,14 @@ the trade against the single-file guarantee is treated as settled.
 ### Where the framework comes from
 
 HydePHP v3 is unreleased. It lives on the `master` branch of the
-[`hydephp/develop`](https://github.com/hydephp/develop) monorepo, and its version numbers
-have deliberately not been bumped: `HydeKernel::VERSION` reads `2.0.3` on both the
-released v2 line and the v3 development line, and Packagist has no 3.x of any Hyde
-package. **The generation of the framework cannot be read off a version number**, and
-nothing in this repository tries to.
+[`hydephp/develop`](https://github.com/hydephp/develop) monorepo, and Packagist has no 3.x
+of any Hyde package. `HydeKernel::VERSION` reads `3.0.0-dev`, having been unbumped at
+`2.0.3` for most of v3's development — during which it distinguished the two lines not at
+all.
+
+**A version constant states what code claims to be, not what it is.** It is checked, but
+only alongside checks that cannot be satisfied by editing a string: where the package came
+from, and whether the code carries v3's removals and additions.
 
 The CLI therefore resolves `hyde/framework` and `hyde/realtime-compiler` from a local
 checkout of the monorepo, through Composer path repositories — the same mechanism the
@@ -231,7 +234,7 @@ Because a resolution that quietly reaches Packagist would produce an executable 
 looks entirely correct — right version string, right command names for the most part —
 the result is verified rather than assumed. [`bin/verify-v3-graph.php`](../bin/verify-v3-graph.php)
 asserts that both packages came from a `path` dist at `dev-master`, that the framework
-carries v3's removals (`RebuildPageCommand`, `CodeblockFilepathProcessor`, the sitemap and
+reports a 3.x version, that it carries v3's removals (`RebuildPageCommand`, `CodeblockFilepathProcessor`, the sitemap and
 RSS post-build tasks) and its additions (Blade Blocks, the code block and terminal view
 models). It runs from `bin/build-phar.php` as the executable is assembled, so a v2
 fallback fails the build instead of shipping.
