@@ -42,7 +42,8 @@ jobs:
       # `hyde/realtime-compiler` resolve from a develop@master checkout through a
       # Composer path repository. It is a build input, and has to be in place first.
       - name: Check out the HydePHP v3 development line
-        run: bin/sync-develop.sh
+        shell: bash
+        run: bash bin/sync-develop.sh
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
@@ -118,7 +119,8 @@ jobs:
       # `hyde/realtime-compiler` resolve from a develop@master checkout through a
       # Composer path repository. It is a build input, and has to be in place first.
       - name: Check out the HydePHP v3 development line
-        run: bin/sync-develop.sh
+        shell: bash
+        run: bash bin/sync-develop.sh
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
@@ -144,7 +146,8 @@ jobs:
       # `hyde/realtime-compiler` resolve from a develop@master checkout through a
       # Composer path repository. It is a build input, and has to be in place first.
       - name: Check out the HydePHP v3 development line
-        run: bin/sync-develop.sh
+        shell: bash
+        run: bash bin/sync-develop.sh
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist

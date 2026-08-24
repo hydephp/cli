@@ -139,7 +139,8 @@ jobs:
       # The fixture resolves the framework from the v3 monorepo, the same way the CLI
       # does, so that what it dispatches into is a real v3 dependency graph.
       - name: Check out the HydePHP v3 development line
-        run: bin/sync-develop.sh
+        shell: bash
+        run: bash bin/sync-develop.sh
 
       - name: Install the fixture project's own dependency graph
         run: composer install --no-interaction --no-progress --prefer-dist --working-dir=tests/Fixtures/composer-project

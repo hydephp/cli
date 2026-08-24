@@ -40,7 +40,6 @@
             "Tests\\": "tests/"
         }
     },
-    "_release_checklist": "PRE-RELEASE SCAFFOLDING. HydePHP v3 is unreleased, so hyde/framework and hyde/realtime-compiler are resolved from a local develop@master checkout through the path repository below. When v3 is tagged: replace the dev-master constraints with ^3.0, delete the `repositories` block, and delete bin/sync-develop.sh, bin/verify-v3-graph.php and tests/Fixtures/project-template. See docs/ARCHITECTURE.md, 'Where the framework comes from'.",
     "repositories": [
         {
             "type": "path",
@@ -69,5 +68,8 @@
     },
     "suggest": {
         "ext-curl": "Required for using the self-update feature when not installing through Composer."
+    },
+    "extra": {
+        "release-checklist": "PRE-RELEASE SCAFFOLDING. HydePHP v3 is unreleased, so hyde/framework and hyde/realtime-compiler are resolved from a local develop@master checkout through the path repository below. When v3 is tagged: replace the dev-master constraints with ^3.0, delete the `repositories` block, and delete bin/sync-develop.sh, bin/verify-v3-graph.php and tests/Fixtures/project-template. See docs/ARCHITECTURE.md, 'Where the framework comes from'."
     }
 }

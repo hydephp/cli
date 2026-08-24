@@ -69,7 +69,7 @@ jobs:
       # checkout has to be in place before either of them starts.
       - name: Check out the HydePHP v3 development line
         shell: bash
-        run: bin/sync-develop.sh
+        run: bash bin/sync-develop.sh
 
       - name: Build the executable (POSIX)
         if: ${{ matrix.platform != 'windows-x86_64' }}
