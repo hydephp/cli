@@ -232,6 +232,10 @@ function syncTotalInstalls(): int
 function syncTotalBinaryDownloads(string $repo, string $accessToken): int
 {
     $binaryNames = [
+        // Legacy executable used by older releases.
+        'hyde',
+
+        // Current platform-specific executables.
         'hyde-linux-x86_64',
         'hyde-linux-arm64',
         'hyde-macos-x86_64',
