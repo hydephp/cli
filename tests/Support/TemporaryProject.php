@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use App\Launcher\Project;
 use FilesystemIterator;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
@@ -33,7 +34,16 @@ final class TemporaryProject
     /** @var list<string> */
     private static array $created = [];
 
-    /** Create an empty directory that no project detection will ever attribute to this repository. */
+    /**
+     * Create an empty directory that no project detection will ever attribute to this repository.
+     *
+     * The path is returned in the launcher's canonical representation, which is the one
+     * every path the launcher exposes is in. A fixture that handed back the platform's
+     * own spelling instead would be comparing a Windows temporary directory against
+     * the resolved path of the same directory, and the two differ in more than a
+     * separator: `sys_get_temp_dir()` can be a short name, and its drive letter
+     * has no fixed case. What tests need is the name of the directory, once.
+     */
     public static function directory(string $prefix = 'project'): string
     {
         $path = sys_get_temp_dir().'/hyde-cli-tests/'.$prefix.'-'.bin2hex(random_bytes(6));
@@ -42,7 +52,7 @@ final class TemporaryProject
 
         self::$created[] = $path;
 
-        return realpath($path);
+        return Project::canonicalize($path);
     }
 
     /**

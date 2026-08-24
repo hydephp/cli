@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace App\Launcher;
 
 use function rtrim;
+use function substr;
+use function strtoupper;
 use function is_file;
+use function realpath;
+use function is_string;
 use function preg_match;
+use function preg_replace;
 use function str_replace;
+use function str_starts_with;
 
 /**
  * An immutable description of the project the CLI was invoked against.
@@ -79,15 +85,61 @@ final class Project
         return $this->isComposer() && is_file($this->entryPoint());
     }
 
-    /** Normalize a path to use forward slashes without a trailing separator, so paths compare equal across platforms. */
+    /**
+     * Resolve a path to the canonical spelling of the directory it names.
+     *
+     * This is the representation every path the launcher exposes is in. Where the path
+     * exists on disk it is resolved first, so that a symlink, a relative segment, or a
+     * Windows short name (`C:\\Users\\RUNNER~1`) all reduce to the one spelling of the
+     * one directory; where it does not exist, the lexical rule alone applies.
+     */
+    public static function canonicalize(string $path): string
+    {
+        if ($path === '') {
+            return '';
+        }
+
+        $real = @realpath($path);
+
+        return self::normalize(is_string($real) && $real !== '' ? $real : $path);
+    }
+
+    /**
+     * Normalize the spelling of a path, without touching the filesystem.
+     *
+     * The rule, in order:
+     *
+     *  1. Backslashes become forward slashes, so one separator is used throughout.
+     *  2. Repeated separators collapse, except a leading `//`, which is a UNC share.
+     *  3. A leading drive letter is upper-cased, since `c:/` and `C:/` are one drive.
+     *  4. A trailing separator is removed, except from a root that consists of one.
+     *
+     * Dot segments are deliberately left alone: `..` cannot be resolved lexically in the
+     * presence of symlinks, so resolving it is {@see canonicalize()}'s job, not this one.
+     */
     public static function normalize(string $path): string
     {
+        if ($path === '') {
+            return '';
+        }
+
         $path = str_replace('\\', '/', $path);
+
+        // A UNC path (`//server/share`) opens with exactly two separators, which are part
+        // of the root rather than an empty segment, so they survive the collapse.
+        $prefix = str_starts_with($path, '//') ? '/' : '';
+
+        $path = $prefix.preg_replace('#/{2,}#', '/', $path);
+
+        if (preg_match('/^([A-Za-z]):/', $path, $matches) === 1) {
+            $path = strtoupper($matches[1]).substr($path, 1);
+        }
 
         $trimmed = rtrim($path, '/');
 
-        // Preserve the POSIX root (/) and bare Windows drive roots (C:/) which must keep their trailing slash.
-        if ($trimmed === '' || preg_match('/^[A-Za-z]:$/', $trimmed) === 1) {
+        // Preserve the POSIX root (/) and bare Windows drive roots (C:/), where the
+        // separator is not a separator between segments but the root itself.
+        if ($trimmed === '' || preg_match('/^[A-Z]:$/', $trimmed) === 1) {
             return $trimmed.'/';
         }
 

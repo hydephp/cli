@@ -204,12 +204,4 @@ it('exposes no dependency paths for a portable project', function () {
         ->and($project->hasAutoloader())->toBeFalse();
 });
 
-it('normalizes paths consistently', function (string $input, string $expected) {
-    expect(Project::normalize($input))->toBe($expected);
-})->with([
-    ['/Users/emma/site/', '/Users/emma/site'],
-    ['/Users/emma/site', '/Users/emma/site'],
-    ['C:\\Users\\emma\\site', 'C:/Users/emma/site'],
-    ['C:\\', 'C:/'],
-    ['/', '/'],
-]);
+// The canonical path representation has its own file: tests/Unit/Launcher/ProjectPathTest.php.

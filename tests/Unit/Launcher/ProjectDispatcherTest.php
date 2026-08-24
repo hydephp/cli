@@ -83,10 +83,14 @@ it('puts the bundled runtime at the front of the search path', function () {
 
     $environment = $dispatcher->environmentFor('/projects/site/hyde');
 
+    // Read back under the key the platform actually uses, which on Windows is `Path`.
+    // Asserting on a hard-coded `PATH` would be reading a key that is not there.
+    $key = $dispatcher->searchPathKey($environment);
+
     // A Hyde project shells out to a bare `php`, so the runtime the executable carries has
     // to be findable by the project's own subprocesses.
-    expect($environment['PATH'])->toStartWith(dirname((new RuntimeManager())->path()))
-        ->and($environment['PATH'])->toContain(getenv('PATH'))
+    expect($environment[$key])->toStartWith(dirname((new RuntimeManager())->path()))
+        ->and($environment[$key])->toContain((string) getenv($key))
         ->and($environment[ProjectDispatcher::DISPATCH_MARKER])->toBe('/projects/site/hyde');
 });
 
@@ -135,8 +139,13 @@ it('runs the project entry point and returns its exit status', function () {
     // file. That is also the point: nothing is proxied or interpreted on the way.
     $status = (new ProjectDispatcher(new RuntimeManager()))->dispatch(Project::composer($path, $path), ['build', '--no-ansi']);
 
+    // The child reports its working directory in the host's own spelling, since that is
+    // what `getcwd()` hands it. What is asserted is which directory it ran in, so the
+    // separators are brought to the canonical one before the paths are compared.
+    $log = str_replace('\\', '/', file_get_contents($path.'/dispatch.log'));
+
     expect($status)->toBe(3)
-        ->and(file_get_contents($path.'/dispatch.log'))
+        ->and($log)
         ->toContain('arguments: build --no-ansi')
         ->toContain('cwd: '.$path)
         ->toContain('autoloader: present')

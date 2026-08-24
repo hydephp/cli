@@ -7,7 +7,6 @@ namespace App\Launcher;
 use function is_dir;
 use function is_file;
 use function dirname;
-use function realpath;
 
 /**
  * Decides whether a directory is a Portable project or a Composer project.
@@ -49,7 +48,7 @@ final class ProjectDetector
      */
     public function detect(string $directory): Project
     {
-        $start = Project::normalize(realpath($directory) ?: $directory);
+        $start = Project::canonicalize($directory);
 
         $current = $start;
 
