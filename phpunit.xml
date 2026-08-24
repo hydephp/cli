@@ -5,8 +5,15 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Test Suite">
-            <directory suffix="Test.php">./tests</directory>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <!-- Runs the built native executable; skipped when there is no artifact for this platform. -->
+        <testsuite name="Integration">
+            <directory suffix="Test.php">./tests/Integration</directory>
         </testsuite>
     </testsuites>
     <source>

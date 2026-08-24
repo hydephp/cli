@@ -1,0 +1,40 @@
+{
+    "name": "hyde-cli-fixtures/composer-project",
+    "description": "A Hyde Composer project fixture, used to prove the CLI dispatches into a project's own dependency graph.",
+    "type": "project",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../../develop/packages/*",
+            "options": {
+                "symlink": false
+            }
+        },
+        {
+            "type": "path",
+            "url": "../addon",
+            "options": {
+                "symlink": false
+            }
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "hyde/framework": "dev-master",
+        "hyde/cli-test-addon": "@dev",
+        "laravel-zero/framework": "^11.0",
+        "hyde/realtime-compiler": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,21 +1,49 @@
 <?php
 
-// Bootstrap the Phar application
+/*
+|--------------------------------------------------------------------------
+| Bootstrap The Embedded Application
+|--------------------------------------------------------------------------
+|
+| This file boots the Hyde application that ships inside the executable.
+| It is only ever reached for a Portable project, or for one of the few
+| commands that belong to the CLI itself. A Composer project has been
+| dispatched into its own dependency graph long before we get here.
+|
+*/
 
-// Define working directory
-define('HYDE_WORKING_DIR', getenv('HYDE_WORKING_DIR') ?: getcwd());
+use App\Launcher\Launcher;
+use App\Launcher\RuntimeManager;
 
-// As the Phar archive is readonly, we define a temporary directory
-// that Laravel can use to store the compiled views, cache files,
-// and config files, all to allow the binary to run anywhere,
-define('HYDE_TEMP_DIR', getenv('HYDE_TEMP_DIR') ?: sprintf('%s/hyde/%s', sys_get_temp_dir(),
-    md5(sprintf('%s-%s', HYDE_WORKING_DIR, Hyde\Foundation\HydeKernel::VERSION))
-));
+// Deprecation notices raised by dependencies are not actionable for someone running a
+// pre-built executable, and printing them would corrupt command output. Warnings and
+// errors are still reported, and the framework's exception handler takes over as
+// soon as it has bootstrapped.
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
-// Create and set up the temporary directory if it doesn't exist
-if (! is_dir(HYDE_TEMP_DIR)) {
-    mkdir(HYDE_TEMP_DIR.'/config', recursive: true);
-    mkdir(HYDE_TEMP_DIR.'/app/storage/framework/cache', recursive: true);
+// The launcher has normally already detected the project and defined these constants.
+// When the application is booted directly (in the test suite, or when embedding it)
+// we run exactly the same detection here, so the environment is identical.
+$launcher = new Launcher();
+$project = $launcher->detect();
+
+$environment = $launcher->defineEnvironment($project, isolated: $project->isComposer() && ! $launcher->isSelfDispatch($project));
+
+/*
+|--------------------------------------------------------------------------
+| Prepare The Writable Working Directories
+|--------------------------------------------------------------------------
+|
+| The executable and everything inside it is read only, so we point Laravel
+| at a temporary directory for the compiled views, cached configuration
+| and framework caches. That is what lets the binary run anywhere.
+|
+*/
+
+foreach ([$environment['temp'].'/config', $environment['temp'].'/app/storage/framework/cache', $environment['working']] as $directory) {
+    if (! is_dir($directory)) {
+        @mkdir($directory, 0755, recursive: true);
+    }
 }
 
 /*
@@ -29,7 +57,10 @@ if (! is_dir(HYDE_TEMP_DIR)) {
 |
 */
 
-$app = new \App\Application(HYDE_WORKING_DIR);
+$app = new \App\Application($environment['working']);
+
+// Everything the framework writes goes outside the project being built.
+$app->useStoragePath($environment['temp'].'/app/storage');
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +75,7 @@ $app = new \App\Application(HYDE_WORKING_DIR);
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    \Hyde\Foundation\ConsoleKernel::class
+    \App\Foundation\ConsoleKernel::class
 );
 
 $app->singleton(
@@ -54,7 +85,21 @@ $app->singleton(
 
 /*
 |--------------------------------------------------------------------------
-| Bind Phar helpers
+| Bind The Detected Project
+|--------------------------------------------------------------------------
+|
+| The project model is a first class concept, so the detected project is
+| bound into the container and can be resolved by any command that needs
+| to know which kind of project it is running against.
+|
+*/
+
+$app->instance(\App\Launcher\Project::class, $project);
+$app->instance(\App\Launcher\RuntimeManager::class, RuntimeManager::make());
+
+/*
+|--------------------------------------------------------------------------
+| Bind Executable Helpers
 |--------------------------------------------------------------------------
 |
 | Next, we need to bind some important locations into the container so
@@ -62,9 +107,9 @@ $app->singleton(
 |
 */
 
-$app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, function () use ($app) {
+$app->afterBootstrapping(\App\Foundation\LoadConfiguration::class, function () use ($app, $environment) {
     // Set the cache path for the compiled views
-    $app['config']->set('view.compiled', HYDE_TEMP_DIR.'/views');
+    $app['config']->set('view.compiled', $environment['temp'].'/views');
 });
 
 /*
@@ -79,7 +124,7 @@ $app->afterBootstrapping(Hyde\Foundation\Internal\LoadConfiguration::class, func
 */
 
 $hyde = new \Hyde\Foundation\HydeKernel(
-    HYDE_WORKING_DIR
+    $environment['working']
 );
 
 $app->singleton(

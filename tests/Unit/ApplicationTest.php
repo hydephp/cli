@@ -1,44 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Application;
 use Hyde\Foundation\Application as HydeApplication;
+use Tests\Support\TemporaryProject;
 
 test('application version constant follows semantic versioning', function () {
-    $version = Application::APP_VERSION;
+    expect(Application::APP_VERSION)->toMatch('/^\d+\.\d+\.\d+$/');
+});
 
-    expect($version)->toMatch('/^\d+\.\d+\.\d+$/');
+test('the CLI is versioned independently of the framework', function () {
+    expect(Application::APP_VERSION)->toBe('3.0.0');
 });
 
 test('custom application extends Hyde application', function () {
     expect(new Application())->toBeInstanceOf(HydeApplication::class);
 });
 
-it('uses custom cached packages path', function () {
-    expect((new Application())->getCachedPackagesPath())->toBe(HYDE_TEMP_DIR.'/app/storage/framework/cache/packages.php');
+it('writes its caches outside the project being built', function () {
+    $project = TemporaryProject::portable();
+    $storage = TemporaryProject::directory('storage');
+
+    $application = new Application($project);
+
+    $application->useStoragePath($storage);
+
+    expect($application->getCachedPackagesPath())->toStartWith($storage)
+        ->and($application->getCachedConfigPath())->toStartWith($storage)
+        ->and($application->getCachedPackagesPath())->not->toStartWith($project)
+        ->and($application->getCachedConfigPath())->not->toStartWith($project);
 });
 
-it('uses custom cached config path', function () {
-    expect((new Application())->getCachedConfigPath())->toEndWith('app/../app/storage/framework/cache/config.php');
-});
+it('falls back to a namespace when the project has no composer manifest', function () {
+    $application = new Application();
 
-it('uses custom namespace', function () {
-    expect((new Application())->getNamespace())->toBe('App');
-});
+    $application->setBasePath(TemporaryProject::portable());
 
-it('uses parent namespace logic if composer.json exists', function () {
-    $application = new ApplicationWithPublicNamespace();
-
-    $application->namespace = 'Example';
-    $application->setBasePath(__DIR__.'/../../');
-
-    expect($application->getNamespace())->toBe('Example');
+    expect($application->getNamespace())->toBe('App');
 });
 
 it('returns default command name', function () {
     expect((new Application())->getName())->toBe('list');
 });
-
-class ApplicationWithPublicNamespace extends Application
-{
-    public $namespace;
-}

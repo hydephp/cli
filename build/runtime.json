@@ -1,0 +1,29 @@
+{
+    "$comment": "Single source of truth for the HydeCLI native runtime build. Read by bin/build-native.sh and by .github/workflows/build-native.yml. See ARCHITECTURE.md for the rationale behind every entry.",
+    "php": "8.4",
+    "spc": "2.8.6",
+    "extensions": {
+        "ctype": "Required by illuminate/support and symfony/console for character class checks.",
+        "curl": "Required by the self-update command and by Illuminate\\Http\\Client (Guzzle) for GitHub API access.",
+        "dom": "Required by hyde/framework for sitemap and RSS feed generation.",
+        "fileinfo": "Required by hyde/framework (Hyde\\Facades\\Filesystem) and Laravel's file helpers for MIME detection.",
+        "filter": "Required by symfony/yaml and Laravel validation helpers.",
+        "iconv": "Required by symfony/string and league/commonmark for character set conversion when mbstring cannot be used.",
+        "mbregex": "Required by illuminate/support (Str::ucsplit and the string helpers built on mb_split) and by symfony/string.",
+        "mbstring": "Required by illuminate/support (Str), league/commonmark, and symfony/string.",
+        "openssl": "Required for HTTPS transport in the self-update command and for release signature verification.",
+        "pcntl": "Required by symfony/process for signal handling when running `hyde serve` child processes. POSIX only.",
+        "phar": "Required to run the embedded application: the executable is a micro SAPI bound to a PHAR.",
+        "posix": "Required by symfony/console and laravel/prompts for TTY detection and interactive prompts. POSIX only.",
+        "simplexml": "Required by hyde/framework for sitemap and RSS feed generation.",
+        "tokenizer": "Required by the Blade compiler in illuminate/view.",
+        "xml": "Required as the base extension for dom, simplexml, xmlreader and xmlwriter.",
+        "xmlreader": "Required as a dependency of the XML extension family used by feed generation.",
+        "xmlwriter": "Required by hyde/framework for sitemap and RSS feed generation.",
+        "zlib": "Required to read the GZ-compressed PHAR that the executable embeds."
+    },
+    "unsupported-extensions": {
+        "$comment": "Extensions that cannot be built for a platform, dropped from that platform's build rather than left to fail the environment check. No PHP on Windows has ever had pcntl or posix, so nothing that runs there can be relying on them: symfony/process and symfony/console take their Windows code paths instead. Read by both build scripts, so neither can drift from the other on what it builds.",
+        "windows": ["pcntl", "posix"]
+    }
+}

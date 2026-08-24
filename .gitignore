@@ -1,3 +1,11 @@
 /vendor
 /.idea
 .env
+/.build
+/log
+/.build-*
+/builds/*.phar
+/runtime
+/tests/Fixtures/composer-project/vendor
+/tests/Fixtures/composer-project/composer.lock
+/tests/Fixtures/composer-project/_site
