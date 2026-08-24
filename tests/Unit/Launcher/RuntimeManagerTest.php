@@ -66,6 +66,16 @@ it('extracts the embedded runtime into a versioned cache directory', function ()
         ->and(file_get_contents($path))->toBe("#!/bin/sh\necho runtime\n");
 });
 
+it('extracts a runtime built for a platform that is not this one', function () {
+    // Whether a file can be marked executable is a property of the host filesystem, not of
+    // the platform the runtime inside the executable was compiled for. Confusing the two
+    // makes every extraction fail on Windows, where no file without an executable
+    // extension is ever `is_executable()`, whatever was just chmod-ed.
+    [$manager, , $cache] = runtimeFixture(platform: new Platform('Windows', 'AMD64'));
+
+    expect($manager->extract())->toBe($cache.'/hyde/runtime/8.4.24/windows-x86_64/php.exe');
+});
+
 it('makes the extracted runtime executable', function () {
     [$manager] = runtimeFixture();
 
