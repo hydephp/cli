@@ -1,10 +1,29 @@
-name: Build Native Executables
+name: Build Native Executable
 
-# Called by other workflows only. Building five artifacts means compiling PHP five times,
-# so it runs once per pipeline rather than once per trigger.
+# Called by other workflows only, once per platform. Building an artifact means compiling
+# PHP from source, so this is by far the most expensive job in any pipeline it appears in.
+#
+# One call builds exactly one platform. That is what lets a caller depend on a single
+# platform's artifact: a matrix job cannot be depended on leg by leg, so a downstream
+# job that needs only the macOS artifact would otherwise wait for — and be cancelled
+# by — the Windows build. `build-native-all.yml` calls this once per platform for
+# the release pipelines, which do want every artifact or none.
+
 on:
   workflow_call:
     inputs:
+      platform:
+        description: The platform slug, such as `macos-arm64`.
+        type: string
+        required: true
+      runner:
+        description: The GitHub runner label to build on.
+        type: string
+        required: true
+      artifact:
+        description: The name of the executable that is produced and uploaded.
+        type: string
+        required: true
       build-id:
         description: A short identifier recorded inside the executable.
         type: string
@@ -17,28 +36,8 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: linux-x86_64
-            runner: ubuntu-latest
-            artifact: hyde-linux-x86_64
-          - platform: linux-arm64
-            runner: ubuntu-24.04-arm
-            artifact: hyde-linux-arm64
-          - platform: macos-x86_64
-            runner: macos-15-intel
-            artifact: hyde-macos-x86_64
-          - platform: macos-arm64
-            runner: macos-latest
-            artifact: hyde-macos-arm64
-          - platform: windows-x86_64
-            runner: windows-latest
-            artifact: hyde-windows-x86_64.exe
-
-    runs-on: ${{ matrix.runner }}
-    name: Build ${{ matrix.platform }}
+    runs-on: ${{ inputs.runner }}
+    name: Build ${{ inputs.platform }}
 
     # static-php-cli resolves its prebuilt toolchain through the GitHub API. Unauthenticated
     # calls from a runner are rate limited, which surfaces as a 403 on the releases endpoint
@@ -57,6 +56,23 @@ jobs:
           extensions: fileinfo, mbstring, dom, simplexml, xmlwriter
           ini-values: phar.readonly=0
 
+      # static-php-cli builds against the Visual Studio toolchain on Windows and refuses to
+      # start without it. What the runner image actually ships is recorded here, so that a
+      # doctor failure can be read against the toolchain that was present rather than
+      # guessed at from the message.
+      - name: Report the Visual Studio installations on this runner
+        if: ${{ inputs.platform == 'windows-x86_64' }}
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+
+          if (Test-Path $vswhere) {
+            & $vswhere -products * -format json
+          } else {
+            Write-Host "vswhere.exe is not present at $vswhere"
+          }
+
       # static-php-cli downloads and compiles PHP and every library it links against,
       # which is by far the slowest part of the build.
       - name: Cache the static-php-cli workspace
@@ -65,9 +81,9 @@ jobs:
           path: |
             .build/downloads
             .build/buildroot
-          key: spc-${{ matrix.platform }}-${{ hashFiles('build/runtime.json') }}
+          key: spc-${{ inputs.platform }}-${{ hashFiles('build/runtime.json') }}
           restore-keys: |
-            spc-${{ matrix.platform }}-
+            spc-${{ inputs.platform }}-
 
       # HydePHP v3 is unreleased and untagged, so `hyde/framework` and
       # `hyde/realtime-compiler` resolve from a develop@master checkout through a
@@ -78,30 +94,30 @@ jobs:
         run: bash bin/sync-develop.sh
 
       - name: Build the executable (POSIX)
-        if: ${{ matrix.platform != 'windows-x86_64' }}
+        if: ${{ inputs.platform != 'windows-x86_64' }}
         run: bin/build-native.sh --build="${GITHUB_SHA::7}"
 
       - name: Build the executable (Windows)
-        if: ${{ matrix.platform == 'windows-x86_64' }}
+        if: ${{ inputs.platform == 'windows-x86_64' }}
         shell: pwsh
         run: pwsh bin/build-native.ps1 -Build "$($env:GITHUB_SHA.Substring(0,7))"
 
       - name: Verify the executable reports its version
-        if: ${{ matrix.platform != 'windows-x86_64' }}
+        if: ${{ inputs.platform != 'windows-x86_64' }}
         run: |
-          chmod +x "builds/${{ matrix.artifact }}"
-          "./builds/${{ matrix.artifact }}" --version --no-ansi
+          chmod +x "builds/${{ inputs.artifact }}"
+          "./builds/${{ inputs.artifact }}" --version --no-ansi
 
       - name: Verify the executable reports its version (Windows)
-        if: ${{ matrix.platform == 'windows-x86_64' }}
+        if: ${{ inputs.platform == 'windows-x86_64' }}
         shell: pwsh
         run: |
-          & ".\builds\${{ matrix.artifact }}" --version --no-ansi
+          & ".\builds\${{ inputs.artifact }}" --version --no-ansi
 
       - name: Upload the executable
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact }}
-          path: builds/${{ matrix.artifact }}
+          name: ${{ inputs.artifact }}
+          path: builds/${{ inputs.artifact }}
           if-no-files-found: error
           retention-days: 7

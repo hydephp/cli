@@ -76,4 +76,4 @@ jobs:
   # when one of the platforms does not build.
   verify-build:
     needs: prepare-release
-    uses: ./.github/workflows/build-native.yml
+    uses: ./.github/workflows/build-native-all.yml

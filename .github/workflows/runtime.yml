@@ -14,25 +14,58 @@ on:
 # The authoritative Linux acceptance test runs the hyde-linux-x86_64 artifact inside a
 # minimal container on a native x86_64 runner, where PHP is never installed. macOS
 # and Windows get native smoke tests on their own runners.
+#
+# Every platform is built and exercised on its own chain:
+#
+#     build-<platform>  ->  <platform> acceptance
+#
+# The build is called once per platform rather than as a matrix, because a matrix job
+# cannot be depended on leg by leg: a single `needs: build` would hold every
+# acceptance job hostage to the slowest platform, and skip all of them when any
+# one platform failed to build. Each chain now stands or falls by itself, and
+# each has its own row in the checks list, so a platform that does not build
+# leaves a visibly skipped acceptance job rather than a quietly absent one.
 
 jobs:
-  build:
+  build-linux-x86_64:
     uses: ./.github/workflows/build-native.yml
+    with:
+      platform: linux-x86_64
+      runner: ubuntu-latest
+      artifact: hyde-linux-x86_64
 
-  linux-acceptance:
-    needs: build
+  build-linux-arm64:
+    uses: ./.github/workflows/build-native.yml
+    with:
+      platform: linux-arm64
+      runner: ubuntu-24.04-arm
+      artifact: hyde-linux-arm64
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runner: ubuntu-latest
-            artifact: hyde-linux-x86_64
-          - runner: ubuntu-24.04-arm
-            artifact: hyde-linux-arm64
+  build-macos-x86_64:
+    uses: ./.github/workflows/build-native.yml
+    with:
+      platform: macos-x86_64
+      runner: macos-15-intel
+      artifact: hyde-macos-x86_64
 
-    runs-on: ${{ matrix.runner }}
-    name: Linux acceptance (${{ matrix.artifact }})
+  build-macos-arm64:
+    uses: ./.github/workflows/build-native.yml
+    with:
+      platform: macos-arm64
+      runner: macos-latest
+      artifact: hyde-macos-arm64
+
+  build-windows-x86_64:
+    uses: ./.github/workflows/build-native.yml
+    with:
+      platform: windows-x86_64
+      runner: windows-latest
+      artifact: hyde-windows-x86_64.exe
+
+  linux-x86_64-acceptance:
+    needs: build-linux-x86_64
+    runs-on: ubuntu-latest
+    name: Linux acceptance (hyde-linux-x86_64)
 
     steps:
       # Only the acceptance script is checked out: no application sources, no vendor
@@ -45,11 +78,11 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
+          name: hyde-linux-x86_64
           path: artifact
 
       - name: Prepare the artifact
-        run: chmod +x "artifact/${{ matrix.artifact }}"
+        run: chmod +x artifact/hyde-linux-x86_64
 
       # alpine has no PHP, no Composer, and no glibc. The Linux artifacts are statically
       # linked against musl by static-php-cli, so this is the harshest honest host.
@@ -58,22 +91,12 @@ jobs:
           docker run --rm \
             -v "$PWD:/work" -w /work \
             alpine:3.20 \
-            sh -c 'apk add --no-cache curl >/dev/null && sh tests/System/acceptance.sh "/work/artifact/${{ matrix.artifact }}"'
+            sh -c 'apk add --no-cache curl >/dev/null && sh tests/System/acceptance.sh /work/artifact/hyde-linux-x86_64'
 
-  macos-smoke:
-    needs: build
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runner: macos-latest
-            artifact: hyde-macos-arm64
-          - runner: macos-15-intel
-            artifact: hyde-macos-x86_64
-
-    runs-on: ${{ matrix.runner }}
-    name: macOS smoke (${{ matrix.artifact }})
+  linux-arm64-acceptance:
+    needs: build-linux-arm64
+    runs-on: ubuntu-24.04-arm
+    name: Linux acceptance (hyde-linux-arm64)
 
     steps:
       - uses: actions/checkout@v4
@@ -84,22 +107,71 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: ${{ matrix.artifact }}
+          name: hyde-linux-arm64
+          path: artifact
+
+      - name: Prepare the artifact
+        run: chmod +x artifact/hyde-linux-arm64
+
+      - name: Run the acceptance suite in a container with no PHP
+        run: |
+          docker run --rm \
+            -v "$PWD:/work" -w /work \
+            alpine:3.20 \
+            sh -c 'apk add --no-cache curl >/dev/null && sh tests/System/acceptance.sh /work/artifact/hyde-linux-arm64'
+
+  macos-arm64-acceptance:
+    needs: build-macos-arm64
+    runs-on: macos-latest
+    name: macOS acceptance (hyde-macos-arm64)
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/acceptance.sh
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: hyde-macos-arm64
           path: artifact
 
       # The runner image ships a PHP. Removing it from the search path is what makes this
       # a test of the artifact rather than a test of the runner.
       - name: Run the acceptance suite with no PHP on the search path
         run: |
-          chmod +x "artifact/${{ matrix.artifact }}"
+          chmod +x artifact/hyde-macos-arm64
           env -i PATH=/usr/bin:/bin HOME="$HOME" \
-            sh tests/System/acceptance.sh "$PWD/artifact/${{ matrix.artifact }}"
+            sh tests/System/acceptance.sh "$PWD/artifact/hyde-macos-arm64"
 
-  windows-smoke:
-    needs: build
+  macos-x86_64-acceptance:
+    needs: build-macos-x86_64
+    runs-on: macos-15-intel
+    name: macOS acceptance (hyde-macos-x86_64)
 
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            tests/System/acceptance.sh
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: hyde-macos-x86_64
+          path: artifact
+
+      - name: Run the acceptance suite with no PHP on the search path
+        run: |
+          chmod +x artifact/hyde-macos-x86_64
+          env -i PATH=/usr/bin:/bin HOME="$HOME" \
+            sh tests/System/acceptance.sh "$PWD/artifact/hyde-macos-x86_64"
+
+  windows-x86_64-acceptance:
+    needs: build-windows-x86_64
     runs-on: windows-latest
-    name: Windows smoke (hyde-windows-x86_64.exe)
+    name: Windows acceptance (hyde-windows-x86_64.exe)
 
     steps:
       - uses: actions/checkout@v4
@@ -121,7 +193,7 @@ jobs:
           pwsh tests/System/acceptance.ps1 -Hyde "$PWD\artifact\hyde-windows-x86_64.exe"
 
   composer-dispatch:
-    needs: build
+    needs: build-linux-x86_64
 
     runs-on: ubuntu-latest
     name: Composer project dispatch (no PHP for the CLI)

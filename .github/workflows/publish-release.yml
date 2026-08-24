@@ -30,7 +30,7 @@ jobs:
           git push origin master
 
   build:
-    uses: ./.github/workflows/build-native.yml
+    uses: ./.github/workflows/build-native-all.yml
 
   sign:
     needs: build
