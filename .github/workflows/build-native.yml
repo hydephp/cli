@@ -40,6 +40,12 @@ jobs:
     runs-on: ${{ matrix.runner }}
     name: Build ${{ matrix.platform }}
 
+    # static-php-cli resolves its prebuilt toolchain through the GitHub API. Unauthenticated
+    # calls from a runner are rate limited, which surfaces as a 403 on the releases endpoint
+    # and fails the build before anything is compiled.
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - uses: actions/checkout@v4
 
