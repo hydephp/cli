@@ -20,7 +20,13 @@ $Config = Join-Path $Root 'build\runtime.json'
 
 $runtime = Get-Content $Config -Raw | ConvertFrom-Json
 $phpVersion = $runtime.php
-$extensions = ($runtime.extensions.PSObject.Properties.Name) -join ','
+
+# Windows PHP has never had pcntl or posix, and static-php-cli refuses to start a build
+# that asks for one. build/runtime.json records which extensions cannot exist here;
+# bin/build-native.sh filters against the same key, so the two scripts cannot come
+# to different conclusions about what goes into the executable.
+$unsupported = @($runtime.'unsupported-extensions'.windows)
+$extensions = (($runtime.extensions.PSObject.Properties.Name) | Where-Object { $unsupported -notcontains $_ }) -join ','
 
 Write-Host "==> HydeCLI native build"
 Write-Host "    PHP version: $phpVersion"

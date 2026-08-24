@@ -277,6 +277,13 @@ PHP 8.4 rather than 8.5 because 8.5 emits deprecation notices from dependencies 
 current release line (`PDO::MYSQL_ATTR_SSL_CA` in `laravel-zero/foundation`), and the
 suite has not been demonstrated clean on it.
 
+Two of the extensions cannot exist everywhere. `pcntl` and `posix` have never been part
+of any PHP on Windows, and static-php-cli refuses to start a build that asks for one,
+so `unsupported-extensions.windows` records them and both build scripts filter the
+set against it. The Windows executable is the same build minus those two:
+`symfony/process` and `symfony/console` take their Windows code paths, which
+is what every PHP on Windows has always done.
+
 ### Supported compatibility range
 
 | | Supported |

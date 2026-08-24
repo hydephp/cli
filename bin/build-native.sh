@@ -28,11 +28,25 @@ for argument in "$@"; do
 done
 
 read_config() {
-    php -r '$c = json_decode(file_get_contents($argv[1]), true); echo $argv[2] === "extensions" ? implode(",", array_keys($c["extensions"])) : $c[$argv[2]];' "$CONFIG" "$1"
+    php -r '$c = json_decode(file_get_contents($argv[1]), true); echo $c[$argv[2]];' "$CONFIG" "$1"
+}
+
+# The extension set, minus anything build/runtime.json records as impossible on the
+# platform being built for. bin/build-native.ps1 filters against the same key, so
+# the two scripts cannot come to different conclusions about what goes in.
+read_extensions() {
+    php -r '$c = json_decode(file_get_contents($argv[1]), true); echo implode(",", array_diff(array_keys($c["extensions"]), $c["unsupported-extensions"][$argv[2]] ?? []));' "$CONFIG" "$1"
 }
 
 PHP_VERSION="$(read_config php)"
-EXTENSIONS="$(read_config extensions)"
+
+case "$(uname -s)" in
+    Darwin) TARGET="macos" ;;
+    Linux)  TARGET="linux" ;;
+    *)      TARGET="$(uname -s | tr '[:upper:]' '[:lower:]')" ;;
+esac
+
+EXTENSIONS="$(read_extensions "$TARGET")"
 
 echo "==> HydeCLI native build"
 echo "    PHP version: $PHP_VERSION"
