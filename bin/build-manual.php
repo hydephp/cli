@@ -4,6 +4,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/lib/ansi-themes.php';
+require_once __DIR__.'/lib/manual-version.php';
 
 chdir(__DIR__.'/..');
 
@@ -358,16 +359,3 @@ function view(string $template, array $data): string
     return $template;
 }
 
-function parse_version(string $version): string
-{
-    preg_match('/HydePHP v(\d+\.\d+\.\d+) - \(HydePHP v(\d+\.\d+\.\d+)\)/', $version, $matches);
-
-    $cliVersion = $matches[1];
-    $hydeVersion = $matches[2];
-
-    if (! $matches || ! $cliVersion || ! $hydeVersion) {
-        throw new Exception("Failed to parse version: $version");
-    }
-
-    return "v$hydeVersion (CLI v$cliVersion)";
-}
