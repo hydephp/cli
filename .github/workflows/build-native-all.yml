@@ -35,8 +35,11 @@ jobs:
           - platform: macos-arm64
             runner: macos-latest
             artifact: hyde-macos-arm64
+          # windows-2022 deliberately: `windows-latest` ships Visual Studio 2026, which
+          # static-php-cli's fixed-path search for MSBuild does not know about. The
+          # long version of this is in runtime.yml, above the same pin.
           - platform: windows-x86_64
-            runner: windows-latest
+            runner: windows-2022
             artifact: hyde-windows-x86_64.exe
 
     uses: ./.github/workflows/build-native.yml

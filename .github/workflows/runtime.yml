@@ -55,11 +55,22 @@ jobs:
       runner: macos-latest
       artifact: hyde-macos-arm64
 
+  # windows-2022, not windows-latest. `windows-latest` is Windows Server 2025, which ships
+  # Visual Studio Enterprise 2026 at C:\Program Files\Microsoft Visual Studio\18\Enterprise.
+  # static-php-cli finds Visual Studio by testing six hard-coded MSBuild.exe paths, under
+  # `...\2022\{Community,Professional,Enterprise}` and the 2019 equivalents, so a 2026
+  # install is invisible to it and `spc doctor` stops the build with a check item it
+  # says cannot be fixed. It is a file-existence scan, so activating a developer
+  # environment does not help; what it needs is a toolchain it knows how to look
+  # for. windows-2022 has VS 2022 Enterprise at exactly the path it tests.
+  #
+  # Remove the pin once static-php-cli learns about VS 2026:
+  # https://github.com/crazywhalecc/static-php-cli/blob/main/src/SPC/builder/windows/SystemUtil.php
   build-windows-x86_64:
     uses: ./.github/workflows/build-native.yml
     with:
       platform: windows-x86_64
-      runner: windows-latest
+      runner: windows-2022
       artifact: hyde-windows-x86_64.exe
 
   linux-x86_64-acceptance:
