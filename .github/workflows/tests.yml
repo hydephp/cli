@@ -48,6 +48,13 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
+      # Composer caches `vendor` against the lock file, but a path repository's contents
+      # change whenever the develop checkout moves while the lock stays identical. A restored
+      # cache therefore serves a stale framework, silently. Re-mirroring is a local copy.
+      - name: Re-mirror the development packages
+        shell: bash
+        run: composer reinstall hyde/framework hyde/realtime-compiler --no-interaction --no-progress
+
       - name: Execute the unit and feature suites
         run: vendor/bin/pest --testsuite=Unit,Feature --coverage --coverage-clover ./coverage.xml
 
@@ -125,6 +132,13 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
+      # Composer caches `vendor` against the lock file, but a path repository's contents
+      # change whenever the develop checkout moves while the lock stays identical. A restored
+      # cache therefore serves a stale framework, silently. Re-mirroring is a local copy.
+      - name: Re-mirror the development packages
+        shell: bash
+        run: composer reinstall hyde/framework hyde/realtime-compiler --no-interaction --no-progress
+
       - name: Execute the unit and feature suites
         run: vendor/bin/pest --testsuite=Unit,Feature
 
@@ -152,10 +166,20 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
+      # Composer caches `vendor` against the lock file, but a path repository's contents
+      # change whenever the develop checkout moves while the lock stays identical. A restored
+      # cache therefore serves a stale framework, silently. Re-mirroring is a local copy.
+      - name: Re-mirror the development packages
+        shell: bash
+        run: composer reinstall hyde/framework hyde/realtime-compiler --no-interaction --no-progress
+
       # The fixture is a real Hyde Composer project with a path-repository addon package.
       # Installing it here is project setup, not something the CLI ever needs to do.
       - name: Install the Composer fixture project
         run: composer install --no-interaction --no-progress --prefer-dist --working-dir=tests/Fixtures/composer-project
+
+      - name: Re-mirror the fixture's development packages
+        run: composer reinstall hyde/framework hyde/realtime-compiler --no-interaction --no-progress --working-dir=tests/Fixtures/composer-project
 
       - name: Prove the fixture works on its own
         run: |

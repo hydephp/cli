@@ -67,6 +67,10 @@ Write-Host '==> Installing production dependencies'
 composer install --no-interaction --no-progress --prefer-dist --no-dev --optimize-autoloader --working-dir="$Root"
 if ($LASTEXITCODE -ne 0) { throw 'composer install failed' }
 
+Write-Host '==> Re-mirroring the development packages'
+composer reinstall hyde/framework hyde/realtime-compiler --no-interaction --no-progress --working-dir="$Root"
+if ($LASTEXITCODE -ne 0) { throw 'composer reinstall failed' }
+
 Write-Host '==> Verifying the embedded dependency graph is v3'
 & php (Join-Path $Root 'bin\verify-v3-graph.php')
 if ($LASTEXITCODE -ne 0) { throw 'The embedded dependency graph is not HydePHP v3' }

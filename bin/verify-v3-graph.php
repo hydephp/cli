@@ -118,7 +118,10 @@ if ($failures !== []) {
         fwrite(STDERR, "  - $failure\n");
     }
 
-    fwrite(STDERR, "\n  Run `bin/sync-develop.sh` and `composer update hyde/framework hyde/realtime-compiler`.\n\n");
+    // `composer update` does not help here: a path package is mirrored, and Composer sees
+    // no version change when the checkout moves, so it leaves the stale copy in place.
+    fwrite(STDERR, "\n  Run `bin/sync-develop.sh`, then\n");
+    fwrite(STDERR, "  `composer reinstall hyde/framework hyde/realtime-compiler`.\n\n");
 
     exit(1);
 }

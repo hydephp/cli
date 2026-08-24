@@ -80,6 +80,12 @@ done
 echo "==> Installing production dependencies"
 composer install --no-interaction --no-progress --prefer-dist --no-dev --optimize-autoloader --working-dir="$ROOT"
 
+# A path repository's contents change whenever the develop checkout moves, while the lock
+# stays identical, so an install that reused an existing vendor directory can be holding a
+# stale framework. Re-mirroring is a local copy.
+echo "==> Re-mirroring the development packages"
+composer reinstall hyde/framework hyde/realtime-compiler --no-interaction --no-progress --working-dir="$ROOT"
+
 echo "==> Verifying the embedded dependency graph is v3"
 php "$ROOT/bin/verify-v3-graph.php"
 
