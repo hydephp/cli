@@ -17,7 +17,8 @@ Please note that this branch is internal and is not covered by any backwards com
     "content_hash": "a2dee47ba6268925da97750ab742baf67f02e2fb54ce23d499fb66a5b0222903",
     "total_views": 1500,
     "total_clones": 6750,
-    "total_installs": 100
+    "total_installs": 100,
+    "total_binary_downloads": 50
   },
   "traffic": {
     "2024-01-01T00:00:00Z": {
@@ -63,7 +64,8 @@ $database = array{
     'content_hash' => string,
     'total_views' => int,
     'total_clones' => int,
-    'total_installs' => int
+    'total_installs' => int,
+    'total_binary_downloads' => int
   },
   'traffic' => array{
     string<timestamp('YYYY-MM-DDTHH:MM:SSZ')> => array{

@@ -26,7 +26,8 @@ echo "Syncing traffic data!\n";
  *     'content_hash' : string,
  *     'total_views' : int,
  *     'total_clones' : int,
- *     'total_installs' : int
+ *     'total_installs' : int,
+ *     'total_binary_downloads' : int
  *   },
  *   'traffic' : array<Timestamp, array{
  *     'views' : array{
@@ -62,6 +63,12 @@ echo ' - Syncing release installs... ';
 $totalInstalls = syncTotalInstalls();
 $database['_database']['total_installs'] = $totalInstalls;
 echo "     Done!\n";
+
+// Sync standalone binary downloads
+echo ' - Syncing binary downloads... ';
+$totalBinaryDownloads = syncTotalBinaryDownloads($repo, $accessToken);
+$database['_database']['total_binary_downloads'] = $totalBinaryDownloads;
+echo "    Done!\n";
 
 // Save the database
 echo 'Saving database... ';
@@ -140,10 +147,18 @@ function validateDatabaseSchema(array $database): void
             case '_database':
                 assert(array_key_exists('last_updated', $table));
                 assert(array_key_exists('content_hash', $table));
+                assert(array_key_exists('total_views', $table));
+                assert(array_key_exists('total_clones', $table));
+                assert(array_key_exists('total_installs', $table));
+                assert(array_key_exists('total_binary_downloads', $table));
 
                 assert(is_int($table['last_updated']));
                 assert(is_string($table['content_hash']));
                 assert(strlen($table['content_hash']) === 64);
+                assert(is_int($table['total_views']));
+                assert(is_int($table['total_clones']));
+                assert(is_int($table['total_installs']));
+                assert(is_int($table['total_binary_downloads']));
                 break;
             case 'traffic':
                 foreach ($table as $dateKey => $date) {
@@ -206,4 +221,86 @@ function syncTotalInstalls(): int
     $githubReleases = json_decode(file_get_contents('https://img.shields.io/github/downloads/hydephp/cli/total.json'), true);
 
     return $packagistInstalls['value'] + $githubReleases['value'];
+}
+
+/**
+ * Get the total number of downloads for standalone HydePHP CLI binaries.
+ *
+ * GitHub's release download totals include signatures and any other attached
+ * assets. For this statistic we count only the actual platform executables.
+ */
+function syncTotalBinaryDownloads(string $repo, string $accessToken): int
+{
+    $binaryNames = [
+        'hyde-linux-x86_64',
+        'hyde-linux-arm64',
+        'hyde-macos-x86_64',
+        'hyde-macos-arm64',
+        'hyde-windows-x86_64.exe',
+    ];
+
+    $total = 0;
+    $page = 1;
+
+    do {
+        $url = sprintf(
+            'https://api.github.com/repos/%s/releases?per_page=100&page=%d',
+            $repo,
+            $page,
+        );
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'User-Agent: HydePHP Traffic Controller',
+            'Accept: application/vnd.github+json',
+            "Authorization: Bearer $accessToken",
+            'X-GitHub-Api-Version: 2022-11-28',
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            throw new Exception('Curl error: '.curl_error($ch));
+        }
+
+        $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ($statusCode >= 400) {
+            throw new Exception(sprintf(
+                "Invalid status code while fetching releases: %s\n%s",
+                $statusCode,
+                $response,
+            ));
+        }
+
+        curl_close($ch);
+
+        $releases = json_decode($response, true);
+
+        if (! is_array($releases)) {
+            throw new Exception(sprintf(
+                "Invalid releases response:\n%s",
+                $response,
+            ));
+        }
+
+        foreach ($releases as $release) {
+            // Draft releases have not actually been released to users.
+            if ($release['draft'] ?? false) {
+                continue;
+            }
+
+            foreach ($release['assets'] ?? [] as $asset) {
+                if (in_array($asset['name'] ?? '', $binaryNames, true)) {
+                    $total += $asset['download_count'] ?? 0;
+                }
+            }
+        }
+
+        $page++;
+    } while (count($releases) === 100);
+
+    return $total;
 }
