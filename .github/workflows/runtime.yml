@@ -81,7 +81,7 @@ jobs:
     steps:
       # Only the acceptance script is checked out: no application sources, no vendor
       # directory, nothing the executable could accidentally lean on.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             tests/System/acceptance.sh
@@ -110,7 +110,7 @@ jobs:
     name: Linux acceptance (hyde-linux-arm64)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             tests/System/acceptance.sh
@@ -137,7 +137,7 @@ jobs:
     name: macOS acceptance (hyde-macos-arm64)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             tests/System/acceptance.sh
@@ -162,7 +162,7 @@ jobs:
     name: macOS acceptance (hyde-macos-x86_64)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             tests/System/acceptance.sh
@@ -185,7 +185,7 @@ jobs:
     name: Windows acceptance (hyde-windows-x86_64.exe)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           sparse-checkout: |
             tests/System/acceptance.ps1
@@ -210,7 +210,7 @@ jobs:
     name: Composer project dispatch (no PHP for the CLI)
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The *project* is allowed to have its dependencies installed: that is what makes it
       # a Composer project. The CLI still gets an environment with no PHP at all.

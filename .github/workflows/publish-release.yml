@@ -18,7 +18,7 @@ jobs:
     name: Merge stable branch into master
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: master
@@ -44,7 +44,7 @@ jobs:
       attestations: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: stable
 
@@ -145,7 +145,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
