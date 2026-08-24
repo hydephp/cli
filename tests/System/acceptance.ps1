@@ -62,7 +62,19 @@ try {
         Pass 'no PHP is installed'
     }
 
+    if (Get-Command composer -ErrorAction SilentlyContinue) {
+        Fail 'no Composer is installed' 'composer was found on the search path'
+    } else {
+        Pass 'no Composer is installed'
+    }
+
     Write-Host '==> The executable runs'
+
+    # Distinct from --version: this boots the application and renders its command list,
+    # rather than printing a constant. A version can be reported by an executable that
+    # cannot start.
+    $usage = Invoke-Hyde $work @('--no-ansi')
+    Assert-Contains 'the executable runs' $usage.Output 'USAGE:'
 
     $version = Invoke-Hyde $work @('--version', '--no-ansi')
     Assert-Contains 'hyde --version works' $version.Output 'HydePHP'
