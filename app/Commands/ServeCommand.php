@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Commands;
 
 use Phar;
+use App\Launcher\Project;
 use App\Launcher\RuntimeManager;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Process;
@@ -12,7 +13,6 @@ use Hyde\RealtimeCompiler\Console\Commands\ServeCommand as BaseServeCommand;
 
 use function sprintf;
 use function dirname;
-use function realpath;
 use function var_export;
 use function array_merge;
 use function escapeshellarg;
@@ -96,14 +96,22 @@ class ServeCommand extends BaseServeCommand
         return $path;
     }
 
-    /** Resolve a path inside the application, whether it is on disk or inside the extracted archive. */
+    /**
+     * Resolve a path inside the application, whether it is on disk or inside the extracted archive.
+     *
+     * Both branches answer in the launcher's canonical representation. The archive branch
+     * has no choice — a `phar://` URL is written with forward slashes — and the branch
+     * that reads the disk used to answer in the platform's own spelling instead, so
+     * the server subprocess was handed `D:\a\cli\vendor\autoload.php` next to
+     * three paths that had been canonicalized. One environment, one spelling.
+     */
     protected function resourcePath(string $path): string
     {
         if (Phar::running() !== '') {
             return 'phar://'.$this->runtime()->archivePath().'/'.$path;
         }
 
-        return realpath(dirname(__DIR__, 2).'/'.$path) ?: dirname(__DIR__, 2).'/'.$path;
+        return Project::canonicalize(dirname(__DIR__, 2).'/'.$path);
     }
 
     /** The writable directory the executable uses for everything it cannot keep inside itself. */

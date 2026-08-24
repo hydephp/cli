@@ -115,9 +115,14 @@ it('strips a project path however the platform spells its separators', function 
 
     $class = new InspectableSelfUpdateCommand();
 
-    $result = $class->stripPersonalInformation(
-        "Error occurred in C:\\projects\\site\\app\\file.php\nStack trace:\nC:/projects/site/app/file.php:10"
-    );
+    $result = $class->stripPersonalInformation(implode("\n", [
+        'Error occurred in C:\\projects\\site\\app\\file.php',
+        'Stack trace:',
+        'C:/projects/site/app/file.php:10',
+        // And what `base_path().DIRECTORY_SEPARATOR.$file` produces on Windows: the
+        // canonical root, joined to the rest with the platform's own separator.
+        'C:/projects/site\\app\\file.php:14',
+    ]));
 
     expect($result)->not->toContain('C:\\projects\\site')
         ->and($result)->not->toContain('C:/projects/site')
