@@ -328,6 +328,14 @@ install PHP, Composer and a compiler toolchain. `runtime.yml` is Runtime CI: it 
 the artifacts and proves them on machines that have none of that, with the authoritative
 Linux run happening inside a minimal container on a native runner.
 
+`build-native.yml` builds **one** platform per call. A matrix job cannot be depended on leg
+by leg, so a single build job would make every acceptance job wait for the slowest
+platform and skip all of them when any one platform failed to build. `runtime.yml`
+therefore calls it once per platform and pairs each build with its own acceptance
+job, so the five chains stand or fall independently and each keeps its own row in
+the checks list. The release pipelines want every artifact or none, and call
+`build-native-all.yml`, which holds the only copy of the platform-to-runner map.
+
 Fixture projects are always created **outside** the repository, because the repository is
 itself a Hyde Composer project and detection would otherwise attribute a fixture with no
 markers of its own to the CLI's `composer.json`.
