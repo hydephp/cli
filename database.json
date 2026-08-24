@@ -1,11 +1,11 @@
 {
     "_database": {
-        "last_updated": 1787607937,
-        "content_hash": "48da7b0881b5a98d219ee403105a1d6bbd7766edb8bd1b9cc4a3a5d496c39530",
+        "last_updated": 1787608445,
+        "content_hash": "a051c14bacee8d925657c6e5f8cc55414d53a18e91d2b7c7b73679c8e62add6a",
         "total_views": 4710,
         "total_clones": 35350,
         "total_installs": 410,
-        "total_binary_downloads": 0
+        "total_binary_downloads": 246
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
