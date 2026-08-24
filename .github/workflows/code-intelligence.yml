@@ -18,7 +18,7 @@ jobs:
           coverage: xdebug
           extensions: fileinfo, mbstring, dom, simplexml, xmlwriter
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Cache Composer packages
         id: composer-cache
