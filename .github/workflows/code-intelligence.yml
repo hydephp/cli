@@ -14,10 +14,9 @@ jobs:
     steps:
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.1"
+          php-version: "8.4"
           coverage: xdebug
-          extensions:
-            fileinfo
+          extensions: fileinfo, mbstring, dom, simplexml, xmlwriter
 
       - uses: actions/checkout@v4
 
@@ -38,7 +37,7 @@ jobs:
         run: bash bin/sync-develop.sh
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
+        run: composer install --no-interaction --no-progress --prefer-dist
 
       # Composer caches `vendor` against the lock file, but a path repository's contents
       # change whenever the develop checkout moves while the lock stays identical. A restored
