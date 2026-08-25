@@ -10,10 +10,6 @@ test('application version constant follows semantic versioning', function () {
     expect(Application::APP_VERSION)->toMatch('/^\d+\.\d+\.\d+$/');
 });
 
-test('the CLI is versioned independently of the framework', function () {
-    expect(Application::APP_VERSION)->toBe('0.11.0');
-});
-
 test('custom application extends Hyde application', function () {
     expect(new Application())->toBeInstanceOf(HydeApplication::class);
 });

@@ -21,13 +21,13 @@ All security vulnerabilities will be promptly addressed.
 ## Phar Security
 
 The HydePHP CLI is distributed as a Phar archive, which is a PHP executable file format.
-The Phar is signed with a GPG key, and the public key is available in the repository.
-You can verify the integrity of the Phar by checking the signature against the public key.
-This verification is also done automatically when self-updating the CLI using the direct download strategy.
+Release executables are signed with an OpenSSL key, and the public key is available in the repository.
+The CLI automatically verifies the matching `.sig.bin` signature when self-updating using the direct download strategy.
+Published executables also include GitHub build provenance attestations.
 
-### Public Key Information
+### Legacy PGP Key Information
 
-The public key used for signing builds in the 0.x series range is a PGP key that has the fingerprint `3B829782D5B7BA59`. It is an `rsa3072` key expiring on `2026-04-20`, and is as follows:
+Builds are no longer GPG-signed. For historical verification, builds in the 0.x series used a PGP key with fingerprint `3B829782D5B7BA59`. This `rsa3072` key expired on `2026-04-20`:
 
 ```
 657B4D97184E9E6E596E6EA13B829782D5B7BA59 (HydePHP CLI Alpha Key <hello@hydephp.com>)
@@ -83,7 +83,9 @@ YXlffyl8g5pXBQKUo/L1BGbePF18Xg4jwsNPIMjUQObJ
 ```
 </details>
 
-We also provide an experimental fallback `.bin` signature that uses an OpenSSL key for increased compatibility with systems that do not support GPG.
+### OpenSSL Public Key
+
+Current releases use `.sig.bin` signatures created with this OpenSSL key:
 
 
 <details>
@@ -112,7 +114,7 @@ Xys3FeRJy25FQ/J/npGcxRcCAwEAAQ==
 In order to validate the authenticity of the public key and that it comes from HydePHP you can visit https://trustservices.hydephp.com/certificates/ for a listing of all our public keys and certificates.
 You can also see the listing on [GitHub](https://github.com/hydephp/certificates) for the same information. Note that this repository is handled independently of the trust services meaning that two separate platforms would need to be compromised to spoof the key.
 
-The certificate is also listed on several keyservers:
+The legacy PGP key remains listed on several keyservers for historical verification:
 - [OpenPGP Keyserver](https://keys.openpgp.org/vks/v1/by-fingerprint/657B4D97184E9E6E596E6EA13B829782D5B7BA59)
 - [Ubuntu Keyserver](https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x657B4D97184E9E6E596E6EA13B829782D5B7BA59)
 - [MIT Keyserver](https://pgp.mit.edu/pks/lookup?op=get&search=0x657B4D97184E9E6E596E6EA13B829782D5B7BA59)
@@ -124,8 +126,7 @@ If you are curious how we secure our certificates and private keys, here is a br
 To ensure the security of our certificates and private keys, we implement a multi-layered approach:
 
 - Our private key is safeguarded through several redundancy measures. This includes encrypted storage via GitHub Actions Secrets for cloud builds, alongside a master copy securely managed by our core maintainer. Additionally, there's a physical recovery key stored in a vault in an undisclosed location.
-- The current key in use is scoped to only be used for alpha builds in the 0.x series range, this means that security protocols can be field tested before the final key is used for general availability.
-- In the unlikely event of a compromise, the key can be revoked and replaced with a new key. The new key will be signed by the old key to ensure continuity of trust.
+- In the unlikely event of a compromise, the signing key can be revoked and replaced.
 - Additionally, the public key is made available on several independent platforms, making it much more difficult for an attacker to spoof the key.
 - Of course all private keys are protected by unique highly secure and complex passphrases that are never stored in plaintext.
 
