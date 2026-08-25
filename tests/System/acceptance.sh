@@ -226,18 +226,21 @@ assert_missing "the new project has no vendor directory" "$NEW/my-site/vendor"
 NEW_BUILD="$(cd "$NEW/my-site" && "$HYDE" build --no-ansi 2>&1)"
 assert_contains "the new project builds immediately" "$NEW_BUILD" "Your static site has been built!"
 
-echo "==> hyde new --composer without Composer"
+echo "==> hyde new --composer with no Composer on the host"
 
-COMPOSER_OUTPUT="$(cd "$NEW" && "$HYDE" new composer-site --composer --no-ansi --no-interaction 2>&1)" && COMPOSER_STATUS=0 || COMPOSER_STATUS=$?
+# The command no longer needs a Composer on the machine: it runs the one inside the
+# executable. What that Composer then resolves depends on the network and on what is
+# published, so this checks which Composer was used rather than what it installed.
+COMPOSER_OUTPUT="$(cd "$NEW" && "$HYDE" new composer-site --composer --no-ansi --no-interaction 2>&1)" || true
 
-if [ "$COMPOSER_STATUS" -eq 0 ]; then
-    fail "hyde new --composer fails without Composer" "it reported success"
-else
-    pass "hyde new --composer fails without Composer"
-fi
+assert_contains "hyde new --composer uses the bundled Composer" "$COMPOSER_OUTPUT" "Using the Composer bundled with this executable"
 
-assert_contains "the failure explains what to do" "$COMPOSER_OUTPUT" "Creating a Composer project requires Composer."
-assert_missing "no directory is left behind" "$NEW/composer-site"
+case "$COMPOSER_OUTPUT" in
+    *"Creating a Composer project requires Composer."*)
+        fail "hyde new --composer no longer needs a Composer on the host" ;;
+    *)
+        pass "hyde new --composer no longer needs a Composer on the host" ;;
+esac
 
 echo "==> Project detection"
 

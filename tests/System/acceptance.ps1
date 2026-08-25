@@ -239,18 +239,20 @@ try {
     $newBuild = Invoke-Hyde (Join-Path $workspace 'my-site') @('build', '--no-ansi')
     Assert-Contains 'the new project builds immediately' $newBuild.Output 'Your static site has been built!'
 
-    Write-Host '==> hyde new --composer without Composer'
+    Write-Host '==> hyde new --composer with no Composer on the host'
 
+    # The command no longer needs a Composer on the machine: it runs the one inside the
+    # executable. What that Composer then resolves depends on the network and on what is
+    # published, so this checks which Composer was used rather than what it installed.
     $composerAttempt = Invoke-Hyde $workspace @('new', 'composer-site', '--composer', '--no-ansi', '--no-interaction')
 
-    if ($composerAttempt.Status -eq 0) {
-        Fail 'hyde new --composer fails without Composer' 'it reported success'
-    } else {
-        Pass 'hyde new --composer fails without Composer'
-    }
+    Assert-Contains 'hyde new --composer uses the bundled Composer' $composerAttempt.Output 'Using the Composer bundled with this executable'
 
-    Assert-Contains 'the failure explains what to do' $composerAttempt.Output 'Creating a Composer project requires Composer.'
-    Assert-Missing 'no directory is left behind' (Join-Path $workspace 'composer-site')
+    if ($composerAttempt.Output -like '*Creating a Composer project requires Composer.*') {
+        Fail 'hyde new --composer no longer needs a Composer on the host'
+    } else {
+        Pass 'hyde new --composer no longer needs a Composer on the host'
+    }
 
     Write-Host '==> Project detection'
 
