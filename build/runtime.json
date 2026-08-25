@@ -25,9 +25,9 @@
         "zlib": "Required to read the GZ-compressed PHAR that the executable embeds."
     },
     "composer": {
-        "$comment": "The Composer release bundled inside the executable, so that `hyde composer` and `hyde new --composer` work on a machine that has neither PHP nor Composer. Both build scripts download exactly this version and refuse to continue unless it hashes to the checksum below, which is the one getcomposer.org publishes alongside the release.",
-        "version": "2.8.12",
-        "sha256": "f446ea719708bb85fcbf4ef18def5d0515f1f9b4d703f6d820c9c1656e10a2f2"
+        "$comment": "The Composer release bundled inside the executable, so that `hyde composer` and `hyde new --composer` work on a machine that has neither PHP nor Composer. Both build scripts download exactly this version and refuse to continue unless it hashes to the checksum below, which was taken from the one getcomposer.org publishes alongside that release. The executable distributes this, so keep it current: read the release notes before bumping it, and check a project can still be created with it.",
+        "version": "2.10.2",
+        "sha256": "5ee7125f8a30a34d246cefdc0bc85b8a783b28f2aec968994118512350d28027"
     },
     "unsupported-extensions": {
         "$comment": "Extensions that cannot be built for a platform, dropped from that platform's build rather than left to fail the environment check. No PHP on Windows has ever had pcntl or posix, so nothing that runs there can be relying on them: symfony/process and symfony/console take their Windows code paths instead. Read by both build scripts, so neither can drift from the other on what it builds.",
