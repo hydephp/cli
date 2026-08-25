@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Support\ComposerBinary;
+use App\Launcher\RuntimeManager;
 use Tests\Support\TemporaryProject;
 
 /*
@@ -105,6 +106,60 @@ it('does not touch the filesystem when Composer is missing', function () {
     expect($workspace.'/my-site')->not->toBeDirectory()
         ->and(scandir($workspace))->toBe(['.', '..']);
 });
+
+/*
+|--------------------------------------------------------------------------
+| The Composer that gets used
+|--------------------------------------------------------------------------
+*/
+
+it('creates the project with the composer bundled in the executable', function () {
+    $workspace = TemporaryProject::directory('workspace');
+
+    // An executable carrying a Composer, and no PHP binary of its own: the runtime then
+    // resolves to the process already running, exactly as a source checkout does.
+    $root = TemporaryProject::directory('bundled');
+
+    mkdir($root.'/'.RuntimeManager::RUNTIME_DIRECTORY);
+
+    $composer = '<?php mkdir($argv[3]); file_put_contents($argv[3]."/composer.json", "{}"); echo "the bundled composer ran";';
+
+    file_put_contents($root.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::COMPOSER_FILE.RuntimeManager::RUNTIME_SUFFIX, gzencode($composer));
+
+    file_put_contents($root.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::MANIFEST_FILE, json_encode([
+        'version' => PHP_VERSION,
+        'checksum' => '',
+        'composer' => ['version' => '2.8.12', 'filename' => RuntimeManager::COMPOSER_FILE, 'checksum' => hash('sha256', $composer)],
+    ]));
+
+    $this->boot($workspace);
+
+    $this->app->instance(RuntimeManager::class, new RuntimeManager(null, $root));
+
+    expect($this->runCommand('new', ['name' => 'my-site', '--composer' => true, '--no-interaction' => true]))->toBe(0)
+        ->and($this->consoleOutput())
+        ->toContain('Using the Composer bundled with this executable (2.8.12)')
+        ->toContain('the bundled composer ran')
+        ->and($workspace.'/my-site/composer.json')->toBeFile();
+});
+
+it('falls back to the host composer when the executable bundles none', function () {
+    $workspace = TemporaryProject::directory('workspace');
+    $fake = TemporaryProject::directory('fake-composer');
+
+    file_put_contents($fake.'/composer', "#!/bin/sh\nmkdir -p \"$3\"\necho 'the host composer ran'\nexit 0\n");
+
+    chmod($fake.'/composer', 0755);
+
+    ComposerBinary::$fake = $fake.'/composer';
+
+    $this->boot($workspace);
+
+    expect($this->runCommand('new', ['name' => 'my-site', '--composer' => true, '--no-interaction' => true]))->toBe(0)
+        ->and($this->consoleOutput())
+        ->toContain('the host composer ran')
+        ->not->toContain('Using the Composer bundled');
+})->skipOnWindows();
 
 /*
 |--------------------------------------------------------------------------

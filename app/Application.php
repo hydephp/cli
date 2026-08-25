@@ -21,7 +21,7 @@ class Application extends \Hyde\Foundation\Application
      * framework version. The 0.11.x CLI line embeds and supports the unreleased HydePHP
      * v3 development line, but the two versions must never be made to track each other.
      */
-    final public const APP_VERSION = '0.11.1';
+    final public const APP_VERSION = '0.12.0';
 
     /**
      * Get the path to the cached packages.php file.

@@ -8,6 +8,7 @@ use Closure;
 use App\Application;
 use App\Launcher\Project;
 use App\Support\ComposerBinary;
+use App\Launcher\RuntimeManager;
 use App\Support\PortableProjectBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
@@ -114,9 +115,11 @@ class NewProjectCommand extends Command
 
     protected function createComposerProject(string $name): int
     {
+        $runtime = $this->runtime();
+
         // The check happens before anything is written, so a machine without Composer
         // is never left with a half-created project directory.
-        $composer = ComposerBinary::locate();
+        $composer = ComposerBinary::command($runtime);
 
         if ($composer === null) {
             $this->newLine();
@@ -127,6 +130,12 @@ class NewProjectCommand extends Command
 
         $path = $this->resolvePath($name);
         $existed = is_dir($path);
+
+        if ($composer === ComposerBinary::bundled($runtime)) {
+            // The machine may never have had a Composer installed, so say where this one
+            // came from, and which one it is: the project is created by it.
+            $this->line(sprintf('  <fg=gray>Using the Composer bundled with this executable (%s)</>', $runtime->composerVersion()));
+        }
 
         $result = Process::forever()->path($this->workingDirectory())->run(
             $this->createProjectCommand($composer, $name),
@@ -165,14 +174,16 @@ class NewProjectCommand extends Command
      * `HYDE_PROJECT_SOURCE`. That variable is a development mechanism, is never set for a
      * released executable, and is the only thing that can move this command off Packagist.
      *
+     * @param  list<string>  $composer The command that runs Composer, which may be the
+     *                                  bundled PHP runtime followed by the bundled PHAR.
      * @return list<string>
      */
-    protected function createProjectCommand(string $composer, string $name): array
+    protected function createProjectCommand(array $composer, string $name): array
     {
         $source = static::developmentSource();
 
         // Composer takes the package, then the directory, then the version constraint.
-        $command = [$composer, 'create-project', 'hyde/hyde', $name, $this->projectConstraint($source)];
+        $command = [...$composer, 'create-project', 'hyde/hyde', $name, $this->projectConstraint($source)];
 
         $command[] = '--prefer-dist';
         $command[] = $this->withAnsi() ? '--ansi' : '--no-ansi';
@@ -223,6 +234,11 @@ class NewProjectCommand extends Command
     protected function workingDirectory(): string
     {
         return $this->laravel->make(Project::class)->workingDirectory;
+    }
+
+    protected function runtime(): RuntimeManager
+    {
+        return $this->laravel->make(RuntimeManager::class);
     }
 
     protected function withAnsi(): bool

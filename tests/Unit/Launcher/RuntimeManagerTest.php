@@ -21,7 +21,7 @@ use Tests\Support\TemporaryProject;
 /**
  * @return array{0: RuntimeManager, 1: string, 2: string} The manager, its application root, and the cache root.
  */
-function runtimeFixture(string $contents = "#!/bin/sh\necho runtime\n", ?string $checksum = null, ?Platform $platform = null): array
+function runtimeFixture(string $contents = "#!/bin/sh\necho runtime\n", ?string $checksum = null, ?Platform $platform = null, string|false $composer = false): array
 {
     $root = TemporaryProject::directory('runtime-root');
     $cache = TemporaryProject::directory('runtime-cache');
@@ -34,18 +34,95 @@ function runtimeFixture(string $contents = "#!/bin/sh\necho runtime\n", ?string 
 
     file_put_contents($binary, gzencode($contents));
 
-    file_put_contents($root.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::MANIFEST_FILE, json_encode([
+    $manifest = [
         'version' => '8.4.24',
         'platform' => $platform->slug(),
         'filename' => $platform->runtimeFilename(),
         'checksum' => $checksum ?? hash('sha256', $contents),
         'payload_offset' => 1024,
-    ]));
+    ];
+
+    if ($composer !== false) {
+        file_put_contents($root.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::COMPOSER_FILE.RuntimeManager::RUNTIME_SUFFIX, gzencode($composer));
+
+        $manifest['composer'] = [
+            'version' => '2.8.12',
+            'filename' => RuntimeManager::COMPOSER_FILE,
+            'checksum' => hash('sha256', $composer),
+        ];
+    }
+
+    file_put_contents($root.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::MANIFEST_FILE, json_encode($manifest));
 
     putenv("HYDE_CACHE_DIR=$cache");
 
     return [new RuntimeManager($platform, $root), $root, $cache];
 }
+
+/*
+|--------------------------------------------------------------------------
+| The bundled Composer
+|--------------------------------------------------------------------------
+|
+| Composer is embedded and extracted exactly like the runtime, but it is a PHAR
+| rather than a binary: it is keyed by its own version rather than by platform,
+| and it is never marked executable, since the runtime is what runs it.
+|
+*/
+
+it('extracts the bundled composer into a cache directory of its own', function () {
+    [$manager, , $cache] = runtimeFixture(composer: '<?php // composer');
+
+    $path = $manager->composerPath();
+
+    expect($path)->toBe($cache.'/hyde/composer/2.8.12/composer.phar')
+        ->and(file_get_contents($path))->toBe('<?php // composer');
+});
+
+it('reuses a composer it has already extracted', function () {
+    [$manager] = runtimeFixture(composer: '<?php // composer');
+
+    $first = $manager->composerPath();
+
+    expect($manager->composerPath())->toBe($first);
+});
+
+it('reports whether composer is bundled', function () {
+    [$with] = runtimeFixture(composer: '<?php // composer');
+    [$without] = runtimeFixture();
+
+    expect($with->hasBundledComposer())->toBeTrue()
+        ->and($with->composerVersion())->toBe('2.8.12')
+        ->and($without->hasBundledComposer())->toBeFalse()
+        ->and($without->composerVersion())->toBeNull();
+});
+
+it('says so when the executable bundles no composer', function () {
+    [$manager] = runtimeFixture();
+
+    expect(fn () => $manager->composerPath())
+        ->toThrow(LauncherException::class, 'does not bundle Composer');
+});
+
+it('refuses a composer that does not match its checksum', function () {
+    [$manager, $root] = runtimeFixture(composer: '<?php // composer');
+
+    file_put_contents($root.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::COMPOSER_FILE.RuntimeManager::RUNTIME_SUFFIX, gzencode('<?php // tampered'));
+
+    expect(fn () => $manager->composerPath())
+        ->toThrow(LauncherException::class, 'The bundled Composer failed its checksum verification');
+});
+
+it('repairs a composer extraction that was corrupted', function () {
+    [$manager, $root] = runtimeFixture(composer: '<?php // composer');
+
+    file_put_contents($manager->composerPath(), 'corrupted');
+
+    // A later run of the CLI is a new process, and verifies what it finds on disk.
+    $fresh = new RuntimeManager(new Platform('Linux', 'x86_64'), $root);
+
+    expect(file_get_contents($fresh->composerPath()))->toBe('<?php // composer');
+});
 
 afterEach(function () {
     // These tests move the cache root around; leaving any of them set would send a later

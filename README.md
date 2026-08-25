@@ -11,10 +11,12 @@
 
 The HydePHP CLI is a single-file executable for the static site generator HydePHP.
 
-It carries its own PHP runtime and its own copy of the framework, so you can build a site on a
-machine with **no PHP and no Composer installed**. Point it at a directory of Markdown files
-and it will build a site; point it at a full HydePHP Composer project and it will run that
-project through its own dependencies.
+It carries its own PHP runtime, its own copy of the framework, and its own Composer, so you can
+build a site on a machine with **no PHP and no Composer installed**. Point it at a directory of
+Markdown files and it will build a site; point it at a full HydePHP Composer project and it
+will run that project through its own dependencies.
+
+The runtime it carries is not kept to itself: `hyde php` and `hyde composer` hand it to you.
 
 ## The two kinds of project
 
@@ -106,7 +108,7 @@ hyde info
 # Create a new site
 hyde new my-site                # asks which kind you want
 hyde new my-site --portable     # content only, nothing to install
-hyde new my-site --composer     # a full Composer project (requires Composer)
+hyde new my-site --composer     # a full Composer project, created with the bundled Composer
 
 # Build a site using source files in the working directory
 hyde build
@@ -114,6 +116,34 @@ hyde build
 # Preview it, with live recompilation
 hyde serve
 ```
+
+### The bundled runtime
+
+The PHP and the Composer inside the executable are available as commands of their own, so a
+machine that has neither still has both:
+
+```bash
+hyde php -v                     # the bundled PHP CLI
+hyde php script.php
+hyde php -r 'echo PHP_VERSION;'
+
+hyde composer install           # the bundled Composer, on the bundled PHP
+hyde composer require hyde/framework
+```
+
+Arguments and exit statuses pass through untouched. This is *Hyde's* PHP rather than a general
+distribution: its extensions are the ones Hyde needs, listed with their reasons in
+[`build/runtime.json`](build/runtime.json), so a script that needs something outside that set
+will say so.
+
+`hyde composer` is answered before the project is even looked at, which is deliberate: a
+Composer project with a missing `vendor/` is the one state the CLI refuses to build, and
+`hyde composer install` is what repairs it.
+
+Both commands mean *the programs Hyde supplies*, so neither falls back to one installed on
+the machine. `hyde composer self-update` is refused for the same reason: the bundled
+Composer is versioned with the executable and verified on every run, so `hyde self-update`
+is what gets you a newer one.
 
 ## Resources
 
