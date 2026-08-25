@@ -1,0 +1,50 @@
+name: Build Native Executables
+
+# Builds every published platform, by calling the single-platform build once per platform.
+#
+# This is the mapping of platform to runner and artifact name, and it is the only copy of
+# it. The release pipelines want all five artifacts or none, so a matrix is the right
+# shape for them. `runtime.yml` deliberately does not use this: it calls the
+# single-platform build directly, so that each platform's acceptance test can
+# start as soon as that platform's own artifact exists.
+
+on:
+  workflow_call:
+    inputs:
+      build-id:
+        description: A short identifier recorded inside the executable.
+        type: string
+        required: false
+        default: ''
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux-x86_64
+            runner: ubuntu-latest
+            artifact: hyde-linux-x86_64
+          - platform: linux-arm64
+            runner: ubuntu-24.04-arm
+            artifact: hyde-linux-arm64
+          - platform: macos-x86_64
+            runner: macos-15-intel
+            artifact: hyde-macos-x86_64
+          - platform: macos-arm64
+            runner: macos-latest
+            artifact: hyde-macos-arm64
+          # windows-2022 deliberately: `windows-latest` ships Visual Studio 2026, which
+          # static-php-cli's fixed-path search for MSBuild does not know about. The
+          # long version of this is in runtime.yml, above the same pin.
+          - platform: windows-x86_64
+            runner: windows-2022
+            artifact: hyde-windows-x86_64.exe
+
+    uses: ./.github/workflows/build-native.yml
+    with:
+      platform: ${{ matrix.platform }}
+      runner: ${{ matrix.runner }}
+      artifact: ${{ matrix.artifact }}
+      build-id: ${{ inputs.build-id }}

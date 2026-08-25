@@ -4,6 +4,7 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/lib/ansi-themes.php';
+require_once __DIR__.'/lib/manual-version.php';
 
 chdir(__DIR__.'/..');
 
@@ -18,7 +19,7 @@ task('getting|got', 'command list', function (&$commands): void {
 
 task('building|built', 'Html manual', function () use ($commands): void {
     $names = array_map(fn (array $command): string => $command['name'], $commands['commands']);
-    $names = array_filter($names, fn (string $name): bool => ! in_array($name, ['_complete', 'completion', 'standalone:build']));
+    $names = array_filter($names, fn (string $name): bool => ! in_array($name, ['_complete', 'completion']));
     $names = array_values($names);
 
     $manual = [];
@@ -215,7 +216,7 @@ function get_template(): string
             respectively for the licenses governing the software and the contents of this manual.
         --> 
         <meta charset="UTF-8">
-        <title>HydePHP Standalone CLI Manual</title>
+        <title>HydePHP CLI Manual</title>
         <style>{{ themes }}</style>
         <style>
             body {
@@ -308,7 +309,7 @@ function get_template(): string
     <body class="theme-{{ theme }}">
     <nav class="menubar">
         <h2>
-            HydePHP Standalone CLI Manual
+            HydePHP CLI Manual
         </h2>
         <menu>
             {{ themeSelector }}
@@ -329,7 +330,7 @@ function get_template(): string
     <main>{{ entries }}</main>
     <footer>
         <p>
-            Manual for the <a href="https://hydephp.github.io/cli?ref=manual">HydePHP Standalone CLI</a> - Version {{ version }}
+            Manual for the <a href="https://hydephp.github.io/cli?ref=manual">HydePHP CLI</a> - Version {{ version }}
         </p>
         <p>
             <small>Content distributed under the HydePHP <a href="https://hydephp.com/license" rel="nofollow">MIT License</a>, dual-licensed as <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="nofollow">CC BY 4.0</a>.</small>
@@ -358,16 +359,3 @@ function view(string $template, array $data): string
     return $template;
 }
 
-function parse_version(string $version): string
-{
-    preg_match('/HydePHP v(\d+\.\d+\.\d+) - Experimental Standalone - \(HydePHP v(\d+\.\d+\.\d+)\)/', $version, $matches);
-
-    $cliVersion = $matches[1];
-    $hydeVersion = $matches[2];
-
-    if (! $matches || ! $cliVersion || ! $hydeVersion) {
-        throw new Exception("Failed to parse version: $version");
-    }
-
-    return "v$hydeVersion (CLI v$cliVersion)";
-}

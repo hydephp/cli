@@ -107,6 +107,28 @@ it('strips personal and path information from markdown', function () {
         ->and($result)->toContain('<project>');
 });
 
+it('strips a project path however the platform spells its separators', function () {
+    // The project root is canonical (`C:/projects/site`), while a Windows stack trace is
+    // not (`C:\projects\site\app\...`). Redacting only the spelling the root happens
+    // to be in would publish every absolute path in the trace verbatim.
+    mockContainerPath('C:/projects/site');
+
+    $class = new InspectableSelfUpdateCommand();
+
+    $result = $class->stripPersonalInformation(implode("\n", [
+        'Error occurred in C:\\projects\\site\\app\\file.php',
+        'Stack trace:',
+        'C:/projects/site/app/file.php:10',
+        // And what `base_path().DIRECTORY_SEPARATOR.$file` produces on Windows: the
+        // canonical root, joined to the rest with the platform's own separator.
+        'C:/projects/site\\app\\file.php:14',
+    ]));
+
+    expect($result)->not->toContain('C:\\projects\\site')
+        ->and($result)->not->toContain('C:/projects/site')
+        ->and($result)->toContain('<project>');
+});
+
 it('does not modify markdown without personal information', function () {
     mockContainerPath('/home/foo/project');
 
@@ -206,47 +228,106 @@ test('public key hash identifier', function () {
     expect($identifier)->toBe('EE5FC423177F61B096D768E3B3D3CA94C5435426');
 });
 
-test('signature verification', function () {
-    $class = new InspectableSelfUpdateCommand();
+test('signature verification accepts a correctly signed artifact', function () {
+    [$verifier, $directory] = signingFixture();
 
-    $phar = 'builds/hyde';
-    $signature = 'builds/signature.bin';
-
-    // Sanity check to ensure the files exist
-    assert(file_exists($phar) && file_exists($signature), 'Phar and signature files must exist');
-
-    expect($class->verifySignature($phar, $signature))->toBeTrue();
+    expect($verifier->verify($directory.'/artifact', $directory.'/artifact.sig.bin'))->toBeTrue();
 });
 
-test('signature verification fails if signature is invalid', function () {
-    $class = new InspectableSelfUpdateCommand();
+test('signature verification rejects an invalid signature', function () {
+    [$verifier, $directory] = signingFixture();
 
-    $phar = 'builds/hyde';
-    $signature = 'builds/false-signature.bin';
+    file_put_contents($directory.'/artifact.sig.bin', 'Invalid signature');
 
-    // Sanity check to ensure the file exists
-    assert(file_exists($phar), 'Phar file must exist');
+    expect($verifier->verify($directory.'/artifact', $directory.'/artifact.sig.bin'))->toBeFalse();
+});
 
-    file_put_contents($signature, 'Invalid signature');
+test('signature verification rejects an artifact that was tampered with after signing', function () {
+    [$verifier, $directory] = signingFixture();
 
-    expect($class->verifySignature($phar, $signature))->toBeFalse();
+    file_put_contents($directory.'/artifact', 'Tampered payload');
 
-    // Clean up
-    unlink($signature);
+    expect($verifier->verify($directory.'/artifact', $directory.'/artifact.sig.bin'))->toBeFalse();
+});
+
+test('signature verification rejects a signature made by a different key', function () {
+    [$verifier, $directory] = signingFixture();
+
+    [, $other] = signingFixture();
+
+    copy($other.'/artifact.sig.bin', $directory.'/artifact.sig.bin');
+
+    expect($verifier->verify($directory.'/artifact', $directory.'/artifact.sig.bin'))->toBeFalse();
 });
 
 test('get latest release information', function () {
     $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('releaseResponse', file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json'));
 
     $result = (array) $class->getLatestReleaseInformationFromGitHub();
 
     expect($result)->toBeArray()
         ->and($result)->toHaveKeys(['tag', 'assets'])
-        ->and($result['tag'])->toBeString()
-        ->and($result['assets'])->toBeArray()
-        ->and($result['assets'])->toHaveKeys(['hyde', 'hyde.sig', 'signature.bin'])
+        ->and($result['tag'])->toBe('v3.0.0')
+        ->and($result['assets'])->toHaveKeys([
+            'hyde-linux-x86_64', 'hyde-linux-arm64', 'hyde-macos-x86_64', 'hyde-macos-arm64', 'hyde-windows-x86_64.exe',
+        ])
         ->and($result['assets'])->each->toHaveKeys(['name', 'url']);
 });
+
+test('every platform has a signature published alongside its artifact', function () {
+    $class = new InspectableSelfUpdateCommand();
+    $class->setProperty('releaseResponse', file_get_contents(__DIR__.'/../Fixtures/general/github-release-api-response.json'));
+
+    $release = $class->getLatestReleaseInformationFromGitHub();
+
+    foreach (App\Launcher\Platform::assetMap() as $slug => $asset) {
+        $platform = platformFor($slug);
+
+        expect($release->getAsset($platform->releaseAsset())->name)->toBe($asset)
+            ->and($release->getAsset($platform->opensslSignatureAsset())->name)->toBe($asset.'.sig.bin');
+    }
+});
+
+/**
+ * Build a real RSA key pair and sign a file with it.
+ *
+ * This exercises the verification logic itself rather than a signature made by the
+ * release key, which cannot be reproduced here. The identifier of the shipped
+ * public key is pinned by its own test above.
+ *
+ * @return array{0: App\Support\SignatureVerifier, 1: string}
+ */
+function signingFixture(): array
+{
+    $directory = Tests\Support\TemporaryProject::directory('signing');
+
+    $key = openssl_pkey_new(['private_key_bits' => 2048, 'private_key_type' => OPENSSL_KEYTYPE_RSA]);
+
+    openssl_pkey_export($key, $private);
+
+    $public = openssl_pkey_get_details($key)['key'];
+
+    file_put_contents($directory.'/artifact', 'The artifact that would be downloaded.');
+
+    openssl_sign(file_get_contents($directory.'/artifact'), $signature, $private, OPENSSL_ALGO_SHA512);
+
+    file_put_contents($directory.'/artifact.sig.bin', $signature);
+
+    return [new App\Support\SignatureVerifier($public), $directory];
+}
+
+/** Build a Platform instance for a canonical slug, so the asset map can be asserted end to end. */
+function platformFor(string $slug): App\Launcher\Platform
+{
+    return match ($slug) {
+        'linux-x86_64' => new App\Launcher\Platform('Linux', 'x86_64'),
+        'linux-arm64' => new App\Launcher\Platform('Linux', 'aarch64'),
+        'macos-x86_64' => new App\Launcher\Platform('Darwin', 'x86_64'),
+        'macos-arm64' => new App\Launcher\Platform('Darwin', 'arm64'),
+        'windows-x86_64' => new App\Launcher\Platform('Windows', 'AMD64'),
+    };
+}
 
 test('print newline if verbose when verbose', function () {
     $class = new InspectableSelfUpdateCommand();

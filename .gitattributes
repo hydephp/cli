@@ -6,7 +6,7 @@
 *.md diff=markdown
 *.php diff=php
 
-builds/hyde binary
+builds/hyde-* binary
 
 .github/ export-ignore
 config/ export-ignore
@@ -21,4 +21,7 @@ LICENSE.md export-ignore
 SECURITY.md export-ignore
 composer.lock export-ignore
 phpunit.xml export-ignore
-box.json export-ignore
+build/ export-ignore
+docs/ export-ignore
+AGENTS.md export-ignore
+CLAUDE.md export-ignore

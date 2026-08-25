@@ -27,116 +27,60 @@ jobs:
     runs-on: ubuntu-latest
     name: Prepare a new release
 
+    outputs:
+      version: ${{ steps.build-version.outputs.version }}
+
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+
+      - name: Capture stable CLI version
+        id: stable-version
+        run: |
+          version="$(php ./bin/get-release-version.php)"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Stable CLI version: v$version"
 
       - name: Pull latest changes from master
         run: |
           git fetch origin master:master
           git reset --hard master
 
-      - name: Remove development dependencies
-        run: |
-          composer remove mockery/mockery --dev --no-install
-          composer remove pestphp/pest --dev --no-install
-
-      - name: Install dependencies
-        run: composer install --no-interaction --no-progress --no-suggest --prefer-dist
-
       - name: Bump application version
         id: build-version
         run: |
-          php ./bin/bump-application-version.php ${{ github.event.inputs.type }}
+          php ./bin/bump-application-version.php \
+            "${{ github.event.inputs.type }}" \
+            "${{ steps.stable-version.outputs.version }}"
           echo "version=$(php ./bin/get-release-version.php)" >> $GITHUB_OUTPUT
           echo "Version: v$(php ./bin/get-release-version.php)"
 
-      - name: Build executable
-        run: php hyde standalone:build --build-version-suffix="${{ steps.build-version.outputs.sha_short }}"
-
-      - name: Verify executable
-        run: php builds/hyde
-
-      - name: Verify executable version
-        run: php builds/hyde --version
-
-      - name: Upload executable artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: hyde
-          path: builds/hyde
-
-      - name: Import GPG key
-        if: github.event.repository.full_name == 'hydephp/cli'
-        uses: crazy-max/ghaction-import-gpg@01dd5d3ca463c7f10f7f4f7b4f177225ac661ee4
-        with:
-          gpg_private_key: ${{ secrets.GPG_SIGNING_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}
-          trust_level: 5
-
-      - name: Sign the executable
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          gpg --local-user 657B4D97184E9E6E596E6EA13B829782D5B7BA59 \
-              --batch \
-              --yes \
-              --passphrase="${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}" \
-              --detach-sign \
-              --output builds/hyde.sig \
-              builds/hyde
-
-      - name: Verify the signature
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          gpg --import-ownertrust <<< "657B4D97184E9E6E596E6EA13B829782D5B7BA59:6:"
-          gpg --verify builds/hyde.sig builds/hyde
-
-      - name: Create OpenSSL fallback signature
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          mkdir -p $HOME/.cert/
-          chmod 0700 $HOME/.cert/
-          echo "${{ secrets.RSA_SIGNING_PRIVATE_KEY }}" > $HOME/.cert/private_encrypted.key
-          echo "${{ secrets.RSA_SIGNING_KEY_PASSPHRASE }}" > $HOME/.cert/passphrase.txt
-          openssl rsa -in $HOME/.cert/private_encrypted.key -out $HOME/.cert/private.key -passin file:$HOME/.cert/passphrase.txt
-          openssl dgst -sha512 -sign $HOME/.cert/private.key -out builds/signature.bin builds/hyde
-          rm -rf $HOME/.cert/
-
-      - name: Upload signature artifacts
-        if: github.event.repository.full_name == 'hydephp/cli'
-        uses: actions/upload-artifact@v4
-        with:
-          name: signature
-          path: |
-            builds/hyde.sig
-            builds/signature.bin
-
-      - name: Attest build provenance
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: builds/hyde
-
-      - name: Reset Composer file changes
-        run: git restore composer.json composer.lock
-
       - name: Create pull request
-        uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           commit-message: "HydeCLI v${{ steps.build-version.outputs.version }}"
           title: "HydeCLI v${{ steps.build-version.outputs.version }}"
           branch: "release/v${{ steps.build-version.outputs.version }}"
           delete-branch: true
+          # The executables are no longer committed: there is one per platform now, and
+          # they are built, signed and attested by publish-release.yml on merge.
           add-paths: |
             app/Application.php
-            builds/hyde
-            builds/hyde.sig
-            builds/signature.bin
 
           body: |
             This pull request was automatically created by the [HydeCLI release workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
-            Please review and merge it to publish a new release, which will be created automatically upon merge.
-          reviewers: caendesilva
+            Merging it publishes a new release. The native executables for every supported
+            platform are built, signed and attested by the publish workflow at that point.
           labels: release
+
+  # Build every artifact on the release branch as well, so a release PR cannot be merged
+  # when one of the platforms does not build.
+  verify-build:
+    needs: prepare-release
+    uses: ./.github/workflows/build-native-all.yml

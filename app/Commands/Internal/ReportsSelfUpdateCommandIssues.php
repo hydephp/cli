@@ -4,14 +4,18 @@ namespace App\Commands\Internal;
 
 use Throwable;
 
+use function rtrim;
 use function getenv;
 use function implode;
 use function sprintf;
 use function array_map;
 use function base_path;
 use function urlencode;
+use function preg_quote;
+use function preg_split;
 use function array_keys;
 use function str_replace;
+use function preg_replace_callback;
 
 /**
  * @internal Single use trait for the experimental/internal self-update command.
@@ -80,7 +84,22 @@ trait ReportsSelfUpdateCommandIssues
         // As the stacktrace may contain the user's name, we remove it to protect their privacy
         $markdown = str_replace(getenv('USER') ?: getenv('USERNAME'), '<USERNAME>', $markdown);
 
-        // We also convert absolute paths to relative paths to avoid leaking the user's directory structure
-        return str_replace(base_path().DIRECTORY_SEPARATOR, '<project>'.DIRECTORY_SEPARATOR, $markdown);
+        // We also convert absolute paths to relative paths to avoid leaking the user's directory
+        // structure. The root reaches this text in more than one spelling: the launcher
+        // holds it canonical (`C:/Users/emma/site`), a Windows stack trace writes it
+        // native (`C:\Users\emma\site`), and anything that joined it with
+        // DIRECTORY_SEPARATOR is a mixture of the two. Matching one spelling
+        // would publish the others in a public issue URL, so the separator
+        // is matched as a class rather than as a character.
+        $root = rtrim(base_path(), '/\\');
+
+        $pattern = '#'.implode('[/\\\\]+', array_map(
+            static fn (string $segment): string => preg_quote($segment, '#'),
+            preg_split('#[/\\\\]#', $root)
+        )).'[/\\\\]#';
+
+        // A callback, because DIRECTORY_SEPARATOR is a backslash on Windows and a
+        // replacement string ending in one is read as an escape by PCRE.
+        return preg_replace_callback($pattern, static fn (): string => '<project>'.DIRECTORY_SEPARATOR, $markdown);
     }
 }

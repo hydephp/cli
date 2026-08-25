@@ -8,6 +8,8 @@ namespace App\Commands;
 
 use Throwable;
 use App\Application;
+use App\Launcher\Platform;
+use App\Support\SignatureVerifier;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
@@ -46,7 +48,6 @@ use function get_included_files;
 use function openssl_pkey_get_public;
 
 /**
- * @experimental This command is highly experimental and may contain bugs.
  *
  * @internal This command should not be accessed from the code as it may change significantly.
  *
@@ -60,7 +61,7 @@ class SelfUpdateCommand extends Command
     protected $signature = 'self-update {--check : Check for a new version without updating}';
 
     /** @var string */
-    protected $description = 'Update the standalone application to the latest version.';
+    protected $description = 'Update the Hyde executable to the latest version.';
 
     protected const STATE_BEHIND = 1;
     protected const STATE_UP_TO_DATE = 2;
@@ -189,6 +190,12 @@ class SelfUpdateCommand extends Command
         return self::STATE_AHEAD;
     }
 
+    /** The platform this executable is running on, which determines which release asset to fetch. */
+    protected function platform(): Platform
+    {
+        return Platform::current();
+    }
+
     protected function findApplicationPath(): string
     {
         // Get the full path to the application executable file
@@ -249,25 +256,28 @@ class SelfUpdateCommand extends Command
             throw new RuntimeException('The Curl extension is required to use the self-update command.');
         }
 
-        $this->debug('Downloading the latest version...');
+        $platform = $this->platform();
+        $asset = $platform->releaseAsset();
+
+        $this->debug("Downloading the latest version for {$platform->slug()} ($asset)...");
 
         $tempPath = tempnam(sys_get_temp_dir(), 'hyde');
 
-        // Download the latest release from GitHub
-        $phar = $tempPath.'.phar';
-        $this->downloadFile($this->release->getAsset('hyde')->url, $phar);
+        // Download the release artifact built for this platform
+        $binary = $tempPath.'.download';
+        $this->downloadFile($this->release->getAsset($asset)->url, $binary);
 
         if (! extension_loaded('openssl') || config('app.openssl_verify') === false) {
             $this->warn('Skipping signature verification as the OpenSSL extension is not available.');
         } else {
-            $this->performSignatureValidation($tempPath, $phar);
+            $this->performSignatureValidation($tempPath, $binary, $platform);
         }
 
         // Make the downloaded file executable
-        chmod($phar, 0755);
+        chmod($binary, 0755);
 
         // Replace the current application with the downloaded one
-        $this->replaceApplication($phar);
+        $this->replaceApplication($binary);
     }
 
     protected function downloadFile(string $url, string $destination): void
@@ -283,17 +293,17 @@ class SelfUpdateCommand extends Command
      * Perform the signature validation of the downloaded file.
      *
      * @param  string  $tempPath The path to the temporary file
-     * @param  string  $phar The path to the downloaded PHAR file
+     * @param  string  $binary The path to the downloaded executable
      *
      * @throws RuntimeException If the signature is invalid
      */
-    protected function performSignatureValidation(string $tempPath, string $phar): void
+    protected function performSignatureValidation(string $tempPath, string $binary, Platform $platform): void
     {
         $signature = $tempPath.'.sig';
-        $this->downloadFile($this->release->getAsset('signature.bin')->url, $signature);
+        $this->downloadFile($this->release->getAsset($platform->opensslSignatureAsset())->url, $signature);
 
         $this->debug('Verifying the signature...');
-        $isValid = $this->verifySignature($phar, $signature);
+        $isValid = $this->verifySignature($binary, $signature);
 
         if ($isValid) {
             $this->debug('Signature is valid!');
@@ -305,28 +315,15 @@ class SelfUpdateCommand extends Command
     /**
      * Verify the signature of the downloaded file against the public embedded public key.
      *
-     * @param  string  $phar The path to the downloaded PHAR file
+     * @param  string  $binary The path to the downloaded executable
      * @param  string  $signature The path to the downloaded signature file
      * @return bool Whether the signature is valid, true if it is, false otherwise
      *
      * @throws RuntimeException If the public key could not be loaded or the needed algorithm is missing.
      */
-    protected function verifySignature(string $phar, string $signature): bool
+    protected function verifySignature(string $binary, string $signature): bool
     {
-        $publicKey = openssl_pkey_get_public(self::publicKey());
-
-        if ($publicKey === false) {
-            throw new RuntimeException('Failed to load the public key.');
-        }
-
-        if (! defined('OPENSSL_ALGO_SHA512')) {
-            throw new RuntimeException('The OpenSSL extension is missing the SHA-512 algorithm.');
-        }
-
-        $data = file_get_contents($phar);
-        $signature = file_get_contents($signature);
-
-        return openssl_verify($data, $signature, $publicKey, OPENSSL_ALGO_SHA512) === 1;
+        return (new SignatureVerifier(self::publicKey()))->verify($binary, $signature);
     }
 
     protected function replaceApplication(string $downloadedFile): void

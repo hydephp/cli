@@ -25,6 +25,11 @@ jobs:
       - name: Move Hyde config
         run: mv .github/docs/hyde.yml hyde.yml
 
+      # Composer path repository. It is a build input, and has to be in place first.
+      - name: Check out the HydePHP v3 development line
+        shell: bash
+        run: bash bin/sync-develop.sh
+
       - uses: hydephp/action@master
 
       - name: Build manual
