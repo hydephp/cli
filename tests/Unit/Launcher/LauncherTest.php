@@ -30,6 +30,24 @@ it('reads the command name past any options', function (array $argv, ?string $ex
     [['hyde', '-v', 'route:list', '--json'], 'route:list'],
 ]);
 
+it('does not mistake the value of a global option for the command', function (array $argv, ?string $expected) {
+    // `--env` takes its value as the next token, so that token is not a command name.
+    // Reading it as one would route the call to a command nobody typed.
+    expect((new Launcher())->commandName($argv))->toBe($expected);
+})->with([
+    'separate value' => [['hyde', '--env', 'development', 'php'], 'php'],
+    'joined value' => [['hyde', '--env=development', 'php'], 'php'],
+    'separate value, then a project command' => [['hyde', '--env', 'development', 'build'], 'build'],
+    'among other options' => [['hyde', '--no-ansi', '--env', 'development', '-v', 'composer'], 'composer'],
+    'nothing after the value' => [['hyde', '--env', 'development'], null],
+    'no value to take' => [['hyde', '--env'], null],
+]);
+
+it('takes what follows a bare double dash as the command', function () {
+    expect((new Launcher())->commandName(['hyde', '--', 'php']))->toBe('php')
+        ->and((new Launcher())->commandName(['hyde', '--']))->toBeNull();
+});
+
 it('keeps the CLI-owned commands for the executable', function (string $command) {
     expect((new Launcher())->isLauncherCommand(['hyde', $command]))->toBeTrue();
 })->with(['info', 'new', 'self-update']);
@@ -53,6 +71,8 @@ it('forwards everything typed after the command name', function (array $argv, ar
     'an option for the program' => [['hyde', 'php', '-v'], ['-v']],
     'a script and its arguments' => [['hyde', 'php', 'script.php', '--flag', 'value'], ['script.php', '--flag', 'value']],
     'an option for the CLI is not forwarded' => [['hyde', '-v', 'php', '-r', 'echo 1;'], ['-r', 'echo 1;']],
+    'nor is one that took a value' => [['hyde', '--env', 'development', 'php', '-r', 'echo 1;'], ['-r', 'echo 1;']],
+    'nor is one that carried its value' => [['hyde', '--env=development', 'php', '-v'], ['-v']],
     'no command at all' => [['hyde', '--version'], []],
 ]);
 

@@ -65,6 +65,22 @@ final class Launcher
      */
     public const RUNTIME_COMMANDS = ['php', 'composer'];
 
+    /**
+     * Global options whose value is the *next* token rather than part of this one.
+     *
+     * Symfony works this out from the input definition, which does not exist here yet:
+     * the launcher runs before the application. So the one global option that takes a
+     * value is named. `--env development` is two tokens and the second is not the
+     * command; `--env=development` needs no help, being one token that is an option.
+     *
+     * `--env` is declared `VALUE_OPTIONAL` by `illuminate/console`, and Laravel's own
+     * environment detector reads it in both spellings. Every other global option the
+     * application defines takes no value at all.
+     *
+     * @var list<string>
+     */
+    public const VALUE_OPTIONS = ['--env'];
+
     private static ?Project $project = null;
 
     public function __construct(
@@ -193,14 +209,34 @@ final class Launcher
     /**
      * Where in `$argv` the command name is, if it is there at all.
      *
+     * Not simply the first token that does not begin with a dash: the value of a global
+     * option is such a token, and `hyde --env development php -v` names the command
+     * `php`. Getting this wrong routes the call to a command nobody typed.
+     *
      * @param  list<string>  $argv
      */
     public function commandIndex(array $argv): ?int
     {
+        $skip = false;
+
         foreach (array_slice($argv, 1, preserve_keys: true) as $index => $argument) {
+            if ($skip) {
+                // The previous token was an option that takes this one as its value.
+                $skip = false;
+
+                continue;
+            }
+
+            // A bare `--` ends the options, so whatever follows it is the command.
+            if ($argument === '--') {
+                return isset($argv[$index + 1]) ? $index + 1 : null;
+            }
+
             if (! str_starts_with($argument, '-')) {
                 return $index;
             }
+
+            $skip = in_array($argument, self::VALUE_OPTIONS, true);
         }
 
         return null;
