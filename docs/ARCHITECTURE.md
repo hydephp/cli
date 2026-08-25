@@ -92,20 +92,55 @@ called from the [`hyde`](../hyde) entry point **before** the embedded autoloader
 registered. The launcher classes are `require`d by explicit path for exactly that
 reason, and depend on nothing but the PHP standard library.
 
-Three commands belong to the executable rather than to a project, and are answered even
-inside a Composer project:
+Some commands belong to the executable rather than to a project, and are answered even
+inside a Composer project. They come in two kinds, and the difference is what answers them.
+
+**Answered by the embedded application** — `Launcher::LAUNCHER_COMMANDS`:
 
 | Command | Why |
 | --- | --- |
-| `info` | It reports on the environment, including which project it found. |
 | `new` | It creates a project that does not exist yet. |
+| `info` | It reports on the environment, including which project it found. |
 | `self-update` | It updates the executable itself. |
+
+When one of these runs inside somebody else's Composer project, the embedded application is
+pointed at a scratch directory rather than at the project root, so it can never read that
+project's configuration or discover that project's packages.
+
+**Answered by the launcher, booting nothing** — `Launcher::RUNTIME_COMMANDS`:
+
+| Command | Why |
+| --- | --- |
+| `php` | It runs the PHP CLI bundled in the executable. |
+| `composer` | It runs the Composer bundled in the executable, on that runtime. |
 
 Everything else in a Composer project is dispatched into that project.
 
-When a launcher-owned command runs inside somebody else's Composer project, the embedded
-application is pointed at a scratch directory rather than at the project root, so it can
-never read that project's configuration or discover that project's packages.
+### The bundled programs
+
+The executable carries a complete PHP CLI and a Composer, because it needs both: one to
+serve a site and to run a project's own entry point, the other to install a project's
+dependencies. `hyde php` and `hyde composer` hand them to the user as well.
+
+[`App\Launcher\RuntimeDispatcher`](../app/Launcher/RuntimeDispatcher.php) runs them, and it
+is the *launcher* that calls it, for two reasons that are not stylistic:
+
+- **Arguments have to arrive exactly as typed.** A console application claims `-v`,
+  `--version` and `--help` for itself before any command runs, so `hyde php -v` answered by
+  a console command could not print PHP's version. The launcher takes everything after the
+  command name — after the command, not after the program, so `hyde -v php -r '...'` does
+  not leak the CLI's own option into PHP.
+- **`hyde composer install` has to work where nothing else does.** A Composer project with
+  no `vendor/` is the state the launcher refuses to run anything in, and this is the
+  command that repairs it. So it is answered *before* the project is detected at all.
+
+`App\Commands\PhpCommand` and `App\Commands\ComposerCommand` are registered all the same,
+so `hyde list` and `hyde help php` have something to describe. They are not the shipped
+execution path, and the tests exercise the launcher rather than them.
+
+The command list renders these, and the launcher-owned commands above, in a section of
+their own, with membership read from `Launcher::ownedCommands()` — the list cannot come to
+disagree with the routing it describes.
 
 ### Self-dispatch
 
@@ -130,7 +165,8 @@ hyde  =  micro.sfx  ++  hyde.phar
                         ├── vendor/               (the embedded dependency graph)
                         └── runtime/
                             ├── php.gz            (a full static PHP CLI, gzipped)
-                            └── runtime.json      (version, platform, checksum, offset)
+                            ├── composer.phar.gz  (Composer, gzipped)
+                            └── runtime.json      (versions, platform, checksums, offset)
 ```
 
 `bin/build-native.sh` (POSIX) and `bin/build-native.ps1` (Windows) drive static-php-cli;
@@ -159,6 +195,29 @@ aside rather than overwritten in place.
 **The RuntimeManager never resolves `php` from `PATH`.** The only interpreter it will use
 besides the embedded one is the CLI process that is already running the code, which only
 happens in a source checkout, where no embedded runtime exists.
+
+### Why Composer is embedded too
+
+The CLI could always *run* a Composer project on a machine with no PHP. Installing that
+project's dependencies still needed a Composer that machine did not have, which left the
+promise one step short. So the build embeds one.
+
+It is pinned by version in `build/runtime.json` and verified against the checksum
+getcomposer.org publishes for that release — on every build, cached download included. It
+is extracted like the runtime, verified against the checksum of the decompressed file, and
+cached under its own version rather than under the platform:
+
+```
+~/.cache/hyde/composer/<composer-version>/composer.phar
+```
+
+Composer is a PHAR, so it is never executed on its own: the bundled runtime is named as the
+program and Composer as its first argument. That is also what decides which PHP an install
+runs against — the one this executable ships, never whatever a shebang would find.
+
+`ext-zip` is in the runtime for this. Without it Composer falls back to an `unzip` binary
+and then to `git`, and a machine that installed Hyde to avoid installing PHP cannot be
+assumed to have either: `composer install` fails outright there.
 
 ### Finding the archive inside the executable
 
@@ -269,9 +328,10 @@ and the tests that need it generate it or fail loudly rather than skipping.
 
 ### Runtime version and extensions
 
-`build/runtime.json` is the single build configuration. It pins **PHP 8.4** and lists
-every extension with the reason it is present. Nothing is compiled that is not needed:
-static-php-cli's default extension set is not used.
+`build/runtime.json` is the single build configuration. It pins **PHP 8.4**, lists every
+extension with the reason it is present, and pins the Composer release to bundle along
+with the checksum it must hash to. Nothing is compiled that is not needed: static-php-cli's
+default extension set is not used.
 
 PHP 8.4 rather than 8.5 because 8.5 emits deprecation notices from dependencies in the
 current release line (`PDO::MYSQL_ATTR_SSL_CA` in `laravel-zero/foundation`), and the
@@ -290,7 +350,8 @@ is what every PHP on Windows has always done.
 | --- | --- |
 | Bundled PHP runtime | 8.4.x |
 | PHP required on the user's machine | none |
-| Composer required on the user's machine | none, except for `hyde new --composer` |
+| Bundled Composer | the release pinned in `build/runtime.json` |
+| Composer required on the user's machine | none |
 | Framework, Portable projects | the version embedded in the executable |
 | Framework, Composer projects | whatever the project declares |
 | Running the CLI from source | PHP 8.2 – 8.4 with the extensions in `build/runtime.json` |
