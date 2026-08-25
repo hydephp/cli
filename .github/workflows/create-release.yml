@@ -68,7 +68,7 @@ jobs:
 
             Merging it publishes a new release. The native executables for every supported
             platform are built, signed and attested by the publish workflow at that point.
-          reviewers: caendesilva
+          reviewers: emmadesilva
           labels: release
 
   # Build every artifact on the release branch as well, so a release PR cannot be merged
