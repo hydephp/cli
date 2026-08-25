@@ -88,10 +88,10 @@ class Describer extends BaseDescriber
         }
 
         if ($cli !== []) {
-            $this->describeSection($output, self::CLI_SECTION, ['' => $cli], 2);
+            $this->describeSection($output, self::CLI_SECTION, ['' => $cli], 4);
         }
 
-        $this->describeSection($output, self::PROJECT_SECTION, $this->groupByNamespace($commands), 4);
+        $this->describeSection($output, self::PROJECT_SECTION, $this->groupProjectCommands($commands), 6, 4);
 
         $output->writeln('');
 
@@ -133,7 +133,7 @@ class Describer extends BaseDescriber
      * @param  array<string, \Symfony\Component\Console\Command\Command>  $commands
      * @return array<string, list<\Symfony\Component\Console\Command\Command>>
      */
-    protected function groupByNamespace(array $commands): array
+    protected function groupProjectCommands(array $commands): array
     {
         $groups = [];
 
@@ -160,11 +160,17 @@ class Describer extends BaseDescriber
      * @param  array{0: string, 1: string}  $section
      * @param  array<string, list<\Symfony\Component\Console\Command\Command>>  $groups
      */
-    protected function describeSection(OutputInterface $output, array $section, array $groups, int $commandIndent): void
+    protected function describeSection(
+        OutputInterface $output,
+        array $section,
+        array $groups,
+        int $commandIndent,
+        ?int $groupIndent = null,
+    ): void
     {
-        $indent = str_repeat(' ', $commandIndent);
+        $groupIndent ??= $commandIndent;
 
-        $output->write(sprintf("\n  <fg=yellow;options=bold>%s</>\n  <fg=gray>%s</>\n", $section[0], $section[1]));
+        $output->write(sprintf("\n  <fg=yellow;options=bold>%s</>\n    <fg=gray>%s</>\n", $section[0], $section[1]));
 
         foreach ($groups as $index => $commands) {
             $width = 0;
@@ -176,13 +182,13 @@ class Describer extends BaseDescriber
             $output->write("\n");
 
             if ($index !== '') {
-                $output->write(sprintf("  <fg=yellow>%s</>\n", $index));
+                $output->write(sprintf("%s<fg=yellow>%s</>\n", str_repeat(' ', $groupIndent), $index));
             }
 
             foreach ($commands as $command) {
                 $output->write(sprintf(
                     "%s<fg=green>%s</>%s%s%s\n",
-                    $indent,
+                    str_repeat(' ', $commandIndent),
                     $command->getName(),
                     str_repeat(' ', $width - mb_strlen((string) $command->getName()) + 1),
                     $command->getAliases() ? '<fg=cyan>[</>'.implode('|', $command->getAliases()).'<fg=cyan>]</> ' : '',

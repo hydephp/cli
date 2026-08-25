@@ -32,6 +32,7 @@ beforeEach(function () {
     expect($this->runCommand('list'))->toBe(0);
 
     $this->rendered = $this->consoleOutput();
+    $this->plain = preg_replace('/\e\[[\d;]*m/', '', $this->rendered) ?? $this->rendered;
 });
 
 it('gives the commands the executable owns a section of their own', function () {
@@ -69,17 +70,17 @@ it('leaves the project commands out of the CLI section', function () {
 });
 
 it('renders project command subgroups', function () {
-    expect($this->rendered)
+    expect($this->plain)
         ->toContain('Core')
         ->toContain('Build')
         ->toContain('Create')
         ->toContain('Publish')
         ->toContain('Other')
-        ->toMatch('/^  Build\n    .*build:rss/m')
-        ->toMatch('/^  Create\n    .*make:page/m')
-        ->toMatch('/^  Publish\n(?s:.*?)    publish:views/m')
-        ->toMatch('/^  Other\n    herd:install/m')
-        ->toMatch('/^  Other\n(?s:.*?)    route:list/m');
+        ->toMatch('/^    Build\n      .*build:rss/m')
+        ->toMatch('/^    Create\n      .*make:page/m')
+        ->toMatch('/^    Publish\n(?s:.*?)      publish:views/m')
+        ->toMatch('/^    Other\n      herd:install/m')
+        ->toMatch('/^    Other\n(?s:.*?)      route:list/m');
 });
 
 it('puts the command that creates a project first', function () {
