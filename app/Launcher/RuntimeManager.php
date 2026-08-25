@@ -20,6 +20,8 @@ use function basename;
 use function hash_file;
 use function is_string;
 use function is_array;
+use function array_map;
+use function array_values;
 use function is_writable;
 use function json_decode;
 use function hash_equals;
@@ -434,7 +436,7 @@ final class RuntimeManager
      * {@see self::manifest()}: the PHP runtime is what the executable cannot work
      * without, and describing it must not start depending on Composer being there.
      *
-     * @return array{version: string, filename: string, checksum: string}|null
+     * @return array{version: string, filename: string, checksum: string, patches: list<string>}|null
      */
     public function composerManifest(): ?array
     {
@@ -454,7 +456,25 @@ final class RuntimeManager
             'version' => (string) $composer['version'],
             'filename' => (string) ($composer['filename'] ?? self::COMPOSER_FILE),
             'checksum' => (string) $composer['checksum'],
+
+            // What this build changed in the published archive. Empty is the goal.
+            'patches' => array_values(array_map('strval', is_array($composer['patches'] ?? null) ? $composer['patches'] : [])),
         ];
+    }
+
+    /**
+     * The patches this executable carries against the Composer release it ships.
+     *
+     * The bundled Composer is not always the published archive byte for byte: where a
+     * Composer bug stops the CLI working on one of its platforms, the build carries the
+     * minimum change needed. What was changed is recorded rather than left to be
+     * discovered, so `hyde info -v` can say so.
+     *
+     * @return list<string>
+     */
+    public function composerPatches(): array
+    {
+        return $this->composerManifest()['patches'] ?? [];
     }
 
     /** The version of Composer this executable ships, if it ships one. */
