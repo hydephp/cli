@@ -27,6 +27,59 @@ it('builds a portable project to _site', function () {
         ->toContain('Test Page');
 });
 
+it('builds the bundled stylesheet locally without changing the source media directory', function () {
+    $path = TemporaryProject::portable();
+
+    $this->boot($path);
+
+    expect($this->runCommand('build'))->toBe(0)
+        ->and($path.'/_media/app.css')->not->toBeFile()
+        ->and($path.'/_site/media/app.css')->toBeFile()
+        ->and(file_get_contents($path.'/_site/index.html'))
+        ->toContain('media/app.css')
+        ->and(file_get_contents($path.'/_site/media/app.css'))
+        ->toContain('tailwindcss');
+});
+
+it('prefers and preserves a user stylesheet', function () {
+    $userStylesheet = '/* user stylesheet */\nbody { color: rebeccapurple; }\n';
+    $path = TemporaryProject::portable(['_media/app.css' => $userStylesheet]);
+
+    $this->boot($path);
+
+    expect($this->runCommand('build'))->toBe(0)
+        ->and(file_get_contents($path.'/_site/media/app.css'))->toBe($userStylesheet)
+        ->and(file_get_contents($path.'/_media/app.css'))->toBe($userStylesheet);
+});
+
+it('supports the bundled stylesheet with a custom media directory', function () {
+    $path = TemporaryProject::portable([
+        '_pages/index.md' => "# Home\n",
+        'assets/.gitkeep' => '',
+        'hyde.yml' => "name: Custom Media Site\nmedia_directory: assets\n",
+    ]);
+
+    $this->boot($path);
+
+    expect($this->runCommand('build'))->toBe(0)
+        ->and($path.'/assets/app.css')->not->toBeFile()
+        ->and($path.'/_site/assets/app.css')->toBeFile()
+        ->and(file_get_contents($path.'/_site/index.html'))
+        ->toContain('assets/app.css');
+});
+
+it('produces the same bundled stylesheet on repeated builds', function () {
+    $path = TemporaryProject::portable();
+
+    $this->boot($path);
+
+    expect($this->runCommand('build'))->toBe(0);
+    $first = file_get_contents($path.'/_site/media/app.css');
+
+    expect($this->runCommand('build'))->toBe(0)
+        ->and(file_get_contents($path.'/_site/media/app.css'))->toBe($first);
+});
+
 it('never creates a vendor directory or a composer manifest', function () {
     $path = TemporaryProject::portable();
 

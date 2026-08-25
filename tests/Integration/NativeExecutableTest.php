@@ -67,7 +67,9 @@ it('builds a portable project to the expected output', function () {
         ->and($path.'/_site/index.html')->toBeFile()
         ->and(file_get_contents($path.'/_site/index.html'))
         ->toContain('Hello Portable World')
-        ->toContain('Test Page');
+        ->toContain('Test Page')
+        ->toContain('media/app.css')
+        ->and($path.'/_site/media/app.css')->toBeFile();
 });
 
 it('never creates a vendor directory or a composer manifest while building', function () {
