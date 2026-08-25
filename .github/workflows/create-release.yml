@@ -31,9 +31,8 @@ jobs:
       version: ${{ steps.build-version.outputs.version }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
 
       - name: Pull latest changes from master
