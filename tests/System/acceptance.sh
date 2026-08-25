@@ -18,6 +18,14 @@ if [ -z "$HYDE" ] || [ ! -x "$HYDE" ]; then
     exit 2
 fi
 
+# Almost every check runs the executable from inside a directory it just made, so a
+# relative path — `builds/hyde-linux-x86_64`, as it would be typed — has to be resolved
+# before the first one of those changes directory out from under it.
+case "$HYDE" in
+    /*) ;;
+    *) HYDE="$(cd "$(dirname "$HYDE")" && pwd)/$(basename "$HYDE")" ;;
+esac
+
 WORK="$(mktemp -d)"
 FAILURES=0
 CHECKS=0

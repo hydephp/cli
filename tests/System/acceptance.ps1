@@ -17,6 +17,10 @@ if (-not (Test-Path $Hyde)) {
     exit 2
 }
 
+# Almost every check runs the executable from inside a directory it just made, so a
+# relative path has to be resolved before the first one of those changes location.
+$Hyde = (Resolve-Path $Hyde).Path
+
 $script:Checks = 0
 $script:Failures = 0
 
