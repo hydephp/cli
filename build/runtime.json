@@ -15,6 +15,7 @@
         "pcntl": "Required by symfony/process for signal handling when running `hyde serve` child processes. POSIX only.",
         "phar": "Required to run the embedded application: the executable is a micro SAPI bound to a PHAR.",
         "posix": "Required by symfony/console and laravel/prompts for TTY detection and interactive prompts. POSIX only.",
+        "session": "Required at install time by illuminate/session, which hyde/framework reaches through torchlight/torchlight-laravel and illuminate/http. The bundled Composer resolves platform requirements against the runtime it is running on, so without this every Hyde Composer project `hyde new --composer` creates is unresolvable.",
         "simplexml": "Required by hyde/framework for sitemap and RSS feed generation.",
         "tokenizer": "Required by the Blade compiler in illuminate/view.",
         "xml": "Required as the base extension for dom, simplexml, xmlreader and xmlwriter.",
