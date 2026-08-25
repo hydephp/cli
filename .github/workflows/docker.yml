@@ -1,7 +1,9 @@
 name: Build Docker Image
 
 on:
-  push:
+  workflow_run:
+    workflows: [ "Publish a new release" ]
+    types: [ completed ]
     branches: [ "stable" ]
 
 env:
@@ -13,9 +15,10 @@ env:
 jobs:
 
   # The image needs the Linux executable, which is not committed to the repository. This
-  # workflow runs on pushes to `stable`, after publish-release.yml has published the
-  # artifacts, so it takes the executable from the release rather than rebuilding it.
+  # workflow runs after publish-release.yml has successfully published the artifacts, so
+  # it takes the executable from that exact release rather than rebuilding it.
   build-docker-image:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     permissions:
@@ -24,14 +27,29 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      # Get the version from the exact commit published by the triggering workflow.
+      - name: Get current version
+        run: |
+          set -euo pipefail
+
+          version="$(php ./bin/get-release-version.php)"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
 
       - name: Download the published Linux executable
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
+
           mkdir -p builds
-          gh release download --repo "${{ github.repository }}" --pattern hyde-linux-x86_64 --dir builds
+          gh release download "v${VERSION}" \
+            --repo "${{ github.repository }}" \
+            --pattern "hyde-linux-x86_64" \
+            --dir builds
           chmod +x builds/hyde-linux-x86_64
 
       # Install the cosign tool
@@ -55,11 +73,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      # Get the current version
-      - name: Get current version
-        id: get-version
-        run: echo "VERSION=$(php ./bin/get-release-version.php)" >> $GITHUB_ENV
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
