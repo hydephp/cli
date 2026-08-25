@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Commands\PhpCommand;
 use App\Commands\InfoCommand;
 use App\Commands\ServeCommand;
+use App\Commands\ComposerCommand;
 use App\Commands\NewProjectCommand;
 use App\Commands\SelfUpdateCommand;
 use Tests\Support\TemporaryProject;
@@ -13,10 +15,23 @@ it('registers the commands the executable owns', function () {
 
     $commands = $this->registeredCommands();
 
-    expect($commands)->toHaveKeys(['info', 'new', 'self-update', 'serve'])
+    expect($commands)->toHaveKeys(['info', 'new', 'self-update', 'serve', 'php', 'composer'])
         ->and($commands['info'])->toBeInstanceOf(InfoCommand::class)
         ->and($commands['new'])->toBeInstanceOf(NewProjectCommand::class)
         ->and($commands['self-update'])->toBeInstanceOf(SelfUpdateCommand::class);
+});
+
+it('describes the programs it bundles, so they can be listed and helped', function () {
+    $this->boot(TemporaryProject::portable());
+
+    $commands = $this->registeredCommands();
+
+    // These are answered by the launcher, before the application exists. They are
+    // registered so `hyde list` and `hyde help php` have something to describe.
+    expect($commands['php'])->toBeInstanceOf(PhpCommand::class)
+        ->and($commands['composer'])->toBeInstanceOf(ComposerCommand::class)
+        ->and($commands['php']->getDescription())->toContain('bundled PHP')
+        ->and($commands['composer']->getDescription())->toContain('bundled Composer');
 });
 
 it('overrides the realtime compiler serve command with its own', function () {

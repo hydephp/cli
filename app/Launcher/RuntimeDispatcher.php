@@ -45,6 +45,7 @@ class RuntimeDispatcher
     {
         return match ($command) {
             'php' => $this->php($arguments),
+            'composer' => $this->composer($arguments),
             default => throw new LauncherException("The executable bundles no `$command` program."),
         };
     }
@@ -64,6 +65,24 @@ class RuntimeDispatcher
         $php = $this->runtime->path();
 
         return $this->start(array_merge([$php], array_values($arguments)), $php);
+    }
+
+    /**
+     * Run the bundled Composer, using the bundled PHP runtime.
+     *
+     * Composer is a PHAR, so the runtime is named as the program and Composer as its
+     * first argument. That is also what decides which PHP the install runs against:
+     * the one this executable ships, and never whatever a shebang would find.
+     *
+     * @param  list<string>  $arguments
+     *
+     * @throws \App\Launcher\LauncherException
+     */
+    public function composer(array $arguments = []): int
+    {
+        $php = $this->runtime->path();
+
+        return $this->start(array_merge([$php, $this->runtime->composerPath()], array_values($arguments)), $php);
     }
 
     /**

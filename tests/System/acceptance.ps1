@@ -105,6 +105,31 @@ try {
         Fail 'hyde php propagates the exit status' "expected 3, got $($phpStatus.Status)"
     }
 
+    Write-Host '==> The bundled Composer'
+
+    $composerVersion = Invoke-Hyde $work @('composer', '--version', '--no-ansi')
+    Assert-Contains 'hyde composer runs the bundled Composer' $composerVersion.Output 'Composer version'
+
+    # A manifest with nothing in it: enough to prove Composer runs and writes an install,
+    # without making this suite depend on the network or on any package staying published.
+    $install = Join-Path $work 'install'
+    New-Item -ItemType Directory -Force -Path $install | Out-Null
+    Set-Content -Path (Join-Path $install 'composer.json') -Value '{"name":"acme/empty","require":{}}'
+
+    $installResult = Invoke-Hyde $install @('composer', 'install', '--no-interaction', '--no-ansi')
+
+    if ($installResult.Status -eq 0) {
+        Pass 'hyde composer install succeeds'
+    } else {
+        Fail 'hyde composer install succeeds' $installResult.Output
+    }
+
+    if (Test-Path (Join-Path $install 'vendor\autoload.php')) {
+        Pass 'hyde composer install writes an autoloader'
+    } else {
+        Fail 'hyde composer install writes an autoloader'
+    }
+
     Write-Host '==> Portable project'
 
     $site = Join-Path $work 'site'
@@ -252,6 +277,12 @@ try {
 
     Assert-Contains 'the failure names composer install' $brokenBuild.Output 'composer install'
     Assert-Missing 'nothing was built' (Join-Path $broken '_site')
+
+    # The command that repairs that project has to be answerable *in* it. It is handled
+    # before the project is detected at all, so the state that stops `hyde build` does
+    # not stop the command that fixes it.
+    $brokenComposer = Invoke-Hyde $broken @('composer', '--version', '--no-ansi')
+    Assert-Contains 'hyde composer answers inside a project with no vendor' $brokenComposer.Output 'Composer version'
 
     Write-Host '==> Serving'
 

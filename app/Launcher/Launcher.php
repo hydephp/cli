@@ -61,7 +61,7 @@ final class Launcher
      *
      * @var list<string>
      */
-    public const RUNTIME_COMMANDS = ['php'];
+    public const RUNTIME_COMMANDS = ['php', 'composer'];
 
     private static ?Project $project = null;
 

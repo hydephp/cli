@@ -120,6 +120,31 @@ else
     fail "hyde php propagates the exit status" "expected 3, got $PHP_STATUS"
 fi
 
+echo "==> The bundled Composer"
+
+COMPOSER_VERSION_OUTPUT="$("$HYDE" composer --version --no-ansi 2>&1)"
+assert_contains "hyde composer runs the bundled Composer" "$COMPOSER_VERSION_OUTPUT" "Composer version"
+
+# A manifest with nothing in it: enough to prove Composer runs and writes an install,
+# without making this suite depend on the network or on any package staying published.
+INSTALL="$WORK/install"
+mkdir -p "$INSTALL"
+printf '{"name":"acme/empty","require":{}}' > "$INSTALL/composer.json"
+
+INSTALL_OUTPUT="$(cd "$INSTALL" && "$HYDE" composer install --no-interaction --no-ansi 2>&1)" && INSTALL_STATUS=0 || INSTALL_STATUS=$?
+
+if [ "$INSTALL_STATUS" -eq 0 ]; then
+    pass "hyde composer install succeeds"
+else
+    fail "hyde composer install succeeds" "$INSTALL_OUTPUT"
+fi
+
+if [ -f "$INSTALL/vendor/autoload.php" ]; then
+    pass "hyde composer install writes an autoloader"
+else
+    fail "hyde composer install writes an autoloader"
+fi
+
 echo "==> Portable project"
 
 SITE="$WORK/site"
@@ -236,6 +261,12 @@ fi
 
 assert_contains "the failure names composer install" "$BROKEN_OUTPUT" "composer install"
 assert_missing "nothing was built" "$BROKEN/_site"
+
+# The command that repairs that project has to be answerable *in* it. It is handled
+# before the project is detected at all, so the state that stops `hyde build` does
+# not stop the command that fixes it.
+BROKEN_COMPOSER_OUTPUT="$(cd "$BROKEN" && "$HYDE" composer --version --no-ansi 2>&1)"
+assert_contains "hyde composer answers inside a project with no vendor" "$BROKEN_COMPOSER_OUTPUT" "Composer version"
 
 echo "==> Serving"
 
