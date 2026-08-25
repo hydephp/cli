@@ -9,7 +9,7 @@ on:
     branches: [ "stable" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
 
@@ -18,9 +18,8 @@ jobs:
     name: Merge stable branch into master
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: master
 
       - name: Merge stable branch into master
@@ -44,7 +43,7 @@ jobs:
       attestations: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: stable
 
@@ -145,9 +144,8 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           ref: stable
 
       - uses: shivammathur/setup-php@v2
