@@ -56,9 +56,11 @@ directory, in order:
 1. A `composer.json` that **actually declares Hyde** makes it a Composer project root.
 2. Otherwise, a portable marker (`_pages`, `_posts`, `_docs`, `_media`, `hyde.yml`,
    `hyde.yaml`) makes it a Portable project root, and stops the search.
-3. Otherwise the search continues with the parent directory.
+3. Otherwise, a `composer.json` is a boundary: it is not a Hyde project, so detection
+   fails rather than walking into an enclosing project.
+4. Otherwise the search continues with the parent directory.
 
-Portable is the fallback when nothing matches.
+Portable is the fallback when nothing matches and no Composer manifest was encountered.
 
 Rule 2 exists so that a portable site checked out *inside* another PHP project is not
 attributed to that project's manifest. Rule 1 comes first so that a Composer project's

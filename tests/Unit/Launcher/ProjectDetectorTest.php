@@ -59,6 +59,25 @@ it('is case insensitive about package names', function () {
     expect((new ProjectDetector())->detect($path)->type)->toBe(ProjectType::Composer);
 });
 
+it('refuses a composer project that does not declare Hyde', function () {
+    $path = TemporaryProject::directory();
+
+    TemporaryProject::write($path, [
+        'composer.json' => json_encode([
+            'name' => 'laravel/laravel',
+            'require' => [
+                'laravel/framework' => '^13.0',
+            ],
+        ]),
+    ]);
+
+    expect(fn () => (new ProjectDetector())->detect($path))
+        ->toThrow(
+            LauncherException::class,
+            'This is a Composer project, but it does not declare Hyde.'
+        );
+});
+
 /*
 |--------------------------------------------------------------------------
 | Manifests that mention Hyde without depending on it
@@ -156,6 +175,21 @@ it('finds the composer project root from a subdirectory', function () {
     expect($project->type)->toBe(ProjectType::Composer)
         ->and($project->root)->toBe($path)
         ->and($project->workingDirectory)->toBe($path.'/docs/guides');
+});
+
+it('does not walk past an unrelated composer project', function () {
+    $path = TemporaryProject::directory();
+
+    TemporaryProject::write($path, [
+        'composer.json' => '{"name":"laravel/laravel","require":{"laravel/framework":"^13.0"}}',
+        'app/.gitkeep' => '',
+    ]);
+
+    expect(fn () => (new ProjectDetector())->detect($path.'/app'))
+        ->toThrow(
+            LauncherException::class,
+            'This is a Composer project, but it does not declare Hyde.'
+        );
 });
 
 it('does not attribute a nested portable site to an enclosing composer project', function () {
