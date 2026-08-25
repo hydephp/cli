@@ -65,7 +65,14 @@ $app = new \App\Application($environment['working']);
 $bundledStylesheet = $project->isPortable() ? BundledStylesheet::path() : null;
 
 if ($bundledStylesheet !== null) {
-    $app->singleton(\Illuminate\Filesystem\Filesystem::class, fn (): PortableIlluminateFilesystem => new PortableIlluminateFilesystem($bundledStylesheet));
+    // Hyde's service provider applies the configured media directory while providers boot.
+    // Bind the overlay after that phase so its exact virtual path matches the kernel.
+    $app->afterBootstrapping(\Illuminate\Foundation\Bootstrap\BootProviders::class, function () use ($app, $bundledStylesheet): void {
+        $mediaDirectory = \Hyde\Hyde::getMediaDirectory();
+        $virtualStylesheet = \Hyde\Hyde::path($mediaDirectory.'/app.css');
+
+        $app->singleton(\Illuminate\Filesystem\Filesystem::class, fn (): PortableIlluminateFilesystem => new PortableIlluminateFilesystem($bundledStylesheet, $virtualStylesheet));
+    });
 }
 
 // Everything the framework writes goes outside the project being built.

@@ -12,8 +12,8 @@ use function filesize;
 use function hash_file;
 use function is_file;
 use function is_string;
+use function rtrim;
 use function str_replace;
-use function str_ends_with;
 
 /**
  * Adds the executable's app.css to the Portable project's read-only media view.
@@ -22,7 +22,10 @@ use function str_ends_with;
  */
 final class PortableIlluminateFilesystem extends Filesystem
 {
-    public function __construct(private readonly string $bundledStylesheet)
+    public function __construct(
+        private readonly string $bundledStylesheet,
+        private readonly string $virtualStylesheet,
+    )
     {
         // Illuminate's Filesystem has no constructor; keeping this explicit makes the
         // dependency on the bundled resource visible.
@@ -71,6 +74,11 @@ final class PortableIlluminateFilesystem extends Filesystem
             return false;
         }
 
-        return str_ends_with(str_replace('\\', '/', $path), '/_media/app.css');
+        return $this->normalize($path) === $this->normalize($this->virtualStylesheet);
+    }
+
+    private function normalize(string $path): string
+    {
+        return rtrim(str_replace('\\', '/', $path), '/');
     }
 }

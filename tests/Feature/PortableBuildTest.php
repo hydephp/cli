@@ -52,6 +52,22 @@ it('prefers and preserves a user stylesheet', function () {
         ->and(file_get_contents($path.'/_media/app.css'))->toBe($userStylesheet);
 });
 
+it('supports the bundled stylesheet with a custom media directory', function () {
+    $path = TemporaryProject::portable([
+        '_pages/index.md' => "# Home\n",
+        'assets/.gitkeep' => '',
+        'hyde.yml' => "name: Custom Media Site\nmedia_directory: assets\n",
+    ]);
+
+    $this->boot($path);
+
+    expect($this->runCommand('build'))->toBe(0)
+        ->and($path.'/assets/app.css')->not->toBeFile()
+        ->and($path.'/_site/assets/app.css')->toBeFile()
+        ->and(file_get_contents($path.'/_site/index.html'))
+        ->toContain('assets/app.css');
+});
+
 it('produces the same bundled stylesheet on repeated builds', function () {
     $path = TemporaryProject::portable();
 
