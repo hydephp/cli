@@ -11,7 +11,7 @@ test('application version constant follows semantic versioning', function () {
 });
 
 test('the CLI is versioned independently of the framework', function () {
-    expect(Application::APP_VERSION)->toBe('0.10.13');
+    expect(Application::APP_VERSION)->toBe('0.11.0');
 });
 
 test('custom application extends Hyde application', function () {
