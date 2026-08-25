@@ -79,6 +79,66 @@ it('says so when asked for a composer the executable does not have', function ()
         ->toThrow(LauncherException::class, 'does not bundle Composer');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Composer updating itself
+|--------------------------------------------------------------------------
+|
+| The bundled Composer is versioned with the executable. Letting it replace its
+| own extracted copy would appear to work and then be undone by the next run,
+| which verifies what it finds against the checksum from the build.
+|
+*/
+
+it('refuses to let the bundled composer update itself', function (array $arguments) {
+    $dispatcher = new class() extends RuntimeDispatcher
+    {
+        public bool $started = false;
+
+        public function composer(array $arguments = []): int
+        {
+            $refused = $this->refuseSelfUpdate($arguments);
+
+            if ($refused !== null) {
+                return $refused;
+            }
+
+            $this->started = true;
+
+            return 0;
+        }
+    };
+
+    // The status is what a script acts on, and it is not success. The explanation goes
+    // to standard error, where it cannot be mistaken for the output of a command.
+    expect($dispatcher->composer($arguments))->toBe(1)
+        ->and($dispatcher->started)->toBeFalse();
+})->with([
+    'the command' => [['self-update']],
+    'its alias' => [['selfupdate']],
+    'behind an option' => [['--no-ansi', 'self-update']],
+    'with its own options' => [['self-update', '--rollback']],
+]);
+
+it('lets every other composer command through', function (array $arguments) {
+    $dispatcher = new class() extends RuntimeDispatcher
+    {
+        public function refusal(array $arguments): ?int
+        {
+            return $this->refuseSelfUpdate($arguments);
+        }
+    };
+
+    expect($dispatcher->refusal($arguments))->toBeNull();
+})->with([
+    'install' => [['install']],
+    'update' => [['update']],
+    'nothing at all' => [[]],
+    'only options' => [['--version']],
+    'a package that reads like it' => [['require', 'acme/self-update']],
+    'an option that took a separate value' => [['-d', '/some/path', 'install']],
+]);
+
 it('refuses a program it does not bundle', function () {
     expect(fn () => (new RuntimeDispatcher())->run('perl'))
         ->toThrow(LauncherException::class, 'bundles no `perl` program');
