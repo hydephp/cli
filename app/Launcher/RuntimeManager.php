@@ -16,6 +16,7 @@ use function is_file;
 use function getenv;
 use function getmypid;
 use function dirname;
+use function basename;
 use function hash_file;
 use function is_string;
 use function is_array;
@@ -62,6 +63,10 @@ use function sprintf;
  * It never resolves `php` from PATH. The only non-embedded interpreter it will
  * ever use is the very CLI process that is already running the code, which
  * only happens when the CLI is run from a source checkout during development.
+ *
+ * Composer is bundled the same way, and extracted the same way. It is a PHAR
+ * rather than a binary, so it is run by the runtime above rather than on its
+ * own, and it is cached by its own version rather than by platform.
  */
 final class RuntimeManager
 {
@@ -70,6 +75,15 @@ final class RuntimeManager
 
     /** The build manifest describing the embedded runtime. */
     public const MANIFEST_FILE = 'runtime.json';
+
+    /**
+     * The Composer archive the executable ships beside the runtime.
+     *
+     * Composer is a PHAR rather than a native binary, so the same bundled PHP runs it.
+     * It is here so that `hyde composer` and `hyde new --composer` work on a machine
+     * that has neither PHP nor Composer, which is the whole promise of the CLI.
+     */
+    public const COMPOSER_FILE = 'composer.phar';
 
     /**
      * The suffix the embedded runtime binary carries inside the archive.
@@ -102,6 +116,8 @@ final class RuntimeManager
     private ?string $resolved = null;
 
     private ?string $resolvedArchive = null;
+
+    private ?string $resolvedComposer = null;
 
     private readonly Platform $platform;
 
@@ -386,32 +402,125 @@ final class RuntimeManager
     public function extract(): string
     {
         $manifest = $this->manifest();
-        $directory = $this->cacheDirectory($manifest);
-        $target = $directory.'/'.$manifest['filename'];
+
+        return $this->extractResource(
+            $this->embeddedBinaryPath(),
+            $this->cacheDirectory($manifest).'/'.$manifest['filename'],
+            $manifest['checksum'],
+            'PHP runtime',
+            executable: true
+        );
+    }
+
+    /**
+     * Get the path to the bundled Composer archive, extracting it if needed.
+     *
+     * @throws \App\Launcher\LauncherException If the executable ships no Composer.
+     */
+    public function composerPath(): string
+    {
+        return $this->resolvedComposer ??= $this->extractComposer();
+    }
+
+    public function hasBundledComposer(): bool
+    {
+        return $this->composerManifest() !== null && is_file($this->embeddedComposerPath());
+    }
+
+    /**
+     * What the build recorded about the bundled Composer, or null when none was bundled.
+     *
+     * This is deliberately a separate reading of the manifest rather than a wider
+     * {@see self::manifest()}: the PHP runtime is what the executable cannot work
+     * without, and describing it must not start depending on Composer being there.
+     *
+     * @return array{version: string, filename: string, checksum: string}|null
+     */
+    public function composerManifest(): ?array
+    {
+        $manifest = json_decode((string) @file_get_contents($this->manifestPath()), true);
+
+        $composer = is_array($manifest) ? ($manifest['composer'] ?? null) : null;
+
+        if (! is_array($composer) || ! isset($composer['version'], $composer['checksum'])) {
+            return null;
+        }
+
+        return [
+            'version' => (string) $composer['version'],
+            'filename' => (string) ($composer['filename'] ?? self::COMPOSER_FILE),
+            'checksum' => (string) $composer['checksum'],
+        ];
+    }
+
+    /** The version of Composer this executable ships, if it ships one. */
+    public function composerVersion(): ?string
+    {
+        return $this->composerManifest()['version'] ?? null;
+    }
+
+    /** @throws \App\Launcher\LauncherException */
+    private function extractComposer(): string
+    {
+        $manifest = $this->composerManifest();
+
+        if ($manifest === null || ! is_file($this->embeddedComposerPath())) {
+            throw new LauncherException(<<<'TEXT'
+            This executable does not bundle Composer.
+
+            Released executables ship a Composer of their own, so this is either a build
+            made without one, or a source checkout. Install Composer, or use an official
+            release for your platform.
+            TEXT);
+        }
+
+        return $this->extractResource(
+            $this->embeddedComposerPath(),
+            $this->composerCacheDirectory($manifest).'/'.$manifest['filename'],
+            $manifest['checksum'],
+            'Composer'
+        );
+    }
+
+    /**
+     * Extract one gzipped resource out of the executable, or reuse a valid extraction.
+     *
+     * The checksum recorded at build time is of the decompressed file, so verification
+     * covers exactly the bytes that will be run.
+     *
+     * @throws \App\Launcher\LauncherException
+     */
+    private function extractResource(string $source, string $target, string $checksum, string $label, bool $executable = false): string
+    {
+        $directory = dirname($target);
 
         clearstatcache(true, $target);
 
-        if ($this->isValid($target, $manifest['checksum'])) {
-            $this->ensureExecutable($target);
+        if ($this->isValid($target, $checksum)) {
+            if ($executable) {
+                $this->ensureExecutable($target);
+            }
 
             return $target;
         }
 
         $this->ensureDirectoryExists($directory);
 
-        $temporary = sprintf('%s/.%s.%s.%s', $directory, $manifest['filename'], (string) getmypid(), bin2hex(random_bytes(6)));
+        $temporary = sprintf('%s/.%s.%s.%s', $directory, basename($target), (string) getmypid(), bin2hex(random_bytes(6)));
 
-        $this->decompress($this->embeddedBinaryPath(), $temporary);
+        $this->decompress($source, $temporary, $label);
 
-        if (! $this->isValid($temporary, $manifest['checksum'])) {
+        if (! $this->isValid($temporary, $checksum)) {
             @unlink($temporary);
 
-            throw new LauncherException('The bundled PHP runtime failed its checksum verification. This executable may be corrupt or truncated; please reinstall it.');
+            throw new LauncherException("The bundled $label failed its checksum verification. This executable may be corrupt or truncated; please reinstall it.");
         }
 
-        $this->ensureExecutable($temporary);
+        if ($executable) {
+            $this->ensureExecutable($temporary);
+        }
 
-        $this->install($temporary, $target, $manifest['checksum']);
+        $this->install($temporary, $target, $checksum, $label);
 
         return $target;
     }
@@ -424,7 +533,7 @@ final class RuntimeManager
      * may additionally be locked by another Hyde process that is currently running
      * it, so the stale file is moved aside first and cleaned up opportunistically.
      */
-    private function install(string $temporary, string $target, string $checksum): void
+    private function install(string $temporary, string $target, string $checksum, string $label = 'PHP runtime'): void
     {
         if (@rename($temporary, $target)) {
             return;
@@ -454,7 +563,7 @@ final class RuntimeManager
 
         @unlink($temporary);
 
-        throw new LauncherException("Unable to install the bundled PHP runtime at $target. Another process may be using it, or the directory may be read-only.");
+        throw new LauncherException("Unable to install the bundled $label at $target. Another process may be using it, or the directory may be read-only.");
     }
 
     /**
@@ -462,7 +571,7 @@ final class RuntimeManager
      *
      * @throws \App\Launcher\LauncherException
      */
-    private function decompress(string $source, string $destination): void
+    private function decompress(string $source, string $destination, string $label = 'PHP runtime'): void
     {
         $in = @fopen($source, 'rb');
         $out = @fopen($destination, 'wb');
@@ -476,7 +585,7 @@ final class RuntimeManager
                 fclose($out);
             }
 
-            throw new LauncherException("Unable to extract the bundled PHP runtime to $destination. Check that the directory is writable.");
+            throw new LauncherException("Unable to extract the bundled $label to $destination. Check that the directory is writable.");
         }
 
         // A window of 31 selects gzip framing rather than raw deflate.
@@ -547,6 +656,19 @@ final class RuntimeManager
         return sprintf('%s/hyde/runtime/%s/%s', $this->cacheRoot(), $manifest['version'], $manifest['platform']);
     }
 
+    /**
+     * Where the bundled Composer is extracted to.
+     *
+     * Keyed by its own version, and not by the platform: a PHAR is the same file
+     * everywhere, and the runtime that runs it is chosen separately.
+     *
+     * @param  array{version: string, filename: string, checksum: string}  $manifest
+     */
+    public function composerCacheDirectory(array $manifest): string
+    {
+        return sprintf('%s/hyde/composer/%s', $this->cacheRoot(), $manifest['version']);
+    }
+
     /** The per-user cache root, following platform conventions and the XDG specification. */
     public function cacheRoot(): string
     {
@@ -588,6 +710,11 @@ final class RuntimeManager
     public function embeddedBinaryPath(): string
     {
         return $this->applicationRoot().'/'.self::RUNTIME_DIRECTORY.'/'.$this->platform->runtimeFilename().self::RUNTIME_SUFFIX;
+    }
+
+    public function embeddedComposerPath(): string
+    {
+        return $this->applicationRoot().'/'.self::RUNTIME_DIRECTORY.'/'.self::COMPOSER_FILE.self::RUNTIME_SUFFIX;
     }
 
     public function manifestPath(): string

@@ -20,6 +20,8 @@ $Config = Join-Path $Root 'build\runtime.json'
 
 $runtime = Get-Content $Config -Raw | ConvertFrom-Json
 $phpVersion = $runtime.php
+$composerVersion = $runtime.composer.version
+$composerChecksum = $runtime.composer.sha256
 
 # Windows PHP has never had pcntl or posix, and static-php-cli refuses to start a build
 # that asks for one. build/runtime.json records which extensions cannot exist here;
@@ -30,9 +32,31 @@ $extensions = (($runtime.extensions.PSObject.Properties.Name) | Where-Object { $
 
 Write-Host "==> HydeCLI native build"
 Write-Host "    PHP version: $phpVersion"
+Write-Host "    Composer:    $composerVersion"
 Write-Host "    Extensions:  $extensions"
 
 New-Item -ItemType Directory -Force -Path $Work | Out-Null
+
+# Composer is bundled inside the executable, so that a machine with neither PHP nor
+# Composer can still install a project's dependencies. It is pinned by version and
+# verified on every build, cached copy included: a Composer that does not hash to
+# what build/runtime.json records is not the Composer this release ships.
+$composerPhar = Join-Path $Work "composer-$composerVersion.phar"
+
+if (-not (Test-Path $composerPhar)) {
+    Write-Host "==> Downloading Composer $composerVersion"
+    Invoke-WebRequest -Uri "https://getcomposer.org/download/$composerVersion/composer.phar" -OutFile "$composerPhar.download"
+    Move-Item "$composerPhar.download" $composerPhar
+}
+
+$composerActual = (Get-FileHash -Algorithm SHA256 -Path $composerPhar).Hash.ToLower()
+
+if ($composerActual -ne $composerChecksum) {
+    Remove-Item $composerPhar -Force
+    throw "The downloaded Composer does not match the checksum in build/runtime.json.`n  expected: $composerChecksum`n  actual:   $composerActual"
+}
+
+Write-Host "==> Composer $composerVersion verified"
 
 $spc = Join-Path $Work 'spc.exe'
 
@@ -82,7 +106,7 @@ Write-Host '==> Verifying the embedded dependency graph is v3'
 if ($LASTEXITCODE -ne 0) { throw 'The embedded dependency graph is not HydePHP v3' }
 
 Write-Host '==> Building the executable'
-$arguments = @('-d', 'phar.readonly=0', (Join-Path $Root 'bin\build-phar.php'), "--micro=$micro", "--runtime=$php")
+$arguments = @('-d', 'phar.readonly=0', (Join-Path $Root 'bin\build-phar.php'), "--micro=$micro", "--runtime=$php", "--composer=$composerPhar")
 
 if ($Build) { $arguments += "--build=$Build" }
 

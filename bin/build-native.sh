@@ -38,7 +38,13 @@ read_extensions() {
     php -r '$c = json_decode(file_get_contents($argv[1]), true); echo implode(",", array_diff(array_keys($c["extensions"]), $c["unsupported-extensions"][$argv[2]] ?? []));' "$CONFIG" "$1"
 }
 
+read_composer() {
+    php -r '$c = json_decode(file_get_contents($argv[1]), true); echo $c["composer"][$argv[2]];' "$CONFIG" "$1"
+}
+
 PHP_VERSION="$(read_config php)"
+COMPOSER_VERSION="$(read_composer version)"
+COMPOSER_CHECKSUM="$(read_composer sha256)"
 
 case "$(uname -s)" in
     Darwin) TARGET="macos" ;;
@@ -50,9 +56,36 @@ EXTENSIONS="$(read_extensions "$TARGET")"
 
 echo "==> HydeCLI native build"
 echo "    PHP version: $PHP_VERSION"
+echo "    Composer:    $COMPOSER_VERSION"
 echo "    Extensions:  $EXTENSIONS"
 
 mkdir -p "$WORK"
+
+# Composer is bundled inside the executable, so that a machine with neither PHP nor
+# Composer can still install a project's dependencies. It is pinned by version and
+# verified on every build, cached copy included: a Composer that does not hash to
+# what build/runtime.json records is not the Composer this release ships.
+COMPOSER_PHAR="$WORK/composer-$COMPOSER_VERSION.phar"
+
+if [ ! -f "$COMPOSER_PHAR" ]; then
+    echo "==> Downloading Composer $COMPOSER_VERSION"
+    curl -fsSL -o "$COMPOSER_PHAR.download" "https://getcomposer.org/download/$COMPOSER_VERSION/composer.phar"
+    mv "$COMPOSER_PHAR.download" "$COMPOSER_PHAR"
+fi
+
+# Hashed with PHP rather than with `sha256sum` or `shasum`, which are not the same
+# command on every host this script runs on. PHP is already a requirement here.
+COMPOSER_ACTUAL="$(php -r 'echo hash_file("sha256", $argv[1]);' "$COMPOSER_PHAR")"
+
+if [ "$COMPOSER_ACTUAL" != "$COMPOSER_CHECKSUM" ]; then
+    echo "The downloaded Composer does not match the checksum in build/runtime.json." >&2
+    echo "  expected: $COMPOSER_CHECKSUM" >&2
+    echo "  actual:   $COMPOSER_ACTUAL" >&2
+    rm -f "$COMPOSER_PHAR"
+    exit 1
+fi
+
+echo "==> Composer $COMPOSER_VERSION verified"
 
 if [ "$SKIP_SPC" -eq 0 ]; then
     if [ ! -x "$WORK/spc" ]; then
@@ -107,6 +140,7 @@ echo "==> Building the executable"
 php -d phar.readonly=0 "$ROOT/bin/build-phar.php" \
     --micro="$MICRO" \
     --runtime="$RUNTIME" \
+    --composer="$COMPOSER_PHAR" \
     ${BUILD_ID:+--build="$BUILD_ID"}
 
 echo "==> Restoring development dependencies"
