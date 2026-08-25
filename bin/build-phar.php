@@ -173,21 +173,94 @@ function embedRuntime(string $runtime, Platform $platform): string
  * Composer is what makes a Composer project usable on a machine that has none: the
  * launcher's `hyde composer` runs this archive with the bundled PHP. The version is
  * read by running it, rather than taken from the build configuration, so a build
- * cannot record a Composer version that its own runtime is unable to start.
+ * cannot record a Composer version that its own runtime is unable to start — and,
+ * since that happens after patching, cannot ship a patch that broke the archive.
  *
- * @return array{version: string, filename: string, checksum: string}
+ * The archive handed to us is the published one, already verified against the pinned
+ * checksum. It is copied before anything is done to it, so what the build scripts
+ * cache stays byte-identical to what getcomposer.org served.
+ *
+ * @return array{version: string, filename: string, checksum: string, patches: list<string>, upstream: array{sha256: string}}
  */
 function embedComposer(string $composer, string $runtime): array
 {
     $directory = ROOT.'/'.RuntimeManager::RUNTIME_DIRECTORY;
+    $shipped = ROOT.'/builds/'.RuntimeManager::COMPOSER_FILE;
 
-    compress($composer, $directory.'/'.RuntimeManager::COMPOSER_FILE.RuntimeManager::RUNTIME_SUFFIX);
+    if (! copy($composer, $shipped)) {
+        fail("Unable to copy $composer to $shipped");
+    }
+
+    $patches = patchComposer($shipped);
+
+    compress($shipped, $directory.'/'.RuntimeManager::COMPOSER_FILE.RuntimeManager::RUNTIME_SUFFIX);
 
     return [
-        'version' => composerVersion($composer, $runtime),
+        'version' => composerVersion($shipped, $runtime),
         'filename' => RuntimeManager::COMPOSER_FILE,
-        'checksum' => hash_file('sha256', $composer),
+
+        // The checksum of what is actually shipped, which the RuntimeManager verifies on
+        // every extraction, and the checksum of what upstream published, which is what
+        // the pin in build/runtime.json is about. Both, so neither claim is implied.
+        'checksum' => hash_file('sha256', $shipped),
+        'patches' => $patches,
+        'upstream' => ['sha256' => hash_file('sha256', $composer)],
     ];
+}
+
+/**
+ * Apply the patches in bin/lib/composer-patches.php to the archive we are about to ship.
+ *
+ * Composer signs its archive with SHA-512 rather than a key, so PHP can re-sign what it
+ * rewrites. A patch that no longer matches exactly once fails the build: a Composer
+ * version that moved the code must not be shipped silently unpatched, which is the
+ * one outcome worse than carrying the patch at all.
+ *
+ * @return list<string> The names of the patches applied.
+ */
+function patchComposer(string $archive): array
+{
+    $patches = require ROOT.'/bin/lib/composer-patches.php';
+
+    if ($patches === []) {
+        info('Composer patches', 'none');
+
+        return [];
+    }
+
+    $phar = new Phar($archive);
+
+    $phar->startBuffering();
+
+    foreach ($patches as $name => $patch) {
+        if (! isset($phar[$patch['file']])) {
+            fail("The Composer patch $name expects {$patch['file']}, which this Composer does not have. See {$patch['issue']}.");
+        }
+
+        $source = $phar[$patch['file']]->getContent();
+        $found = substr_count($source, $patch['search']);
+
+        if ($found !== 1) {
+            fail(sprintf(
+                "The Composer patch %s no longer applies: it matched %d times in %s, expected exactly 1.
+".
+                "Check whether %s has been fixed upstream — if it has, delete the patch; if it has not, update it.",
+                $name, $found, $patch['file'], $patch['issue']
+            ));
+        }
+
+        $phar[$patch['file']] = str_replace($patch['search'], $patch['replace'], $source);
+
+        info('Composer patch', $name.' ('.$patch['summary'].')');
+    }
+
+    // Composer's own signature no longer covers what we changed, so the archive is
+    // re-signed with the algorithm it already used.
+    $phar->setSignatureAlgorithm(Phar::SHA512);
+
+    $phar->stopBuffering();
+
+    return array_keys($patches);
 }
 
 /** Describe the embedded runtime, and the Composer beside it, for the RuntimeManager. */
