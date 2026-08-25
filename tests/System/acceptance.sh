@@ -18,6 +18,14 @@ if [ -z "$HYDE" ] || [ ! -x "$HYDE" ]; then
     exit 2
 fi
 
+# Almost every check runs the executable from inside a directory it just made, so a
+# relative path — `builds/hyde-linux-x86_64`, as it would be typed — has to be resolved
+# before the first one of those changes directory out from under it.
+case "$HYDE" in
+    /*) ;;
+    *) HYDE="$(cd "$(dirname "$HYDE")" && pwd)/$(basename "$HYDE")" ;;
+esac
+
 WORK="$(mktemp -d)"
 FAILURES=0
 CHECKS=0
@@ -96,6 +104,79 @@ fi
 VERSION_OUTPUT="$("$HYDE" --version --no-ansi 2>&1)"
 assert_contains "hyde --version works" "$VERSION_OUTPUT" "HydePHP"
 
+echo "==> The bundled PHP runtime"
+
+# The point of these checks is that they run on a host with no PHP: the interpreter
+# they exercise can only be the one inside the executable.
+
+PHP_VERSION_OUTPUT="$("$HYDE" php -v 2>&1)"
+assert_contains "hyde php -v reports a PHP version" "$PHP_VERSION_OUTPUT" "PHP 8."
+assert_contains "the runtime is the static build" "$PHP_VERSION_OUTPUT" "static-php-cli"
+
+PHP_EVAL_OUTPUT="$("$HYDE" php -r 'echo "evaluated ", 1 + 1;' 2>&1)"
+assert_contains "hyde php -r evaluates code" "$PHP_EVAL_OUTPUT" "evaluated 2"
+
+printf '<?php echo "script ran in ", basename(getcwd());' > "$WORK/probe.php"
+
+PHP_SCRIPT_OUTPUT="$(cd "$WORK" && "$HYDE" php probe.php 2>&1)"
+assert_contains "hyde php runs a script relative to the working directory" "$PHP_SCRIPT_OUTPUT" "script ran in $(basename "$WORK")"
+
+"$HYDE" php -r 'exit(3);' >/dev/null 2>&1 && PHP_STATUS=0 || PHP_STATUS=$?
+if [ "$PHP_STATUS" -eq 3 ]; then
+    pass "hyde php propagates the exit status"
+else
+    fail "hyde php propagates the exit status" "expected 3, got $PHP_STATUS"
+fi
+
+# The extensions the bundled Composer cannot work without, asked of the runtime that is
+# actually inside this artifact. Without zip, Composer falls back to an `unzip` binary
+# this machine has no reason to have; without session, every Hyde project it resolves
+# is unresolvable. A build that lost either would otherwise still pass every check
+# above, and fail on the first real install a user attempted.
+"$HYDE" php -r 'exit(extension_loaded("zip") && extension_loaded("session") ? 0 : 1);' >/dev/null 2>&1 && EXT_STATUS=0 || EXT_STATUS=$?
+if [ "$EXT_STATUS" -eq 0 ]; then
+    pass "the runtime carries the extensions Composer needs"
+else
+    fail "the runtime carries the extensions Composer needs" "$("$HYDE" php -r 'echo "zip: ", var_export(extension_loaded("zip"), true), ", session: ", var_export(extension_loaded("session"), true);' 2>&1)"
+fi
+
+echo "==> The bundled Composer"
+
+COMPOSER_VERSION_OUTPUT="$("$HYDE" composer --version --no-ansi 2>&1)"
+assert_contains "hyde composer runs the bundled Composer" "$COMPOSER_VERSION_OUTPUT" "Composer version"
+
+# A manifest with nothing in it: enough to prove Composer runs and writes an install,
+# without making this suite depend on the network or on any package staying published.
+INSTALL="$WORK/install"
+mkdir -p "$INSTALL"
+printf '{"name":"acme/empty","require":{}}' > "$INSTALL/composer.json"
+
+INSTALL_OUTPUT="$(cd "$INSTALL" && "$HYDE" composer install --no-interaction --no-ansi 2>&1)" && INSTALL_STATUS=0 || INSTALL_STATUS=$?
+
+if [ "$INSTALL_STATUS" -eq 0 ]; then
+    pass "hyde composer install succeeds"
+else
+    fail "hyde composer install succeeds" "$INSTALL_OUTPUT"
+fi
+
+if [ -f "$INSTALL/vendor/autoload.php" ]; then
+    pass "hyde composer install writes an autoloader"
+else
+    fail "hyde composer install writes an autoloader"
+fi
+
+# The bundled Composer is versioned with the executable, and is checksum-verified on
+# every run: an update to the extracted copy would be repaired away by the next command.
+"$HYDE" composer self-update --no-ansi >/dev/null 2>&1 && SELF_UPDATE_STATUS=0 || SELF_UPDATE_STATUS=$?
+
+if [ "$SELF_UPDATE_STATUS" -eq 0 ]; then
+    fail "hyde composer self-update is refused" "it reported success"
+else
+    pass "hyde composer self-update is refused"
+fi
+
+assert_contains "the refusal says what to do instead" "$("$HYDE" composer self-update --no-ansi 2>&1 || true)" "hyde self-update"
+
 echo "==> Portable project"
 
 SITE="$WORK/site"
@@ -133,6 +214,9 @@ echo "==> HydePHP v3"
 assert_contains "info reports a v3 framework version" "$INFO_OUTPUT" "3.0.0-dev"
 
 LIST_OUTPUT="$(cd "$SITE" && "$HYDE" list --no-ansi 2>&1)"
+
+assert_contains "the list separates the CLI's own commands" "$LIST_OUTPUT" "HYDE CLI"
+assert_contains "the list separates the project's commands" "$LIST_OUTPUT" "PROJECT"
 
 if printf '%s' "$LIST_OUTPUT" | grep -q 'rebuild'; then
     fail "the rebuild command v3 removed is absent"
@@ -174,18 +258,21 @@ assert_missing "the new project has no vendor directory" "$NEW/my-site/vendor"
 NEW_BUILD="$(cd "$NEW/my-site" && "$HYDE" build --no-ansi 2>&1)"
 assert_contains "the new project builds immediately" "$NEW_BUILD" "Your static site has been built!"
 
-echo "==> hyde new --composer without Composer"
+echo "==> hyde new --composer with no Composer on the host"
 
-COMPOSER_OUTPUT="$(cd "$NEW" && "$HYDE" new composer-site --composer --no-ansi --no-interaction 2>&1)" && COMPOSER_STATUS=0 || COMPOSER_STATUS=$?
+# The command no longer needs a Composer on the machine: it runs the one inside the
+# executable. What that Composer then resolves depends on the network and on what is
+# published, so this checks which Composer was used rather than what it installed.
+COMPOSER_OUTPUT="$(cd "$NEW" && "$HYDE" new composer-site --composer --no-ansi --no-interaction 2>&1)" || true
 
-if [ "$COMPOSER_STATUS" -eq 0 ]; then
-    fail "hyde new --composer fails without Composer" "it reported success"
-else
-    pass "hyde new --composer fails without Composer"
-fi
+assert_contains "hyde new --composer uses the bundled Composer" "$COMPOSER_OUTPUT" "Using the Composer bundled with this executable"
 
-assert_contains "the failure explains what to do" "$COMPOSER_OUTPUT" "Creating a Composer project requires Composer."
-assert_missing "no directory is left behind" "$NEW/composer-site"
+case "$COMPOSER_OUTPUT" in
+    *"Creating a Composer project requires Composer."*)
+        fail "hyde new --composer no longer needs a Composer on the host" ;;
+    *)
+        pass "hyde new --composer no longer needs a Composer on the host" ;;
+esac
 
 echo "==> Project detection"
 
@@ -212,6 +299,12 @@ fi
 
 assert_contains "the failure names composer install" "$BROKEN_OUTPUT" "composer install"
 assert_missing "nothing was built" "$BROKEN/_site"
+
+# The command that repairs that project has to be answerable *in* it. It is handled
+# before the project is detected at all, so the state that stops `hyde build` does
+# not stop the command that fixes it.
+BROKEN_COMPOSER_OUTPUT="$(cd "$BROKEN" && "$HYDE" composer --version --no-ansi 2>&1)"
+assert_contains "hyde composer answers inside a project with no vendor" "$BROKEN_COMPOSER_OUTPUT" "Composer version"
 
 echo "==> Serving"
 

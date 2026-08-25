@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Support\ComposerBinary;
 use Tests\Support\Executable;
 use Tests\Support\ProjectTemplate;
 use Tests\Support\TemporaryProject;
@@ -17,10 +16,12 @@ use Tests\Support\TemporaryProject;
 | no evidence of v3 support at all, so the command is pointed at a local v3
 | source through `HYDE_PROJECT_SOURCE` and the result is inspected.
 |
-| This runs the real executable and a real Composer install. Only the absence of
-| a built artifact skips it, which is what the whole Integration suite does; a
-| missing template or a missing Composer is a hard failure, because a green run
-| that quietly left this out would be worse than a red one.
+| This runs the real executable and a real Composer install, on the Integration
+| suite's scrubbed search path: no PHP and no Composer. The Composer that does
+| the work is therefore the one inside the executable. Only the absence of a
+| built artifact skips it, which is what the whole Integration suite does; a
+| missing template is a hard failure, because a green run that quietly left
+| this out would be worse than a red one.
 |
 */
 
@@ -28,10 +29,6 @@ beforeEach(function () {
     if (Executable::path() === null) {
         $this->markTestSkipped(Executable::missingMessage());
     }
-
-    // Not a skip: the suite is run with Composer-installed dev dependencies, so a host
-    // without Composer is a broken environment rather than an unsupported one.
-    expect(ComposerBinary::locate())->not->toBeNull('Composer is required to run the integration suite.');
 });
 
 it('creates a project running the v3 development dependency graph', function () {
@@ -41,11 +38,14 @@ it('creates a project running the v3 development dependency graph', function () 
     $result = Executable::run(
         ['new', 'my-site', '--composer', '--no-ansi', '--no-interaction'],
         $workspace,
-        ['HYDE_PROJECT_SOURCE' => $template, 'PATH' => getenv('PATH')],
+        ['HYDE_PROJECT_SOURCE' => $template],
     );
 
     expect($result['status'])->toBe(0)
-        ->and($result['output'])->toContain('Created a Hyde Composer project');
+        ->and($result['output'])
+        ->toContain('Created a Hyde Composer project')
+        // On this search path there is no Composer to find, so this is the bundled one.
+        ->toContain('Using the Composer bundled with this executable');
 
     $lock = json_decode((string) file_get_contents($workspace.'/my-site/composer.lock'), true);
 
@@ -75,7 +75,7 @@ it('builds the created project through the v3 markdown pipeline', function () {
     Executable::run(
         ['new', 'my-site', '--composer', '--no-ansi', '--no-interaction'],
         $workspace,
-        ['HYDE_PROJECT_SOURCE' => $template, 'PATH' => getenv('PATH')],
+        ['HYDE_PROJECT_SOURCE' => $template],
     );
 
     file_put_contents($workspace.'/my-site/_pages/index.md', <<<'MD'

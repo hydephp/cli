@@ -27,7 +27,9 @@ require_once __DIR__.'/app/Launcher/Platform.php';
 require_once __DIR__.'/app/Launcher/ComposerManifest.php';
 require_once __DIR__.'/app/Launcher/ProjectDetector.php';
 require_once __DIR__.'/app/Launcher/RuntimeManager.php';
+require_once __DIR__.'/app/Launcher/Subprocess.php';
 require_once __DIR__.'/app/Launcher/ProjectDispatcher.php';
+require_once __DIR__.'/app/Launcher/RuntimeDispatcher.php';
 require_once __DIR__.'/app/Launcher/Launcher.php';
 
 $launcher = new App\Launcher\Launcher();

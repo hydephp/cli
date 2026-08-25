@@ -15,9 +15,16 @@ These are not preferences. A change that breaks one of them is a bug, whatever i
    the embedded framework would compile the site against a different version of Hyde than the
    project declares. This is the single most important guarantee in the codebase.
 3. **No external PHP in Portable mode.** `RuntimeManager` is the only thing that resolves a
-   PHP binary, and it never looks at `PATH`. If you need to run PHP, ask it.
-4. **No Composer execution during a Portable build.** Composer is invoked in exactly one
-   place: `hyde new --composer`.
+   PHP binary, and it never looks at `PATH`. If you need to run PHP, ask it. That includes
+   `hyde php` and `hyde composer`. In a released executable that is always the embedded
+   runtime; in a source checkout, which embeds none, it is the PHP process already
+   running the code, and never one found on the search path.
+4. **Composer is never invoked implicitly.** Nothing about building or serving a project
+   runs it. It runs when the user asks for it and nowhere else: `hyde composer`, and
+   `hyde new --composer`. Both prefer the Composer bundled in the executable, and they
+   differ where none is bundled: `hyde new --composer` falls back to the host's, since
+   it needs *a* Composer to create a project, while `hyde composer` fails — it means
+   "the Composer Hyde supplies", and in a source checkout the developer has their own.
 5. **No mixing of dependency graphs.** The embedded `vendor/` and a project's `vendor/` never
    share a process. Composer projects are dispatched into a separate process.
 6. **Detection and dispatch run before the autoloader.** The `app/Launcher` classes are
@@ -33,10 +40,10 @@ These are not preferences. A change that breaks one of them is a bug, whatever i
 | `hyde` | The console entry point. Detection and dispatch happen here, first. |
 | `app/Launcher/` | The project model, runtime management and dispatch. Plain PHP, no framework. |
 | `app/Foundation/` | Overrides that let the framework boot out of a read-only executable. |
-| `app/Commands/` | The commands the executable owns: `info`, `new`, `serve`, `self-update`. |
+| `app/Commands/` | The commands the executable owns: `info`, `new`, `serve`, `self-update`, and the bundled programs `php` and `composer`. |
 | `app/Support/` | Small helpers with no framework dependencies. |
-| `bin/` | The build scripts. `build-native.sh` and `build-native.ps1` drive static-php-cli; `build-phar.php` assembles the executable. |
-| `build/runtime.json` | The single build configuration: pinned PHP version and the extension set, with a reason for each. |
+| `bin/` | The build scripts. `build-native.sh` and `build-native.ps1` drive static-php-cli; `build-phar.php` assembles the executable; `lib/composer-patches.php` is what the bundled Composer is patched with, and why. |
+| `build/runtime.json` | The single build configuration: pinned PHP version, the extension set with a reason for each, and the pinned Composer release with its checksum. |
 | `tests/System/` | Runtime acceptance in POSIX shell and PowerShell, for hosts with no PHP. |
 
 ## Testing
@@ -82,7 +89,6 @@ framework requirement or to a test that proves it necessary.
 ## Things that are deliberately not implemented
 
 - `hyde eject`, and Portable to Composer conversion.
-- Bundling Composer inside the executable.
 - Hybrid autoloading, or loading Composer addons into a Portable project.
 
 <!-- This file is a copy of AGENTS.md, kept so both conventions find the same guidance. -->

@@ -18,7 +18,8 @@ declare(strict_types=1);
 |
 | Usage:
 |   php -d phar.readonly=0 bin/build-phar.php \
-|       --micro=path/to/micro.sfx --runtime=path/to/php [--output=builds/hyde] [--build=sha]
+|       --micro=path/to/micro.sfx --runtime=path/to/php --composer=path/to/composer.phar \
+|       [--output=builds/hyde] [--build=sha]
 |
 */
 
@@ -64,7 +65,7 @@ function main(array $argv): int
 
     $options = parseOptions($argv);
 
-    foreach (['micro', 'runtime'] as $required) {
+    foreach (['micro', 'runtime', 'composer'] as $required) {
         if (! isset($options[$required]) || ! is_file($options[$required])) {
             fwrite(STDERR, "Missing or unreadable --$required.\n");
 
@@ -79,13 +80,18 @@ function main(array $argv): int
     info('Platform', $platform->slug());
     info('Micro SAPI', $options['micro'].' ('.filesize($options['micro']).' bytes)');
     info('PHP runtime', $options['runtime']);
+    info('Composer', $options['composer']);
 
     guardAgainstDevelopmentDependencies();
     guardAgainstAPublishedFramework();
 
-    $version = embedRuntime($options['runtime'], $options['micro'], $platform);
+    $version = embedRuntime($options['runtime'], $platform);
+    $composer = embedComposer($options['composer'], $options['runtime']);
+
+    writeRuntimeManifest($version, $platform, $options['runtime'], $options['micro'], $composer);
 
     info('Runtime version', $version);
+    info('Composer version', $composer['version']);
 
     writeBuildMetadata($options['build'] ?? null);
 
@@ -138,8 +144,8 @@ function guardAgainstAPublishedFramework(): void
     info('Framework', 'HydePHP v3 (develop@master)');
 }
 
-/** Copy the PHP CLI runtime into the source tree and describe it for the RuntimeManager. */
-function embedRuntime(string $runtime, string $micro, Platform $platform): string
+/** Copy the PHP CLI runtime into the source tree, ready to be packed into the archive. */
+function embedRuntime(string $runtime, Platform $platform): string
 {
     $directory = ROOT.'/'.RuntimeManager::RUNTIME_DIRECTORY;
 
@@ -153,23 +159,114 @@ function embedRuntime(string $runtime, string $micro, Platform $platform): strin
         fail("Unable to create $directory");
     }
 
-    $target = $directory.'/'.$platform->runtimeFilename().RuntimeManager::RUNTIME_SUFFIX;
-
     // The runtime is gzipped on the way in rather than compressed by the PHAR itself:
     // compressing several thousand small entries is slow and buys nothing, while
     // compressing this one large binary halves the size of the executable.
-    $source = fopen($runtime, 'rb');
-    $compressed = fopen($target, 'wb');
+    compress($runtime, $directory.'/'.$platform->runtimeFilename().RuntimeManager::RUNTIME_SUFFIX);
 
-    stream_filter_append($compressed, 'zlib.deflate', STREAM_FILTER_WRITE, ['level' => 9, 'window' => 31]);
-    stream_copy_to_stream($source, $compressed);
+    return runtimeVersion($runtime);
+}
 
-    fclose($source);
-    fclose($compressed);
+/**
+ * Copy Composer into the source tree, beside the runtime that will run it.
+ *
+ * Composer is what makes a Composer project usable on a machine that has none: the
+ * launcher's `hyde composer` runs this archive with the bundled PHP. The version is
+ * read by running it, rather than taken from the build configuration, so a build
+ * cannot record a Composer version that its own runtime is unable to start — and,
+ * since that happens after patching, cannot ship a patch that broke the archive.
+ *
+ * The archive handed to us is the published one, already verified against the pinned
+ * checksum. It is copied before anything is done to it, so what the build scripts
+ * cache stays byte-identical to what getcomposer.org served.
+ *
+ * @return array{version: string, filename: string, checksum: string, patches: list<string>, upstream: array{sha256: string}}
+ */
+function embedComposer(string $composer, string $runtime): array
+{
+    $directory = ROOT.'/'.RuntimeManager::RUNTIME_DIRECTORY;
+    $shipped = ROOT.'/builds/'.RuntimeManager::COMPOSER_FILE;
 
-    $version = runtimeVersion($runtime);
+    if (! copy($composer, $shipped)) {
+        fail("Unable to copy $composer to $shipped");
+    }
 
-    file_put_contents($directory.'/'.RuntimeManager::MANIFEST_FILE, json_encode([
+    $patches = patchComposer($shipped);
+
+    compress($shipped, $directory.'/'.RuntimeManager::COMPOSER_FILE.RuntimeManager::RUNTIME_SUFFIX);
+
+    return [
+        'version' => composerVersion($shipped, $runtime),
+        'filename' => RuntimeManager::COMPOSER_FILE,
+
+        // The checksum of what is actually shipped, which the RuntimeManager verifies on
+        // every extraction, and the checksum of what upstream published, which is what
+        // the pin in build/runtime.json is about. Both, so neither claim is implied.
+        'checksum' => hash_file('sha256', $shipped),
+        'patches' => $patches,
+        'upstream' => ['sha256' => hash_file('sha256', $composer)],
+    ];
+}
+
+/**
+ * Apply the patches in bin/lib/composer-patches.php to the archive we are about to ship.
+ *
+ * Composer signs its archive with SHA-512 rather than a key, so PHP can re-sign what it
+ * rewrites. A patch that no longer matches exactly once fails the build: a Composer
+ * version that moved the code must not be shipped silently unpatched, which is the
+ * one outcome worse than carrying the patch at all.
+ *
+ * @return list<string> The names of the patches applied.
+ */
+function patchComposer(string $archive): array
+{
+    $patches = require ROOT.'/bin/lib/composer-patches.php';
+
+    if ($patches === []) {
+        info('Composer patches', 'none');
+
+        return [];
+    }
+
+    $phar = new Phar($archive);
+
+    $phar->startBuffering();
+
+    foreach ($patches as $name => $patch) {
+        if (! isset($phar[$patch['file']])) {
+            fail("The Composer patch $name expects {$patch['file']}, which this Composer does not have. See {$patch['issue']}.");
+        }
+
+        $source = $phar[$patch['file']]->getContent();
+        $found = substr_count($source, $patch['search']);
+
+        if ($found !== 1) {
+            fail(sprintf(
+                "The Composer patch %s no longer applies: it matched %d times in %s, expected exactly 1.
+".
+                "Check whether %s has been fixed upstream — if it has, delete the patch; if it has not, update it.",
+                $name, $found, $patch['file'], $patch['issue']
+            ));
+        }
+
+        $phar[$patch['file']] = str_replace($patch['search'], $patch['replace'], $source);
+
+        info('Composer patch', $name.' ('.$patch['summary'].')');
+    }
+
+    // Composer's own signature no longer covers what we changed, so the archive is
+    // re-signed with the algorithm it already used.
+    $phar->setSignatureAlgorithm(Phar::SHA512);
+
+    $phar->stopBuffering();
+
+    return array_keys($patches);
+}
+
+/** Describe the embedded runtime, and the Composer beside it, for the RuntimeManager. */
+function writeRuntimeManifest(string $version, Platform $platform, string $runtime, string $micro, array $composer): void
+{
+    file_put_contents(ROOT.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::MANIFEST_FILE, json_encode([
         'version' => $version,
         'platform' => $platform->slug(),
         'filename' => $platform->runtimeFilename(),
@@ -178,9 +275,22 @@ function embedRuntime(string $runtime, string $micro, Platform $platform): strin
         // Where the application archive begins once it is concatenated onto the micro
         // SAPI binary. Verified against the archive's own marker at runtime.
         'payload_offset' => filesize($micro),
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
 
-    return $version;
+        'composer' => $composer,
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
+}
+
+/** Gzip a file into the runtime directory, inflated again by the RuntimeManager on first use. */
+function compress(string $source, string $target): void
+{
+    $in = fopen($source, 'rb');
+    $out = fopen($target, 'wb');
+
+    stream_filter_append($out, 'zlib.deflate', STREAM_FILTER_WRITE, ['level' => 9, 'window' => 31]);
+    stream_copy_to_stream($in, $out);
+
+    fclose($in);
+    fclose($out);
 }
 
 function runtimeVersion(string $runtime): string
@@ -194,6 +304,18 @@ function runtimeVersion(string $runtime): string
     }
 
     return $version;
+}
+
+/** Run the bundled Composer with the bundled runtime, and read the version it reports. */
+function composerVersion(string $composer, string $runtime): string
+{
+    [$status, $output] = run([$runtime, $composer, '--version', '--no-ansi'], captureErrors: true);
+
+    if ($status !== 0 || preg_match('/Composer version (\S+)/', $output, $matches) !== 1) {
+        fail("Unable to run the bundled Composer at $composer with the runtime at $runtime:\n".trim($output));
+    }
+
+    return $matches[1];
 }
 
 /**

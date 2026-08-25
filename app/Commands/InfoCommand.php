@@ -118,8 +118,31 @@ class InfoCommand extends Command
         $this->line('<info>Runtime:</info>      '.($runtime->hasEmbeddedRuntime()
             ? sprintf('PHP %s bundled for %s', $runtime->manifest()['version'], $runtime->manifest()['platform'])
             : 'none bundled (running from a source checkout)'));
+        $this->line('<info>Composer:</info>     '.$this->composer($runtime));
         $this->line('<info>Extensions:</info>   '.implode(', ', $this->loadedExtensions()));
         $this->newLine();
+    }
+
+    /**
+     * The bundled Composer, and whether this executable modified it.
+     *
+     * The CLI distributes a package manager, so what it distributes is reported rather
+     * than left to be discovered: a build that carries a patch against the published
+     * archive says which one, and why is in `bin/lib/composer-patches.php`.
+     */
+    protected function composer(RuntimeManager $runtime): string
+    {
+        $version = $runtime->composerVersion();
+
+        if ($version === null) {
+            return 'none bundled (running from a source checkout)';
+        }
+
+        $patches = $runtime->composerPatches();
+
+        return $patches === []
+            ? sprintf('%s bundled', $version)
+            : sprintf('%s bundled, patched (%s)', $version, implode(', ', $patches));
     }
 
     /** @return list<string> */
