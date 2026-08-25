@@ -24,6 +24,8 @@ echo "Syncing traffic data!\n";
  *   '_database' : array{
  *     'last_updated' : int,
  *     'content_hash' : string,
+ *     'database_size_bytes' : int,
+ *     'database_size_lines' : int,
  *     'total_views' : int,
  *     'total_clones' : int,
  *     'total_installs' : int,
@@ -105,13 +107,26 @@ function getValidatedArguments(): array
 function updateDatabaseMetadata(array $database): array
 {
     $contentHash = hash('sha256', json_encode($database));
+    $databaseSize = getDatabaseSize($database);
     $database['_database']['last_updated'] = time();
     $database['_database']['content_hash'] = $contentHash;
 
+    $database['_database']['database_size_bytes'] = $databaseSize['bytes'];
+    $database['_database']['database_size_lines'] = $databaseSize['lines'];
     $database['_database']['total_views'] = getTotalViews($database);
     $database['_database']['total_clones'] = getTotalClones($database);
 
     return $database;
+}
+
+function getDatabaseSize(array $database): array
+{
+    $json = json_encode($database, JSON_PRETTY_PRINT);
+
+    return [
+        'bytes' => strlen($json),
+        'lines' => substr_count($json, "\n") + 1,
+    ];
 }
 
 function getTotalViews(array $database): int
@@ -147,6 +162,8 @@ function validateDatabaseSchema(array $database): void
             case '_database':
                 assert(array_key_exists('last_updated', $table));
                 assert(array_key_exists('content_hash', $table));
+                assert(array_key_exists('database_size_bytes', $table));
+                assert(array_key_exists('database_size_lines', $table));
                 assert(array_key_exists('total_views', $table));
                 assert(array_key_exists('total_clones', $table));
                 assert(array_key_exists('total_installs', $table));
@@ -155,6 +172,8 @@ function validateDatabaseSchema(array $database): void
                 assert(is_int($table['last_updated']));
                 assert(is_string($table['content_hash']));
                 assert(strlen($table['content_hash']) === 64);
+                assert(is_int($table['database_size_bytes']));
+                assert(is_int($table['database_size_lines']));
                 assert(is_int($table['total_views']));
                 assert(is_int($table['total_clones']));
                 assert(is_int($table['total_installs']));

@@ -15,6 +15,8 @@ Please note that this branch is internal and is not covered by any backwards com
   "_database": {
     "last_updated": 1704063600,
     "content_hash": "a2dee47ba6268925da97750ab742baf67f02e2fb54ce23d499fb66a5b0222903",
+    "database_size_bytes": 123456,
+    "database_size_lines": 1234,
     "total_views": 1500,
     "total_clones": 6750,
     "total_installs": 100,
@@ -62,6 +64,8 @@ $database = array{
   '_database' => array{
     'last_updated' => int,
     'content_hash' => string,
+    'database_size_bytes' => int,
+    'database_size_lines' => int,
     'total_views' => int,
     'total_clones' => int,
     'total_installs' => int,
