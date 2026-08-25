@@ -66,7 +66,9 @@ final class Launcher
      */
     public function run(array $argv): ?int
     {
-        $project = $this->detect();
+        $project = $this->isLauncherCommand($argv)
+            ? (self::$project ??= $this->detector->detectForLauncherCommand($this->workingDirectory()))
+            : $this->detect();
 
         // The CLI's own source checkout is itself a Hyde Composer project. When the file
         // we are running *is* the project's entry point, dispatching would relaunch

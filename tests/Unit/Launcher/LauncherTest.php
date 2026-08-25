@@ -7,6 +7,7 @@ use App\Launcher\Launcher;
 use App\Launcher\ProjectType;
 use App\Launcher\ProjectDetector;
 use App\Launcher\ProjectDispatcher;
+use App\Launcher\LauncherException;
 use Tests\Support\TemporaryProject;
 
 /*
@@ -91,6 +92,47 @@ it('does not dispatch a portable project', function () {
     putenv("HYDE_WORKING_DIR=$path");
 
     expect((new Launcher(new ProjectDetector(), $dispatcher))->run(['hyde', 'build']))->toBeNull()
+        ->and($dispatcher->called)->toBeFalse();
+});
+
+it('refuses project commands inside an unrelated composer project', function () {
+    $path = TemporaryProject::directory();
+
+    TemporaryProject::write($path, [
+        'composer.json' => '{"name":"laravel/laravel","require":{"laravel/framework":"^13.0"}}',
+    ]);
+
+    putenv("HYDE_WORKING_DIR=$path");
+
+    expect(fn () => (new Launcher())->run(['hyde', 'build']))
+        ->toThrow(
+            LauncherException::class,
+            'This is a Composer project, but it does not declare Hyde.'
+        );
+});
+
+it('keeps launcher-owned commands available inside an unrelated composer project', function () {
+    $path = TemporaryProject::directory();
+
+    TemporaryProject::write($path, [
+        'composer.json' => '{"name":"laravel/laravel","require":{"laravel/framework":"^13.0"}}',
+    ]);
+
+    $dispatcher = new class() extends ProjectDispatcher
+    {
+        public bool $called = false;
+
+        public function dispatch(Project $project, array $arguments = []): int
+        {
+            $this->called = true;
+
+            return 0;
+        }
+    };
+
+    putenv("HYDE_WORKING_DIR=$path");
+
+    expect((new Launcher(new ProjectDetector(), $dispatcher))->run(['hyde', 'info']))->toBeNull()
         ->and($dispatcher->called)->toBeFalse();
 });
 
