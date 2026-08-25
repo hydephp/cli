@@ -133,7 +133,7 @@ All vulnerabilities will be promptly addressed.
 
 ### Credits
 
--   [Emma De Silva](https://github.com/caendesilva), feel free to buy me a coffee! https://buymeacoffee.com/emmads
+-   [Emma De Silva](https://github.com/emmadesilva), feel free to buy me a coffee! https://buymeacoffee.com/emmads
 -   [All Contributors](https://github.com/hydephp/cli/graphs/contributors)
 
 ### License
