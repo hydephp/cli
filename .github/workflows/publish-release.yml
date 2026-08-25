@@ -74,8 +74,11 @@ jobs:
             exit 1
           fi
 
-          echo "Submitting pull request #$pr_number to the master merge queue."
-          gh pr merge "$pr_number" --repo "$GITHUB_REPOSITORY"
+          echo "Enabling auto-merge for pull request #$pr_number."
+          gh pr merge "$pr_number" \
+            --repo "$GITHUB_REPOSITORY" \
+            --merge \
+            --auto
 
   build:
     uses: ./.github/workflows/build-native-all.yml
@@ -104,50 +107,10 @@ jobs:
       - name: List the artifacts
         run: ls -lh artifacts
 
-      - name: Import GPG key
-        if: github.event.repository.full_name == 'hydephp/cli'
-        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec
-        with:
-          gpg_private_key: ${{ secrets.GPG_SIGNING_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}
-          trust_level: 5
-
       # Each platform's artifact is signed on its own. The self-update command resolves
       # `<asset>.sig.bin` for the platform it is running on, so the names have to line
       # up with App\Launcher\Platform exactly.
-      - name: Sign every executable
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          set -euo pipefail
-
-          for artifact in artifacts/hyde-*; do
-            case "$artifact" in *.sig|*.sig.bin) continue ;; esac
-
-            echo "Signing $artifact"
-
-            gpg --local-user 657B4D97184E9E6E596E6EA13B829782D5B7BA59 \
-                --batch \
-                --yes \
-                --passphrase="${{ secrets.GPG_SIGNING_KEY_PASSPHRASE }}" \
-                --detach-sign \
-                --output "$artifact.sig" \
-                "$artifact"
-          done
-
-      - name: Verify every signature
-        if: github.event.repository.full_name == 'hydephp/cli'
-        run: |
-          set -euo pipefail
-
-          gpg --import-ownertrust <<< "657B4D97184E9E6E596E6EA13B829782D5B7BA59:6:"
-
-          for signature in artifacts/*.sig; do
-            gpg --verify "$signature" "${signature%.sig}"
-          done
-
-      # The OpenSSL signature is the one `hyde self-update` verifies, because OpenSSL is
-      # bundled with the executable while GPG may not be present on a user's machine.
-      - name: Create OpenSSL fallback signatures
+      - name: Create OpenSSL signatures
         if: github.event.repository.full_name == 'hydephp/cli'
         run: |
           set -euo pipefail
