@@ -9,16 +9,8 @@ use function fopen;
 use function fread;
 use function fclose;
 use function getenv;
-use function defined;
-use function dirname;
 use function realpath;
-use function is_string;
-use function strcasecmp;
-use function array_keys;
-use function proc_open;
-use function proc_close;
 use function array_merge;
-use function str_replace;
 use function array_values;
 use function str_starts_with;
 
@@ -56,13 +48,12 @@ class ProjectDispatcher
 
         $this->guardAgainstRecursion($entryPoint);
 
-        $process = @proc_open($this->command($entryPoint, $arguments), $this->descriptors(), $pipes, $project->root, $this->environment($entryPoint));
-
-        if ($process === false) {
-            throw new LauncherException("Unable to start the project's Hyde executable at $entryPoint.");
-        }
-
-        return proc_close($process);
+        return Subprocess::run(
+            $this->command($entryPoint, $arguments),
+            $project->root,
+            $this->environment($entryPoint),
+            "Unable to start the project's Hyde executable at $entryPoint."
+        );
     }
 
     /**
@@ -112,16 +103,9 @@ class ProjectDispatcher
      */
     protected function environment(string $entryPoint): array
     {
-        $environment = getenv();
+        $environment = Subprocess::environmentWith($this->runtime->path());
 
         $environment[self::DISPATCH_MARKER] = $entryPoint;
-
-        // Windows stores the search path as `Path`, so the existing key is found rather
-        // than assumed: adding a second, differently cased one would leave the child
-        // with two search paths and no say in which of them is used.
-        $key = $this->searchPathKey($environment);
-
-        $environment[$key] = $this->searchPath(is_string($environment[$key] ?? null) ? $environment[$key] : '');
 
         return $environment;
     }
@@ -133,29 +117,7 @@ class ProjectDispatcher
      */
     public function searchPathKey(array $environment): string
     {
-        foreach (array_keys($environment) as $name) {
-            if (strcasecmp((string) $name, 'PATH') === 0) {
-                return (string) $name;
-            }
-        }
-
-        return 'PATH';
-    }
-
-    /**
-     * Put the directory holding the bundled PHP runtime at the front of the search path.
-     *
-     * This is the launcher doing its job rather than a fallback. A Hyde project shells out
-     * to a bare `php` for its own subprocesses — the realtime compiler's server, most
-     * obviously — and on a machine with no PHP installed there would be nothing for it
-     * to find. The executable supplies the runtime, which is what makes `hyde serve`
-     * work in a Composer project on a machine that has no PHP.
-     */
-    protected function searchPath(string $path): string
-    {
-        $runtime = dirname($this->runtime->path());
-
-        return $path === '' ? $runtime : $runtime.PATH_SEPARATOR.$path;
+        return Subprocess::searchPathKey($environment);
     }
 
     /**
@@ -233,27 +195,5 @@ class ProjectDispatcher
         fclose($handle);
 
         return str_starts_with($head, '#!') || str_starts_with($head, '<?php') || str_starts_with($head, '<?=');
-    }
-
-    /**
-     * Inherit the parent's standard streams so the child keeps its TTY.
-     *
-     * Passing the stream resources through gives the child the real file
-     * descriptors, which keeps interactive prompts, colours, and piping
-     * behaving exactly as they would if the project were run directly.
-     *
-     * @return array<int, mixed>
-     */
-    protected function descriptors(): array
-    {
-        if (defined('STDIN') && defined('STDOUT') && defined('STDERR')) {
-            return [STDIN, STDOUT, STDERR];
-        }
-
-        return [
-            ['file', 'php://stdin', 'r'],
-            ['file', 'php://stdout', 'w'],
-            ['file', 'php://stderr', 'w'],
-        ];
     }
 }

@@ -143,21 +143,38 @@ it('creates a portable project that builds immediately', function () {
         ->and($parent.'/my-site/vendor')->not->toBeDirectory();
 });
 
-it('refuses to create a composer project when Composer is missing, without touching the filesystem', function () {
-    $parent = TemporaryProject::directory('workspace');
+it('runs the bundled Composer on a machine that has none', function () {
+    $directory = TemporaryProject::directory('workspace');
     $empty = TemporaryProject::directory('empty-bin');
 
-    $result = Executable::run(
-        ['new', 'my-site', '--composer', '--no-ansi', '--no-interaction'],
-        $parent,
-        ['PATH' => $empty]
-    );
+    $result = Executable::run(['composer', '--version', '--no-ansi'], $directory, ['PATH' => $empty]);
 
-    expect($result['status'])->not->toBe(0)
-        ->and($result['output'])
-        ->toContain('Creating a Composer project requires Composer.')
-        ->toContain('hyde new NAME --portable')
-        ->and($parent.'/my-site')->not->toBeDirectory();
+    expect($result['status'])->toBe(0)
+        ->and($result['output'])->toContain('Composer version');
+});
+
+it('runs the bundled PHP runtime as a command', function () {
+    $directory = TemporaryProject::directory('workspace');
+    $empty = TemporaryProject::directory('empty-bin');
+
+    $result = Executable::run(['php', '-r', 'echo "runtime ", PHP_SAPI;'], $directory, ['PATH' => $empty]);
+
+    expect($result['status'])->toBe(0)
+        // Not the micro SAPI the executable itself runs on: a real CLI came out of it.
+        ->and($result['output'])->toContain('runtime cli');
+});
+
+it('answers a bundled program inside a composer project it refuses to build', function () {
+    // The state invariant 2 exists for is the state `hyde composer install` repairs, so
+    // the command has to be answerable there. `hyde build` still must not be.
+    $path = TemporaryProject::composer(['_pages/index.md' => "# Broken\n"], withAutoloader: false);
+
+    expect(Executable::run(['build', '--no-ansi'], $path)['status'])->not->toBe(0);
+
+    $result = Executable::run(['composer', '--version', '--no-ansi'], $path);
+
+    expect($result['status'])->toBe(0)
+        ->and($result['output'])->toContain('Composer version');
 });
 
 /*

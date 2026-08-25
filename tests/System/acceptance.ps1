@@ -17,6 +17,10 @@ if (-not (Test-Path $Hyde)) {
     exit 2
 }
 
+# Almost every check runs the executable from inside a directory it just made, so a
+# relative path has to be resolved before the first one of those changes location.
+$Hyde = (Resolve-Path $Hyde).Path
+
 $script:Checks = 0
 $script:Failures = 0
 
@@ -78,6 +82,83 @@ try {
 
     $version = Invoke-Hyde $work @('--version', '--no-ansi')
     Assert-Contains 'hyde --version works' $version.Output 'HydePHP'
+
+    Write-Host '==> The bundled PHP runtime'
+
+    # The point of these checks is that they run on a host with no PHP: the interpreter
+    # they exercise can only be the one inside the executable.
+
+    $phpVersion = Invoke-Hyde $work @('php', '-v')
+    Assert-Contains 'hyde php -v reports a PHP version' $phpVersion.Output 'PHP 8.'
+    Assert-Contains 'the runtime is the static build' $phpVersion.Output 'static-php-cli'
+
+    # No quotes inside the snippet: how PowerShell passes an embedded quote to a native
+    # program depends on which PowerShell is running it, and the check is not about that.
+    $phpEval = Invoke-Hyde $work @('php', '-r', 'echo 40 + 2;')
+    Assert-Contains 'hyde php -r evaluates code' $phpEval.Output '42'
+
+    Set-Content -Path (Join-Path $work 'probe.php') -Value '<?php echo "script ran in ", basename(getcwd());'
+
+    $phpScript = Invoke-Hyde $work @('php', 'probe.php')
+    Assert-Contains 'hyde php runs a script relative to the working directory' $phpScript.Output ("script ran in " + (Split-Path $work -Leaf))
+
+    $phpStatus = Invoke-Hyde $work @('php', '-r', 'exit(3);')
+    if ($phpStatus.Status -eq 3) {
+        Pass 'hyde php propagates the exit status'
+    } else {
+        Fail 'hyde php propagates the exit status' "expected 3, got $($phpStatus.Status)"
+    }
+
+    # The extensions the bundled Composer cannot work without, asked of the runtime that
+    # is actually inside this artifact. Without zip, Composer falls back to an `unzip`
+    # binary this machine has no reason to have; without session, every Hyde project it
+    # resolves is unresolvable. A build that lost either would otherwise still pass
+    # every check above, and fail on the first real install a user attempted.
+    $extensions = Invoke-Hyde $work @('php', '-r', 'exit(extension_loaded("zip") && extension_loaded("session") ? 0 : 1);')
+
+    if ($extensions.Status -eq 0) {
+        Pass 'the runtime carries the extensions Composer needs'
+    } else {
+        Fail 'the runtime carries the extensions Composer needs'
+    }
+
+    Write-Host '==> The bundled Composer'
+
+    $composerVersion = Invoke-Hyde $work @('composer', '--version', '--no-ansi')
+    Assert-Contains 'hyde composer runs the bundled Composer' $composerVersion.Output 'Composer version'
+
+    # A manifest with nothing in it: enough to prove Composer runs and writes an install,
+    # without making this suite depend on the network or on any package staying published.
+    $install = Join-Path $work 'install'
+    New-Item -ItemType Directory -Force -Path $install | Out-Null
+    Set-Content -Path (Join-Path $install 'composer.json') -Value '{"name":"acme/empty","require":{}}'
+
+    $installResult = Invoke-Hyde $install @('composer', 'install', '--no-interaction', '--no-ansi')
+
+    if ($installResult.Status -eq 0) {
+        Pass 'hyde composer install succeeds'
+    } else {
+        Fail 'hyde composer install succeeds' $installResult.Output
+    }
+
+    if (Test-Path (Join-Path $install 'vendor\autoload.php')) {
+        Pass 'hyde composer install writes an autoloader'
+    } else {
+        Fail 'hyde composer install writes an autoloader'
+    }
+
+    # The bundled Composer is versioned with the executable, and is checksum-verified on
+    # every run: an update to the extracted copy would be repaired away by the next
+    # command that needs it.
+    $selfUpdate = Invoke-Hyde $work @('composer', 'self-update', '--no-ansi')
+
+    if ($selfUpdate.Status -eq 0) {
+        Fail 'hyde composer self-update is refused' 'it reported success'
+    } else {
+        Pass 'hyde composer self-update is refused'
+    }
+
+    Assert-Contains 'the refusal says what to do instead' $selfUpdate.Output 'hyde self-update'
 
     Write-Host '==> Portable project'
 
@@ -188,18 +269,20 @@ try {
     $newBuild = Invoke-Hyde (Join-Path $workspace 'my-site') @('build', '--no-ansi')
     Assert-Contains 'the new project builds immediately' $newBuild.Output 'Your static site has been built!'
 
-    Write-Host '==> hyde new --composer without Composer'
+    Write-Host '==> hyde new --composer with no Composer on the host'
 
+    # The command no longer needs a Composer on the machine: it runs the one inside the
+    # executable. What that Composer then resolves depends on the network and on what is
+    # published, so this checks which Composer was used rather than what it installed.
     $composerAttempt = Invoke-Hyde $workspace @('new', 'composer-site', '--composer', '--no-ansi', '--no-interaction')
 
-    if ($composerAttempt.Status -eq 0) {
-        Fail 'hyde new --composer fails without Composer' 'it reported success'
-    } else {
-        Pass 'hyde new --composer fails without Composer'
-    }
+    Assert-Contains 'hyde new --composer uses the bundled Composer' $composerAttempt.Output 'Using the Composer bundled with this executable'
 
-    Assert-Contains 'the failure explains what to do' $composerAttempt.Output 'Creating a Composer project requires Composer.'
-    Assert-Missing 'no directory is left behind' (Join-Path $workspace 'composer-site')
+    if ($composerAttempt.Output -like '*Creating a Composer project requires Composer.*') {
+        Fail 'hyde new --composer no longer needs a Composer on the host'
+    } else {
+        Pass 'hyde new --composer no longer needs a Composer on the host'
+    }
 
     Write-Host '==> Project detection'
 
@@ -226,6 +309,12 @@ try {
 
     Assert-Contains 'the failure names composer install' $brokenBuild.Output 'composer install'
     Assert-Missing 'nothing was built' (Join-Path $broken '_site')
+
+    # The command that repairs that project has to be answerable *in* it. It is handled
+    # before the project is detected at all, so the state that stops `hyde build` does
+    # not stop the command that fixes it.
+    $brokenComposer = Invoke-Hyde $broken @('composer', '--version', '--no-ansi')
+    Assert-Contains 'hyde composer answers inside a project with no vendor' $brokenComposer.Output 'Composer version'
 
     Write-Host '==> Serving'
 
