@@ -42,13 +42,15 @@ final class Launcher
      * Commands that belong to the CLI itself rather than to a project.
      *
      * These are answered by the embedded application even inside a Composer project,
-     * since they are about the CLI (`self-update`), about the environment (`info`),
-     * or about creating a project that does not exist yet (`new`). Everything else
-     * in a Composer project is dispatched into that project.
+     * since they are about creating a project that does not exist yet (`new`), about
+     * the environment (`info`), or about the CLI itself (`self-update`). Everything
+     * else in a Composer project is dispatched into that project.
+     *
+     * The order is the order the command list renders them in.
      *
      * @var list<string>
      */
-    public const LAUNCHER_COMMANDS = ['info', 'new', 'self-update'];
+    public const LAUNCHER_COMMANDS = ['new', 'info', 'self-update'];
 
     /**
      * Commands answered by the programs the executable carries, without booting anything.

@@ -183,6 +183,9 @@ assert_contains "info reports a v3 framework version" "$INFO_OUTPUT" "3.0.0-dev"
 
 LIST_OUTPUT="$(cd "$SITE" && "$HYDE" list --no-ansi 2>&1)"
 
+assert_contains "the list separates the CLI's own commands" "$LIST_OUTPUT" "HYDE CLI"
+assert_contains "the list separates the project's commands" "$LIST_OUTPUT" "PROJECT"
+
 if printf '%s' "$LIST_OUTPUT" | grep -q 'rebuild'; then
     fail "the rebuild command v3 removed is absent"
 else
