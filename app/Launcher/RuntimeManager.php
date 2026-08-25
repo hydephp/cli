@@ -87,6 +87,9 @@ final class RuntimeManager
      */
     public const COMPOSER_FILE = 'composer.phar';
 
+    /** The production Hyde stylesheet used as the Portable asset fallback. */
+    public const STYLESHEET_FILE = 'app.css';
+
     /**
      * The suffix the embedded runtime binary carries inside the archive.
      *

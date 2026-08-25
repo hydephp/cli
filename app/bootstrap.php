@@ -14,6 +14,9 @@
 
 use App\Launcher\Launcher;
 use App\Launcher\RuntimeManager;
+use App\Foundation\PortableHydeKernel;
+use App\Foundation\PortableIlluminateFilesystem;
+use App\Support\BundledStylesheet;
 
 // Deprecation notices raised by dependencies are not actionable for someone running a
 // pre-built executable, and printing them would corrupt command output. Warnings and
@@ -58,6 +61,12 @@ foreach ([$environment['temp'].'/config', $environment['temp'].'/app/storage/fra
 */
 
 $app = new \App\Application($environment['working']);
+
+$bundledStylesheet = $project->isPortable() ? BundledStylesheet::path() : null;
+
+if ($bundledStylesheet !== null) {
+    $app->singleton(\Illuminate\Filesystem\Filesystem::class, fn (): PortableIlluminateFilesystem => new PortableIlluminateFilesystem($bundledStylesheet));
+}
 
 // Everything the framework writes goes outside the project being built.
 $app->useStoragePath($environment['temp'].'/app/storage');
@@ -123,9 +132,9 @@ $app->afterBootstrapping(\App\Foundation\LoadConfiguration::class, function () u
 |
 */
 
-$hyde = new \Hyde\Foundation\HydeKernel(
-    $environment['working']
-);
+$hyde = $project->isPortable()
+    ? new PortableHydeKernel($environment['working'])
+    : new \Hyde\Foundation\HydeKernel($environment['working']);
 
 $app->singleton(
     \Hyde\Foundation\HydeKernel::class, function (): Hyde\Foundation\HydeKernel {
