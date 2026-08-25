@@ -20,7 +20,6 @@ use function defined;
 use function in_array;
 use function mb_strlen;
 use function str_repeat;
-use function array_values;
 
 /**
  * @internal Renders the command list, in sections that say where each command runs.
@@ -38,10 +37,19 @@ use function array_values;
 class Describer extends BaseDescriber
 {
     /** The heading for the commands the executable answers itself, and what it means. */
-    protected const CLI_SECTION = ['HYDE CLI', '(the executable itself, in any directory)'];
+    protected const CLI_SECTION = ['HydeCLI', 'Works from any directory'];
 
     /** The heading for everything the project owns, and what it means. */
-    protected const PROJECT_SECTION = ['PROJECT', '(the Hyde site in the current directory)'];
+    protected const PROJECT_SECTION = ['Hyde project', 'Commands available in the current Hyde project'];
+
+    /** @var array<string, string> The compact, user-facing project command groups. */
+    protected const PROJECT_GROUPS = [
+        '' => 'Core',
+        'build' => 'Build',
+        'make' => 'Create',
+        'publish' => 'Publish',
+        '*' => 'Other',
+    ];
 
     public function __construct(private readonly Repository $config)
     {
@@ -69,12 +77,6 @@ class Describer extends BaseDescriber
     {
         $commands = $this->visibleCommands($application);
 
-        $width = 0;
-
-        foreach ($commands as $command) {
-            $width = max($width, mb_strlen((string) $command->getName()));
-        }
-
         $cli = [];
 
         foreach (Launcher::ownedCommands() as $name) {
@@ -86,10 +88,10 @@ class Describer extends BaseDescriber
         }
 
         if ($cli !== []) {
-            $this->describeSection($output, self::CLI_SECTION, [$cli], $width);
+            $this->describeSection($output, self::CLI_SECTION, ['' => $cli], 2);
         }
 
-        $this->describeSection($output, self::PROJECT_SECTION, $this->groupByNamespace($commands), $width);
+        $this->describeSection($output, self::PROJECT_SECTION, $this->groupByNamespace($commands), 4);
 
         $output->writeln('');
 
@@ -126,10 +128,10 @@ class Describer extends BaseDescriber
     }
 
     /**
-     * Split the project's commands into their namespaces, ungrouped ones first.
+     * Split the project's commands into compact, user-facing groups.
      *
      * @param  array<string, \Symfony\Component\Console\Command\Command>  $commands
-     * @return list<list<\Symfony\Component\Console\Command\Command>>
+     * @return array<string, list<\Symfony\Component\Console\Command\Command>>
      */
     protected function groupByNamespace(array $commands): array
     {
@@ -137,31 +139,50 @@ class Describer extends BaseDescriber
 
         foreach ($commands as $name => $command) {
             $parts = explode(':', $name);
+            $namespace = isset($parts[1]) ? $parts[0] : '';
+            $group = self::PROJECT_GROUPS[$namespace] ?? self::PROJECT_GROUPS['*'];
 
-            $groups[isset($parts[1]) ? $parts[0] : ''][] = $command;
+            $groups[$group][] = $command;
         }
 
-        ksort($groups);
+        $ordered = [];
 
-        return array_values($groups);
+        foreach (['Core', 'Build', 'Create', 'Publish', 'Other'] as $group) {
+            if (isset($groups[$group])) {
+                $ordered[$group] = $groups[$group];
+            }
+        }
+
+        return $ordered;
     }
 
     /**
      * @param  array{0: string, 1: string}  $section
-     * @param  list<list<\Symfony\Component\Console\Command\Command>>  $groups
+     * @param  array<string, list<\Symfony\Component\Console\Command\Command>>  $groups
      */
-    protected function describeSection(OutputInterface $output, array $section, array $groups, int $width): void
+    protected function describeSection(OutputInterface $output, array $section, array $groups, int $commandIndent): void
     {
-        $output->write(sprintf("\n  <fg=yellow;options=bold>%s</>  <fg=gray>%s</>\n", $section[0], $section[1]));
+        $indent = str_repeat(' ', $commandIndent);
+
+        $output->write(sprintf("\n  <fg=yellow;options=bold>%s</>\n  <fg=gray>%s</>\n", $section[0], $section[1]));
 
         foreach ($groups as $index => $commands) {
-            if ($index > 0) {
-                $output->write("\n");
+            $width = 0;
+
+            foreach ($commands as $command) {
+                $width = max($width, mb_strlen((string) $command->getName()));
+            }
+
+            $output->write("\n");
+
+            if ($index !== '') {
+                $output->write(sprintf("  <fg=yellow>%s</>\n", $index));
             }
 
             foreach ($commands as $command) {
                 $output->write(sprintf(
-                    "  <fg=green>%s</>%s%s%s\n",
+                    "%s<fg=green>%s</>%s%s%s\n",
+                    $indent,
                     $command->getName(),
                     str_repeat(' ', $width - mb_strlen((string) $command->getName()) + 1),
                     $command->getAliases() ? '<fg=cyan>[</>'.implode('|', $command->getAliases()).'<fg=cyan>]</> ' : '',

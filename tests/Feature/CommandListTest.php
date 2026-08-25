@@ -20,9 +20,10 @@ use Tests\Support\TemporaryProject;
 /** @return array{0: string, 1: string} The CLI section, and everything after it. */
 function listSections(string $output): array
 {
-    [$before, $after] = explode('PROJECT', $output, 2);
+    $output = preg_replace('/\e\[[\d;]*m/', '', $output) ?? $output;
+    [$before, $after] = explode("\n  Hyde project\n", $output, 2);
 
-    return [explode('HYDE CLI', $before, 2)[1] ?? '', $after];
+    return [explode("\n  HydeCLI\n", $before, 2)[1] ?? '', $after];
 }
 
 beforeEach(function () {
@@ -35,10 +36,11 @@ beforeEach(function () {
 
 it('gives the commands the executable owns a section of their own', function () {
     expect($this->rendered)
-        ->toContain('HYDE CLI')
-        ->toContain('the executable itself, in any directory')
-        ->toContain('PROJECT')
-        ->toContain('the Hyde site in the current directory');
+        ->toContain('HydeCLI')
+        ->toContain('Works from any directory')
+        ->toContain('Hyde project')
+        ->toContain('Commands available in the current Hyde project')
+        ->not->toContain('HYDE CLI');
 });
 
 it('lists every command the launcher answers in that section', function () {
@@ -64,6 +66,20 @@ it('leaves the project commands out of the CLI section', function () {
         ->and($project)->toContain('build')
         ->and($project)->toContain('make:page')
         ->and($project)->toContain('route:list');
+});
+
+it('renders project command subgroups', function () {
+    expect($this->rendered)
+        ->toContain('Core')
+        ->toContain('Build')
+        ->toContain('Create')
+        ->toContain('Publish')
+        ->toContain('Other')
+        ->toMatch('/^  Build\n    .*build:rss/m')
+        ->toMatch('/^  Create\n    .*make:page/m')
+        ->toMatch('/^  Publish\n(?s:.*?)    publish:views/m')
+        ->toMatch('/^  Other\n    herd:install/m')
+        ->toMatch('/^  Other\n(?s:.*?)    route:list/m');
 });
 
 it('puts the command that creates a project first', function () {
