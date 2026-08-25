@@ -36,6 +36,7 @@ it('creates a portable project without touching Composer', function () {
         ->and($workspace.'/my-site/hyde.yml')->toBeFile()
         ->and($workspace.'/my-site/_posts')->toBeDirectory()
         ->and($workspace.'/my-site/_media')->toBeDirectory()
+        ->and($workspace.'/my-site/_media/app.css')->not->toBeFile()
         ->and($workspace.'/my-site/composer.json')->not->toBeFile()
         ->and($workspace.'/my-site/vendor')->not->toBeDirectory();
 });

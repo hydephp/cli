@@ -87,6 +87,7 @@ function main(array $argv): int
 
     $version = embedRuntime($options['runtime'], $platform);
     $composer = embedComposer($options['composer'], $options['runtime']);
+    embedStylesheet();
 
     writeRuntimeManifest($version, $platform, $options['runtime'], $options['micro'], $composer);
 
@@ -106,6 +107,31 @@ function main(array $argv): int
     info('Executable', $output.' ('.filesize($output).' bytes)');
 
     return verify($output, $options['micro']);
+}
+
+/** Copy the production Hyde stylesheet into the archive's runtime resources. */
+function embedStylesheet(): void
+{
+    $candidates = [
+        ROOT.'/../develop/packages/hyde/_media/app.css',
+        ROOT.'/../develop/_media/app.css',
+    ];
+
+    foreach ($candidates as $source) {
+        if (is_file($source)) {
+            $target = ROOT.'/'.RuntimeManager::RUNTIME_DIRECTORY.'/'.RuntimeManager::STYLESHEET_FILE;
+
+            if (! copy($source, $target)) {
+                fail("Unable to copy the production stylesheet from $source");
+            }
+
+            info('Stylesheet', $source);
+
+            return;
+        }
+    }
+
+    fail('Unable to find the production Hyde app.css stylesheet in the develop checkout.');
 }
 
 /**
