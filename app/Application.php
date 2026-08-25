@@ -21,7 +21,7 @@ class Application extends \Hyde\Foundation\Application
      * the Hyde framework a Composer project may pin. See docs/ARCHITECTURE.md for
      * the compatibility range this executable supports.
      */
-    final public const APP_VERSION = '3.0.0';
+    final public const APP_VERSION = '3.1.0';
 
     /**
      * Get the path to the cached packages.php file.
