@@ -18,6 +18,7 @@ scattered set of file-existence checks.
 _pages/
 _posts/
 _media/
+_static/
 hyde.yml     # optional
 ```
 
@@ -28,6 +29,11 @@ never invoked at any point in a build.
 
 A Portable project cannot load Composer addons. There is no hybrid autoloading, and a
 local `vendor/autoload.php` is never merged into the embedded dependency graph.
+
+Portable projects remain content/configuration-only. The executable supplies the production
+Hyde stylesheet as a read-only fallback during a build when `_media/app.css` is absent; it is
+transferred to the normal compiled `media/app.css` location. `hyde new` does not create the
+source stylesheet, and a user-provided file always takes precedence.
 
 ### Composer project
 
@@ -174,11 +180,20 @@ hyde  =  micro.sfx  ++  hyde.phar
                         └── runtime/
                             ├── php.gz            (a full static PHP CLI, gzipped)
                             ├── composer.phar.gz  (Composer, patched and gzipped)
+                            ├── app.css            (the production Hyde stylesheet for Portable projects)
                             └── runtime.json      (versions, platform, checksums, patches, offset)
 ```
 
 `bin/build-native.sh` (POSIX) and `bin/build-native.ps1` (Windows) drive static-php-cli;
 `bin/build-phar.php` assembles the archive and concatenates it onto the micro binary.
+
+The production Hyde stylesheet is copied from the v3 develop checkout into `runtime/app.css`
+while the archive is assembled. In Portable mode the embedded application exposes that file
+through a read-only media overlay only when the project has no `_media/app.css`. The framework
+therefore continues to use its normal local `Asset::exists('app.css')` path: user stylesheets
+win, the source `_media/` directory is never modified, and the generated site receives the
+stylesheet at `media/app.css`. Composer projects are not given this overlay and retain their
+own asset behavior.
 
 ### Why a second PHP is embedded
 
