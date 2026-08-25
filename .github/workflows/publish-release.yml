@@ -17,16 +17,65 @@ jobs:
     runs-on: ubuntu-latest
     name: Merge stable branch into master
 
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          ref: master
+    permissions:
+      contents: write
+      pull-requests: write
 
-      - name: Merge stable branch into master
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Create or reuse stable-to-master pull request
         run: |
-          git fetch origin stable:stable
-          git merge stable
-          git push origin master
+          set -euo pipefail
+
+          find_sync_pr() {
+            gh pr list \
+              --repo "$GITHUB_REPOSITORY" \
+              --base master \
+              --head stable \
+              --state open \
+              --limit 1 \
+              --json number \
+              --jq '.[0].number // empty'
+          }
+
+          pr_number="$(find_sync_pr)"
+
+          if [[ -z "$pr_number" ]]; then
+            ahead_count="$(gh api \
+              "repos/$GITHUB_REPOSITORY/compare/master...stable" \
+              --jq '.ahead_by')"
+
+            if [[ ! "$ahead_count" =~ ^[0-9]+$ ]]; then
+              echo "Failed to compare the stable and master branches." >&2
+              exit 1
+            fi
+
+            if [[ "$ahead_count" == "0" ]]; then
+              echo "The stable branch is already fully synced to master."
+              exit 0
+            fi
+
+            if ! gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base master \
+              --head stable \
+              --title "Merge stable branch into master" \
+              --body "Automatically sync the stable release branch back into master after publishing a release."; then
+              echo "Pull request creation failed; checking whether another run created it." >&2
+            fi
+
+            pr_number="$(find_sync_pr)"
+          fi
+
+          if [[ -z "$pr_number" ]]; then
+            echo "Failed to find the stable-to-master pull request." >&2
+            exit 1
+          fi
+
+          echo "Submitting pull request #$pr_number to the master merge queue."
+          gh pr merge "$pr_number" --repo "$GITHUB_REPOSITORY"
 
   build:
     uses: ./.github/workflows/build-native-all.yml
