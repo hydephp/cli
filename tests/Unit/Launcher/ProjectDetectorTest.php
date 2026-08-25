@@ -47,18 +47,6 @@ it('detects a manifest that requires the hyde project package as a composer proj
     expect((new ProjectDetector())->detect($path)->type)->toBe(ProjectType::Composer);
 });
 
-it('treats a require-dev only requirement as a composer project', function () {
-    $path = TemporaryProject::composer(manifest: '{"name": "acme/site", "require-dev": {"hyde/framework": "^2.0"}}');
-
-    expect((new ProjectDetector())->detect($path)->type)->toBe(ProjectType::Composer);
-});
-
-it('is case insensitive about package names', function () {
-    $path = TemporaryProject::composer(manifest: '{"name": "acme/site", "require": {"Hyde/Framework": "^2.0"}}');
-
-    expect((new ProjectDetector())->detect($path)->type)->toBe(ProjectType::Composer);
-});
-
 it('refuses a composer project that does not declare Hyde', function () {
     $path = TemporaryProject::directory();
 
@@ -76,6 +64,18 @@ it('refuses a composer project that does not declare Hyde', function () {
             LauncherException::class,
             'This is a Composer project, but it does not declare Hyde.'
         );
+});
+
+it('treats a require-dev only requirement as a composer project', function () {
+    $path = TemporaryProject::composer(manifest: '{"name": "acme/site", "require-dev": {"hyde/framework": "^2.0"}}');
+
+    expect((new ProjectDetector())->detect($path)->type)->toBe(ProjectType::Composer);
+});
+
+it('is case insensitive about package names', function () {
+    $path = TemporaryProject::composer(manifest: '{"name": "acme/site", "require": {"Hyde/Framework": "^2.0"}}');
+
+    expect((new ProjectDetector())->detect($path)->type)->toBe(ProjectType::Composer);
 });
 
 /*
