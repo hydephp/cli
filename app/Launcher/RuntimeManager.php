@@ -424,7 +424,7 @@ final class RuntimeManager
 
     public function hasBundledComposer(): bool
     {
-        return $this->composerManifest() !== null && is_file($this->embeddedComposerPath());
+        return is_file($this->embeddedComposerPath()) && $this->composerManifest() !== null;
     }
 
     /**
@@ -438,6 +438,10 @@ final class RuntimeManager
      */
     public function composerManifest(): ?array
     {
+        if (! is_file($this->manifestPath())) {
+            return null;
+        }
+
         $manifest = json_decode((string) @file_get_contents($this->manifestPath()), true);
 
         $composer = is_array($manifest) ? ($manifest['composer'] ?? null) : null;
