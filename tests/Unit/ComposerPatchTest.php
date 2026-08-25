@@ -57,7 +57,7 @@ function schannelCurlInfo(string $break = "\n"): string
     ]);
 }
 
-it('is a patch against a Composer bug that is still open upstream', function () {
+it('is a patch against a Composer bug that is still present upstream', function () {
     $patch = composerPatches()['composer-12615'];
 
     expect($patch['file'])->toBe('src/Composer/Repository/PlatformRepository.php')
