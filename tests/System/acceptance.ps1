@@ -109,6 +109,19 @@ try {
         Fail 'hyde php propagates the exit status' "expected 3, got $($phpStatus.Status)"
     }
 
+    # The extensions the bundled Composer cannot work without, asked of the runtime that
+    # is actually inside this artifact. Without zip, Composer falls back to an `unzip`
+    # binary this machine has no reason to have; without session, every Hyde project it
+    # resolves is unresolvable. A build that lost either would otherwise still pass
+    # every check above, and fail on the first real install a user attempted.
+    $extensions = Invoke-Hyde $work @('php', '-r', 'exit(extension_loaded("zip") && extension_loaded("session") ? 0 : 1);')
+
+    if ($extensions.Status -eq 0) {
+        Pass 'the runtime carries the extensions Composer needs'
+    } else {
+        Fail 'the runtime carries the extensions Composer needs'
+    }
+
     Write-Host '==> The bundled Composer'
 
     $composerVersion = Invoke-Hyde $work @('composer', '--version', '--no-ansi')
@@ -133,6 +146,19 @@ try {
     } else {
         Fail 'hyde composer install writes an autoloader'
     }
+
+    # The bundled Composer is versioned with the executable, and is checksum-verified on
+    # every run: an update to the extracted copy would be repaired away by the next
+    # command that needs it.
+    $selfUpdate = Invoke-Hyde $work @('composer', 'self-update', '--no-ansi')
+
+    if ($selfUpdate.Status -eq 0) {
+        Fail 'hyde composer self-update is refused' 'it reported success'
+    } else {
+        Pass 'hyde composer self-update is refused'
+    }
+
+    Assert-Contains 'the refusal says what to do instead' $selfUpdate.Output 'hyde self-update'
 
     Write-Host '==> Portable project'
 

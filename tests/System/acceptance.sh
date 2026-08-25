@@ -128,6 +128,18 @@ else
     fail "hyde php propagates the exit status" "expected 3, got $PHP_STATUS"
 fi
 
+# The extensions the bundled Composer cannot work without, asked of the runtime that is
+# actually inside this artifact. Without zip, Composer falls back to an `unzip` binary
+# this machine has no reason to have; without session, every Hyde project it resolves
+# is unresolvable. A build that lost either would otherwise still pass every check
+# above, and fail on the first real install a user attempted.
+"$HYDE" php -r 'exit(extension_loaded("zip") && extension_loaded("session") ? 0 : 1);' >/dev/null 2>&1 && EXT_STATUS=0 || EXT_STATUS=$?
+if [ "$EXT_STATUS" -eq 0 ]; then
+    pass "the runtime carries the extensions Composer needs"
+else
+    fail "the runtime carries the extensions Composer needs" "$("$HYDE" php -r 'echo "zip: ", var_export(extension_loaded("zip"), true), ", session: ", var_export(extension_loaded("session"), true);' 2>&1)"
+fi
+
 echo "==> The bundled Composer"
 
 COMPOSER_VERSION_OUTPUT="$("$HYDE" composer --version --no-ansi 2>&1)"
@@ -152,6 +164,18 @@ if [ -f "$INSTALL/vendor/autoload.php" ]; then
 else
     fail "hyde composer install writes an autoloader"
 fi
+
+# The bundled Composer is versioned with the executable, and is checksum-verified on
+# every run: an update to the extracted copy would be repaired away by the next command.
+"$HYDE" composer self-update --no-ansi >/dev/null 2>&1 && SELF_UPDATE_STATUS=0 || SELF_UPDATE_STATUS=$?
+
+if [ "$SELF_UPDATE_STATUS" -eq 0 ]; then
+    fail "hyde composer self-update is refused" "it reported success"
+else
+    pass "hyde composer self-update is refused"
+fi
+
+assert_contains "the refusal says what to do instead" "$("$HYDE" composer self-update --no-ansi 2>&1 || true)" "hyde self-update"
 
 echo "==> Portable project"
 
