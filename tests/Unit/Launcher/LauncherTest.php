@@ -7,6 +7,7 @@ use App\Launcher\Launcher;
 use App\Launcher\ProjectType;
 use App\Launcher\ProjectDetector;
 use App\Launcher\ProjectDispatcher;
+use App\Launcher\RuntimeDispatcher;
 use Tests\Support\TemporaryProject;
 
 /*
@@ -36,6 +37,24 @@ it('keeps the CLI-owned commands for the executable', function (string $command)
 it('treats every other command as belonging to the project', function (string $command) {
     expect((new Launcher())->isLauncherCommand(['hyde', $command]))->toBeFalse();
 })->with(['build', 'serve', 'route:list', 'make:page', 'test:addon']);
+
+it('keeps the bundled programs for the executable', function (string $command) {
+    expect((new Launcher())->isRuntimeCommand(['hyde', $command]))->toBeTrue();
+})->with(Launcher::RUNTIME_COMMANDS);
+
+it('does not treat a project command as a bundled program', function (string $command) {
+    expect((new Launcher())->isRuntimeCommand(['hyde', $command]))->toBeFalse();
+})->with(['build', 'serve', 'info', 'new', 'self-update']);
+
+it('forwards everything typed after the command name', function (array $argv, array $expected) {
+    expect((new Launcher())->argumentsFor($argv))->toBe($expected);
+})->with([
+    'nothing to forward' => [['hyde', 'php'], []],
+    'an option for the program' => [['hyde', 'php', '-v'], ['-v']],
+    'a script and its arguments' => [['hyde', 'php', 'script.php', '--flag', 'value'], ['script.php', '--flag', 'value']],
+    'an option for the CLI is not forwarded' => [['hyde', '-v', 'php', '-r', 'echo 1;'], ['-r', 'echo 1;']],
+    'no command at all' => [['hyde', '--version'], []],
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -112,6 +131,49 @@ it('does not dispatch a CLI-owned command inside a composer project', function (
     putenv("HYDE_WORKING_DIR=$path");
 
     expect((new Launcher(new ProjectDetector(), $dispatcher))->run(['hyde', 'info']))->toBeNull()
+        ->and($dispatcher->called)->toBeFalse();
+});
+
+it('answers a bundled program without dispatching, even in a broken composer project', function () {
+    // This is the whole point of answering these before detection: `hyde composer install`
+    // has to work in the one project state the launcher otherwise refuses to run in.
+    $path = TemporaryProject::composer(withAutoloader: false);
+
+    $dispatcher = new class() extends ProjectDispatcher
+    {
+        public bool $called = false;
+
+        public function dispatch(Project $project, array $arguments = []): int
+        {
+            $this->called = true;
+
+            return 0;
+        }
+    };
+
+    $runtime = new class() extends RuntimeDispatcher
+    {
+        public ?string $command = null;
+
+        /** @var list<string> */
+        public array $arguments = [];
+
+        public function run(string $command, array $arguments = []): int
+        {
+            $this->command = $command;
+            $this->arguments = $arguments;
+
+            return 4;
+        }
+    };
+
+    putenv("HYDE_WORKING_DIR=$path");
+
+    $status = (new Launcher(new ProjectDetector(), $dispatcher, $runtime))->run(['hyde', 'php', '-r', 'echo 1;']);
+
+    expect($status)->toBe(4)
+        ->and($runtime->command)->toBe('php')
+        ->and($runtime->arguments)->toBe(['-r', 'echo 1;'])
         ->and($dispatcher->called)->toBeFalse();
 });
 

@@ -79,6 +79,32 @@ try {
     $version = Invoke-Hyde $work @('--version', '--no-ansi')
     Assert-Contains 'hyde --version works' $version.Output 'HydePHP'
 
+    Write-Host '==> The bundled PHP runtime'
+
+    # The point of these checks is that they run on a host with no PHP: the interpreter
+    # they exercise can only be the one inside the executable.
+
+    $phpVersion = Invoke-Hyde $work @('php', '-v')
+    Assert-Contains 'hyde php -v reports a PHP version' $phpVersion.Output 'PHP 8.'
+    Assert-Contains 'the runtime is the static build' $phpVersion.Output 'static-php-cli'
+
+    # No quotes inside the snippet: how PowerShell passes an embedded quote to a native
+    # program depends on which PowerShell is running it, and the check is not about that.
+    $phpEval = Invoke-Hyde $work @('php', '-r', 'echo 40 + 2;')
+    Assert-Contains 'hyde php -r evaluates code' $phpEval.Output '42'
+
+    Set-Content -Path (Join-Path $work 'probe.php') -Value '<?php echo "script ran in ", basename(getcwd());'
+
+    $phpScript = Invoke-Hyde $work @('php', 'probe.php')
+    Assert-Contains 'hyde php runs a script relative to the working directory' $phpScript.Output ("script ran in " + (Split-Path $work -Leaf))
+
+    $phpStatus = Invoke-Hyde $work @('php', '-r', 'exit(3);')
+    if ($phpStatus.Status -eq 3) {
+        Pass 'hyde php propagates the exit status'
+    } else {
+        Fail 'hyde php propagates the exit status' "expected 3, got $($phpStatus.Status)"
+    }
+
     Write-Host '==> Portable project'
 
     $site = Join-Path $work 'site'

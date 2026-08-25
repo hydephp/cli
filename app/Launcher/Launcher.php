@@ -20,7 +20,9 @@ use function getenv;
 use function sprintf;
 use function is_string;
 use function in_array;
+use function array_merge;
 use function array_slice;
+use function array_values;
 use function str_replace;
 use function str_starts_with;
 use function sys_get_temp_dir;
@@ -39,20 +41,34 @@ final class Launcher
     /**
      * Commands that belong to the CLI itself rather than to a project.
      *
-     * These are answered by the executable even inside a Composer project, since
-     * they are about the CLI (`self-update`), about the environment (`info`), or
-     * about creating a project that does not exist yet (`new`). Everything else
+     * These are answered by the embedded application even inside a Composer project,
+     * since they are about the CLI (`self-update`), about the environment (`info`),
+     * or about creating a project that does not exist yet (`new`). Everything else
      * in a Composer project is dispatched into that project.
      *
      * @var list<string>
      */
     public const LAUNCHER_COMMANDS = ['info', 'new', 'self-update'];
 
+    /**
+     * Commands answered by the programs the executable carries, without booting anything.
+     *
+     * These are not about a project at all: they hand the bundled PHP runtime, and the
+     * Composer shipped beside it, to the user. They are answered before the project is
+     * even considered, which is what lets `hyde composer install` repair a Composer
+     * project whose dependencies are missing — the one state in which the launcher
+     * refuses to run anything else.
+     *
+     * @var list<string>
+     */
+    public const RUNTIME_COMMANDS = ['php'];
+
     private static ?Project $project = null;
 
     public function __construct(
         private readonly ProjectDetector $detector = new ProjectDetector(),
         private readonly ProjectDispatcher $dispatcher = new ProjectDispatcher(),
+        private readonly RuntimeDispatcher $runtime = new RuntimeDispatcher(),
     ) {
         //
     }
@@ -66,6 +82,13 @@ final class Launcher
      */
     public function run(array $argv): ?int
     {
+        // Answered before anything else, including detection: these commands are about
+        // the executable's own runtime, and one of them exists to repair the broken
+        // project state that detection would otherwise refuse to go any further in.
+        if ($this->isRuntimeCommand($argv)) {
+            return $this->runtime->run((string) $this->commandName($argv), $this->argumentsFor($argv));
+        }
+
         $project = $this->detect();
 
         // The CLI's own source checkout is itself a Hyde Composer project. When the file
@@ -160,19 +183,64 @@ final class Launcher
      */
     public function commandName(array $argv): ?string
     {
-        foreach (array_slice($argv, 1) as $argument) {
+        $index = $this->commandIndex($argv);
+
+        return $index === null ? null : $argv[$index];
+    }
+
+    /**
+     * Where in `$argv` the command name is, if it is there at all.
+     *
+     * @param  list<string>  $argv
+     */
+    public function commandIndex(array $argv): ?int
+    {
+        foreach (array_slice($argv, 1, preserve_keys: true) as $index => $argument) {
             if (! str_starts_with($argument, '-')) {
-                return $argument;
+                return $index;
             }
         }
 
         return null;
     }
 
+    /**
+     * Everything that was typed after the command name.
+     *
+     * Measured from the command rather than from the program name, so that an option
+     * meant for the CLI — `hyde -v php -r '...'` — is not passed on to the program
+     * being run, which knows nothing about it.
+     *
+     * @param  list<string>  $argv
+     * @return list<string>
+     */
+    public function argumentsFor(array $argv): array
+    {
+        $index = $this->commandIndex($argv);
+
+        return $index === null ? [] : array_values(array_slice($argv, $index + 1));
+    }
+
     /** @param list<string> $argv */
     public function isLauncherCommand(array $argv): bool
     {
         return in_array($this->commandName($argv), self::LAUNCHER_COMMANDS, true);
+    }
+
+    /** @param list<string> $argv */
+    public function isRuntimeCommand(array $argv): bool
+    {
+        return in_array($this->commandName($argv), self::RUNTIME_COMMANDS, true);
+    }
+
+    /**
+     * Every command the executable answers for itself, whichever way it answers them.
+     *
+     * @return list<string>
+     */
+    public static function ownedCommands(): array
+    {
+        return array_merge(self::LAUNCHER_COMMANDS, self::RUNTIME_COMMANDS);
     }
 
     /**

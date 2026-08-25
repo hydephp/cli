@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Commands\InfoCommand;
+use App\Commands\PhpCommand;
 use App\Commands\ServeCommand;
 use App\Commands\NewProjectCommand;
 use App\Commands\SelfUpdateCommand;
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
             InfoCommand::class,
             NewProjectCommand::class,
             SelfUpdateCommand::class,
+            PhpCommand::class,
         ]);
     }
 

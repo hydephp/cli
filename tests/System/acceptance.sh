@@ -96,6 +96,30 @@ fi
 VERSION_OUTPUT="$("$HYDE" --version --no-ansi 2>&1)"
 assert_contains "hyde --version works" "$VERSION_OUTPUT" "HydePHP"
 
+echo "==> The bundled PHP runtime"
+
+# The point of these checks is that they run on a host with no PHP: the interpreter
+# they exercise can only be the one inside the executable.
+
+PHP_VERSION_OUTPUT="$("$HYDE" php -v 2>&1)"
+assert_contains "hyde php -v reports a PHP version" "$PHP_VERSION_OUTPUT" "PHP 8."
+assert_contains "the runtime is the static build" "$PHP_VERSION_OUTPUT" "static-php-cli"
+
+PHP_EVAL_OUTPUT="$("$HYDE" php -r 'echo "evaluated ", 1 + 1;' 2>&1)"
+assert_contains "hyde php -r evaluates code" "$PHP_EVAL_OUTPUT" "evaluated 2"
+
+printf '<?php echo "script ran in ", basename(getcwd());' > "$WORK/probe.php"
+
+PHP_SCRIPT_OUTPUT="$(cd "$WORK" && "$HYDE" php probe.php 2>&1)"
+assert_contains "hyde php runs a script relative to the working directory" "$PHP_SCRIPT_OUTPUT" "script ran in $(basename "$WORK")"
+
+"$HYDE" php -r 'exit(3);' >/dev/null 2>&1 && PHP_STATUS=0 || PHP_STATUS=$?
+if [ "$PHP_STATUS" -eq 3 ]; then
+    pass "hyde php propagates the exit status"
+else
+    fail "hyde php propagates the exit status" "expected 3, got $PHP_STATUS"
+fi
+
 echo "==> Portable project"
 
 SITE="$WORK/site"
