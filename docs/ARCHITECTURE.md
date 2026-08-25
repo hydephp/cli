@@ -171,8 +171,8 @@ hyde  =  micro.sfx  ++  hyde.phar
                         ├── vendor/               (the embedded dependency graph)
                         └── runtime/
                             ├── php.gz            (a full static PHP CLI, gzipped)
-                            ├── composer.phar.gz  (Composer, gzipped)
-                            └── runtime.json      (versions, platform, checksums, offset)
+                            ├── composer.phar.gz  (Composer, patched and gzipped)
+                            └── runtime.json      (versions, platform, checksums, patches, offset)
 ```
 
 `bin/build-native.sh` (POSIX) and `bin/build-native.ps1` (Windows) drive static-php-cli;
@@ -238,6 +238,53 @@ present in the artifact rather than trusting the build configuration:
 **The executable distributes Composer, so the pin is a supply-chain decision, not a
 convenience.** Keep it current with upstream's security releases; read the release notes
 and confirm a project can still be created before bumping it.
+
+### The patch carried against Composer
+
+The bundled archive is not always the published one byte for byte.
+[`bin/lib/composer-patches.php`](../bin/lib/composer-patches.php) carries the minimum
+change needed where a Composer bug stops the CLI working on one of its platforms; the
+build applies it *after* verifying the download against the pinned checksum, and records
+the result:
+
+```
+published composer.phar  ──verified against the pin──▶  patched  ──▶  hashed into runtime.json
+      (provenance)                                                    (what runs, verified
+                                                                       on every extraction)
+```
+
+So the manifest carries both checksums — upstream's and ours — and `hyde info -v` names
+every patch applied. Nothing about what is shipped is left to be discovered.
+
+One patch exists today. Composer parses curl's SSL backend with `[^/]+`, which matches
+newlines, so a curl that reports `SSL Version => Schannel` — with no `/version` after it,
+which is every static-php-cli Windows build — makes the capture run past the end of the
+line to the next `/` further down the block. Composer then builds a platform package
+called `lib-curl-schannel
+ZLib Version => 1.3.2
+libSSH Version => libssh2`, rejects it
+as an invalid name, and aborts **every** dependency resolution. `hyde composer install`
+and `hyde new --composer` were both dead on Windows; the Windows acceptance run is what
+caught it.
+
+The fix is one character class, so the library capture stops at a line boundary and the
+Schannel line simply does not match — the right answer, since it advertises no version to
+register. `ext-curl` and `lib-curl` are registered before that code runs and are
+untouched. The version capture is left exactly as upstream wrote it: `.` cannot cross a
+newline, so it was never part of the bug, and it absorbs the carriage return that lets
+`$` match on a CRLF host.
+
+Reported as [composer/composer#12615](https://github.com/composer/composer/issues/12615),
+which was closed by a commit that fixed the *later* report on that issue — macOS
+SecureTransport with LibreSSL, where a slash is present and only the naming was wrong —
+and left the original Schannel case untouched.
+
+**A patch is a liability, and is meant to be deleted.** The build fails if one no longer
+matches exactly once, so a Composer bump cannot silently ship unpatched; the day a release
+contains the fix, the entry goes and `tests/Unit/ComposerPatchTest.php` goes with it.
+That test needs no Composer, no network and no artifact: it runs the pattern against the
+extension info the platforms actually report, including the SecureTransport case upstream
+did fix, which the patch must not take back away.
 
 `hyde composer self-update` is refused. The bundled Composer is versioned with the
 executable and verified on every run, so an update to the extracted copy would be

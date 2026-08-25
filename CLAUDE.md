@@ -42,7 +42,7 @@ These are not preferences. A change that breaks one of them is a bug, whatever i
 | `app/Foundation/` | Overrides that let the framework boot out of a read-only executable. |
 | `app/Commands/` | The commands the executable owns: `info`, `new`, `serve`, `self-update`, and the bundled programs `php` and `composer`. |
 | `app/Support/` | Small helpers with no framework dependencies. |
-| `bin/` | The build scripts. `build-native.sh` and `build-native.ps1` drive static-php-cli; `build-phar.php` assembles the executable. |
+| `bin/` | The build scripts. `build-native.sh` and `build-native.ps1` drive static-php-cli; `build-phar.php` assembles the executable; `lib/composer-patches.php` is what the bundled Composer is patched with, and why. |
 | `build/runtime.json` | The single build configuration: pinned PHP version, the extension set with a reason for each, and the pinned Composer release with its checksum. |
 | `tests/System/` | Runtime acceptance in POSIX shell and PowerShell, for hosts with no PHP. |
 

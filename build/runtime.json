@@ -25,7 +25,7 @@
         "zlib": "Required to read the GZ-compressed PHAR that the executable embeds."
     },
     "composer": {
-        "$comment": "The Composer release bundled inside the executable, so that `hyde composer` and `hyde new --composer` work on a machine that has neither PHP nor Composer. Both build scripts download exactly this version and refuse to continue unless it hashes to the checksum below, which was taken from the one getcomposer.org publishes alongside that release. The executable distributes this, so keep it current: read the release notes before bumping it, and check a project can still be created with it.",
+        "$comment": "The Composer release bundled inside the executable, so that `hyde composer` and `hyde new --composer` work on a machine that has neither PHP nor Composer. Both build scripts download exactly this version and refuse to continue unless it hashes to the checksum below, which was taken from the one getcomposer.org publishes alongside that release. The executable distributes this, so keep it current: read the release notes before bumping it, and check a project can still be created with it. The archive is patched after verification and before it is embedded; see bin/lib/composer-patches.php for what is changed and why.",
         "version": "2.10.2",
         "sha256": "5ee7125f8a30a34d246cefdc0bc85b8a783b28f2aec968994118512350d28027"
     },
