@@ -17,11 +17,11 @@ class Application extends \Hyde\Foundation\Application
     /**
      * The HydeCLI version.
      *
-     * This is the version of the *executable*, and is independent of the version of
-     * the Hyde framework a Composer project may pin. See docs/ARCHITECTURE.md for
-     * the compatibility range this executable supports.
+     * This is the version of the *executable*, and is independent of the HydePHP
+     * framework version. The 0.11.x CLI line embeds and supports the unreleased HydePHP
+     * v3 development line, but the two versions must never be made to track each other.
      */
-    final public const APP_VERSION = '3.0.0';
+    final public const APP_VERSION = '0.10.13';
 
     /**
      * Get the path to the cached packages.php file.
