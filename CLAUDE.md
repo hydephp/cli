@@ -16,11 +16,15 @@ These are not preferences. A change that breaks one of them is a bug, whatever i
    project declares. This is the single most important guarantee in the codebase.
 3. **No external PHP in Portable mode.** `RuntimeManager` is the only thing that resolves a
    PHP binary, and it never looks at `PATH`. If you need to run PHP, ask it. That includes
-   `hyde php` and `hyde composer`, which run the bundled runtime and nothing else.
+   `hyde php` and `hyde composer`. In a released executable that is always the embedded
+   runtime; in a source checkout, which embeds none, it is the PHP process already
+   running the code, and never one found on the search path.
 4. **Composer is never invoked implicitly.** Nothing about building or serving a project
    runs it. It runs when the user asks for it and nowhere else: `hyde composer`, and
-   `hyde new --composer`. Both use the Composer bundled in the executable, falling back to
-   the host's only when none is bundled.
+   `hyde new --composer`. Both prefer the Composer bundled in the executable, and they
+   differ where none is bundled: `hyde new --composer` falls back to the host's, since
+   it needs *a* Composer to create a project, while `hyde composer` fails — it means
+   "the Composer Hyde supplies", and in a source checkout the developer has their own.
 5. **No mixing of dependency graphs.** The embedded `vendor/` and a project's `vendor/` never
    share a process. Composer projects are dispatched into a separate process.
 6. **Detection and dispatch run before the autoloader.** The `app/Launcher` classes are

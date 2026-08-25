@@ -140,6 +140,11 @@ will say so.
 Composer project with a missing `vendor/` is the one state the CLI refuses to build, and
 `hyde composer install` is what repairs it.
 
+Both commands mean *the programs Hyde supplies*, so neither falls back to one installed on
+the machine. `hyde composer self-update` is refused for the same reason: the bundled
+Composer is versioned with the executable and verified on every run, so `hyde self-update`
+is what gets you a newer one.
+
 ## Resources
 
 ### Changelog

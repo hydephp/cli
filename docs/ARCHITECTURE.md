@@ -114,6 +114,12 @@ project's configuration or discover that project's packages.
 | `php` | It runs the PHP CLI bundled in the executable. |
 | `composer` | It runs the Composer bundled in the executable, on that runtime. |
 
+Neither falls back to a program found on the search path: they mean *the ones Hyde
+supplies*. A source checkout embeds neither, so `hyde php` there runs the PHP process
+already running the code and `hyde composer` fails, telling the developer to run their
+own. `hyde new --composer` is the one place that does fall back to a host Composer,
+because it needs some Composer to create a project at all.
+
 Everything else in a Composer project is dispatched into that project.
 
 ### The bundled programs
@@ -202,10 +208,13 @@ The CLI could always *run* a Composer project on a machine with no PHP. Installi
 project's dependencies still needed a Composer that machine did not have, which left the
 promise one step short. So the build embeds one.
 
-It is pinned by version in `build/runtime.json` and verified against the checksum
-getcomposer.org publishes for that release — on every build, cached download included. It
-is extracted like the runtime, verified against the checksum of the decompressed file, and
-cached under its own version rather than under the platform:
+`build/runtime.json` pins the version to bundle and the SHA-256 it must hash to, taken
+from the checksum getcomposer.org publishes alongside that release. Both build scripts
+download that version and verify it against the pinned checksum before it goes anywhere
+near the archive — on every build, cached download included, so the pin rather than the
+download is what decides. It is then extracted like the runtime, verified against the
+checksum of the decompressed file, and cached under its own version rather than under
+the platform:
 
 ```
 ~/.cache/hyde/composer/<composer-version>/composer.phar
@@ -215,9 +224,25 @@ Composer is a PHAR, so it is never executed on its own: the bundled runtime is n
 program and Composer as its first argument. That is also what decides which PHP an install
 runs against — the one this executable ships, never whatever a shebang would find.
 
-`ext-zip` is in the runtime for this. Without it Composer falls back to an `unzip` binary
-and then to `git`, and a machine that installed Hyde to avoid installing PHP cannot be
-assumed to have either: `composer install` fails outright there.
+Two extensions are in the runtime for this, and the acceptance suites assert both are
+present in the artifact rather than trusting the build configuration:
+
+- `ext-zip`. Without it Composer falls back to an `unzip` binary and then to `git`, and a
+  machine that installed Hyde to avoid installing PHP cannot be assumed to have either:
+  `composer install` fails outright there.
+- `ext-session`. Composer resolves platform requirements against the runtime it is
+  running on, and `illuminate/session` — reached from `hyde/framework` through
+  `hydephp/torchlight-commonmark`, `torchlight/torchlight-laravel` and `illuminate/http`
+  — requires it. Without it every project `hyde new --composer` creates is unresolvable.
+
+**The executable distributes Composer, so the pin is a supply-chain decision, not a
+convenience.** Keep it current with upstream's security releases; read the release notes
+and confirm a project can still be created before bumping it.
+
+`hyde composer self-update` is refused. The bundled Composer is versioned with the
+executable and verified on every run, so an update to the extracted copy would be
+repaired away by the next command that needed it — silently, since repairing a copy that
+fails verification is exactly what the extraction does.
 
 ### Finding the archive inside the executable
 
