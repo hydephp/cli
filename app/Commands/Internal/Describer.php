@@ -172,17 +172,19 @@ class Describer extends BaseDescriber
 
         $output->write(sprintf("\n  <fg=yellow;options=bold>%s</>\n    <fg=gray>%s</>\n", $section[0], $section[1]));
 
-        foreach ($groups as $index => $commands) {
-            $width = 0;
+        $width = 0;
 
+        foreach ($groups as $commands) {
             foreach ($commands as $command) {
                 $width = max($width, mb_strlen((string) $command->getName()));
             }
+        }
 
+        foreach ($groups as $index => $commands) {
             $output->write("\n");
 
             if ($index !== '') {
-                $output->write(sprintf("%s<fg=yellow>%s</>\n", str_repeat(' ', $groupIndent), $index));
+                $output->write(sprintf("%s<fg=gray>%s</>\n", str_repeat(' ', $groupIndent), $index));
             }
 
             foreach ($commands as $command) {
