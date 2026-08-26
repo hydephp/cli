@@ -67,7 +67,7 @@ it('tells the server process where the application lives', function () {
 
     $environment = inspectableServeCommand($this->app)->environment();
 
-    expect($environment)->toHaveKeys(['HYDE_AUTOLOAD_PATH', 'HYDE_BOOTSTRAP_PATH', 'HYDE_WORKING_DIR', 'HYDE_TEMP_DIR'])
+    expect($environment)->toHaveKeys(['HYDE_AUTOLOAD_PATH', 'HYDE_BOOTSTRAP_PATH', 'HYDE_WORKING_DIR', 'HYDE_TEMP_DIR', 'HYDE_BUNDLED_STYLESHEET'])
         ->and($environment['HYDE_WORKING_DIR'])->toBe($path)
         ->and($environment['HYDE_AUTOLOAD_PATH'])->toEndWith('vendor/autoload.php')
         ->and($environment['HYDE_BOOTSTRAP_PATH'])->toEndWith('app/bootstrap.php');

@@ -50,8 +50,9 @@ task('building|built', 'Html manual', function () use ($commands): void {
     $theme = get_theme_key(get_default_ansi_theme());
     $template = get_template();
     $version = parse_version(trim(hyde_exec('--version --no-ansi', true)));
+    $portableSection = portable_manual_html();
 
-    $data = compact(['themes', 'themeSelector', 'theme', 'entries', 'template', 'version']);
+    $data = compact(['themes', 'themeSelector', 'theme', 'entries', 'template', 'version', 'portableSection']);
 
     $manual = view($template, $data);
 
@@ -65,8 +66,73 @@ task('building|built', 'XML manual', function (): void {
 
 task('building|built', 'Markdown manual', function (): void {
     $md = hyde_exec('list --format=md --no-ansi', true);
-    file_put_contents('docs/manual/manual.md', $md);
+    file_put_contents('docs/manual/manual.md', portable_manual_markdown()."\n\n".$md);
 });
+
+/** The conceptual part of the manual is maintained here beside the generated commands. */
+function portable_manual_markdown(): string
+{
+    return <<<'MD'
+## Portable sites
+
+A Portable project can be content and configuration only:
+
+```
+_pages/
+_posts/
+_media/
+_static/
+hyde.yml
+```
+
+It does not need a local PHP or Composer installation. Choose Portable when you want the
+smallest, easiest-to-copy site and do not need Composer addons or custom PHP dependencies.
+Choose a Composer project when you need those extensions; it uses the dependencies declared by
+the project and keeps its own asset behavior.
+
+### Default styling
+
+The standalone Hyde executable includes Hyde's production `app.css`. A fresh Portable site is
+therefore styled even though `_media/app.css` does not exist. Both `hyde build` and `hyde serve`
+use this bundled default, so the standard site works offline without Tailwind Play CDN, Vite,
+Node, npm, or the Hyde stylesheet CDN.
+
+### Custom styling and media directories
+
+Create `_media/app.css` to override the bundled stylesheet. Hyde serves or builds the user file,
+does not expose the bundled replacement, and never modifies or overwrites the source file. If
+the media directory is configured as `assets`, the corresponding source and virtual stylesheet
+path is `assets/app.css`, and the served/generated URL is the configured media output path.
+MD;
+}
+
+function portable_manual_html(): string
+{
+    return <<<'HTML'
+    <section>
+    <h2>Portable sites</h2>
+    <p>A Portable project can consist only of:</p>
+    <pre>_pages/
+    _posts/
+    _media/
+    _static/
+    hyde.yml</pre>
+    <p>It needs no local PHP or Composer installation. Choose Portable for a content-only site;
+    choose a Composer project when you need addons or custom PHP dependencies. Composer projects
+    use the dependencies and asset behavior declared by the project.</p>
+    <h3>Default styling</h3>
+    <p>The standalone executable includes Hyde's production <code>app.css</code>. A fresh
+    Portable site is styled even though <code>_media/app.css</code> does not exist. Both
+    <code>hyde build</code> and <code>hyde serve</code> use this bundled default, offline and
+    without Tailwind Play CDN, Vite, Node, npm, or the Hyde stylesheet CDN.</p>
+    <h3>Custom styling</h3>
+    <p>Creating <code>_media/app.css</code> overrides the bundled default. The CLI never changes
+    or overwrites the user file. When the media directory is configured as <code>assets</code>,
+    the virtual stylesheet is <code>assets/app.css</code> and its served/generated URL follows
+    the configured media output path.</p>
+    </section>
+    HTML;
+}
 
 /** Execute a command in the Hyde CLI and return the output. */
 function hyde_exec(string $command, bool $cache = false): string
@@ -327,7 +393,7 @@ function get_template(): string
             </a>
         </menu>
     </nav>
-    <main>{{ entries }}</main>
+    <main>{{ portableSection }}{{ entries }}</main>
     <footer>
         <p>
             Manual for the <a href="https://hydephp.github.io/cli?ref=manual">HydePHP CLI</a> - Version {{ version }}
@@ -358,4 +424,3 @@ function view(string $template, array $data): string
 
     return $template;
 }
-

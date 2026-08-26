@@ -31,9 +31,11 @@ A Portable project cannot load Composer addons. There is no hybrid autoloading, 
 local `vendor/autoload.php` is never merged into the embedded dependency graph.
 
 Portable projects remain content/configuration-only. The executable supplies the production
-Hyde stylesheet as a read-only fallback during a build when `_media/app.css` is absent; it is
-transferred to the normal compiled `media/app.css` location. `hyde new` does not create the
-source stylesheet, and a user-provided file always takes precedence.
+Hyde stylesheet as a read-only fallback during a build or preview when the configured media
+directory does not contain `app.css`; it is transferred to the normal compiled media location
+for a build and exposed at that location by the preview server. `hyde new` does not create the
+source stylesheet, and a user-provided file always takes precedence. This keeps the source tree
+content-only while making a fresh site look like a normal Hyde site offline.
 
 ### Composer project
 
@@ -189,11 +191,32 @@ hyde  =  micro.sfx  ++  hyde.phar
 
 The production Hyde stylesheet is copied from the v3 develop checkout into `runtime/app.css`
 while the archive is assembled. In Portable mode the embedded application exposes that file
-through a read-only media overlay only when the project has no `_media/app.css`. The framework
-therefore continues to use its normal local `Asset::exists('app.css')` path: user stylesheets
-win, the source `_media/` directory is never modified, and the generated site receives the
-stylesheet at `media/app.css`. Composer projects are not given this overlay and retain their
-own asset behavior.
+through a read-only media overlay only when the project has no `app.css` in its configured media
+directory. The virtual source path is derived from that configured directory, not from a
+`_media/app.css` suffix test. The framework therefore continues to use its normal local
+`Asset::exists('app.css')` path: user stylesheets win, the source media directory is never
+modified, and the generated site receives the stylesheet at the configured media output path
+(normally `media/app.css`). Composer projects are not given this overlay and retain their own
+asset behavior.
+
+`hyde build` reaches the fallback through two matching abstractions: `PortableHydeKernel` uses
+the Portable filesystem to discover the virtual media file, and the Illuminate filesystem
+binding installed by `app/bootstrap.php` reads, hashes, and sizes the bytes from
+`runtime/app.css`. No fallback file is written to the project. The same bundled-stylesheet
+abstraction also supplies the resource path and virtual source/output paths to `hyde serve`.
+
+Serving has an additional process boundary. The executable is a micro SAPI and cannot run
+`php -S`, so `ServeCommand` extracts the bundled PHP CLI and starts it with a generated router
+script. That child loads the bundled realtime compiler and is given `HYDE_WORKING_DIR`,
+`HYDE_BOOTSTRAP_PATH`, the media source/output directories, and the archive's runtime resource
+path. A page request enters the realtime compiler, which loads `app/bootstrap.php`; launcher
+detection therefore still classifies the project as Portable and installs the Portable kernel
+and filesystem. Media requests are intentionally handled before that application boot, so the
+generated router script asks the same stylesheet abstraction whether the request is the virtual
+configured `media-output/app.css` path. If the user's source file exists, the normal realtime
+compiler path serves it; otherwise the router reads the bundled archive resource. This is why
+both page and stylesheet requests work without PHP, Composer, Node, Vite, Tailwind Play CDN, or
+network access.
 
 ### Why a second PHP is embedded
 
