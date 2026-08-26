@@ -83,6 +83,25 @@ it('renders project command subgroups', function () {
         ->toMatch('/^    Other\n(?s:.*?)      route:list/m');
 });
 
+it('aligns descriptions across all project command groups', function () {
+    $lines = array_values(array_filter(
+        explode("\n", $this->plain),
+        fn (string $line): bool => preg_match('/^      (build|make|publish|herd|route):/', $line) === 1,
+    ));
+
+    $descriptionColumns = array_map(
+        function (string $line): int {
+            preg_match('/^\s+\S+ +\S/', $line, $match);
+
+            return strlen($match[0]) - 1;
+        },
+        $lines,
+    );
+
+    expect($descriptionColumns)->not->toBeEmpty()
+        ->and(array_unique($descriptionColumns))->toHaveCount(1);
+});
+
 it('puts the command that creates a project first', function () {
     // `new` creates the project the rest of the list acts on, so it leads.
     [$cli] = listSections($this->rendered);
