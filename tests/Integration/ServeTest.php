@@ -43,7 +43,38 @@ it('serves a portable project over HTTP with no PHP available', function () {
 
     expect($response)
         ->toContain('Hello From The Server')
-        ->toContain('Served Site');
+        ->toContain('Served Site')
+        ->toContain('media/app.css')
+        ->and($this->server->get('/media/app.css'))
+        ->toContain('tailwindcss');
+});
+
+it('serves a user stylesheet instead of the bundled fallback', function () {
+    $stylesheet = "/* user stylesheet */\nbody { color: rebeccapurple; }\n";
+    $path = TemporaryProject::portable(['_media/app.css' => $stylesheet]);
+
+    $this->server = Server::start($path);
+
+    expect($this->server->waitUntilReady())->toBeTrue($this->server->output())
+        ->and($this->server->get('/media/app.css'))->toBe($stylesheet)
+        ->and(file_get_contents($path.'/_media/app.css'))->toBe($stylesheet);
+});
+
+it('serves the bundled stylesheet from a configured media directory', function () {
+    $path = TemporaryProject::portable([
+        '_pages/index.md' => "# Custom media\n",
+        'assets/.gitkeep' => '',
+        'hyde.yml' => "media_directory: assets\n",
+    ]);
+
+    $this->server = Server::start($path);
+
+    expect($this->server->waitUntilReady())->toBeTrue($this->server->output());
+
+    $html = $this->server->get('/');
+
+    expect($html)->toContain('assets/app.css')
+        ->and($this->server->get('/assets/app.css'))->toContain('tailwindcss');
 });
 
 it('starts the server with the bundled runtime rather than a system PHP', function () {
