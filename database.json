@@ -1,13 +1,13 @@
 {
     "_database": {
-        "last_updated": 1787620668,
-        "content_hash": "47ad7d6a6d41389b1b3b330d9cb523713ec907e210f1c953560f99a427488774",
-        "total_views": 4710,
-        "total_clones": 35350,
-        "total_installs": 410,
-        "total_binary_downloads": 246,
-        "database_size_bytes": 212791,
-        "database_size_lines": 6576
+        "last_updated": 1788135300,
+        "content_hash": "65a978156a520cdedb967baa630611a59543a747ba3b83a3d86cdd37a1755090",
+        "total_views": 5034,
+        "total_clones": 37867,
+        "total_installs": 399,
+        "total_binary_downloads": 252,
+        "database_size_bytes": 216545,
+        "database_size_lines": 6686
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -4465,6 +4465,66 @@
                 "count": 4,
                 "uniques": 4
             }
+        },
+        "2026-08-24T00:00:00Z": {
+            "views": {
+                "count": 85,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 930,
+                "uniques": 33
+            }
+        },
+        "2026-08-25T00:00:00Z": {
+            "views": {
+                "count": 228,
+                "uniques": 3
+            },
+            "clones": {
+                "count": 1329,
+                "uniques": 40
+            }
+        },
+        "2026-08-26T00:00:00Z": {
+            "views": {
+                "count": 10,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 233,
+                "uniques": 19
+            }
+        },
+        "2026-08-27T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 5,
+                "uniques": 5
+            }
+        },
+        "2026-08-28T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 19,
+                "uniques": 2
+            }
+        },
+        "2026-08-29T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -6533,8 +6593,8 @@
                 "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
                     "path": "\/hydephp\/cli",
                     "title": "Overview",
-                    "count": 1,
-                    "uniques": 1
+                    "count": 59,
+                    "uniques": 3
                 },
                 "1459001c20ba21cac666ff5b07c4482f961edc35752e211f6955a04d3fb51a7f": {
                     "path": "\/hydephp\/cli\/blob\/master\/app\/Application.php",
@@ -6557,20 +6617,68 @@
                 "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
                     "path": "\/hydephp\/cli\/pulls",
                     "title": "\/pulls",
-                    "count": 1,
-                    "uniques": 1
+                    "count": 30,
+                    "uniques": 2
                 },
                 "3769e62e55bf4bb0920892d67ba5c88c65c9b2828ac0bb78873af678227513d2": {
                     "path": "\/hydephp\/cli\/tree\/master\/app",
                     "title": "\/tree\/master\/app",
                     "count": 1,
                     "uniques": 1
+                },
+                "123340aeb0d4c62bcca96034e528e5cd7e928d03691c8cf7d60064bf196674f3": {
+                    "path": "\/hydephp\/cli\/actions",
+                    "title": "\/actions",
+                    "count": 14,
+                    "uniques": 1
+                },
+                "441490c196f0e16ad8c50b1ad1ef1d8bdea396660626ded1cab079053688844a": {
+                    "path": "\/hydephp\/cli\/pull\/345",
+                    "title": "\/pull\/345",
+                    "count": 9,
+                    "uniques": 1
+                },
+                "1b0b1d227f27f713e4a76fb653b720df24062b413e8148f8be7c3f6af6477085": {
+                    "path": "\/hydephp\/cli\/pull\/349",
+                    "title": "\/pull\/349",
+                    "count": 9,
+                    "uniques": 1
+                },
+                "40bf2ba97da83ce2297e05940e37695d34658938f15e9c53eb5c91c62aeea51f": {
+                    "path": "\/hydephp\/cli\/actions\/workflows\/create-release.yml",
+                    "title": "\/actions\/workflows\/create-release.yml",
+                    "count": 7,
+                    "uniques": 1
+                },
+                "efaaef6fcc0d5c92da1ed6de6cbc200d85bce6a875853bc622a04bab3fb44655": {
+                    "path": "\/hydephp\/cli\/actions\/runs\/32806185044",
+                    "title": "\/actions\/runs\/32806185044",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "57a00e672e460896e08f171be251ada45a70c90b42f4734e737cbc86db701aba": {
+                    "path": "\/hydephp\/cli\/agents",
+                    "title": "\/agents",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "79a41df41afa8d35ead952faf0678b7637610aca80160e64cfe52dfcd2304b63": {
+                    "path": "\/hydephp\/cli\/pull\/340",
+                    "title": "\/pull\/340",
+                    "count": 6,
+                    "uniques": 1
+                },
+                "788882a2aae768618c5d0eba7f6326aeede6ef51c7a1c1eb8a68bd840f8f711f": {
+                    "path": "\/hydephp\/cli\/pull\/347",
+                    "title": "\/pull\/347",
+                    "count": 6,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "github.com": {
-                    "count": 5,
-                    "uniques": 1
+                    "count": 7,
+                    "uniques": 2
                 }
             }
         }
