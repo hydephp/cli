@@ -1,13 +1,13 @@
 {
     "_database": {
-        "last_updated": 1789343740,
-        "content_hash": "680e6110d63c7af2e17819de8aa0008815c8decb5675b7725a58b69f9d697f35",
-        "total_views": 5035,
-        "total_clones": 38459,
-        "total_installs": 402,
-        "total_binary_downloads": 255,
-        "database_size_bytes": 222838,
-        "database_size_lines": 6896
+        "last_updated": 1789948510,
+        "content_hash": "7f6a16aa9b4809f69119f78b39fa21e85f8a1b61b09b4aad9cbe4c24a23c00ec",
+        "total_views": 5047,
+        "total_clones": 38579,
+        "total_installs": 404,
+        "total_binary_downloads": 257,
+        "database_size_bytes": 226711,
+        "database_size_lines": 7012
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -4665,6 +4665,76 @@
                 "count": 7,
                 "uniques": 7
             }
+        },
+        "2026-09-13T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 4,
+                "uniques": 4
+            }
+        },
+        "2026-09-14T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 27,
+                "uniques": 21
+            }
+        },
+        "2026-09-15T00:00:00Z": {
+            "views": {
+                "count": 8,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 5,
+                "uniques": 4
+            }
+        },
+        "2026-09-16T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 24,
+                "uniques": 15
+            }
+        },
+        "2026-09-17T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 16,
+                "uniques": 16
+            }
+        },
+        "2026-09-18T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 23,
+                "uniques": 16
+            }
+        },
+        "2026-09-19T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 21,
+                "uniques": 8
+            }
         }
     },
     "popular": {
@@ -6828,7 +6898,7 @@
                     "path": "\/hydephp\/cli",
                     "title": "Overview",
                     "count": 58,
-                    "uniques": 2
+                    "uniques": 5
                 },
                 "7254fe1988ec9710fb5729de3df738fe529045ceb97cb556fd8888effa6de2be": {
                     "path": "\/hydephp\/cli\/pulls",
@@ -6883,11 +6953,57 @@
                     "title": "\/pull\/347",
                     "count": 6,
                     "uniques": 1
+                },
+                "95e0e2fefcee776e21009a8aef7a18fcc5501f753ccd38092851572e4e09b084": {
+                    "path": "\/hydephp\/cli\/blob\/master\/Dockerfile",
+                    "title": "\/blob\/master\/Dockerfile",
+                    "count": 2,
+                    "uniques": 1
+                },
+                "2540831018d798e99b411295df260ed3ea30d9986251a289965a8b70d837701e": {
+                    "path": "\/hydephp\/cli\/blob\/master\/CLAUDE.md",
+                    "title": "\/blob\/master\/CLAUDE.md",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "074e2d8d1b697106074e6f62307452ba26573d11df74a078df1d045ec5f90f33": {
+                    "path": "\/hydephp\/cli\/blob\/master\/CONTRIBUTING.md",
+                    "title": "\/blob\/master\/CONTRIBUTING.md",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "84cb0735337887c144ff36902c673fc4b745f2c02ca391648d9a818ce6296113": {
+                    "path": "\/hydephp\/cli\/blob\/master\/LICENSE.md",
+                    "title": "\/blob\/master\/LICENSE.md",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "07325179e3bfe4ed164c39145031372fe02b8da93066d7db7dd3d70c29b05145": {
+                    "path": "\/hydephp\/cli\/blob\/master\/composer.json",
+                    "title": "\/blob\/master\/composer.json",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "8c73bbe9addc03c07cc8e14e6473a07a143524bbe3c45541c72bfc08d2b7b917": {
+                    "path": "\/hydephp\/cli\/blob\/master\/docs\/ARCHITECTURE.md",
+                    "title": "\/blob\/master\/docs\/ARCHITECTURE.md",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "\/issues",
+                    "count": 1,
+                    "uniques": 1
                 }
             },
             "referrers": {
                 "github.com": {
                     "count": 2,
+                    "uniques": 1
+                },
+                "Google": {
+                    "count": 7,
                     "uniques": 1
                 }
             }
