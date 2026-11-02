@@ -1,13 +1,13 @@
 {
     "_database": {
-        "last_updated": 1792972452,
-        "content_hash": "d1daa6f5d60de913e7efc7e278ba8fba86bb67eaf1b6e999f0995efdae53d795",
-        "total_views": 5059,
-        "total_clones": 38831,
+        "last_updated": 1793582371,
+        "content_hash": "8a7bc93ddf40b0eaf8a97f9304705c8a35b641c46fb01779f241cbe227b88c88",
+        "total_views": 5069,
+        "total_clones": 38862,
         "total_installs": 408,
         "total_binary_downloads": 260,
-        "database_size_bytes": 236729,
-        "database_size_lines": 7402
+        "database_size_bytes": 241910,
+        "database_size_lines": 7542
     },
     "traffic": {
         "2023-12-01T00:00:00Z": {
@@ -5085,6 +5085,76 @@
                 "count": 4,
                 "uniques": 3
             }
+        },
+        "2026-10-25T00:00:00Z": {
+            "views": {
+                "count": 4,
+                "uniques": 4
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 2
+            }
+        },
+        "2026-10-26T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 1,
+                "uniques": 1
+            }
+        },
+        "2026-10-27T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 13,
+                "uniques": 2
+            }
+        },
+        "2026-10-28T00:00:00Z": {
+            "views": {
+                "count": 2,
+                "uniques": 2
+            },
+            "clones": {
+                "count": 4,
+                "uniques": 3
+            }
+        },
+        "2026-10-29T00:00:00Z": {
+            "views": {
+                "count": 1,
+                "uniques": 1
+            },
+            "clones": {
+                "count": 3,
+                "uniques": 3
+            }
+        },
+        "2026-10-30T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 6,
+                "uniques": 5
+            }
+        },
+        "2026-10-31T00:00:00Z": {
+            "views": {
+                "count": 0,
+                "uniques": 0
+            },
+            "clones": {
+                "count": 2,
+                "uniques": 1
+            }
         }
     },
     "popular": {
@@ -7395,6 +7465,76 @@
                     "title": "\/pull\/202",
                     "count": 1,
                     "uniques": 1
+                }
+            }
+        },
+        "2026-11": {
+            "paths": {
+                "664fc22ff9ed0a3f5c155674e66930089efda2d05f1570b9e6623c27300a5428": {
+                    "path": "\/hydephp\/cli",
+                    "title": "Overview",
+                    "count": 3,
+                    "uniques": 3
+                },
+                "03a6099d508057c5abe587c01bf2fd8f0baaed47a4e81f2f6909cfb2231f22bb": {
+                    "path": "\/hydephp\/cli\/issues\/227",
+                    "title": "\/issues\/227",
+                    "count": 2,
+                    "uniques": 2
+                },
+                "aa8388a30bc8d914691d308c6103489eaf6481b5322c23d424a2964293fb91e7": {
+                    "path": "\/hydephp\/cli\/blob\/5797c2a14b27710e8bdbaec2e26a32bad7b22c1b\/.github\/workflows\/code-intelligence.yml",
+                    "title": "\/blob\/5797c2a14b27710e8bdbaec2e26a32bad7b22c1b\/.github\/workflows\/code-intelligence.yml",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "5c4584f891b3c291dd3628f92227ed3d2581dafbce267795bfc030e727ad8458": {
+                    "path": "\/hydephp\/cli\/blob\/81920cf04b15e0d1d1c4943f80eafa249babf63c\/.github\/workflows\/tests.yml",
+                    "title": "\/blob\/81920cf04b15e0d1d1c4943f80eafa249babf63c\/.github\/workflows\/tests.yml",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "78ed226d5821ca37a65399a31ce2451db7b5d1f765a2b02b41f0537a735dc23d": {
+                    "path": "\/hydephp\/cli\/blob\/a1335200e4874ae8906033b08d416a4d66f5099b\/.github\/workflows\/create-release.yml",
+                    "title": "\/blob\/a1335200e4874ae8906033b08d416a4d66f5099b\/.github\/workflows\/create-release.yml",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "2972b2b21e95e3cf380543c24525120b020ed9c30cd3617f3eb3a303638d751d": {
+                    "path": "\/hydephp\/cli\/blob\/d185d60538996265b9cd6b73f3e511ea08a3eeba\/.github\/workflows\/tests.yml",
+                    "title": "\/blob\/d185d60538996265b9cd6b73f3e511ea08a3eeba\/.github\/workflows\/tests.yml",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "7d30bbe164fd54001a14c16ed8460e9ec02fdb57e0d3df7cea7641594f5f2790": {
+                    "path": "\/hydephp\/cli\/blob\/master\/README.md",
+                    "title": "\/blob\/master\/README.md",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "04371891108bba4db929f3a6259889a5b980d8c41ba74e09f7b012fca89e6c19": {
+                    "path": "\/hydephp\/cli\/issues",
+                    "title": "\/issues",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "b37948901f17a07bdf491a1851ac5aad08c0220702055a89ecea24ac9fc81481": {
+                    "path": "\/hydephp\/cli\/issues\/192",
+                    "title": "\/issues\/192",
+                    "count": 1,
+                    "uniques": 1
+                },
+                "ebb5c7218cf3f183b52257655ae7a5ab2fc95166db757f44910fe4289f1e282a": {
+                    "path": "\/hydephp\/cli\/pull\/202",
+                    "title": "\/pull\/202",
+                    "count": 1,
+                    "uniques": 1
+                }
+            },
+            "referrers": {
+                "aocr.org": {
+                    "count": 2,
+                    "uniques": 2
                 }
             }
         }
